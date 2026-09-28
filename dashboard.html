@@ -74,8 +74,6 @@ body{background:var(--bg);min-height:100vh;color:var(--text);transition:backgrou
 .qs .val{font-size:22px;font-weight:800;color:var(--link-color);line-height:1;}
 .qs .lbl{font-size:12px;color:var(--text-muted);margin-top:4px;}
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:18px;}
-
-/* Menu card */
 .menu{background:var(--card-bg);border-radius:14px;padding:26px;box-shadow:var(--card-shadow);transition:.25s;text-decoration:none;color:inherit;display:block;border:2px solid transparent;position:relative;overflow:visible;}
 .menu:hover{transform:translateY(-4px);box-shadow:var(--menu-hover-shadow);border-color:var(--link-color);}
 .menu.admin-card{border-color:#d9534f;}
@@ -99,7 +97,6 @@ body{background:var(--bg);min-height:100vh;color:var(--text);transition:backgrou
 .footer{text-align:center;padding:30px 20px;color:var(--text-muted);font-size:12px;}
 .section-title{font-size:14px;font-weight:700;color:var(--section-title);margin:26px 0 14px;letter-spacing:1px;text-transform:uppercase;}
 
-/* ===== DROPDOWN KOSAKATA ===== */
 .menu-dropdown-wrapper{position:relative;}
 .menu-dropdown-wrapper.open{z-index:60;}
 .menu-with-chevron{cursor:pointer;}
@@ -205,7 +202,6 @@ body{background:var(--bg);min-height:100vh;color:var(--text);transition:backgrou
 }
 .btn-show-all:hover{filter:brightness(1.15);transform:translateY(-1px);}
 
-/* Color variants */
 .ico-transportasi{background:linear-gradient(135deg,#1e5fa8,#154a82);}
 .ico-makanan{background:linear-gradient(135deg,#d9534f,#c9302c);}
 .ico-wisata{background:linear-gradient(135deg,#2fa36b,#1f7f53);}
@@ -218,9 +214,11 @@ body{background:var(--bg);min-height:100vh;color:var(--text);transition:backgrou
 .ico-hobi{background:linear-gradient(135deg,#ff9800,#f57c00);}
 .ico-umum{background:linear-gradient(135deg,#9e9e9e,#616161);}
 
-.modal-back{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:100;align-items:center;justify-content:center;padding:20px;}
+.modal-back{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:200;align-items:center;justify-content:center;padding:20px;animation:fadeIn .2s ease;}
 .modal-back.show{display:flex;}
-.modal-box{background:var(--card-bg);border-radius:14px;padding:28px;max-width:480px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,.4);max-height:90vh;overflow-y:auto;}
+@keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
+.modal-box{background:var(--card-bg);border-radius:16px;padding:28px;max-width:440px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,.4);max-height:90vh;overflow-y:auto;animation:popIn .3s cubic-bezier(.34,1.56,.64,1);}
+@keyframes popIn{from{opacity:0;transform:scale(.9);}to{opacity:1;transform:scale(1);}}
 .modal-box h2{color:var(--title-color);margin-bottom:8px;font-size:18px;display:flex;align-items:center;gap:10px;}
 .modal-box p.desc{color:var(--text-muted);font-size:13px;margin-bottom:18px;line-height:1.5;}
 .modal-box label{font-size:13px;font-weight:600;color:var(--text);display:block;margin-bottom:6px;}
@@ -228,13 +226,74 @@ body{background:var(--bg);min-height:100vh;color:var(--text);transition:backgrou
 .modal-box textarea{min-height:100px;resize:vertical;}
 .modal-box input:focus, .modal-box textarea:focus{outline:none;border-color:var(--link-color);box-shadow:0 0 0 3px rgba(30,95,168,.15);}
 
+/* ===== POPUP KUOTA ===== */
+.kuota-popup-icon{
+  width:80px;height:80px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:36px;margin:0 auto 18px;
+  color:#fff;
+  box-shadow:0 8px 24px rgba(0,0,0,.15);
+}
+.kuota-popup-icon.ok{background:linear-gradient(135deg,#2fa36b,#1f7f53);}
+.kuota-popup-icon.empty{background:linear-gradient(135deg,#d9534f,#c9302c);}
+.kuota-popup-icon.admin{background:linear-gradient(135deg,#7c4dff,#5e35b1);}
+
+.kuota-popup-title{
+  text-align:center;font-size:20px;font-weight:800;
+  color:var(--title-color);margin-bottom:6px;
+}
+.kuota-popup-subtitle{
+  text-align:center;font-size:13px;color:var(--text-muted);
+  margin-bottom:24px;line-height:1.5;
+}
+
+.kuota-info-box{
+  background:var(--sub-bg);border-radius:12px;
+  padding:20px;text-align:center;margin-bottom:20px;
+  border:2px dashed var(--border);
+}
+.kuota-info-box.ok{border-color:#2fa36b;background:linear-gradient(135deg,rgba(47,163,107,.08),rgba(47,163,107,.02));}
+.kuota-info-box.empty{border-color:#d9534f;background:linear-gradient(135deg,rgba(217,83,79,.08),rgba(217,83,79,.02));}
+.kuota-info-box.admin{border-color:#7c4dff;background:linear-gradient(135deg,rgba(124,77,255,.08),rgba(124,77,255,.02));}
+
+.kuota-big-num{
+  font-size:48px;font-weight:900;line-height:1;
+  margin-bottom:6px;
+}
+.kuota-big-num.ok{color:#2fa36b;}
+.kuota-big-num.empty{color:#d9534f;}
+.kuota-big-num.admin{color:#7c4dff;}
+.kuota-info-label{
+  font-size:12px;color:var(--text-muted);
+  text-transform:uppercase;letter-spacing:1.5px;font-weight:700;
+  margin-bottom:4px;
+}
+.kuota-info-detail{
+  font-size:13px;color:var(--text);font-weight:600;
+  margin-top:10px;
+}
+
+.kuota-popup-catatan{
+  padding:12px 16px;border-radius:10px;
+  font-size:12px;line-height:1.5;margin-bottom:18px;
+}
+.kuota-popup-catatan.ok{background:#e8f5ee;color:#1f7f53;border-left:3px solid #2fa36b;}
+.kuota-popup-catatan.empty{background:#fde8e8;color:#a33;border-left:3px solid #d9534f;}
+.kuota-popup-catatan.admin{background:#f0e8ff;color:#5e35b1;border-left:3px solid #7c4dff;}
+
+.kuota-popup-buttons{display:flex;gap:10px;flex-wrap:wrap;}
+.kuota-popup-buttons .btn{flex:1;justify-content:center;padding:14px;font-size:15px;}
+
 @media(max-width:600px){
   .wrap{margin:20px auto;}
   .hello{font-size:20px;}
   .topbar .user{display:none;}
   .quick-stats{grid-template-columns:1fr;}
   .quota-banner{padding:16px;}
-  .dropdown-panel{position:fixed;top:auto;bottom:0;left:0;right:0;border-radius:20px 20px 0 0;max-height:70vh;}
+  .dropdown-panel{position:fixed;top:auto;bottom:0;left:0;right:0;border-radius:20px 20px 0 0;max-height:70vh;animation:slideUp .3s ease;}
+  @keyframes slideUp{from{transform:translateY(100%);}to{transform:translateY(0);}}
+  .kuota-popup-icon{width:64px;height:64px;font-size:28px;}
+  .kuota-big-num{font-size:36px;}
 }
 </style>
 </head>
@@ -326,16 +385,17 @@ body{background:var(--bg);min-height:100vh;color:var(--text);transition:backgrou
       <i class="fas fa-chevron-right arrow"></i>
     </a>
 
-    <a class="menu exam-menu" href="epstopik.html">
+    <!-- SOAL EPS: pakai onclick, bukan href -->
+    <div class="menu exam-menu" onclick="openKuotaPopup('eps', 'Soal EPS-TOPIK', 'fa-book-open', 'ico-blue', 'ujian.html?kategori=eps', 'Latihan lengkap sesuai standar ujian')">
       <div class="ico ico-blue"><i class="fas fa-book-open"></i></div>
       <h3>Soal EPS-TOPIK</h3>
       <p>Latihan lengkap sesuai standar ujian</p>
       <i class="fas fa-chevron-right arrow"></i>
-    </a>
+    </div>
 
     <!-- KOSAKATA dengan DROPDOWN -->
-    <div class="menu-dropdown-wrapper" id="kosakataWrapper">
-      <div class="menu exam-menu menu-with-chevron" onclick="toggleKosakataDropdown(event)">
+    <div class="menu-dropdown-wrapper exam-menu" id="kosakataWrapper">
+      <div class="menu menu-with-chevron" onclick="toggleKosakataDropdown(event)">
         <div class="ico ico-green"><i class="fas fa-book"></i></div>
         <h3>Kosakata</h3>
         <p>Pilih tema kosakata yang mau dipelajari</p>
@@ -346,39 +406,72 @@ body{background:var(--bg);min-height:100vh;color:var(--text);transition:backgrou
           <span>📚 Pilih Tema Kosakata</span>
           <button class="close-btn" onclick="closeKosakataDropdown(event)"><i class="fas fa-times"></i></button>
         </div>
-        <div id="temaListBox">
-          <!-- Akan diisi via JavaScript -->
-        </div>
+        <div id="temaListBox"></div>
         <div class="dropdown-footer">
-          <a href="kosakata.html?tema=semua" class="btn-show-all">
+          <button onclick="openKuotaPopupKosakata('semua', 'Semua Tema', 'fa-globe', 'ico-blue')" class="btn-show-all">
             <i class="fas fa-globe"></i> Semua Tema (Campur)
-          </a>
+          </button>
         </div>
       </div>
     </div>
 
-    <a class="menu exam-menu" href="ujian.html?kategori=tata_bahasa">
+    <!-- TATA BAHASA -->
+    <div class="menu exam-menu" onclick="openKuotaPopup('tata_bahasa', 'Tata Bahasa', 'fa-spell-check', 'ico-orange', 'ujian.html?kategori=tata_bahasa', 'Latihan grammar & struktur kalimat')">
       <div class="ico ico-orange"><i class="fas fa-spell-check"></i></div>
       <h3>Tata Bahasa</h3>
       <p>Latihan grammar & struktur kalimat</p>
       <i class="fas fa-chevron-right arrow"></i>
-    </a>
-    <a class="menu exam-menu" href="ujian.html?kategori=listening">
+    </div>
+
+    <!-- LISTENING -->
+    <div class="menu exam-menu" onclick="openKuotaPopup('listening', 'Listening', 'fa-headphones', 'ico-purple', 'ujian.html?kategori=listening', 'Latihan mendengarkan audio')">
       <div class="ico ico-purple"><i class="fas fa-headphones"></i></div>
       <h3>Listening</h3>
       <p>Latihan mendengarkan audio</p>
       <i class="fas fa-chevron-right arrow"></i>
-    </a>
-    <a class="menu exam-menu" href="ujian.html?kategori=reading">
+    </div>
+
+    <!-- READING -->
+    <div class="menu exam-menu" onclick="openKuotaPopup('reading', 'Reading', 'fa-book-reader', 'ico-teal', 'ujian.html?kategori=reading', 'Latihan membaca teks bahasa Korea')">
       <div class="ico ico-teal"><i class="fas fa-book-reader"></i></div>
       <h3>Reading</h3>
       <p>Latihan membaca teks bahasa Korea</p>
       <i class="fas fa-chevron-right arrow"></i>
-    </a>
+    </div>
   </div>
 </div>
 
 <div class="footer">© EPS-TOPIK Practice</div>
+
+<!-- MODAL: KUOTA POPUP -->
+<div id="kuotaPopup" class="modal-back">
+  <div class="modal-box">
+    <div class="kuota-popup-icon ok" id="kuotaPopupIcon">
+      <i class="fas fa-book" id="kuotaPopupIconFa"></i>
+    </div>
+    <div class="kuota-popup-title" id="kuotaPopupTitle">Soal EPS-TOPIK</div>
+    <div class="kuota-popup-subtitle" id="kuotaPopupSubtitle">Latihan lengkap sesuai standar ujian</div>
+
+    <div class="kuota-info-box ok" id="kuotaInfoBox">
+      <div class="kuota-info-label">Kuota Tersisa</div>
+      <div class="kuota-big-num ok" id="kuotaBigNum">3</div>
+      <div class="kuota-info-detail" id="kuotaInfoDetail">dari 5 kuota ujian</div>
+    </div>
+
+    <div class="kuota-popup-catatan ok" id="kuotaPopupCatatan">
+      💡 Setiap kali kamu menyelesaikan ujian, kuota akan berkurang 1.
+    </div>
+
+    <div class="kuota-popup-buttons">
+      <button class="btn btn-secondary" onclick="closeModal('kuotaPopup')">
+        <i class="fas fa-times"></i> Batal
+      </button>
+      <button class="btn btn-primary" id="kuotaBtnMulai" onclick="mulaiSoal()">
+        <i class="fas fa-rocket"></i> Mulai Soal
+      </button>
+    </div>
+  </div>
+</div>
 
 <!-- MODAL: REQUEST KUOTA -->
 <div id="requestModal" class="modal-back">
@@ -425,23 +518,21 @@ function toggleTheme(){
 }
 applyTheme(localStorage.getItem('theme') || 'light');
 
-const API = 'https://script.google.com/macros/s/AKfycbx58rhLwaHCDxRlrAy6mDeSKLFat0hHcwW565Sj66taWCJZL4CE-vCnwsuK44Iw7FHR/exec';
+const API = https:'//script.google.com/macros/s/AKfycbx58rhLwaHCDxRlrAy6mDeSKLFat0hHcwW565Sj66taWCJZL4CE-vCnwsuK44Iw7FHR/exec';
 
 // ===== DAFTAR TEMA KOSAKATA =====
-// Tinggal tambah di sini kalau mau nambah tema baru
-// Note: value = kode kategori yang dipakai di sheet & URL
 const TEMA_KOSAKATA = [
-  { value: 'transportasi',   label: 'Transportasi',     desc: 'Bus, kereta, taksi, dll',    icon: 'fa-bus',          icoClass: 'ico-transportasi' },
-  { value: 'makanan',        label: 'Makanan & Minuman', desc: 'Kimchi, bibimbap, kopi, dll', icon: 'fa-utensils',     icoClass: 'ico-makanan' },
-  { value: 'tempat_wisata',  label: 'Tempat Wisata',    desc: 'Namsan, Gyeongbokgung, dll', icon: 'fa-landmark',     icoClass: 'ico-wisata' },
-  { value: 'keluarga',       label: 'Keluarga',         desc: 'Ayah, ibu, kakak, adik',     icon: 'fa-users',        icoClass: 'ico-keluarga' },
+  { value: 'transportasi',   label: 'Transportasi',     desc: 'Bus, kereta, taksi, dll',    icon: 'fa-bus',            icoClass: 'ico-transportasi' },
+  { value: 'makanan',        label: 'Makanan & Minuman', desc: 'Kimchi, bibimbap, kopi, dll', icon: 'fa-utensils',      icoClass: 'ico-makanan' },
+  { value: 'tempat_wisata',  label: 'Tempat Wisata',    desc: 'Namsan, Gyeongbokgung, dll', icon: 'fa-landmark',       icoClass: 'ico-wisata' },
+  { value: 'keluarga',       label: 'Keluarga',         desc: 'Ayah, ibu, kakak, adik',     icon: 'fa-users',          icoClass: 'ico-keluarga' },
   { value: 'sekolah',        label: 'Sekolah',          desc: 'Buku, guru, kelas, dll',     icon: 'fa-graduation-cap', icoClass: 'ico-sekolah' },
-  { value: 'tubuh',          label: 'Anggota Tubuh',    desc: 'Kepala, tangan, kaki',       icon: 'fa-hand-paper',   icoClass: 'ico-tubuh' },
-  { value: 'pakaian',        label: 'Pakaian',          desc: 'Baju, celana, sepatu',       icon: 'fa-tshirt',       icoClass: 'ico-pakaian' },
-  { value: 'alam',           label: 'Alam & Cuaca',     desc: 'Hujan, matahari, gunung',    icon: 'fa-cloud-sun',    icoClass: 'ico-alam' },
-  { value: 'pekerjaan',      label: 'Pekerjaan',        desc: 'Dokter, guru, polisi',       icon: 'fa-briefcase',    icoClass: 'ico-pekerjaan' },
-  { value: 'hobi',           label: 'Hobi & Olahraga',  desc: 'Sepakbola, musik, baca',     icon: 'fa-futbol',       icoClass: 'ico-hobi' },
-  { value: 'umum',           label: 'Kosakata Umum',    desc: 'Campuran semua kategori',    icon: 'fa-book',         icoClass: 'ico-umum' }
+  { value: 'tubuh',          label: 'Anggota Tubuh',    desc: 'Kepala, tangan, kaki',       icon: 'fa-hand-paper',     icoClass: 'ico-tubuh' },
+  { value: 'pakaian',        label: 'Pakaian',          desc: 'Baju, celana, sepatu',       icon: 'fa-tshirt',         icoClass: 'ico-pakaian' },
+  { value: 'alam',           label: 'Alam & Cuaca',     desc: 'Hujan, matahari, gunung',    icon: 'fa-cloud-sun',      icoClass: 'ico-alam' },
+  { value: 'pekerjaan',      label: 'Pekerjaan',        desc: 'Dokter, guru, polisi',       icon: 'fa-briefcase',      icoClass: 'ico-pekerjaan' },
+  { value: 'hobi',           label: 'Hobi & Olahraga',  desc: 'Sepakbola, musik, baca',     icon: 'fa-futbol',         icoClass: 'ico-hobi' },
+  { value: 'umum',           label: 'Kosakata Umum',    desc: 'Campuran semua kategori',    icon: 'fa-book',           icoClass: 'ico-umum' }
 ];
 
 let user = JSON.parse(localStorage.getItem('user') || 'null');
@@ -474,7 +565,7 @@ function renderTemaList() {
   let html = '';
   TEMA_KOSAKATA.forEach(t => {
     html += `
-      <a class="dropdown-item" href="kosakata.html?tema=${t.value}">
+      <div class="dropdown-item" onclick="openKuotaPopupKosakata('${t.value}', '${t.label.replace(/'/g, "\\'")}', '${t.icon}', '${t.icoClass}')">
         <div class="item-ico ${t.icoClass}">
           <i class="fas ${t.icon}"></i>
         </div>
@@ -483,7 +574,7 @@ function renderTemaList() {
           <div class="desc">${t.desc}</div>
         </div>
         <i class="fas fa-chevron-right item-arrow"></i>
-      </a>`;
+      </div>`;
   });
   box.innerHTML = html;
 }
@@ -494,34 +585,109 @@ function toggleKosakataDropdown(e) {
   e.stopPropagation();
   const wrapper = document.getElementById('kosakataWrapper');
   const isOpen = wrapper.classList.contains('open');
-
-  // Tutup dropdown lain dulu
   document.querySelectorAll('.menu-dropdown-wrapper.open').forEach(w => w.classList.remove('open'));
-
-  if (!isOpen) {
-    wrapper.classList.add('open');
-  }
+  if (!isOpen) wrapper.classList.add('open');
 }
-
 function closeKosakataDropdown(e) {
   if (e) e.stopPropagation();
   document.getElementById('kosakataWrapper').classList.remove('open');
 }
-
-// Tutup dropdown kalau klik di luar
 document.addEventListener('click', function(e) {
   const wrapper = document.getElementById('kosakataWrapper');
-  if (wrapper && !wrapper.contains(e.target)) {
-    wrapper.classList.remove('open');
-  }
+  if (wrapper && !wrapper.contains(e.target)) wrapper.classList.remove('open');
 });
-
-// Tutup dropdown kalau tekan ESC
 document.addEventListener('keydown', function(e) {
   if (e.key === 'Escape') {
     document.querySelectorAll('.menu-dropdown-wrapper.open').forEach(w => w.classList.remove('open'));
+    document.querySelectorAll('.modal-back.show').forEach(m => m.classList.remove('show'));
   }
 });
+
+// ===== KUOTA POPUP =====
+let pendingSoal = null;  // { url, kategori, label }
+
+function openKuotaPopup(kategori, label, icon, icoClass, url, desc) {
+  pendingSoal = { url, kategori, label };
+  tampilkanPopupKuota(label, desc, icon);
+}
+
+function openKuotaPopupKosakata(tema, label, icon, icoClass) {
+  const url = 'kosakata.html?tema=' + tema;
+  const kat = (tema === 'semua') ? 'kosakata' : 'kosakata_' + tema;
+  pendingSoal = { url, kategori: kat, label: 'Kosakata: ' + label };
+  tampilkanPopupKuota('Kosakata: ' + label, 'Latihan perbendaharaan kata bahasa Korea', icon, icoClass);
+  closeKosakataDropdown();
+}
+
+function tampilkanPopupKuota(label, desc, icon, icoClass) {
+  const isAdmin = user.role === 'admin';
+  const used = user.quotaUsed || 0;
+  const max = user.quotaMax || 3;
+  const remain = isAdmin ? '∞' : Math.max(0, max - used);
+  const canExam = isAdmin || (used < max);
+
+  // Icon
+  const iconEl = document.getElementById('kuotaPopupIcon');
+  const iconFa = document.getElementById('kuotaPopupIconFa');
+  iconEl.className = 'kuota-popup-icon ' + (isAdmin ? 'admin' : (canExam ? 'ok' : 'empty'));
+  iconFa.className = 'fas ' + (icon || 'fa-book');
+
+  // Text
+  document.getElementById('kuotaPopupTitle').textContent = label;
+  document.getElementById('kuotaPopupSubtitle').textContent = desc;
+
+  // Info box
+  const infoBox = document.getElementById('kuotaInfoBox');
+  const bigNum = document.getElementById('kuotaBigNum');
+  const infoDetail = document.getElementById('kuotaInfoDetail');
+  const catatan = document.getElementById('kuotaPopupCatatan');
+
+  if (isAdmin) {
+    infoBox.className = 'kuota-info-box admin';
+    bigNum.className = 'kuota-big-num admin';
+    bigNum.textContent = '∞';
+    infoDetail.textContent = 'Admin bebas akses semua ujian';
+    catatan.className = 'kuota-popup-catatan admin';
+    catatan.innerHTML = '👑 Sebagai admin, kamu bisa mengerjakan ujian tanpa batas kuota.';
+  } else if (canExam) {
+    infoBox.className = 'kuota-info-box ok';
+    bigNum.className = 'kuota-big-num ok';
+    bigNum.textContent = remain;
+    infoDetail.textContent = `dari ${max} kuota ujian`;
+    catatan.className = 'kuota-popup-catatan ok';
+    catatan.innerHTML = '💡 Setiap kali kamu menyelesaikan ujian, kuota akan berkurang <strong>1</strong>.';
+  } else {
+    infoBox.className = 'kuota-info-box empty';
+    bigNum.className = 'kuota-big-num empty';
+    bigNum.textContent = '0';
+    infoDetail.textContent = `dari ${max} kuota ujian`;
+    catatan.className = 'kuota-popup-catatan empty';
+    catatan.innerHTML = '🔒 Kuota kamu sudah habis. Hubungi admin untuk minta tambahan kuota.';
+  }
+
+  // Button
+  const btnMulai = document.getElementById('kuotaBtnMulai');
+  if (canExam) {
+    btnMulai.disabled = false;
+    btnMulai.className = 'btn btn-primary';
+    btnMulai.innerHTML = '<i class="fas fa-rocket"></i> Mulai Soal';
+    btnMulai.onclick = mulaiSoal;
+  } else {
+    btnMulai.disabled = false;
+    btnMulai.className = 'btn btn-warning';
+    btnMulai.innerHTML = '<i class="fas fa-paper-plane"></i> Minta Kuota';
+    btnMulai.onclick = () => { closeModal('kuotaPopup'); openRequestModal(); };
+  }
+
+  openModal('kuotaPopup');
+}
+
+function mulaiSoal() {
+  if (!pendingSoal) return;
+  const url = pendingSoal.url;
+  closeModal('kuotaPopup');
+  setTimeout(() => { location.href = url; }, 150);
+}
 
 // ===== NOTIF BADGE =====
 function updateNotifBadge() {
@@ -671,7 +837,7 @@ function logout(e) {
   location.href = 'login.html';
 }
 
-// ===== INIT =====
+// INIT
 renderTemaList();
 updateQuotaUI();
 refreshQuota();
