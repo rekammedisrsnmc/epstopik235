@@ -57,6 +57,7 @@ body{background:var(--bg);min-height:100vh;color:var(--text);transition:backgrou
 
 .quota-banner{background:linear-gradient(135deg,#1e5fa8,#154a82);color:#fff;border-radius:14px;padding:20px 24px;margin-bottom:24px;display:flex;align-items:center;gap:18px;flex-wrap:wrap;box-shadow:0 8px 24px rgba(30,95,168,.25);}
 .quota-banner.empty{background:linear-gradient(135deg,#d9534f,#c9302c);box-shadow:0 8px 24px rgba(217,83,79,.3);}
+.quota-banner.loading{background:linear-gradient(135deg,#888,#666);box-shadow:0 8px 24px rgba(0,0,0,.15);}
 .quota-banner .ico-big{width:56px;height:56px;border-radius:50%;background:rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0;}
 .quota-banner .txt{flex:1;min-width:200px;}
 .quota-banner .txt h3{font-size:16px;font-weight:700;margin-bottom:4px;}
@@ -74,15 +75,13 @@ body{background:var(--bg);min-height:100vh;color:var(--text);transition:backgrou
 .qs .val{font-size:22px;font-weight:800;color:var(--link-color);line-height:1;}
 .qs .lbl{font-size:12px;color:var(--text-muted);margin-top:4px;}
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:18px;}
-.menu{background:var(--card-bg);border-radius:14px;padding:26px;box-shadow:var(--card-shadow);transition:.25s;text-decoration:none;color:inherit;display:block;border:2px solid transparent;position:relative;overflow:visible;}
+.menu{background:var(--card-bg);border-radius:14px;padding:26px;box-shadow:var(--card-shadow);transition:.25s;text-decoration:none;color:inherit;display:block;border:2px solid transparent;position:relative;overflow:visible;cursor:pointer;}
 .menu:hover{transform:translateY(-4px);box-shadow:var(--menu-hover-shadow);border-color:var(--link-color);}
 .menu.admin-card{border-color:#d9534f;}
 .menu.profile-card{border-color:#7c4dff;}
 .menu.history-card{border-color:#f0ad4e;}
 .menu.help-card{border-color:#26a69a;}
 .menu.help-card:hover{border-color:#00796b;box-shadow:0 12px 30px rgba(38,166,154,.25);}
-.menu.locked{opacity:.55;cursor:not-allowed;pointer-events:none;}
-.menu.locked::after{content:'🔒 KUOTA HABIS';position:absolute;top:12px;right:12px;background:#d9534f;color:#fff;font-size:10px;font-weight:800;padding:3px 10px;border-radius:20px;letter-spacing:.5px;}
 .menu .ico{width:52px;height:52px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;color:#fff;margin-bottom:16px;}
 .menu h3{font-size:16px;color:var(--title-color);margin-bottom:6px;}
 .menu p{font-size:13px;color:var(--text-muted);line-height:1.5;}
@@ -318,13 +317,13 @@ body{background:var(--bg);min-height:100vh;color:var(--text);transition:backgrou
   <div class="hello">Halo, <strong id="greetName">User</strong> 👋</div>
   <p class="sub">Pilih kategori latihan yang mau kamu kerjakan</p>
 
-  <div id="quotaBanner" class="quota-banner" style="display:none;">
+  <div id="quotaBanner" class="quota-banner loading" style="display:none;">
     <div class="ico-big"><i class="fas fa-ticket-alt"></i></div>
     <div class="txt">
-      <h3 id="quotaTitle">Kuota Ujian</h3>
-      <p id="quotaDesc">-</p>
+      <h3 id="quotaTitle">Memuat kuota...</h3>
+      <p id="quotaDesc">Sebentar ya</p>
     </div>
-    <div class="quota-badge" id="quotaBadge">-/-</div>
+    <div class="quota-badge" id="quotaBadge">...</div>
     <button class="btn-request" id="btnRequest" onclick="openRequestModal()" style="display:none;">
       <i class="fas fa-paper-plane"></i> Minta Tambah Kuota
     </button>
@@ -385,8 +384,8 @@ body{background:var(--bg);min-height:100vh;color:var(--text);transition:backgrou
       <i class="fas fa-chevron-right arrow"></i>
     </a>
 
-    <!-- SOAL EPS: pakai onclick, bukan href -->
-    <div class="menu exam-menu" onclick="openKuotaPopup('eps', 'Soal EPS-TOPIK', 'fa-book-open', 'ico-blue', 'ujian.html?kategori=eps', 'Latihan lengkap sesuai standar ujian')">
+    <!-- SOAL EPS -->
+    <div class="menu exam-menu" onclick="openKuotaPopup('eps', 'Soal EPS-TOPIK', 'fa-book-open', 'ujian.html?kategori=eps', 'Latihan lengkap sesuai standar ujian')">
       <div class="ico ico-blue"><i class="fas fa-book-open"></i></div>
       <h3>Soal EPS-TOPIK</h3>
       <p>Latihan lengkap sesuai standar ujian</p>
@@ -408,7 +407,7 @@ body{background:var(--bg);min-height:100vh;color:var(--text);transition:backgrou
         </div>
         <div id="temaListBox"></div>
         <div class="dropdown-footer">
-          <button onclick="openKuotaPopupKosakata('semua', 'Semua Tema', 'fa-globe', 'ico-blue')" class="btn-show-all">
+          <button onclick="openKuotaPopupKosakata('semua', 'Semua Tema', 'fa-globe')" class="btn-show-all">
             <i class="fas fa-globe"></i> Semua Tema (Campur)
           </button>
         </div>
@@ -416,7 +415,7 @@ body{background:var(--bg);min-height:100vh;color:var(--text);transition:backgrou
     </div>
 
     <!-- TATA BAHASA -->
-    <div class="menu exam-menu" onclick="openKuotaPopup('tata_bahasa', 'Tata Bahasa', 'fa-spell-check', 'ico-orange', 'ujian.html?kategori=tata_bahasa', 'Latihan grammar & struktur kalimat')">
+    <div class="menu exam-menu" onclick="openKuotaPopup('tata_bahasa', 'Tata Bahasa', 'fa-spell-check', 'ujian.html?kategori=tata_bahasa', 'Latihan grammar & struktur kalimat')">
       <div class="ico ico-orange"><i class="fas fa-spell-check"></i></div>
       <h3>Tata Bahasa</h3>
       <p>Latihan grammar & struktur kalimat</p>
@@ -424,7 +423,7 @@ body{background:var(--bg);min-height:100vh;color:var(--text);transition:backgrou
     </div>
 
     <!-- LISTENING -->
-    <div class="menu exam-menu" onclick="openKuotaPopup('listening', 'Listening', 'fa-headphones', 'ico-purple', 'ujian.html?kategori=listening', 'Latihan mendengarkan audio')">
+    <div class="menu exam-menu" onclick="openKuotaPopup('listening', 'Listening', 'fa-headphones', 'ujian.html?kategori=listening', 'Latihan mendengarkan audio')">
       <div class="ico ico-purple"><i class="fas fa-headphones"></i></div>
       <h3>Listening</h3>
       <p>Latihan mendengarkan audio</p>
@@ -432,7 +431,7 @@ body{background:var(--bg);min-height:100vh;color:var(--text);transition:backgrou
     </div>
 
     <!-- READING -->
-    <div class="menu exam-menu" onclick="openKuotaPopup('reading', 'Reading', 'fa-book-reader', 'ico-teal', 'ujian.html?kategori=reading', 'Latihan membaca teks bahasa Korea')">
+    <div class="menu exam-menu" onclick="openKuotaPopup('reading', 'Reading', 'fa-book-reader', 'ujian.html?kategori=reading', 'Latihan membaca teks bahasa Korea')">
       <div class="ico ico-teal"><i class="fas fa-book-reader"></i></div>
       <h3>Reading</h3>
       <p>Latihan membaca teks bahasa Korea</p>
@@ -454,8 +453,8 @@ body{background:var(--bg);min-height:100vh;color:var(--text);transition:backgrou
 
     <div class="kuota-info-box ok" id="kuotaInfoBox">
       <div class="kuota-info-label">Kuota Tersisa</div>
-      <div class="kuota-big-num ok" id="kuotaBigNum">3</div>
-      <div class="kuota-info-detail" id="kuotaInfoDetail">dari 5 kuota ujian</div>
+      <div class="kuota-big-num ok" id="kuotaBigNum">-</div>
+      <div class="kuota-info-detail" id="kuotaInfoDetail">memuat...</div>
     </div>
 
     <div class="kuota-popup-catatan ok" id="kuotaPopupCatatan">
@@ -518,7 +517,7 @@ function toggleTheme(){
 }
 applyTheme(localStorage.getItem('theme') || 'light');
 
-const API = https:'//script.google.com/macros/s/AKfycbx58rhLwaHCDxRlrAy6mDeSKLFat0hHcwW565Sj66taWCJZL4CE-vCnwsuK44Iw7FHR/exec';
+const API = 'https://script.google.com/macros/s/AKfycbxqJp-Rl1QFE59PfiocQuWkeAfjn8oc_MMIe28xqQqd1Bk3vNkN-reQ3r9L59DjAg9L/exec';
 
 // ===== DAFTAR TEMA KOSAKATA =====
 const TEMA_KOSAKATA = [
@@ -565,7 +564,7 @@ function renderTemaList() {
   let html = '';
   TEMA_KOSAKATA.forEach(t => {
     html += `
-      <div class="dropdown-item" onclick="openKuotaPopupKosakata('${t.value}', '${t.label.replace(/'/g, "\\'")}', '${t.icon}', '${t.icoClass}')">
+      <div class="dropdown-item" onclick="openKuotaPopupKosakata('${t.value}', '${t.label.replace(/'/g, "\\'")}', '${t.icon}')">
         <div class="item-ico ${t.icoClass}">
           <i class="fas ${t.icon}"></i>
         </div>
@@ -590,7 +589,8 @@ function toggleKosakataDropdown(e) {
 }
 function closeKosakataDropdown(e) {
   if (e) e.stopPropagation();
-  document.getElementById('kosakataWrapper').classList.remove('open');
+  const wrapper = document.getElementById('kosakataWrapper');
+  if (wrapper) wrapper.classList.remove('open');
 }
 document.addEventListener('click', function(e) {
   const wrapper = document.getElementById('kosakataWrapper');
@@ -604,39 +604,36 @@ document.addEventListener('keydown', function(e) {
 });
 
 // ===== KUOTA POPUP =====
-let pendingSoal = null;  // { url, kategori, label }
+let pendingSoal = null;
 
-function openKuotaPopup(kategori, label, icon, icoClass, url, desc) {
+function openKuotaPopup(kategori, label, icon, url, desc) {
   pendingSoal = { url, kategori, label };
   tampilkanPopupKuota(label, desc, icon);
 }
 
-function openKuotaPopupKosakata(tema, label, icon, icoClass) {
+function openKuotaPopupKosakata(tema, label, icon) {
   const url = 'kosakata.html?tema=' + tema;
   const kat = (tema === 'semua') ? 'kosakata' : 'kosakata_' + tema;
   pendingSoal = { url, kategori: kat, label: 'Kosakata: ' + label };
-  tampilkanPopupKuota('Kosakata: ' + label, 'Latihan perbendaharaan kata bahasa Korea', icon, icoClass);
+  tampilkanPopupKuota('Kosakata: ' + label, 'Latihan perbendaharaan kata bahasa Korea', icon);
   closeKosakataDropdown();
 }
 
-function tampilkanPopupKuota(label, desc, icon, icoClass) {
+function tampilkanPopupKuota(label, desc, icon) {
   const isAdmin = user.role === 'admin';
-  const used = user.quotaUsed || 0;
-  const max = user.quotaMax || 3;
-  const remain = isAdmin ? '∞' : Math.max(0, max - used);
+  const used = Number(user.quotaUsed) || 0;
+  const max = Number(user.quotaMax) || 3;
+  const remain = Math.max(0, max - used);
   const canExam = isAdmin || (used < max);
 
-  // Icon
   const iconEl = document.getElementById('kuotaPopupIcon');
   const iconFa = document.getElementById('kuotaPopupIconFa');
   iconEl.className = 'kuota-popup-icon ' + (isAdmin ? 'admin' : (canExam ? 'ok' : 'empty'));
   iconFa.className = 'fas ' + (icon || 'fa-book');
 
-  // Text
   document.getElementById('kuotaPopupTitle').textContent = label;
   document.getElementById('kuotaPopupSubtitle').textContent = desc;
 
-  // Info box
   const infoBox = document.getElementById('kuotaInfoBox');
   const bigNum = document.getElementById('kuotaBigNum');
   const infoDetail = document.getElementById('kuotaInfoDetail');
@@ -665,7 +662,6 @@ function tampilkanPopupKuota(label, desc, icon, icoClass) {
     catatan.innerHTML = '🔒 Kuota kamu sudah habis. Hubungi admin untuk minta tambahan kuota.';
   }
 
-  // Button
   const btnMulai = document.getElementById('kuotaBtnMulai');
   if (canExam) {
     btnMulai.disabled = false;
@@ -718,42 +714,71 @@ function updateQuotaUI() {
 
   if (user.role === 'admin') {
     banner.style.display = 'none';
-    document.querySelectorAll('.exam-menu').forEach(m => m.classList.remove('locked'));
     return;
   }
+
+  // Loading state — kalau quotaMax belum ada
+  if (user.quotaMax === undefined || user.quotaMax === null) {
+    banner.style.display = 'flex';
+    banner.className = 'quota-banner loading';
+    badge.textContent = '...';
+    title.textContent = 'Memuat kuota...';
+    desc.textContent = 'Sebentar ya';
+    btnReq.style.display = 'none';
+    return;
+  }
+
   banner.style.display = 'flex';
-  const used = user.quotaUsed || 0;
-  const max = user.quotaMax || 3;
+  const used = Number(user.quotaUsed) || 0;
+  const max = Number(user.quotaMax) || 3;
   const remain = Math.max(0, max - used);
   badge.textContent = `${remain}/${max}`;
 
   if (remain > 0) {
-    banner.classList.remove('empty');
+    banner.className = 'quota-banner';
     title.textContent = `Kuota Ujian: ${remain} tersisa`;
     desc.textContent = `Kamu sudah pakai ${used} dari ${max} kuota.`;
     btnReq.style.display = 'none';
-    document.querySelectorAll('.exam-menu').forEach(m => m.classList.remove('locked'));
   } else {
-    banner.classList.add('empty');
+    banner.className = 'quota-banner empty';
     title.textContent = `Kuota Ujian Habis`;
     desc.textContent = `Kamu sudah pakai ${used} dari ${max} kuota. Hubungi admin untuk tambah kuota.`;
     btnReq.style.display = 'inline-flex';
-    document.querySelectorAll('.exam-menu').forEach(m => m.classList.add('locked'));
   }
+  // ⚠️ Menu TIDAK di-lock — biar tetap bisa diklik & munculin popup
 }
 
 function refreshQuota() {
   return fetch(API + '?action=getQuota&username=' + encodeURIComponent(user.username) + '&t=' + Date.now())
     .then(r => r.json())
     .then(res => {
+      console.log('[DEBUG] Quota response:', res);
       if (res.success) {
-        user.quotaUsed = res.quotaUsed;
-        user.quotaMax = res.quotaMax;
+        user.quotaUsed = Number(res.quotaUsed) || 0;
+        user.quotaMax = Number(res.quotaMax) || 3;
+        localStorage.setItem('user', JSON.stringify(user));
+        updateQuotaUI();
+      } else {
+        console.warn('[DEBUG] Quota gagal:', res.msg);
+        // Fallback
+        if (user.quotaMax === undefined) {
+          user.quotaUsed = 0;
+          user.quotaMax = 3;
+          localStorage.setItem('user', JSON.stringify(user));
+          updateQuotaUI();
+        }
+      }
+    })
+    .catch(err => {
+      console.error('[DEBUG] Quota error:', err);
+      // Fallback juga
+      if (user.quotaMax === undefined) {
+        user.quotaUsed = 0;
+        user.quotaMax = 3;
         localStorage.setItem('user', JSON.stringify(user));
         updateQuotaUI();
       }
-    })
-    .catch(() => {});
+    });
 }
 
 // Stats
@@ -770,10 +795,19 @@ fetch(API + '?action=getHistory&username=' + encodeURIComponent(user.username) +
   .catch(() => {});
 
 // Modal
-function openModal(id) { document.getElementById(id).classList.add('show'); }
-function closeModal(id) { document.getElementById(id).classList.remove('show'); }
+function openModal(id) {
+  const el = document.getElementById(id);
+  if (el) el.classList.add('show');
+}
+function closeModal(id) {
+  const el = document.getElementById(id);
+  if (el) el.classList.remove('show');
+}
 
-function openRequestModal() { openModal('requestModal'); }
+function openRequestModal() {
+  const el = document.getElementById('requestModal');
+  if (el) el.classList.add('show');
+}
 
 function openHelpModal(e) {
   e.preventDefault();
@@ -837,11 +871,17 @@ function logout(e) {
   location.href = 'login.html';
 }
 
-// INIT
+// ===== INIT =====
+console.log('[DEBUG] User dari localStorage:', user);
 renderTemaList();
-updateQuotaUI();
-refreshQuota();
+updateQuotaUI();   // tampil loading dulu
 updateNotifBadge();
+
+// Fetch kuota fresh dari server
+refreshQuota().then(() => {
+  console.log('[DEBUG] Setelah refresh, user:', user);
+  localStorage.setItem('user', JSON.stringify(user));
+});
 </script>
 </body>
 </html>
