@@ -310,7 +310,7 @@ body{background:var(--bg);min-height:100vh;color:var(--text);transition:backgrou
     <span class="notif-badge" id="notifBadge" style="display:none;">0</span>
   </a>
   <button class="btn-icon" onclick="toggleTheme()" title="Toggle dark mode"><i class="fas fa-moon" id="themeIcon"></i></button>
-  <a href="#" class="logout" onclick="logout(event)"><i class="fas fa-sign-out-alt"></i> Keluar</a>
+  <a href="login.html" class="logout" onclick="logout(event)"><i class="fas fa-sign-out-alt"></i> Keluar</a>
 </div>
 
 <div class="wrap">
@@ -385,7 +385,7 @@ body{background:var(--bg);min-height:100vh;color:var(--text);transition:backgrou
     </a>
 
     <!-- SOAL EPS -->
-    <div class="menu exam-menu" onclick="openKuotaPopup('eps', 'Soal EPS-TOPIK', 'fa-book-open', 'ujian.html?kategori=eps', 'Latihan lengkap sesuai standar ujian')">
+    <div class="menu exam-menu" onclick="openKuotaPopup('eps', 'Soal EPS-TOPIK', 'fa-book-open', 'epstopik.html?kategori=eps', 'Latihan lengkap sesuai standar ujian')">
       <div class="ico ico-blue"><i class="fas fa-book-open"></i></div>
       <h3>Soal EPS-TOPIK</h3>
       <p>Latihan lengkap sesuai standar ujian</p>
@@ -517,7 +517,7 @@ function toggleTheme(){
 }
 applyTheme(localStorage.getItem('theme') || 'light');
 
-const API = 'https://script.google.com/macros/s/AKfycbxqJp-Rl1QFE59PfiocQuWkeAfjn8oc_MMIe28xqQqd1Bk3vNkN-reQ3r9L59DjAg9L/exec';
+const API = 'https://script.google.com/macros/s/AKfycbx58rhLwaHCDxRlrAy6mDeSKLFat0hHcwW565Sj66taWCJZL4CE-vCnwsuK44Iw7FHR/exec';
 
 // ===== DAFTAR TEMA KOSAKATA =====
 const TEMA_KOSAKATA = [
