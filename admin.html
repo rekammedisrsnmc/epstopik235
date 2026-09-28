@@ -116,10 +116,11 @@ body{background:var(--bg);min-height:100vh;color:var(--text);transition:backgrou
 .jawaban-radios label:hover{border-color:var(--blue);background:var(--blue-light);}
 .jawaban-radios input[type=radio]{display:none;}
 .jawaban-radios label.checked{background:var(--blue);border-color:var(--blue);color:#fff;}
-.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--blue-dark);color:#fff;padding:12px 24px;border-radius:30px;font-size:14px;font-weight:500;box-shadow:0 8px 24px rgba(0,0,0,0.2);opacity:0;pointer-events:none;transition:0.3s;z-index:100;}
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--blue-dark);color:#fff;padding:12px 24px;border-radius:30px;font-size:14px;font-weight:500;box-shadow:0 8px 24px rgba(0,0,0,0.2);opacity:0;pointer-events:none;transition:0.3s;z-index:200;max-width:90%;text-align:center;}
 .toast.show{opacity:1;}
 .toast.error{background:var(--red);}
 .toast.success{background:var(--green);}
+.toast.warning{background:var(--yellow);color:#fff;}
 .spinner{display:inline-block;width:18px;height:18px;border:3px solid rgba(255,255,255,0.4);border-top-color:#fff;border-radius:50%;animation:spin 0.7s linear infinite;vertical-align:middle;}
 .spinner.dark{border-color:rgba(0,0,0,0.15);border-top-color:var(--blue);}
 @keyframes spin{100%{transform:rotate(360deg)}}
@@ -617,7 +618,56 @@ function toggleTheme(){
 }
 applyTheme(localStorage.getItem('theme') || 'light');
 
+// ⚠️ GANTI URL INI
 const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx58rhLwaHCDxRlrAy6mDeSKLFat0hHcwW565Sj66taWCJZL4CE-vCnwsuK44Iw7FHR/exec';
+
+// ===== HELPER: FETCH DENGAN TIMEOUT =====
+async function fetchWithTimeout(url, options = {}, timeoutMs = 90000) {
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
+  try {
+    const resp = await fetch(url, { ...options, signal: controller.signal });
+    clearTimeout(timeoutId);
+    return resp;
+  } catch (err) {
+    clearTimeout(timeoutId);
+    throw err;
+  }
+}
+
+// ===== HELPER: PARSE RESPONSE AMAN =====
+function parseResponse(text) {
+  if (!text || text.trim() === '') {
+    return { success: false, msg: 'Response kosong', __empty: true };
+  }
+  try { return JSON.parse(text); }
+  catch (e) {
+    const match = text.match(/\{[\s\S]*\}/);
+    if (match) {
+      try { return JSON.parse(match[0]); } catch(e2) {}
+    }
+    return { success: false, msg: 'Response tidak valid', __invalid: true, raw: text.substring(0, 200) };
+  }
+}
+
+// ===== HELPER: POST JSON + PARSE =====
+async function safePost(payload, timeoutMs = 90000) {
+  const resp = await fetchWithTimeout(APPS_SCRIPT_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+    body: JSON.stringify(payload)
+  }, timeoutMs);
+  const text = await resp.text();
+  return parseResponse(text);
+}
+
+// ===== HELPER: GET + PARSE =====
+async function safeGet(queryString, timeoutMs = 60000) {
+  const url = APPS_SCRIPT_URL + (queryString ? '?' + queryString + '&t=' + Date.now() : '?t=' + Date.now());
+  const resp = await fetchWithTimeout(url, {}, timeoutMs);
+  const text = await resp.text();
+  return parseResponse(text);
+}
 
 const _user = JSON.parse(localStorage.getItem('user') || 'null');
 if (!_user) location.href = 'login.html';
@@ -637,12 +687,21 @@ let currentTargetReq = null;
 let currentTargetTicket = null;
 let configData = {};
 
+// ⚡ SAFE TOAST
 function showToast(msg, type='') {
   const t = document.getElementById('toast');
+  if (!t) { console.warn('[TOAST MISSING]', msg); return; }
   t.textContent = msg;
   t.className = 'toast show ' + type;
   clearTimeout(t._t);
-  t._t = setTimeout(() => t.className = 'toast ' + type, 3000);
+  t._t = setTimeout(() => t.className = 'toast ' + type, 3500);
+}
+
+// ⚡ SAFE SET TEXT
+function setText(id, text) {
+  const el = document.getElementById(id);
+  if (el) el.textContent = text;
+  else console.warn('[MISSING ID]', id);
 }
 
 function switchTab(tab) {
@@ -654,20 +713,30 @@ function switchTab(tab) {
   if (tab === 'settings') loadConfig();
 }
 
-function openModal(id) { document.getElementById(id).classList.add('show'); }
-function closeModal(id) { document.getElementById(id).classList.remove('show'); }
+function openModal(id) {
+  const el = document.getElementById(id);
+  if (el) el.classList.add('show');
+}
+function closeModal(id) {
+  const el = document.getElementById(id);
+  if (el) el.classList.remove('show');
+}
 
 // ===== KATEGORI + TEMA =====
 function onKategoriChange() {
-  const utama = document.getElementById('kategoriUtama').value;
+  const sel = document.getElementById('kategoriUtama');
   const temaGroup = document.getElementById('temaGroup');
-  temaGroup.style.display = (utama === 'kosakata') ? 'block' : 'none';
+  if (!sel || !temaGroup) return;
+  temaGroup.style.display = (sel.value === 'kosakata') ? 'block' : 'none';
 }
 
 function getFinalKategori() {
-  const utama = document.getElementById('kategoriUtama').value;
+  const sel = document.getElementById('kategoriUtama');
+  if (!sel) return 'umum';
+  const utama = sel.value;
   if (utama === 'kosakata') {
-    const tema = document.getElementById('temaKategori').value;
+    const temaSel = document.getElementById('temaKategori');
+    const tema = temaSel ? temaSel.value : 'umum';
     return 'kosakata_' + tema;
   }
   return utama;
@@ -675,18 +744,20 @@ function getFinalKategori() {
 
 // ===== SOAL =====
 function onSectionChange() {
-  const s = document.getElementById('section').value;
+  const sel = document.getElementById('section');
+  if (!sel) return;
+  const s = sel.value;
   const optsBox = document.getElementById('optionsBox');
   const radiosBox = document.getElementById('jawabanRadios');
   const isianBox = document.getElementById('jawabanIsianBox');
   if (s === 'isian') {
-    optsBox.style.display = 'none';
-    radiosBox.style.display = 'none';
-    isianBox.style.display = 'block';
+    if (optsBox) optsBox.style.display = 'none';
+    if (radiosBox) radiosBox.style.display = 'none';
+    if (isianBox) isianBox.style.display = 'block';
   } else {
-    optsBox.style.display = 'block';
-    radiosBox.style.display = 'flex';
-    isianBox.style.display = 'none';
+    if (optsBox) optsBox.style.display = 'block';
+    if (radiosBox) radiosBox.style.display = 'flex';
+    if (isianBox) isianBox.style.display = 'none';
   }
 }
 
@@ -703,6 +774,7 @@ function uploadFile(input, type) {
   const reader = new FileReader();
   reader.onload = e => {
     const preview = document.getElementById(type + 'Preview');
+    if (!preview) return;
     if (type === 'gambar') {
       preview.innerHTML = `<img src="${e.target.result}"><button class="rm" onclick="removeFile('${type}')">×</button>`;
     } else {
@@ -712,16 +784,17 @@ function uploadFile(input, type) {
   reader.readAsDataURL(file);
   pendingFiles[type] = { file };
   uploadedUrls[type] = '';
-  document.getElementById(type + 'Status').innerHTML = `<span class="upload-status ok">📎 ${file.name} (${(file.size/1024).toFixed(1)} KB)</span>`;
+  const st = document.getElementById(type + 'Status');
+  if (st) st.innerHTML = `<span class="upload-status ok">📎 ${file.name} (${(file.size/1024).toFixed(1)} KB)</span>`;
 }
 
 function removeFile(type) {
   pendingFiles[type] = null;
   uploadedUrls[type] = '';
-  document.getElementById(type + 'Url').value = '';
-  document.getElementById(type + 'Preview').innerHTML = '';
-  document.getElementById(type + 'File').value = '';
-  document.getElementById(type + 'Status').innerHTML = '';
+  const u = document.getElementById(type + 'Url'); if (u) u.value = '';
+  const p = document.getElementById(type + 'Preview'); if (p) p.innerHTML = '';
+  const f = document.getElementById(type + 'File'); if (f) f.value = '';
+  const s = document.getElementById(type + 'Status'); if (s) s.innerHTML = '';
 }
 
 function uploadOneFile(type) {
@@ -729,22 +802,30 @@ function uploadOneFile(type) {
     const pf = pendingFiles[type];
     if (!pf) { resolve(uploadedUrls[type] || ''); return; }
     const reader = new FileReader();
-    reader.onload = e => {
+    reader.onload = async e => {
       const base64 = e.target.result.split(',')[1] || '';
-      document.getElementById(type + 'Status').innerHTML = `<span class="upload-status loading">⏳ Upload...</span>`;
-      fetch(APPS_SCRIPT_URL, {
-        method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-        body: JSON.stringify({ action: 'upload', username: _user.username, filename: pf.file.name, base64 })
-      })
-      .then(r => r.text()).then(text => {
-        let res; try { res = JSON.parse(text); } catch(e) { res = { success: false }; }
+      const st = document.getElementById(type + 'Status');
+      if (st) st.innerHTML = `<span class="upload-status loading">⏳ Upload...</span>`;
+      try {
+        const res = await safePost({
+          action: 'upload',
+          username: _user.username,
+          filename: pf.file.name,
+          base64
+        }, 120000);
         if (res.success && res.url) {
           uploadedUrls[type] = res.url;
           pendingFiles[type] = null;
-          document.getElementById(type + 'Status').innerHTML = `<span class="upload-status ok">✅ ${pf.file.name}</span>`;
+          if (st) st.innerHTML = `<span class="upload-status ok">✅ ${pf.file.name}</span>`;
           resolve(res.url);
-        } else reject(new Error(res.msg || 'Gagal upload'));
-      }).catch(reject);
+        } else {
+          if (st) st.innerHTML = `<span class="upload-status err">❌ ${res.msg || 'Gagal upload'}</span>`;
+          reject(new Error(res.msg || 'Gagal upload'));
+        }
+      } catch (err) {
+        if (st) st.innerHTML = `<span class="upload-status err">❌ ${err.message}</span>`;
+        reject(err);
+      }
     };
     reader.readAsDataURL(pf.file);
   });
@@ -753,11 +834,23 @@ function uploadOneFile(type) {
 function loadData() {
   if (isLoading) return;
   isLoading = true;
-  document.getElementById('listBox').innerHTML = `<div class="loading-block"><div class="spinner dark"></div><p style="margin-top:10px;">Memuat soal...</p></div>`;
-  fetch(APPS_SCRIPT_URL + '?t=' + Date.now())
-    .then(r => r.json())
-    .then(d => { data = Array.isArray(d) ? d : []; renderList(); })
-    .catch(() => { data = []; renderList(); showToast('⚠️ Gagal memuat', 'error'); })
+  const listBox = document.getElementById('listBox');
+  if (listBox) listBox.innerHTML = `<div class="loading-block"><div class="spinner dark"></div><p style="margin-top:10px;">Memuat soal...</p></div>`;
+
+  safeGet('', 60000)
+    .then(d => {
+      let list = [];
+      if (Array.isArray(d)) list = d;
+      else if (d && Array.isArray(d.data)) list = d.data;
+      data = list;
+      renderList();
+    })
+    .catch((err) => {
+      console.error(err);
+      data = [];
+      renderList();
+      showToast('⚠️ Gagal memuat soal', 'error');
+    })
     .finally(() => { isLoading = false; });
 }
 
@@ -780,9 +873,11 @@ function getTemaLabel(kategori) {
 
 function renderList() {
   const box = document.getElementById('listBox');
-  const filter = document.getElementById('filterKategori').value;
+  if (!box) return;
+  const filterSel = document.getElementById('filterKategori');
+  const filter = filterSel ? filterSel.value : '';
   const filtered = filter ? data.filter(q => q.kategori === filter) : data;
-  document.getElementById('totalSoal').textContent = filtered.length;
+  setText('totalSoal', filtered.length);
   if (filtered.length === 0) {
     box.innerHTML = `<div class="empty-block"><i class="fas fa-inbox"></i><p>${data.length === 0 ? 'Belum ada soal.' : 'Ngga ada soal di kategori ini.'}</p></div>`;
     return;
@@ -820,18 +915,27 @@ function renderList() {
 }
 
 async function saveSoal() {
-  const soal = document.getElementById('soal').value.trim();
-  const section = document.getElementById('section').value;
+  const soalEl = document.getElementById('soal');
+  const sectionEl = document.getElementById('section');
+  const opsiAEl = document.getElementById('opsiA');
+  const opsiBEl = document.getElementById('opsiB');
+  const opsiCEl = document.getElementById('opsiC');
+  const opsiDEl = document.getElementById('opsiD');
+  const pembahasanEl = document.getElementById('pembahasan');
+
+  const soal = soalEl ? soalEl.value.trim() : '';
+  const section = sectionEl ? sectionEl.value : 'pilihan_teks';
   const kategori = getFinalKategori();
-  const opsiA = document.getElementById('opsiA').value.trim();
-  const opsiB = document.getElementById('opsiB').value.trim();
-  const opsiC = document.getElementById('opsiC').value.trim();
-  const opsiD = document.getElementById('opsiD').value.trim();
-  const pembahasan = document.getElementById('pembahasan').value.trim();
+  const opsiA = opsiAEl ? opsiAEl.value.trim() : '';
+  const opsiB = opsiBEl ? opsiBEl.value.trim() : '';
+  const opsiC = opsiCEl ? opsiCEl.value.trim() : '';
+  const opsiD = opsiDEl ? opsiDEl.value.trim() : '';
+  const pembahasan = pembahasanEl ? pembahasanEl.value.trim() : '';
 
   let jawaban = '';
   if (section === 'isian') {
-    jawaban = document.getElementById('jawabanIsian').value.trim();
+    const isianEl = document.getElementById('jawabanIsian');
+    jawaban = isianEl ? isianEl.value.trim() : '';
     if (!jawaban) { showToast('⚠️ Jawaban isian wajib diisi', 'error'); return; }
   } else {
     if (!currentJawaban) { showToast('⚠️ Pilih jawaban benar', 'error'); return; }
@@ -839,47 +943,110 @@ async function saveSoal() {
     if (!opsiA || !opsiB || !opsiC || !opsiD) { showToast('⚠️ Semua opsi wajib diisi', 'error'); return; }
   }
 
-  const editId = document.getElementById('editId').value;
+  const editIdEl = document.getElementById('editId');
+  const editId = editIdEl ? editIdEl.value : '';
   const hasGambar = uploadedUrls.gambar || pendingFiles.gambar;
   const hasAudio = uploadedUrls.audio || pendingFiles.audio;
   if (!soal && !hasGambar && !hasAudio) { showToast('⚠️ Minimal isi soal/gambar/audio', 'error'); return; }
 
   const btn = document.getElementById('saveBtn');
-  const original = btn.innerHTML;
+  if (!btn) { showToast('❌ Error: tombol simpan tidak ditemukan', 'error'); return; }
+  const originalHTML = btn.innerHTML;
   btn.disabled = true; btn.innerHTML = '<span class="spinner"></span> Proses...';
 
   try {
     let gambarUrl = uploadedUrls.gambar || '';
     let audioUrl = uploadedUrls.audio || '';
-    if (pendingFiles.gambar) gambarUrl = await uploadOneFile('gambar');
-    if (pendingFiles.audio)  audioUrl  = await uploadOneFile('audio');
+    if (pendingFiles.gambar) {
+      btn.innerHTML = '<span class="spinner"></span> Upload gambar...';
+      gambarUrl = await uploadOneFile('gambar');
+    }
+    if (pendingFiles.audio) {
+      btn.innerHTML = '<span class="spinner"></span> Upload audio...';
+      audioUrl  = await uploadOneFile('audio');
+    }
+
+    btn.innerHTML = '<span class="spinner"></span> Simpan ke server...';
 
     const payload = { username: _user.username, section, kategori, soal, jawaban, gambar: gambarUrl, audio: audioUrl, opsiA, opsiB, opsiC, opsiD, pembahasan };
     if (editId) { payload.id = data[parseInt(editId)].id; payload.action = 'update'; }
     else payload.action = 'add';
 
-    const resp = await fetch(APPS_SCRIPT_URL, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(payload) });
-    const text = await resp.text();
-    let res; try { res = JSON.parse(text); } catch (e) { res = { success: false }; }
+    let res = null;
+    let lastError = null;
+
+    for (let attempt = 1; attempt <= 2; attempt++) {
+      try {
+        btn.innerHTML = '<span class="spinner"></span> Menyimpan' + (attempt > 1 ? ' (retry ' + attempt + ')...' : '...');
+        res = await safePost(payload, 90000);
+        if (res && !res.__empty && !res.__invalid) break;
+      } catch (err) {
+        lastError = err;
+        console.warn('Attempt ' + attempt + ' gagal:', err.message);
+        if (attempt < 2) await new Promise(r => setTimeout(r, 2000));
+      }
+    }
+
+    // Kalau gagal / timeout → VERIFIKASI
+    if (!res || lastError || res.__empty || res.__invalid) {
+      btn.innerHTML = '<span class="spinner"></span> Verifikasi...';
+      await new Promise(r => setTimeout(r, 3000));
+
+      try {
+        const checkRes = await safeGet('', 30000);
+        const list = Array.isArray(checkRes) ? checkRes : (checkRes.data || []);
+        const found = list.some(q =>
+          (q.soal || '').trim() === soal &&
+          (q.kategori || '').toLowerCase() === kategori
+        );
+        if (found) {
+          showToast('✅ Soal tersimpan! (response lambat, tapi data masuk)', 'success');
+          resetForm();
+          data = list;
+          renderList();
+          return;
+        }
+      } catch(e) {}
+
+      const errMsg = lastError ? lastError.message : (res ? res.msg : 'Timeout / response lambat');
+      if (lastError && lastError.name === 'AbortError') {
+        showToast('⏱️ Server terlalu lambat. Coba refresh & cek daftar soal.', 'error');
+        setTimeout(loadData, 1500);
+      } else {
+        showToast('❌ ' + errMsg, 'error');
+      }
+      return;
+    }
 
     if (res.success) {
       showToast('✅ Soal ' + (editId ? 'diupdate' : 'ditambahkan'), 'success');
       resetForm();
       setTimeout(loadData, 800);
-    } else showToast('❌ ' + (res.msg || 'Gagal'), 'error');
+    } else {
+      showToast('❌ ' + (res.msg || 'Gagal'), 'error');
+    }
   } catch (err) {
-    showToast('❌ ' + err.message, 'error');
+    console.error(err);
+    if (err.name === 'AbortError') {
+      showToast('⏱️ Server lambat. Cek sheet — data mungkin sudah masuk.', 'error');
+      setTimeout(loadData, 1500);
+    } else {
+      showToast('❌ ' + err.message, 'error');
+    }
   } finally {
-    btn.disabled = false; btn.innerHTML = original;
+    if (btn) {
+      btn.disabled = false;
+      try { btn.innerHTML = originalHTML; } catch(e) { console.warn(e); }
+    }
   }
 }
 
 function editSoal(i) {
   const q = data[i];
-  document.getElementById('editId').value = i;
-  document.getElementById('section').value = q.section || 'pilihan_teks';
+  if (!q) return;
+  const editIdEl = document.getElementById('editId'); if (editIdEl) editIdEl.value = i;
+  const sectionEl = document.getElementById('section'); if (sectionEl) sectionEl.value = q.section || 'pilihan_teks';
 
-  // Parse kategori untuk dropdown utama + tema
   const qKat = String(q.kategori || 'umum').toLowerCase();
   let utamaKat = qKat;
   let temaKat = 'umum';
@@ -890,97 +1057,116 @@ function editSoal(i) {
     utamaKat = 'kosakata';
     temaKat = 'umum';
   }
-  document.getElementById('kategoriUtama').value = utamaKat;
-  document.getElementById('temaKategori').value = temaKat;
+  const katEl = document.getElementById('kategoriUtama'); if (katEl) katEl.value = utamaKat;
+  const temaEl = document.getElementById('temaKategori'); if (temaEl) temaEl.value = temaKat;
   onKategoriChange();
 
-  document.getElementById('soal').value = q.soal || '';
-  document.getElementById('opsiA').value = q.opsiA || '';
-  document.getElementById('opsiB').value = q.opsiB || '';
-  document.getElementById('opsiC').value = q.opsiC || '';
-  document.getElementById('opsiD').value = q.opsiD || '';
-  document.getElementById('pembahasan').value = q.pembahasan || '';
+  const soalEl = document.getElementById('soal'); if (soalEl) soalEl.value = q.soal || '';
+  const opsiAEl = document.getElementById('opsiA'); if (opsiAEl) opsiAEl.value = q.opsiA || '';
+  const opsiBEl = document.getElementById('opsiB'); if (opsiBEl) opsiBEl.value = q.opsiB || '';
+  const opsiCEl = document.getElementById('opsiC'); if (opsiCEl) opsiCEl.value = q.opsiC || '';
+  const opsiDEl = document.getElementById('opsiD'); if (opsiDEl) opsiDEl.value = q.opsiD || '';
+  const pembEl = document.getElementById('pembahasan'); if (pembEl) pembEl.value = q.pembahasan || '';
   pendingFiles.gambar = null; pendingFiles.audio = null;
   uploadedUrls.gambar = q.gambar || ''; uploadedUrls.audio = q.audio || '';
-  document.getElementById('gambarPreview').innerHTML = q.gambar ? `<img src="${q.gambar}"><button class="rm" onclick="removeFile('gambar')">×</button>` : '';
-  document.getElementById('audioPreview').innerHTML = q.audio ? `<audio controls src="${q.audio}"></audio><button class="rm" onclick="removeFile('audio')">×</button>` : '';
-  document.getElementById('gambarStatus').innerHTML = q.gambar ? '<span class="upload-status ok">✅ Ada</span>' : '';
-  document.getElementById('audioStatus').innerHTML = q.audio ? '<span class="upload-status ok">✅ Ada</span>' : '';
+  const gp = document.getElementById('gambarPreview');
+  if (gp) gp.innerHTML = q.gambar ? `<img src="${q.gambar}"><button class="rm" onclick="removeFile('gambar')">×</button>` : '';
+  const ap = document.getElementById('audioPreview');
+  if (ap) ap.innerHTML = q.audio ? `<audio controls src="${q.audio}"></audio><button class="rm" onclick="removeFile('audio')">×</button>` : '';
+  const gs = document.getElementById('gambarStatus');
+  if (gs) gs.innerHTML = q.gambar ? '<span class="upload-status ok">✅ Ada</span>' : '';
+  const as = document.getElementById('audioStatus');
+  if (as) as.innerHTML = q.audio ? '<span class="upload-status ok">✅ Ada</span>' : '';
   onSectionChange();
   if (q.section === 'isian') {
-    document.getElementById('jawabanIsian').value = q.jawaban || '';
+    const isianEl = document.getElementById('jawabanIsian');
+    if (isianEl) isianEl.value = q.jawaban || '';
     currentJawaban = q.jawaban || '';
   } else pilihJawaban(String(q.jawaban || ''));
-  document.getElementById('formTitle').textContent = 'Edit Soal #' + (i + 1);
-  document.getElementById('saveBtnText').textContent = 'Update Soal';
+  setText('formTitle', 'Edit Soal #' + (i + 1));
+  setText('saveBtnText', 'Update Soal');
   window.scrollTo({top: 0, behavior: 'smooth'});
 }
 
 function hapusSoal(i) {
   if (!confirm('Hapus soal ini?')) return;
-  fetch(APPS_SCRIPT_URL, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify({ action: 'delete', username: _user.username, id: data[i].id }) })
-    .then(r => r.text()).then(() => { showToast('🗑️ Dihapus', 'success'); setTimeout(loadData, 800); });
+  safePost({ action: 'delete', username: _user.username, id: data[i].id }, 60000)
+    .then(res => {
+      if (res.success) { showToast('🗑️ Dihapus', 'success'); setTimeout(loadData, 800); }
+      else showToast('❌ ' + (res.msg || 'Gagal'), 'error');
+    })
+    .catch(err => showToast('❌ ' + err.message, 'error'));
 }
 
 function clearAll() {
   if (!confirm('⚠️ Hapus SEMUA soal?')) return;
-  fetch(APPS_SCRIPT_URL, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify({ action: 'clearAll', username: _user.username }) })
-    .then(r => r.text()).then(() => { showToast('🗑️ Semua dihapus', 'success'); setTimeout(loadData, 800); });
+  safePost({ action: 'clearAll', username: _user.username }, 60000)
+    .then(res => {
+      if (res.success) { showToast('🗑️ Semua dihapus', 'success'); setTimeout(loadData, 800); }
+      else showToast('❌ ' + (res.msg || 'Gagal'), 'error');
+    })
+    .catch(err => showToast('❌ ' + err.message, 'error'));
 }
 
 function resetForm() {
-  document.getElementById('editId').value = '';
-  document.getElementById('section').value = 'pilihan_teks';
-  document.getElementById('kategoriUtama').value = 'eps';
-  document.getElementById('temaKategori').value = 'transportasi';
+  const setVal = (id, v) => { const el = document.getElementById(id); if (el) el.value = v; };
+  const setHTML = (id, v) => { const el = document.getElementById(id); if (el) el.innerHTML = v; };
+
+  setVal('editId', '');
+  setVal('section', 'pilihan_teks');
+  setVal('kategoriUtama', 'eps');
+  setVal('temaKategori', 'transportasi');
   onKategoriChange();
-  document.getElementById('soal').value = '';
-  document.getElementById('opsiA').value = '';
-  document.getElementById('opsiB').value = '';
-  document.getElementById('opsiC').value = '';
-  document.getElementById('opsiD').value = '';
-  document.getElementById('pembahasan').value = '';
-  document.getElementById('gambarUrl').value = '';
-  document.getElementById('audioUrl').value  = '';
-  document.getElementById('gambarPreview').innerHTML = '';
-  document.getElementById('audioPreview').innerHTML = '';
-  document.getElementById('gambarFile').value = '';
-  document.getElementById('audioFile').value = '';
-  document.getElementById('jawabanIsian').value = '';
-  document.getElementById('gambarStatus').innerHTML = '';
-  document.getElementById('audioStatus').innerHTML = '';
+  setVal('soal', '');
+  setVal('opsiA', '');
+  setVal('opsiB', '');
+  setVal('opsiC', '');
+  setVal('opsiD', '');
+  setVal('pembahasan', '');
+  setVal('gambarUrl', '');
+  setVal('audioUrl', '');
+  setHTML('gambarPreview', '');
+  setHTML('audioPreview', '');
+  setVal('gambarFile', '');
+  setVal('audioFile', '');
+  setVal('jawabanIsian', '');
+  setHTML('gambarStatus', '');
+  setHTML('audioStatus', '');
   currentJawaban = '';
   pendingFiles = { gambar: null, audio: null };
   uploadedUrls = { gambar: '', audio: '' };
   document.querySelectorAll('#jawabanRadios label').forEach(l => l.classList.remove('checked'));
-  document.getElementById('formTitle').textContent = 'Tambah Soal Baru';
-  document.getElementById('saveBtnText').textContent = 'Simpan Soal';
+  setText('formTitle', 'Tambah Soal Baru');
+  setText('saveBtnText', 'Simpan Soal');
   onSectionChange();
 }
 
 // ===== USERS =====
 function loadUsers() {
-  document.getElementById('usersList').innerHTML = `<div class="loading-block"><div class="spinner dark"></div><p style="margin-top:10px;">Memuat user...</p></div>`;
-  fetch(APPS_SCRIPT_URL + '?action=getUsers&adminUsername=' + encodeURIComponent(_user.username) + '&t=' + Date.now())
-    .then(r => r.json())
+  const box = document.getElementById('usersList');
+  if (box) box.innerHTML = `<div class="loading-block"><div class="spinner dark"></div><p style="margin-top:10px;">Memuat user...</p></div>`;
+  safeGet('action=getUsers&adminUsername=' + encodeURIComponent(_user.username), 60000)
     .then(res => {
       if (res.success) { usersData = res.users || []; renderUsers(); }
-      else document.getElementById('usersList').innerHTML = `<div class="empty-block"><p>${res.msg}</p></div>`;
+      else if (box) box.innerHTML = `<div class="empty-block"><p>${res.msg}</p></div>`;
     })
     .catch(() => {
-      document.getElementById('usersList').innerHTML = `<div class="empty-block"><i class="fas fa-exclamation-triangle"></i><p>Gagal memuat user</p></div>`;
+      if (box) box.innerHTML = `<div class="empty-block"><i class="fas fa-exclamation-triangle"></i><p>Gagal memuat user</p></div>`;
     });
 }
 
 function renderUsers() {
-  const search = (document.getElementById('searchUser').value || '').toLowerCase();
+  const box = document.getElementById('usersList');
+  if (!box) return;
+  const searchEl = document.getElementById('searchUser');
+  const search = (searchEl ? searchEl.value : '').toLowerCase();
   const filtered = usersData.filter(u =>
     u.username.toLowerCase().includes(search) ||
     (u.nama || '').toLowerCase().includes(search)
   );
-  document.getElementById('totalUsers').textContent = usersData.length;
+  setText('totalUsers', usersData.length);
   if (filtered.length === 0) {
-    document.getElementById('usersList').innerHTML = `<div class="empty-block"><i class="fas fa-users"></i><p>Ngga ada user</p></div>`;
+    box.innerHTML = `<div class="empty-block"><i class="fas fa-users"></i><p>Ngga ada user</p></div>`;
     return;
   }
   let html = '';
@@ -1014,45 +1200,47 @@ function renderUsers() {
         </div>
       </div>`;
   });
-  document.getElementById('usersList').innerHTML = html;
+  box.innerHTML = html;
 }
 
 function openViewPw(username) {
   currentTargetUser = username;
-  document.getElementById('modalPwDesc').textContent = 'User: ' + username;
-  document.getElementById('modalPwVal').textContent = '...';
-  document.getElementById('modalPwDisplay').style.display = 'block';
-  document.getElementById('modalPwEmpty').style.display = 'none';
-  document.getElementById('btnCopyPw').style.display = 'inline-flex';
+  setText('modalPwDesc', 'User: ' + username);
+  setText('modalPwVal', '...');
+  const disp = document.getElementById('modalPwDisplay'); if (disp) disp.style.display = 'block';
+  const emp = document.getElementById('modalPwEmpty'); if (emp) emp.style.display = 'none';
+  const cp = document.getElementById('btnCopyPw'); if (cp) cp.style.display = 'inline-flex';
   openModal('modalPw');
-  fetch(APPS_SCRIPT_URL, {
-    method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-    body: JSON.stringify({ action: 'adminViewPassword', username: _user.username, targetUsername: username })
-  })
-  .then(r => r.text()).then(text => {
-    let res; try { res = JSON.parse(text); } catch(e) { res = {}; }
-    if (res.success && res.password) {
-      document.getElementById('modalPwVal').textContent = res.password;
-    } else {
-      document.getElementById('modalPwDisplay').style.display = 'none';
-      document.getElementById('modalPwEmpty').style.display = 'block';
-      document.getElementById('btnCopyPw').style.display = 'none';
-    }
-  });
+  safePost({ action: 'adminViewPassword', username: _user.username, targetUsername: username })
+    .then(res => {
+      if (res.success && res.password) {
+        setText('modalPwVal', res.password);
+      } else {
+        if (disp) disp.style.display = 'none';
+        if (emp) emp.style.display = 'block';
+        if (cp) cp.style.display = 'none';
+      }
+    })
+    .catch(() => {
+      if (disp) disp.style.display = 'none';
+      if (emp) emp.style.display = 'block';
+      if (cp) cp.style.display = 'none';
+    });
 }
 
 function copyPw() {
-  const pw = document.getElementById('modalPwVal').textContent;
-  navigator.clipboard.writeText(pw).then(() => showToast('📋 Password dicopy', 'success'));
+  const el = document.getElementById('modalPwVal');
+  if (!el) return;
+  navigator.clipboard.writeText(el.textContent).then(() => showToast('📋 Password dicopy', 'success'));
 }
 
 function openResetPw(username) {
   currentTargetUser = username;
-  document.getElementById('modalResetDesc').textContent = 'Reset untuk: ' + username;
-  document.getElementById('newPasswordInput').value = '';
-  document.getElementById('resetResultBox').style.display = 'none';
-  document.getElementById('btnDoReset').style.display = 'inline-flex';
-  document.getElementById('btnDoReset').disabled = false;
+  setText('modalResetDesc', 'Reset untuk: ' + username);
+  const inp = document.getElementById('newPasswordInput'); if (inp) inp.value = '';
+  const rb = document.getElementById('resetResultBox'); if (rb) rb.style.display = 'none';
+  const btn = document.getElementById('btnDoReset');
+  if (btn) { btn.style.display = 'inline-flex'; btn.disabled = false; }
   openModal('modalReset');
 }
 
@@ -1060,24 +1248,28 @@ function generateRandomPw() {
   const chars = 'abcdefghjkmnpqrstuvwxyz23456789';
   let pw = '';
   for (let i = 0; i < 8; i++) pw += chars.charAt(Math.floor(Math.random() * chars.length));
-  document.getElementById('newPasswordInput').value = pw;
+  const inp = document.getElementById('newPasswordInput');
+  if (inp) inp.value = pw;
 }
 
 async function doResetPassword() {
-  const newPw = document.getElementById('newPasswordInput').value.trim();
+  const inp = document.getElementById('newPasswordInput');
+  const newPw = inp ? inp.value.trim() : '';
   if (!newPw || newPw.length < 4) { alert('Password minimal 4 karakter'); return; }
   const btn = document.getElementById('btnDoReset');
+  if (!btn) return;
   btn.disabled = true; btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Proses...';
   try {
-    const r = await fetch(APPS_SCRIPT_URL, {
-      method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-      body: JSON.stringify({ action: 'adminResetPassword', username: _user.username, targetUsername: currentTargetUser, newPassword: newPw })
+    const res = await safePost({
+      action: 'adminResetPassword',
+      username: _user.username,
+      targetUsername: currentTargetUser,
+      newPassword: newPw
     });
-    const res = await r.json();
     if (res.success) {
-      document.getElementById('resetResultVal').textContent = newPw;
-      document.getElementById('resetResultBox').style.display = 'block';
-      document.getElementById('btnDoReset').style.display = 'none';
+      setText('resetResultVal', newPw);
+      const rb = document.getElementById('resetResultBox'); if (rb) rb.style.display = 'block';
+      btn.style.display = 'none';
       showToast('✅ Password direset', 'success');
       setTimeout(loadUsers, 800);
     } else alert('❌ ' + (res.msg || 'Gagal reset'));
@@ -1087,22 +1279,26 @@ async function doResetPassword() {
 
 function openSetQuota(username, currentMax) {
   currentTargetUser = username;
-  document.getElementById('modalQuotaDesc').textContent = 'User: ' + username;
-  document.getElementById('quotaInput').value = currentMax;
-  document.getElementById('resetUsedChk').checked = false;
+  setText('modalQuotaDesc', 'User: ' + username);
+  const qi = document.getElementById('quotaInput'); if (qi) qi.value = currentMax;
+  const rc = document.getElementById('resetUsedChk'); if (rc) rc.checked = false;
   openModal('modalQuota');
 }
 
 async function doSetQuota() {
-  const quotaMax = parseInt(document.getElementById('quotaInput').value, 10);
-  const resetUsed = document.getElementById('resetUsedChk').checked;
+  const qi = document.getElementById('quotaInput');
+  const quotaMax = parseInt(qi ? qi.value : '0', 10);
+  const rc = document.getElementById('resetUsedChk');
+  const resetUsed = rc ? rc.checked : false;
   if (isNaN(quotaMax) || quotaMax < 0) { alert('Kuota tidak valid'); return; }
   try {
-    const r = await fetch(APPS_SCRIPT_URL, {
-      method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-      body: JSON.stringify({ action: 'adminSetQuota', username: _user.username, targetUsername: currentTargetUser, quotaMax, resetUsed })
+    const res = await safePost({
+      action: 'adminSetQuota',
+      username: _user.username,
+      targetUsername: currentTargetUser,
+      quotaMax,
+      resetUsed
     });
-    const res = await r.json();
     if (res.success) {
       closeModal('modalQuota');
       showToast('✅ Kuota diset: ' + quotaMax, 'success');
@@ -1114,11 +1310,11 @@ async function doSetQuota() {
 async function deleteUser(username) {
   if (!confirm('Hapus user ' + username + '? Tidak bisa dibatalkan!')) return;
   try {
-    const r = await fetch(APPS_SCRIPT_URL, {
-      method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-      body: JSON.stringify({ action: 'adminDeleteUser', username: _user.username, targetUsername: username })
+    const res = await safePost({
+      action: 'adminDeleteUser',
+      username: _user.username,
+      targetUsername: username
     });
-    const res = await r.json();
     if (res.success) { showToast('🗑️ User dihapus', 'success'); setTimeout(loadUsers, 500); }
     else alert('❌ ' + (res.msg || 'Gagal'));
   } catch(err) { alert('❌ ' + err.message); }
@@ -1126,27 +1322,32 @@ async function deleteUser(username) {
 
 // ===== REQUESTS =====
 function loadRequests() {
-  const status = document.getElementById('filterReqStatus').value;
-  document.getElementById('requestsList').innerHTML = `<div class="loading-block"><div class="spinner dark"></div><p style="margin-top:10px;">Memuat request...</p></div>`;
-  fetch(APPS_SCRIPT_URL + '?action=getRequests&status=' + encodeURIComponent(status) + '&adminUsername=' + encodeURIComponent(_user.username) + '&t=' + Date.now())
-    .then(r => r.json())
+  const box = document.getElementById('requestsList');
+  const sel = document.getElementById('filterReqStatus');
+  const status = sel ? sel.value : 'pending';
+  if (box) box.innerHTML = `<div class="loading-block"><div class="spinner dark"></div><p style="margin-top:10px;">Memuat request...</p></div>`;
+  safeGet('action=getRequests&status=' + encodeURIComponent(status) + '&adminUsername=' + encodeURIComponent(_user.username), 60000)
     .then(res => {
       if (res.success) renderRequests(res.requests || []);
-      else document.getElementById('requestsList').innerHTML = `<div class="empty-block"><p>${res.msg}</p></div>`;
+      else if (box) box.innerHTML = `<div class="empty-block"><p>${res.msg}</p></div>`;
     })
     .catch(() => {
-      document.getElementById('requestsList').innerHTML = `<div class="empty-block"><i class="fas fa-exclamation-triangle"></i><p>Gagal memuat request</p></div>`;
+      if (box) box.innerHTML = `<div class="empty-block"><i class="fas fa-exclamation-triangle"></i><p>Gagal memuat request</p></div>`;
     });
 }
 
 function renderRequests(reqs) {
+  const box = document.getElementById('requestsList');
+  if (!box) return;
   const pendingCount = reqs.filter(r => r.status === 'pending').length;
   const badge = document.getElementById('reqBadge');
-  if (pendingCount > 0) { badge.textContent = pendingCount; badge.style.display = 'inline-block'; }
-  else badge.style.display = 'none';
+  if (badge) {
+    if (pendingCount > 0) { badge.textContent = pendingCount; badge.style.display = 'inline-block'; }
+    else badge.style.display = 'none';
+  }
 
   if (reqs.length === 0) {
-    document.getElementById('requestsList').innerHTML = `<div class="empty-block"><i class="fas fa-inbox"></i><p>Ngga ada request</p></div>`;
+    box.innerHTML = `<div class="empty-block"><i class="fas fa-inbox"></i><p>Ngga ada request</p></div>`;
     return;
   }
   let html = '';
@@ -1179,26 +1380,29 @@ function renderRequests(reqs) {
         </div>
       </div>`;
   });
-  document.getElementById('requestsList').innerHTML = html;
+  box.innerHTML = html;
 }
 
 function openApprove(reqId, username, nama) {
   currentTargetReq = { id: reqId, username, nama };
-  document.getElementById('modalApproveDesc').innerHTML = `User: <b>${nama || username}</b><br>Request ID: #${reqId}`;
-  document.getElementById('approveAmount').value = 5;
+  const desc = document.getElementById('modalApproveDesc');
+  if (desc) desc.innerHTML = `User: <b>${nama || username}</b><br>Request ID: #${reqId}`;
+  const amt = document.getElementById('approveAmount'); if (amt) amt.value = 5;
   openModal('modalApprove');
 }
 
 async function doApprove() {
   if (!currentTargetReq) return;
-  const amount = parseInt(document.getElementById('approveAmount').value, 10);
+  const amtEl = document.getElementById('approveAmount');
+  const amount = parseInt(amtEl ? amtEl.value : '0', 10);
   if (isNaN(amount) || amount < 1) { alert('Jumlah tidak valid'); return; }
   try {
-    const r = await fetch(APPS_SCRIPT_URL, {
-      method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-      body: JSON.stringify({ action: 'adminApproveRequest', username: _user.username, requestId: currentTargetReq.id, quotaAmount: amount })
+    const res = await safePost({
+      action: 'adminApproveRequest',
+      username: _user.username,
+      requestId: currentTargetReq.id,
+      quotaAmount: amount
     });
-    const res = await r.json();
     if (res.success) {
       closeModal('modalApprove');
       showToast('✅ Approved +' + amount + ' untuk ' + currentTargetReq.username, 'success');
@@ -1210,11 +1414,11 @@ async function doApprove() {
 async function rejectReq(reqId) {
   if (!confirm('Reject request ini?')) return;
   try {
-    const r = await fetch(APPS_SCRIPT_URL, {
-      method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-      body: JSON.stringify({ action: 'adminRejectRequest', username: _user.username, requestId: reqId })
+    const res = await safePost({
+      action: 'adminRejectRequest',
+      username: _user.username,
+      requestId: reqId
     });
-    const res = await r.json();
     if (res.success) { showToast('❌ Request di-reject', 'success'); setTimeout(loadRequests, 500); }
     else alert('❌ ' + (res.msg || 'Gagal'));
   } catch(err) { alert('❌ ' + err.message); }
@@ -1222,29 +1426,34 @@ async function rejectReq(reqId) {
 
 // ===== TICKETS =====
 function loadTickets() {
-  document.getElementById('ticketsList').innerHTML = `<div class="loading-block"><div class="spinner dark"></div><p style="margin-top:10px;">Memuat tiket...</p></div>`;
-  fetch(APPS_SCRIPT_URL + '?action=getTickets&username=' + encodeURIComponent(_user.username) + '&isAdmin=true&t=' + Date.now())
-    .then(r => r.json())
+  const box = document.getElementById('ticketsList');
+  if (box) box.innerHTML = `<div class="loading-block"><div class="spinner dark"></div><p style="margin-top:10px;">Memuat tiket...</p></div>`;
+  safeGet('action=getTickets&username=' + encodeURIComponent(_user.username) + '&isAdmin=true', 60000)
     .then(res => {
       if (res.success) { ticketsData = res.tickets || []; renderTickets(); }
-      else document.getElementById('ticketsList').innerHTML = `<div class="empty-block"><p>${res.msg}</p></div>`;
+      else if (box) box.innerHTML = `<div class="empty-block"><p>${res.msg}</p></div>`;
     })
     .catch(() => {
-      document.getElementById('ticketsList').innerHTML = `<div class="empty-block"><i class="fas fa-exclamation-triangle"></i><p>Gagal memuat tiket</p></div>`;
+      if (box) box.innerHTML = `<div class="empty-block"><i class="fas fa-exclamation-triangle"></i><p>Gagal memuat tiket</p></div>`;
     });
 }
 
 function renderTickets() {
-  const filter = document.getElementById('filterTicketStatus').value;
+  const box = document.getElementById('ticketsList');
+  if (!box) return;
+  const sel = document.getElementById('filterTicketStatus');
+  const filter = sel ? sel.value : 'all';
   const filtered = filter === 'all' ? ticketsData : ticketsData.filter(t => t.status === filter);
 
   const openCount = ticketsData.filter(t => t.status === 'open').length;
   const badge = document.getElementById('ticketBadge');
-  if (openCount > 0) { badge.textContent = openCount; badge.style.display = 'inline-block'; }
-  else badge.style.display = 'none';
+  if (badge) {
+    if (openCount > 0) { badge.textContent = openCount; badge.style.display = 'inline-block'; }
+    else badge.style.display = 'none';
+  }
 
   if (filtered.length === 0) {
-    document.getElementById('ticketsList').innerHTML = `<div class="empty-block"><i class="fas fa-inbox"></i><p>Ngga ada tiket</p></div>`;
+    box.innerHTML = `<div class="empty-block"><i class="fas fa-inbox"></i><p>Ngga ada tiket</p></div>`;
     return;
   }
 
@@ -1269,18 +1478,13 @@ function renderTickets() {
             </div>
           </div>
         </div>
-
-        <div class="ticket-msg">
-          <strong>📩 Pesan user:</strong><br>${t.pesan}
-        </div>
-
+        <div class="ticket-msg"><strong>📩 Pesan user:</strong><br>${t.pesan}</div>
         ${t.balasanAdmin ? `
           <div class="ticket-reply">
             <strong>✅ Balasan admin:</strong><br>${t.balasanAdmin}
             <div class="meta">Dibalas: ${t.tanggalBalasan} oleh @${t.adminUsername}</div>
           </div>
         ` : ''}
-
         <div class="ticket-actions">
           ${t.status === 'open' ? `
             <button class="btn btn-success btn-sm" onclick="openReply(${t.id}, '${t.subjek.replace(/'/g, "\\'")}')"><i class="fas fa-reply"></i> Balas Sekarang</button>
@@ -1295,31 +1499,35 @@ function renderTickets() {
         </div>
       </div>`;
   });
-  document.getElementById('ticketsList').innerHTML = html;
+  box.innerHTML = html;
 }
 
 function openReply(ticketId, subjek) {
   currentTargetTicket = { id: ticketId, subjek };
-  document.getElementById('modalReplyDesc').innerHTML = `Tiket: <b>${subjek}</b><br>ID: #${ticketId}`;
-  document.getElementById('replyInput').value = '';
+  const desc = document.getElementById('modalReplyDesc');
+  if (desc) desc.innerHTML = `Tiket: <b>${subjek}</b><br>ID: #${ticketId}`;
+  const inp = document.getElementById('replyInput'); if (inp) inp.value = '';
   openModal('modalReply');
 }
 
 async function doReply() {
   if (!currentTargetTicket) return;
-  const balasan = document.getElementById('replyInput').value.trim();
+  const inp = document.getElementById('replyInput');
+  const balasan = inp ? inp.value.trim() : '';
   if (!balasan) { alert('Balasan wajib diisi'); return; }
 
   const btn = document.getElementById('btnDoReply');
+  if (!btn) return;
   const original = btn.innerHTML;
   btn.disabled = true;
   btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Mengirim...';
   try {
-    const r = await fetch(APPS_SCRIPT_URL, {
-      method: 'POST', headers: {'Content-Type':'text/plain;charset=utf-8'},
-      body: JSON.stringify({ action: 'replyTicket', username: _user.username, ticketId: currentTargetTicket.id, balasan })
+    const res = await safePost({
+      action: 'replyTicket',
+      username: _user.username,
+      ticketId: currentTargetTicket.id,
+      balasan
     });
-    const res = await r.json();
     if (res.success) {
       closeModal('modalReply');
       showToast('✅ Balasan terkirim. User akan dapat notif.', 'success');
@@ -1332,11 +1540,11 @@ async function doReply() {
 async function doCloseTicket(ticketId) {
   if (!confirm('Tandai tiket ini sebagai selesai?')) return;
   try {
-    const r = await fetch(APPS_SCRIPT_URL, {
-      method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-      body: JSON.stringify({ action: 'closeTicket', username: _user.username, ticketId })
+    const res = await safePost({
+      action: 'closeTicket',
+      username: _user.username,
+      ticketId
     });
-    const res = await r.json();
     if (res.success) { showToast('✅ Tiket ditutup', 'success'); setTimeout(loadTickets, 500); }
     else alert('❌ ' + (res.msg || 'Gagal'));
   } catch(err) { alert('❌ ' + err.message); }
@@ -1344,50 +1552,54 @@ async function doCloseTicket(ticketId) {
 
 // ===== SETTINGS =====
 function loadConfig() {
-  fetch(APPS_SCRIPT_URL + '?action=getConfig&adminUsername=' + encodeURIComponent(_user.username) + '&t=' + Date.now())
-    .then(r => r.json())
+  safeGet('action=getConfig&adminUsername=' + encodeURIComponent(_user.username), 30000)
     .then(res => {
       if (res.success && res.config) {
         configData = res.config;
-        document.getElementById('cfgNotifEmail').value = configData.notif_email || '';
-        document.getElementById('cfgNotifRequest').checked = String(configData.notif_on_request || '').toUpperCase() === 'TRUE';
-        document.getElementById('cfgNotifTicket').checked = String(configData.notif_on_ticket || '').toUpperCase() === 'TRUE';
-        document.getElementById('cfgNotifRegister').checked = String(configData.notif_on_register || '').toUpperCase() === 'TRUE';
-        document.getElementById('cfgNotifRateLimit').checked = String(configData.notif_on_ratelimit || '').toUpperCase() === 'TRUE';
+        const setVal = (id, v) => { const el = document.getElementById(id); if (el) el.value = v; };
+        const setChk = (id, v) => { const el = document.getElementById(id); if (el) el.checked = v; };
+        setVal('cfgNotifEmail', configData.notif_email || '');
+        setChk('cfgNotifRequest', String(configData.notif_on_request || '').toUpperCase() === 'TRUE');
+        setChk('cfgNotifTicket', String(configData.notif_on_ticket || '').toUpperCase() === 'TRUE');
+        setChk('cfgNotifRegister', String(configData.notif_on_register || '').toUpperCase() === 'TRUE');
+        setChk('cfgNotifRateLimit', String(configData.notif_on_ratelimit || '').toUpperCase() === 'TRUE');
       }
     })
     .catch(() => showToast('⚠️ Gagal memuat config', 'error'));
 }
 
 async function saveConfig() {
+  const getVal = (id) => { const el = document.getElementById(id); return el ? el.value : ''; };
+  const getChk = (id) => { const el = document.getElementById(id); return el ? el.checked : false; };
   const config = {
-    notif_email: document.getElementById('cfgNotifEmail').value.trim(),
-    notif_on_request: document.getElementById('cfgNotifRequest').checked ? 'TRUE' : 'FALSE',
-    notif_on_ticket: document.getElementById('cfgNotifTicket').checked ? 'TRUE' : 'FALSE',
-    notif_on_register: document.getElementById('cfgNotifRegister').checked ? 'TRUE' : 'FALSE',
-    notif_on_ratelimit: document.getElementById('cfgNotifRateLimit').checked ? 'TRUE' : 'FALSE'
+    notif_email: getVal('cfgNotifEmail').trim(),
+    notif_on_request: getChk('cfgNotifRequest') ? 'TRUE' : 'FALSE',
+    notif_on_ticket: getChk('cfgNotifTicket') ? 'TRUE' : 'FALSE',
+    notif_on_register: getChk('cfgNotifRegister') ? 'TRUE' : 'FALSE',
+    notif_on_ratelimit: getChk('cfgNotifRateLimit') ? 'TRUE' : 'FALSE'
   };
   try {
-    const r = await fetch(APPS_SCRIPT_URL, {
-      method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-      body: JSON.stringify({ action: 'adminSaveConfig', username: _user.username, config })
+    const res = await safePost({
+      action: 'adminSaveConfig',
+      username: _user.username,
+      config
     });
-    const res = await r.json();
     if (res.success) showToast('✅ Pengaturan disimpan', 'success');
     else alert('❌ ' + (res.msg || 'Gagal simpan'));
   } catch(err) { alert('❌ ' + err.message); }
 }
 
 async function testEmail() {
-  const targetEmail = document.getElementById('cfgNotifEmail').value.trim().split(',')[0].trim();
+  const emailEl = document.getElementById('cfgNotifEmail');
+  const targetEmail = emailEl ? emailEl.value.trim().split(',')[0].trim() : '';
   if (!targetEmail) { alert('Isi email admin dulu'); return; }
   try {
     showToast('📤 Mengirim test email...', 'success');
-    const r = await fetch(APPS_SCRIPT_URL, {
-      method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-      body: JSON.stringify({ action: 'adminTestEmail', username: _user.username, targetEmail })
+    const res = await safePost({
+      action: 'adminTestEmail',
+      username: _user.username,
+      targetEmail
     });
-    const res = await r.json();
     if (res.success) showToast('✅ ' + res.msg, 'success');
     else alert('❌ ' + (res.msg || 'Gagal kirim'));
   } catch(err) { alert('❌ ' + err.message); }
@@ -1395,11 +1607,11 @@ async function testEmail() {
 
 // ===== NOTIF BADGE =====
 function updateNotifBadge() {
-  fetch(APPS_SCRIPT_URL + '?action=getUnreadCount&username=' + encodeURIComponent(_user.username) + '&t=' + Date.now())
-    .then(r => r.json())
+  safeGet('action=getUnreadCount&username=' + encodeURIComponent(_user.username), 30000)
     .then(res => {
       if (res.success) {
         const badge = document.getElementById('notifBadge');
+        if (!badge) return;
         if (res.count > 0) {
           badge.textContent = res.count > 99 ? '99+' : res.count;
           badge.style.display = 'flex';
@@ -1425,26 +1637,28 @@ onKategoriChange();
 loadData();
 updateNotifBadge();
 
-fetch(APPS_SCRIPT_URL + '?action=getRequests&status=pending&adminUsername=' + encodeURIComponent(_user.username) + '&t=' + Date.now())
-  .then(r => r.json())
+safeGet('action=getRequests&status=pending&adminUsername=' + encodeURIComponent(_user.username), 30000)
   .then(res => {
     if (res.success && res.requests && res.requests.length > 0) {
       const badge = document.getElementById('reqBadge');
-      badge.textContent = res.requests.length;
-      badge.style.display = 'inline-block';
+      if (badge) {
+        badge.textContent = res.requests.length;
+        badge.style.display = 'inline-block';
+      }
     }
   })
   .catch(() => {});
 
-fetch(APPS_SCRIPT_URL + '?action=getTickets&username=' + encodeURIComponent(_user.username) + '&isAdmin=true&t=' + Date.now())
-  .then(r => r.json())
+safeGet('action=getTickets&username=' + encodeURIComponent(_user.username) + '&isAdmin=true', 30000)
   .then(res => {
     if (res.success && res.tickets) {
       const openCount = res.tickets.filter(t => t.status === 'open').length;
       if (openCount > 0) {
         const badge = document.getElementById('ticketBadge');
-        badge.textContent = openCount;
-        badge.style.display = 'inline-block';
+        if (badge) {
+          badge.textContent = openCount;
+          badge.style.display = 'inline-block';
+        }
       }
     }
   })
