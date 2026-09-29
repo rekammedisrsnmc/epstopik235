@@ -34,9 +34,21 @@ body{background:linear-gradient(135deg,var(--bg-grad-1),var(--bg-grad-2));min-he
 .tab button.active{background:var(--tab-active-bg);color:var(--tab-active-text);box-shadow:0 2px 8px rgba(0,0,0,.08);}
 .field{margin-bottom:14px;}
 .field label{font-size:13px;font-weight:600;color:var(--card-text);display:block;margin-bottom:6px;}
-.field input{width:100%;padding:12px 14px;border:1.5px solid var(--input-border);border-radius:8px;font-size:14px;font-family:inherit;transition:.2s;background:var(--input-bg);color:var(--input-text);}
-.field input:focus{outline:none;border-color:var(--bg-grad-1);box-shadow:0 0 0 3px rgba(30,95,168,.15);}
-.field .hint{font-size:11px;color:var(--muted);margin-top:4px;}
+.field label .req{color:#d9534f;margin-left:2px;}
+.input-wrap{position:relative;}
+.input-wrap input{width:100%;padding:12px 44px 12px 14px;border:1.5px solid var(--input-border);border-radius:8px;font-size:14px;font-family:inherit;transition:.2s;background:var(--input-bg);color:var(--input-text);}
+.input-wrap input:focus{outline:none;border-color:var(--bg-grad-1);box-shadow:0 0 0 3px rgba(30,95,168,.15);}
+.input-wrap input:invalid:not(:placeholder-shown){border-color:#d9534f;}
+.input-wrap input.valid:not(:placeholder-shown){border-color:#2fa36b;}
+.input-wrap .eye-btn{
+  position:absolute;right:8px;top:50%;transform:translateY(-50%);
+  background:transparent;border:none;cursor:pointer;color:var(--muted);
+  font-size:16px;padding:8px;transition:.2s;border-radius:6px;
+  display:flex;align-items:center;justify-content:center;
+  user-select:none;-webkit-tap-highlight-color:transparent;
+}
+.input-wrap .eye-btn:hover{color:var(--bg-grad-1);background:var(--tab-bg);}
+.input-wrap .eye-btn:active{transform:translateY(-50%) scale(0.92);}
 .btn{width:100%;padding:13px;border:none;border-radius:8px;background:var(--bg-grad-1);color:#fff;font-weight:700;font-size:15px;cursor:pointer;margin-top:8px;font-family:inherit;transition:.2s;display:flex;align-items:center;justify-content:center;gap:8px;}
 .btn:hover:not(:disabled){filter:brightness(1.15);}
 .btn:disabled{opacity:.6;cursor:not-allowed;}
@@ -47,6 +59,9 @@ body{background:linear-gradient(135deg,var(--bg-grad-1),var(--bg-grad-2));min-he
 .spinner{display:inline-block;width:16px;height:16px;border:3px solid rgba(255,255,255,.4);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;}
 @keyframes spin{100%{transform:rotate(360deg)}}
 .footer-txt{text-align:center;font-size:12px;color:var(--muted);margin-top:20px;}
+.field-hint{font-size:11px;color:var(--muted);margin-top:4px;display:flex;align-items:center;gap:4px;}
+.field-hint.ok{color:#2fa36b;}
+.field-hint.err{color:#d9534f;}
 </style>
 </head>
 <body>
@@ -58,20 +73,28 @@ body{background:linear-gradient(135deg,var(--bg-grad-1),var(--bg-grad-2));min-he
   <p class="sub">Masuk untuk mulai latihan bahasa Korea</p>
 
   <div class="tab">
-    <button id="tabLogin" class="active" onclick="switchTab('login')">Masuk</button>
-    <button id="tabReg" onclick="switchTab('reg')">Daftar</button>
+    <button id="tabLogin" class="active" type="button" onclick="switchTab('login')">Masuk</button>
+    <button id="tabReg" type="button" onclick="switchTab('reg')">Daftar</button>
   </div>
 
   <div class="msg" id="msg"></div>
 
-  <form id="formLogin" onsubmit="doLogin(event)">
+  <!-- FORM LOGIN -->
+  <form id="formLogin" onsubmit="doLogin(event)" autocomplete="on">
     <div class="field">
-      <label>Username</label>
-      <input type="text" id="loginUser" required autocomplete="username" placeholder="username kamu">
+      <label>Username <span class="req">*</span></label>
+      <div class="input-wrap">
+        <input type="text" id="loginUser" required autocomplete="username" placeholder="username kamu">
+      </div>
     </div>
     <div class="field">
-      <label>Password</label>
-      <input type="password" id="loginPass" required autocomplete="current-password" placeholder="••••••••">
+      <label>Password <span class="req">*</span></label>
+      <div class="input-wrap">
+        <input type="password" id="loginPass" required autocomplete="current-password" placeholder="••••••••">
+        <button type="button" class="eye-btn" data-target="loginPass" onclick="togglePassword(event, this)" title="Lihat password">
+          <i class="fas fa-eye"></i>
+        </button>
+      </div>
     </div>
     <button class="btn" id="btnLogin" type="submit"><i class="fas fa-sign-in-alt"></i> Masuk</button>
     <p style="text-align:center;font-size:12px;color:var(--muted);margin-top:14px;">
@@ -79,19 +102,45 @@ body{background:linear-gradient(135deg,var(--bg-grad-1),var(--bg-grad-2));min-he
     </p>
   </form>
 
-  <form id="formReg" onsubmit="doRegister(event)" style="display:none;">
+  <!-- FORM REGISTER -->
+  <form id="formReg" onsubmit="doRegister(event)" style="display:none;" autocomplete="on">
     <div class="field">
-      <label>Nama Lengkap</label>
-      <input type="text" id="regNama" required placeholder="Nama kamu">
+      <label>Nama Lengkap <span class="req">*</span></label>
+      <div class="input-wrap">
+        <input type="text" id="regNama" required placeholder="Nama kamu" autocomplete="name" minlength="2">
+      </div>
     </div>
+
     <div class="field">
-      <label>Username</label>
-      <input type="text" id="regUser" required minlength="3" placeholder="minimal 3 karakter">
+      <label>Email <span class="req">*</span></label>
+      <div class="input-wrap">
+        <input type="email" id="regEmail" required placeholder="email@example.com" autocomplete="email" oninput="validateEmail(this)">
+      </div>
+      <div class="field-hint" id="emailHint">
+      </div>
     </div>
+
     <div class="field">
-      <label>Password</label>
-      <input type="password" id="regPass" required minlength="4" placeholder="minimal 4 karakter">
+      <label>Username <span class="req">*</span></label>
+      <div class="input-wrap">
+        <input type="text" id="regUser" required minlength="3" placeholder="minimal 3 karakter" autocomplete="username" pattern="[a-zA-Z0-9_.]+" title="Hanya huruf, angka, titik, underscore">
+      </div>
+      <div class="field-hint">
+      </div>
     </div>
+
+    <div class="field">
+      <label>Password <span class="req">*</span></label>
+      <div class="input-wrap">
+        <input type="password" id="regPass" required minlength="4" placeholder="minimal 4 karakter" autocomplete="new-password" oninput="validatePassword(this)">
+        <button type="button" class="eye-btn" data-target="regPass" onclick="togglePassword(event, this)" title="Lihat password">
+          <i class="fas fa-eye"></i>
+        </button>
+      </div>
+      <div class="field-hint" id="passHint">
+      </div>
+    </div>
+
     <button class="btn" id="btnReg" type="submit"><i class="fas fa-user-plus"></i> Daftar</button>
   </form>
 
@@ -99,7 +148,7 @@ body{background:linear-gradient(135deg,var(--bg-grad-1),var(--bg-grad-2));min-he
 </div>
 
 <script>
-// ===== DARK MODE =====
+// ===== THEME =====
 function applyTheme(t){
   document.documentElement.setAttribute('data-theme', t);
   const icon = document.getElementById('themeIcon');
@@ -113,8 +162,69 @@ function toggleTheme(){
 }
 applyTheme(localStorage.getItem('theme') || 'light');
 
-// ⚠️ GANTI dengan URL Apps Script lu
-const API = 'https://script.google.com/macros/s/AKfycbx58rhLwaHCDxRlrAy6mDeSKLFat0hHcwW565Sj66taWCJZL4CE-vCnwsuK44Iw7FHR/exec';
+// ⚡ FIX: togglePassword — pakai event.stopPropagation() biar nggak double-fire
+function togglePassword(event, btn) {
+  if (event) {
+    event.preventDefault();
+    event.stopPropagation();
+  }
+  const inputId = btn.dataset.target;
+  const input = document.getElementById(inputId);
+  if (!input) return;
+
+  const isPassword = input.type === 'password';
+  input.type = isPassword ? 'text' : 'password';
+
+  const icon = btn.querySelector('i');
+  if (icon) {
+    icon.className = isPassword ? 'fas fa-eye-slash' : 'fas fa-eye';
+  }
+  btn.title = isPassword ? 'Sembunyikan password' : 'Lihat password';
+
+  // ⚡ Fokus balik ke input biar user bisa lanjut ngetik
+  input.focus();
+  // ⚡ Taruh cursor di akhir
+  const val = input.value;
+  input.setSelectionRange(val.length, val.length);
+}
+
+// ===== VALIDASI =====
+function validateEmail(el) {
+  const hint = document.getElementById('emailHint');
+  const v = el.value.trim();
+  if (!v) {
+    el.classList.remove('valid');
+    hint.className = 'field-hint';
+    hint.innerHTML = '<i class="fas fa-info-circle"></i> Email wajib diisi & aktif';
+    return;
+  }
+  const ok = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
+  if (ok) {
+    el.classList.add('valid');
+    hint.className = 'field-hint ok';
+    hint.innerHTML = '<i class="fas fa-check-circle"></i> Format email valid';
+  } else {
+    el.classList.remove('valid');
+    hint.className = 'field-hint err';
+    hint.innerHTML = '<i class="fas fa-times-circle"></i> Format email tidak valid';
+  }
+}
+
+function validatePassword(el) {
+  const hint = document.getElementById('passHint');
+  const v = el.value;
+  if (v.length >= 4) {
+    el.classList.add('valid');
+    hint.className = 'field-hint ok';
+    hint.innerHTML = '<i class="fas fa-check-circle"></i> Password OK';
+  } else {
+    el.classList.remove('valid');
+    hint.className = 'field-hint';
+    hint.innerHTML = '<i class="fas fa-info-circle"></i> Minimal 4 karakter (' + v.length + '/4)';
+  }
+}
+
+const API = 'https://script.google.com/macros/s/AKfycbxgov9M_0EcaqEh15k2piFH9XZGiFC_05mgl_PeZ166pqxCzYlWl7AaW9xLnWFilFwE/exec';
 
 if (localStorage.getItem('user')) location.href = 'dashboard.html';
 
@@ -125,21 +235,35 @@ function switchTab(t) {
   document.getElementById('formLogin').style.display = isLogin ? 'block' : 'none';
   document.getElementById('formReg').style.display = isLogin ? 'none' : 'block';
   showMsg('', '');
+
+  // ⚡ Fokus otomatis ke field pertama
+  setTimeout(() => {
+    if (isLogin) document.getElementById('loginUser').focus();
+    else document.getElementById('regNama').focus();
+  }, 100);
 }
+
 function showMsg(text, type) {
   const el = document.getElementById('msg');
   el.textContent = text;
   el.className = 'msg ' + (type || '');
 }
+
 async function post(payload) {
-  const r = await fetch(API, { method: 'POST', headers: {'Content-Type':'text/plain;charset=utf-8'}, body: JSON.stringify(payload) });
+  const r = await fetch(API, {
+    method: 'POST',
+    headers: {'Content-Type':'text/plain;charset=utf-8'},
+    body: JSON.stringify(payload)
+  });
   const t = await r.text();
   try { return JSON.parse(t); } catch(e) { return { success:false, msg:'Response tidak valid' }; }
 }
+
 function detectMsgType(msg) {
   if (msg && (msg.includes('⚠️') || msg.toLowerCase().includes('terlalu banyak'))) return 'warn';
   return 'err';
 }
+
 async function doLogin(e) {
   e.preventDefault();
   const username = document.getElementById('loginUser').value.trim();
@@ -161,20 +285,52 @@ async function doLogin(e) {
   } catch(err) { showMsg('❌ ' + err.message, 'err'); }
   finally { btn.disabled = false; btn.innerHTML = original; }
 }
+
 async function doRegister(e) {
   e.preventDefault();
   const nama = document.getElementById('regNama').value.trim();
+  const email = document.getElementById('regEmail').value.trim();
   const username = document.getElementById('regUser').value.trim();
   const password = document.getElementById('regPass').value;
   const btn = document.getElementById('btnReg');
   const original = btn.innerHTML;
+
+  // ⚡ VALIDASI FRONTEND
+  if (!nama || nama.length < 2) {
+    showMsg('❌ Nama minimal 2 karakter', 'err'); return;
+  }
+  if (!email) {
+    showMsg('❌ Email wajib diisi', 'err'); return;
+  }
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    showMsg('❌ Format email tidak valid', 'err'); return;
+  }
+  if (!username || username.length < 3) {
+    showMsg('❌ Username minimal 3 karakter', 'err'); return;
+  }
+  if (!/^[a-zA-Z0-9_.]+$/.test(username)) {
+    showMsg('❌ Username hanya boleh huruf, angka, titik, underscore', 'err'); return;
+  }
+  if (!password || password.length < 4) {
+    showMsg('❌ Password minimal 4 karakter', 'err'); return;
+  }
+
   btn.disabled = true; btn.innerHTML = '<span class="spinner"></span> Memproses...';
   showMsg('', '');
   try {
-    const res = await post({ action:'register', username, password, nama });
+    const res = await post({ action:'register', username, password, nama, email });
     if (res.success) {
       showMsg('✅ Pendaftaran berhasil! Silakan login.', 'ok');
       document.getElementById('formReg').reset();
+
+      // Reset validasi visual
+      document.getElementById('regEmail').classList.remove('valid');
+      document.getElementById('regPass').classList.remove('valid');
+      document.getElementById('emailHint').className = 'field-hint';
+      document.getElementById('emailHint').innerHTML = '<i class="fas fa-info-circle"></i> Email wajib diisi & aktif';
+      document.getElementById('passHint').className = 'field-hint';
+      document.getElementById('passHint').innerHTML = '<i class="fas fa-info-circle"></i> Minimal 4 karakter';
+
       switchTab('login');
       document.getElementById('loginUser').value = username;
       document.getElementById('loginPass').focus();
@@ -184,6 +340,14 @@ async function doRegister(e) {
   } catch(err) { showMsg('❌ ' + err.message, 'err'); }
   finally { btn.disabled = false; btn.innerHTML = original; }
 }
+
+// ⚡ Enter key di tab login/register — biar nggak "submit dobel"
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Enter') {
+    const activeForm = document.querySelector('form[style*="block"], form:not([style*="none"])');
+    // Biarin form submit normal
+  }
+});
 </script>
 </body>
-</html>>
+</html>
