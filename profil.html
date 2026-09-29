@@ -43,7 +43,25 @@ body{background:var(--bg);min-height:100vh;color:var(--text);transition:backgrou
 .field label{font-size:13px;font-weight:600;color:var(--text);display:block;margin-bottom:6px;}
 .field input{width:100%;padding:11px 14px;border:1.5px solid var(--border);border-radius:8px;font-size:14px;font-family:inherit;transition:.2s;background:var(--input-bg);color:var(--input-text);}
 .field input:focus{outline:none;border-color:var(--link-color);box-shadow:0 0 0 3px rgba(30,95,168,.15);}
+.field input:disabled{background:var(--sub-bg);color:var(--text-muted);cursor:not-allowed;opacity:.9;}
 .field .hint{font-size:11px;color:var(--text-muted);margin-top:4px;}
+
+/* ⚡ EMAIL VERIFIED BADGE */
+.email-badge{
+  display:inline-flex;align-items:center;gap:6px;
+  background:#e8f5ee;color:#1f7f53;
+  padding:3px 10px;border-radius:20px;
+  font-size:11px;font-weight:700;
+  margin-left:8px;vertical-align:middle;
+}
+.email-badge i{font-size:10px;}
+[data-theme="dark"] .email-badge{background:#1a3a28;color:#4caf7d;}
+
+.email-wrapper{position:relative;}
+.email-wrapper .verified-icon{
+  position:absolute;right:14px;top:50%;transform:translateY(-50%);
+  color:#2fa36b;font-size:16px;pointer-events:none;
+}
 
 /* Photo upload */
 .avatar-section{display:flex;gap:24px;align-items:center;margin-bottom:20px;flex-wrap:wrap;}
@@ -108,6 +126,24 @@ body{background:var(--bg);min-height:100vh;color:var(--text);transition:backgrou
       <label>Username (tidak bisa diubah)</label>
       <input type="text" id="profUsername" disabled>
     </div>
+
+    <!-- ⚡ EMAIL YANG SUDAH DIDAFTARKAN -->
+    <div class="field">
+      <label>
+        Email Terdaftar
+        <span class="email-badge" id="emailBadge" style="display:none;">
+          <i class="fas fa-check-circle"></i> Terverifikasi
+        </span>
+      </label>
+      <div class="email-wrapper">
+        <input type="email" id="profEmail" disabled placeholder="Belum ada email">
+        <i class="fas fa-check-circle verified-icon" id="emailVerifiedIcon" style="display:none;"></i>
+      </div>
+      <div class="hint">
+        <i class="fas fa-info-circle"></i> Email ini dipakai untuk login & notifikasi. Kalau mau ganti, hubungi admin.
+      </div>
+    </div>
+
     <div class="field">
       <label>Nama Lengkap</label>
       <input type="text" id="profNama" placeholder="Nama kamu">
@@ -153,7 +189,7 @@ function toggleTheme(){
 }
 applyTheme(localStorage.getItem('theme') || 'light');
 
-const API = 'https://script.google.com/macros/s/AKfycbx58rhLwaHCDxRlrAy6mDeSKLFat0hHcwW565Sj66taWCJZL4CE-vCnwsuK44Iw7FHR/exec';
+const API = 'https://script.google.com/macros/s/AKfycbxgov9M_0EcaqEh15k2piFH9XZGiFC_05mgl_PeZ166pqxCzYlWl7AaW9xLnWFilFwE/exec';
 
 const user = JSON.parse(localStorage.getItem('user') || 'null');
 if (!user) location.href = 'login.html';
@@ -174,9 +210,47 @@ function renderAvatar() {
   }
 }
 
+// ⚡ INIT EMAIL
+function renderEmail(email) {
+  const emailInput = document.getElementById('profEmail');
+  const badge = document.getElementById('emailBadge');
+  const icon = document.getElementById('emailVerifiedIcon');
+
+  if (email) {
+    emailInput.value = email;
+    badge.style.display = 'inline-flex';
+    icon.style.display = 'block';
+  } else {
+    emailInput.value = '';
+    emailInput.placeholder = 'Belum ada email terdaftar';
+    badge.style.display = 'none';
+    icon.style.display = 'none';
+  }
+}
+
 document.getElementById('profUsername').value = user.username;
 document.getElementById('profNama').value = user.nama || user.username;
 renderAvatar();
+renderEmail(user.email || '');
+
+// ⚡ Kalau email belum ada di localStorage, ambil dari server
+if (!user.email) {
+  fetch(API + '?action=getProfile&username=' + encodeURIComponent(user.username) + '&t=' + Date.now())
+    .then(r => r.json())
+    .then(res => {
+      if (res.success && res.user) {
+        user.email = res.user.email || '';
+        user.nama = res.user.nama || user.nama;
+        user.foto = res.user.foto || user.foto;
+        localStorage.setItem('user', JSON.stringify(user));
+        renderEmail(user.email);
+        document.getElementById('profNama').value = user.nama || user.username;
+        currentFoto = user.foto || '';
+        renderAvatar();
+      }
+    })
+    .catch(() => {});
+}
 
 function showMsg(text, type) {
   const el = document.getElementById('msg');
@@ -219,7 +293,6 @@ async function uploadFoto() {
   btn.innerHTML = '<span class="spinner"></span> Upload...';
 
   try {
-    // 1. Upload ke Drive
     const base64 = await fileToBase64(pendingFile);
     const upRes = await post({
       action: 'upload',
@@ -232,7 +305,6 @@ async function uploadFoto() {
       throw new Error(upRes.msg || 'Upload gagal');
     }
 
-    // 2. Update profile
     const profRes = await post({
       action: 'updateProfile',
       username: user.username,
@@ -242,7 +314,6 @@ async function uploadFoto() {
 
     if (!profRes.success) throw new Error(profRes.msg || 'Update profil gagal');
 
-    // 3. Update localStorage
     user.foto = upRes.url;
     localStorage.setItem('user', JSON.stringify(user));
     currentFoto = upRes.url;
