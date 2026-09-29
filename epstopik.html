@@ -41,6 +41,8 @@ body{background:var(--bg);min-height:100vh;color:var(--text);transition:backgrou
 .options li.selected{background:var(--blue-light);border-color:var(--blue);font-weight:600;}
 .options li .circle{font-size:15px;color:var(--text);flex-shrink:0;}
 .options li.selected .circle{color:var(--blue);}
+.options li img{max-height: 80px;border-radius: 6px;object-fit: contain;}
+.options li:has(img){padding: 10px;align-items: center;}
 .fill-input{width:100%;padding:10px 14px;border:2px solid var(--border);border-radius:6px;font-size:15px;margin-top:10px;font-family:inherit;background:var(--card-bg);color:var(--text);}
 .fill-input:focus{outline:none;border-color:var(--blue);}
 .nav-bar{max-width:800px;margin:0 auto 30px;padding:0 60px;display:flex;gap:12px;justify-content:space-between;flex-wrap:wrap;}
@@ -147,7 +149,7 @@ function toggleTheme(){
 }
 applyTheme(localStorage.getItem('theme') || 'light');
 
-const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx58rhLwaHCDxRlrAy6mDeSKLFat0hHcwW565Sj66taWCJZL4CE-vCnwsuK44Iw7FHR/exec';
+const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxgov9M_0EcaqEh15k2piFH9XZGiFC_05mgl_PeZ166pqxCzYlWl7AaW9xLnWFilFwE/exec';
 
 const _user = JSON.parse(localStorage.getItem('user') || 'null');
 if (!_user) location.href = 'login.html';
@@ -291,14 +293,28 @@ function renderQuestion() {
     const val = (answers[currentIndex] || '').replace(/"/g, '&quot;');
     optionsHtml = `<input type="text" class="fill-input" id="fillInput" placeholder="답을 입력하세요..." value="${val}" oninput="saveAnswer(this.value)">`;
   } else {
-    const opts = [
-      { n:'1', t:q.opsiA }, { n:'2', t:q.opsiB }, { n:'3', t:q.opsiC }, { n:'4', t:q.opsiD }
-    ].filter(o => o.t);
+  const opts = [
+      { n:'1', t:q.opsiA, img:q.opsiAImg },
+      { n:'2', t:q.opsiB, img:q.opsiBImg },
+      { n:'3', t:q.opsiC, img:q.opsiCImg },
+      { n:'4', t:q.opsiD, img:q.opsiDImg }
+    ].filter(o => o.t || o.img);  // ⚡ Tampilkan kalau ada text ATAU gambar
+
     const cls = (q.section === 'pilihan_gambar') ? '' : 'vertical';
     optionsHtml = `<ul class="options ${cls}">`;
     opts.forEach(o => {
       const sel = String(answers[currentIndex]) === o.n ? 'selected' : '';
-      optionsHtml += `<li class="${sel}" onclick="selectAnswer('${o.n}')"><span class="circle">${CIRCLES[o.n]}</span><span>${o.t}</span></li>`;
+      
+      // ⚡ Kalau ada gambar, tampilkan gambar
+      const contentHtml = o.img
+        ? `<img src="${o.img}" style="max-width:100%;max-height:80px;border-radius:6px;object-fit:contain;" onerror="this.style.display='none';this.nextSibling.style.display='inline'"><span style="display:none;">${o.t || ''}</span>`
+        : `<span>${o.t || ''}</span>`;
+      
+      optionsHtml += `
+        <li class="${sel}" onclick="selectAnswer('${o.n}')">
+          <span class="circle">${CIRCLES[o.n]}</span>
+          ${contentHtml}
+        </li>`;
     });
     optionsHtml += '</ul>';
   }
