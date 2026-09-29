@@ -141,6 +141,7 @@ body{background:var(--bg);min-height:100vh;color:var(--text);transition:backgrou
 .user-card .info .meta .badge-role.user{background:var(--blue-light);color:var(--blue);}
 .user-card .info .meta .badge-quota{padding:2px 8px;border-radius:10px;font-weight:700;font-size:10px;background:#fff5e0;color:#8a6a1a;}
 .user-card .info .meta .badge-quota.empty{background:#fde8e8;color:#a33;}
+.user-card .info .meta .badge-email{background:#e8f5ee;color:#1f7f53;font-weight:700;padding:2px 8px;border-radius:10px;font-size:10px;display:inline-flex;align-items:center;gap:4px;word-break:break-all;}
 .user-card .actions-right{display:flex;gap:6px;flex-wrap:wrap;}
 .modal-back{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:100;align-items:center;justify-content:center;padding:20px;}
 .modal-back.show{display:flex;}
@@ -150,20 +151,17 @@ body{background:var(--bg);min-height:100vh;color:var(--text);transition:backgrou
 .modal-box .pw-display{background:var(--sub-bg);border:2px dashed var(--green);border-radius:10px;padding:16px;text-align:center;margin:16px 0;}
 .modal-box .pw-display .pw-val{font-family:'Courier New',monospace;font-size:22px;font-weight:800;color:var(--green);letter-spacing:2px;word-break:break-all;user-select:all;}
 .modal-box .pw-warning{background:#fff5e0;color:#8a6a1a;padding:10px 14px;border-radius:8px;font-size:12px;line-height:1.5;margin-bottom:16px;border-left:3px solid #f0ad4e;}
-
 .switch{position:relative;display:inline-block;width:50px;height:26px;}
 .switch input{opacity:0;width:0;height:0;}
 .slider{position:absolute;cursor:pointer;top:0;left:0;right:0;bottom:0;background:#ccc;transition:.3s;border-radius:26px;}
 .slider:before{position:absolute;content:"";height:20px;width:20px;left:3px;bottom:3px;background:#fff;transition:.3s;border-radius:50%;}
 input:checked + .slider{background:var(--green);}
 input:checked + .slider:before{transform:translateX(24px);}
-
 .config-row{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:16px 0;border-bottom:1px solid var(--sub-bg);flex-wrap:wrap;}
 .config-row:last-child{border-bottom:none;}
 .config-row .info{flex:1;min-width:200px;}
 .config-row .info .title{font-size:14px;font-weight:700;color:var(--text);margin-bottom:2px;}
 .config-row .info .desc{font-size:12px;color:var(--text-muted);}
-
 .ticket-box{border:1.5px solid var(--border);border-radius:12px;padding:18px;margin-bottom:14px;background:var(--card-bg);transition:.2s;}
 .ticket-box:hover{border-color:var(--blue);}
 .ticket-box.status-open{border-left:5px solid var(--red);}
@@ -177,12 +175,51 @@ input:checked + .slider:before{transform:translateX(24px);}
 [data-theme="dark"] .ticket-reply{background:linear-gradient(135deg,#1a3a28,#1e4530);}
 .ticket-reply .meta{font-size:11px;color:var(--text-muted);margin-top:6px;}
 .ticket-actions{display:flex;gap:8px;flex-wrap:wrap;}
-
+.notif-wrapper{position:relative;}
+.notif-dropdown{
+  display:none;position:absolute;top:calc(100% + 12px);right:0;
+  width:360px;max-width:calc(100vw - 40px);
+  background:var(--card-bg);border-radius:14px;
+  box-shadow:0 8px 24px rgba(0,0,0,.15);border:1.5px solid var(--border);
+  z-index:100;overflow:hidden;animation:dropDown .2s ease;
+}
+.notif-wrapper.open .notif-dropdown{display:block;}
+@keyframes dropDown{from{opacity:0;transform:translateY(-8px);}to{opacity:1;transform:translateY(0);}}
+.notif-head{padding:14px 18px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;}
+.notif-head h3{font-size:14px;font-weight:800;color:var(--title-color);}
+.notif-head .btn-mark{background:transparent;border:none;color:var(--blue);font-size:11px;font-weight:700;cursor:pointer;font-family:inherit;padding:4px 8px;border-radius:6px;}
+.notif-head .btn-mark:hover{background:var(--sub-bg);}
+.notif-body{max-height:400px;overflow-y:auto;}
+.notif-item-drop{display:flex;gap:12px;padding:12px 18px;border-bottom:1px solid var(--border);cursor:pointer;position:relative;}
+.notif-item-drop:hover{background:var(--sub-bg);}
+.notif-item-drop.unread{background:linear-gradient(90deg,rgba(30,95,168,.06),transparent);}
+.notif-item-drop.unread::before{content:'';position:absolute;left:6px;top:50%;transform:translateY(-50%);width:6px;height:6px;border-radius:50%;background:var(--blue);}
+.notif-item-drop .ic{width:36px;height:36px;border-radius:10px;flex-shrink:0;display:flex;align-items:center;justify-content:center;color:#fff;font-size:15px;}
+.notif-item-drop.tipe-bantuan .ic{background:linear-gradient(135deg,#f0ad4e,#ec971f);}
+.notif-item-drop.tipe-balasan .ic{background:linear-gradient(135deg,#2fa36b,#1f7f53);}
+.notif-item-drop.tipe-kuota .ic{background:linear-gradient(135deg,#7c4dff,#5e35b1);}
+.notif-item-drop.tipe-sistem .ic{background:linear-gradient(135deg,#1e5fa8,#154a82);}
+.notif-item-drop.tipe-request .ic{background:linear-gradient(135deg,#d9534f,#c9302c);}
+.notif-item-drop.tipe-chat .ic{background:linear-gradient(135deg,#26a69a,#00796b);}
+.notif-item-drop .tx{flex:1;min-width:0;}
+.notif-item-drop .tx .ttl{font-size:13px;font-weight:700;color:var(--text);margin-bottom:2px;line-height:1.3;}
+.notif-item-drop .tx .msg{font-size:12px;color:var(--text-muted);line-height:1.4;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+.notif-item-drop .tx .tm{font-size:10px;color:var(--text-muted);margin-top:4px;}
+.notif-empty{padding:40px 20px;text-align:center;color:var(--text-muted);font-size:13px;}
+.notif-empty i{font-size:36px;opacity:.3;display:block;margin-bottom:10px;}
+.notif-foot{padding:12px 18px;border-top:1px solid var(--border);text-align:center;}
+.notif-foot a{color:var(--blue);font-weight:700;font-size:13px;text-decoration:none;display:inline-flex;align-items:center;gap:6px;}
+.notif-foot a:hover{gap:10px;}
+.chat-msg{max-width:75%;padding:10px 14px;border-radius:14px;font-size:13px;line-height:1.5;word-wrap:break-word;}
+.chat-msg.mine{align-self:flex-end;background:linear-gradient(135deg,#26a69a,#00796b);color:#fff;border-bottom-right-radius:4px;}
+.chat-msg.theirs{align-self:flex-start;background:var(--card-bg);color:var(--text);border:1px solid var(--border);border-bottom-left-radius:4px;}
+#chatModalBody{display:flex;flex-direction:column;gap:10px;}
 @media(max-width:700px){
   .row-2,.row-4{grid-template-columns:1fr;}
   .card{padding:20px;}
   .tab-btn{font-size:12px;padding:10px 12px;min-width:auto;}
   .topbar .user{display:none;}
+  .notif-dropdown{position:fixed;top:70px;right:12px;left:12px;width:auto;}
 }
 </style>
 </head>
@@ -192,10 +229,24 @@ input:checked + .slider:before{transform:translateX(24px);}
   <h1><i class="fas fa-user-cog"></i> Admin Panel</h1>
   <div class="spacer"></div>
   <span class="user">👤 <strong id="userName">-</strong> <span class="badge">ADMIN</span></span>
-  <a href="notifikasi.html" class="btn-icon" title="Notifikasi">
-    <i class="fas fa-bell"></i>
-    <span class="notif-badge" id="notifBadge" style="display:none;">0</span>
-  </a>
+  <div class="notif-wrapper" id="notifWrapper">
+    <button class="btn-icon" onclick="toggleNotifDropdown(event)" title="Notifikasi">
+      <i class="fas fa-bell"></i>
+      <span class="notif-badge" id="notifBadge" style="display:none;">0</span>
+    </button>
+    <div class="notif-dropdown">
+      <div class="notif-head">
+        <h3>🔔 Notifikasi</h3>
+        <button class="btn-mark" onclick="markAllNotifRead(event)">Tandai semua dibaca</button>
+      </div>
+      <div class="notif-body" id="notifBody">
+        <div class="notif-empty"><i class="fas fa-bell-slash"></i> Memuat...</div>
+      </div>
+      <div class="notif-foot">
+        <a href="notifikasi.html">Lihat Semua Notifikasi <i class="fas fa-arrow-right"></i></a>
+      </div>
+    </div>
+  </div>
   <button class="btn-icon" onclick="toggleTheme()" title="Toggle dark mode"><i class="fas fa-moon" id="themeIcon"></i></button>
   <a href="dashboard.html" class="btn btn-secondary btn-sm"><i class="fas fa-home"></i> Dashboard</a>
   <a href="#" onclick="logoutAdmin(event)" class="btn btn-danger btn-sm"><i class="fas fa-sign-out-alt"></i> Keluar</a>
@@ -217,6 +268,10 @@ input:checked + .slider:before{transform:translateX(24px);}
     <button class="tab-btn" data-tab="tickets" onclick="switchTab('tickets')">
       <i class="fas fa-headset"></i> Tiket Bantuan
       <span class="badge-pill" id="ticketBadge" style="display:none;">0</span>
+    </button>
+    <button class="tab-btn" data-tab="chat" onclick="switchTab('chat')">
+      <i class="fas fa-comments"></i> Chat
+      <span class="badge-pill" id="chatTabBadge" style="display:none;">0</span>
     </button>
     <button class="tab-btn" data-tab="settings" onclick="switchTab('settings')">
       <i class="fas fa-cog"></i> Pengaturan
@@ -301,10 +356,57 @@ input:checked + .slider:before{transform:translateX(24px);}
 
       <div id="optionsBox">
         <div class="row-4">
-          <div class="form-group"><label>① Opsi 1</label><input type="text" id="opsiA"></div>
-          <div class="form-group"><label>② Opsi 2</label><input type="text" id="opsiB"></div>
-          <div class="form-group"><label>③ Opsi 3</label><input type="text" id="opsiC"></div>
-          <div class="form-group"><label>④ Opsi 4</label><input type="text" id="opsiD"></div>
+          <div class="form-group"><label>① Opsi 1 (teks)</label><input type="text" id="opsiA"></div>
+          <div class="form-group"><label>② Opsi 2 (teks)</label><input type="text" id="opsiB"></div>
+          <div class="form-group"><label>③ Opsi 3 (teks)</label><input type="text" id="opsiC"></div>
+          <div class="form-group"><label>④ Opsi 4 (teks)</label><input type="text" id="opsiD"></div>
+        </div>
+        <div id="opsiImgBox" style="display:none;background:var(--sub-bg);padding:14px;border-radius:8px;margin-top:6px;">
+          <label style="font-size:12px;color:var(--text-muted);display:block;margin-bottom:10px;">
+            <i class="fas fa-image"></i> Gambar Opsi Jawaban (opsional, untuk EPS-TOPIK)
+          </label>
+          <div class="row-4">
+            <div class="form-group">
+              <label>① Gambar Opsi 1</label>
+              <div class="upload-box" onclick="document.getElementById('opsiAImgFile').click()">
+                <i class="fas fa-image"></i>
+                <div class="txt">Klik upload</div>
+                <input type="file" id="opsiAImgFile" accept="image/*" onchange="uploadFile(this,'opsiAImg')">
+              </div>
+              <div class="preview" id="opsiAImgPreview"></div>
+              <input type="hidden" id="opsiAImgUrl" value="">
+            </div>
+            <div class="form-group">
+              <label>② Gambar Opsi 2</label>
+              <div class="upload-box" onclick="document.getElementById('opsiBImgFile').click()">
+                <i class="fas fa-image"></i>
+                <div class="txt">Klik upload</div>
+                <input type="file" id="opsiBImgFile" accept="image/*" onchange="uploadFile(this,'opsiBImg')">
+              </div>
+              <div class="preview" id="opsiBImgPreview"></div>
+              <input type="hidden" id="opsiBImgUrl" value="">
+            </div>
+            <div class="form-group">
+              <label>③ Gambar Opsi 3</label>
+              <div class="upload-box" onclick="document.getElementById('opsiCImgFile').click()">
+                <i class="fas fa-image"></i>
+                <div class="txt">Klik upload</div>
+                <input type="file" id="opsiCImgFile" accept="image/*" onchange="uploadFile(this,'opsiCImg')">
+              </div>
+              <div class="preview" id="opsiCImgPreview"></div>
+              <input type="hidden" id="opsiCImgUrl" value="">
+            </div>
+            <div class="form-group">
+              <label>④ Gambar Opsi 4</label>
+              <div class="upload-box" onclick="document.getElementById('opsiDImgFile').click()">
+                <i class="fas fa-image"></i>
+                <div class="txt">Klik upload</div>
+                <input type="file" id="opsiDImgFile" accept="image/*" onchange="uploadFile(this,'opsiDImg')">
+              </div>
+              <div class="preview" id="opsiDImgPreview"></div>
+              <input type="hidden" id="opsiDImgUrl" value="">
+            </div>
+          </div>
         </div>
       </div>
 
@@ -373,7 +475,7 @@ input:checked + .slider:before{transform:translateX(24px);}
     <div class="card">
       <h2><i class="fas fa-users"></i> Kelola User (<span id="totalUsers">0</span>)</h2>
       <div class="form-group">
-        <input type="text" id="searchUser" placeholder="🔍 Cari username atau nama..." oninput="renderUsers()">
+        <input type="text" id="searchUser" placeholder="🔍 Cari username, nama, atau email..." oninput="renderUsers()">
       </div>
       <div id="usersList">
         <div class="loading-block"><div class="spinner dark"></div><p style="margin-top:10px;">Memuat user...</p></div>
@@ -415,6 +517,22 @@ input:checked + .slider:before{transform:translateX(24px);}
       </div>
       <div id="ticketsList">
         <div class="loading-block"><div class="spinner dark"></div><p style="margin-top:10px;">Memuat tiket...</p></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB CHAT -->
+  <div id="tab-chat" class="tab-content">
+    <div class="card">
+      <h2><i class="fas fa-comments"></i> Chat dari User</h2>
+      <div class="form-group" style="margin-bottom:14px;">
+        <div style="position:relative;">
+          <i class="fas fa-search" style="position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--text-muted);font-size:14px;"></i>
+          <input type="text" id="searchChatInput" placeholder="Cari user atau isi pesan..." oninput="onSearchChat(this.value)" style="padding-left:40px;">
+        </div>
+      </div>
+      <div id="chatRoomList">
+        <div class="loading-block"><div class="spinner dark"></div><p style="margin-top:10px;">Memuat chat...</p></div>
       </div>
     </div>
   </div>
@@ -601,6 +719,26 @@ input:checked + .slider:before{transform:translateX(24px);}
   </div>
 </div>
 
+<!-- MODAL: CHAT -->
+<div class="modal-back" id="modalChat">
+  <div class="modal-box" style="max-width:600px;height:600px;display:flex;flex-direction:column;padding:0;">
+    <div style="padding:16px 20px;background:linear-gradient(135deg,#26a69a,#00796b);color:#fff;border-radius:14px 14px 0 0;display:flex;align-items:center;gap:12px;">
+      <div style="width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;font-weight:700;overflow:hidden;" id="chatModalAvatar">U</div>
+      <div style="flex:1;">
+        <div style="font-size:14px;font-weight:700;" id="chatModalName">User</div>
+        <div style="font-size:11px;opacity:.85;">Balas chat</div>
+      </div>
+      <button onclick="closeModal('modalChat')" style="background:rgba(255,255,255,.15);border:none;color:#fff;width:32px;height:32px;border-radius:50%;cursor:pointer;font-size:14px;"><i class="fas fa-times"></i></button>
+    </div>
+    <div id="chatModalBody" style="flex:1;overflow-y:auto;padding:16px;background:var(--sub-bg);"></div>
+    <div style="padding:12px;border-top:1px solid var(--border);display:flex;gap:8px;align-items:center;background:var(--card-bg);border-radius:0 0 14px 14px;">
+      <button id="chatImgBtn" onclick="pickChatImage()" title="Kirim gambar" style="background:transparent;border:1.5px solid var(--border);color:var(--teal);width:40px;height:40px;border-radius:50%;cursor:pointer;font-size:15px;flex-shrink:0;transition:.2s;"><i class="fas fa-image"></i></button>
+      <input type="text" id="chatModalInput" placeholder="Balas..." style="flex:1;padding:10px 14px;border:1.5px solid var(--border);border-radius:24px;font-size:13px;font-family:inherit;background:var(--sub-bg);color:var(--text);" onkeydown="if(event.key==='Enter') sendAdminChat()">
+      <button onclick="sendAdminChat()" id="chatModalSend" style="background:linear-gradient(135deg,#26a69a,#00796b);color:#fff;border:none;width:44px;height:44px;border-radius:50%;cursor:pointer;font-size:15px;flex-shrink:0;"><i class="fas fa-paper-plane"></i></button>
+    </div>
+  </div>
+</div>
+
 <div class="toast" id="toast"></div>
 
 <script>
@@ -619,9 +757,8 @@ function toggleTheme(){
 applyTheme(localStorage.getItem('theme') || 'light');
 
 // ⚠️ GANTI URL INI
-const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx58rhLwaHCDxRlrAy6mDeSKLFat0hHcwW565Sj66taWCJZL4CE-vCnwsuK44Iw7FHR/exec';
+const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxgov9M_0EcaqEh15k2piFH9XZGiFC_05mgl_PeZ166pqxCzYlWl7AaW9xLnWFilFwE/exec';
 
-// ===== HELPER: FETCH DENGAN TIMEOUT =====
 async function fetchWithTimeout(url, options = {}, timeoutMs = 90000) {
   const controller = new AbortController();
   const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
@@ -635,7 +772,6 @@ async function fetchWithTimeout(url, options = {}, timeoutMs = 90000) {
   }
 }
 
-// ===== HELPER: PARSE RESPONSE AMAN =====
 function parseResponse(text) {
   if (!text || text.trim() === '') {
     return { success: false, msg: 'Response kosong', __empty: true };
@@ -650,7 +786,6 @@ function parseResponse(text) {
   }
 }
 
-// ===== HELPER: POST JSON + PARSE =====
 async function safePost(payload, timeoutMs = 90000) {
   const resp = await fetchWithTimeout(APPS_SCRIPT_URL, {
     method: 'POST',
@@ -661,7 +796,6 @@ async function safePost(payload, timeoutMs = 90000) {
   return parseResponse(text);
 }
 
-// ===== HELPER: GET + PARSE =====
 async function safeGet(queryString, timeoutMs = 60000) {
   const url = APPS_SCRIPT_URL + (queryString ? '?' + queryString + '&t=' + Date.now() : '?t=' + Date.now());
   const resp = await fetchWithTimeout(url, {}, timeoutMs);
@@ -678,8 +812,8 @@ const CIRCLES = { '1':'①', '2':'②', '3':'③', '4':'④' };
 let data = [];
 let isLoading = false;
 let currentJawaban = '';
-let pendingFiles = { gambar: null, audio: null };
-let uploadedUrls = { gambar: '', audio: '' };
+let pendingFiles = { gambar: null, audio: null, opsiAImg: null, opsiBImg: null, opsiCImg: null, opsiDImg: null };
+let uploadedUrls = { gambar: '', audio: '', opsiAImg: '', opsiBImg: '', opsiCImg: '', opsiDImg: '' };
 let usersData = [];
 let ticketsData = [];
 let currentTargetUser = null;
@@ -687,7 +821,6 @@ let currentTargetReq = null;
 let currentTargetTicket = null;
 let configData = {};
 
-// ⚡ SAFE TOAST
 function showToast(msg, type='') {
   const t = document.getElementById('toast');
   if (!t) { console.warn('[TOAST MISSING]', msg); return; }
@@ -697,7 +830,6 @@ function showToast(msg, type='') {
   t._t = setTimeout(() => t.className = 'toast ' + type, 3500);
 }
 
-// ⚡ SAFE SET TEXT
 function setText(id, text) {
   const el = document.getElementById(id);
   if (el) el.textContent = text;
@@ -710,6 +842,7 @@ function switchTab(tab) {
   if (tab === 'users') loadUsers();
   if (tab === 'requests') loadRequests();
   if (tab === 'tickets') loadTickets();
+  if (tab === 'chat') loadChatRooms();
   if (tab === 'settings') loadConfig();
 }
 
@@ -720,14 +853,23 @@ function openModal(id) {
 function closeModal(id) {
   const el = document.getElementById(id);
   if (el) el.classList.remove('show');
+  if (id === 'modalChat' && chatPollTimer) {
+    clearInterval(chatPollTimer);
+    chatPollTimer = null;
+    currentChatRoom = null;
+  }
 }
 
 // ===== KATEGORI + TEMA =====
 function onKategoriChange() {
   const sel = document.getElementById('kategoriUtama');
   const temaGroup = document.getElementById('temaGroup');
-  if (!sel || !temaGroup) return;
-  temaGroup.style.display = (sel.value === 'kosakata') ? 'block' : 'none';
+  const opsiImgBox = document.getElementById('opsiImgBox');
+  if (!sel) return;
+
+  const val = sel.value;
+  if (temaGroup) temaGroup.style.display = (val === 'kosakata') ? 'block' : 'none';
+  if (opsiImgBox) opsiImgBox.style.display = (val === 'eps') ? 'block' : 'none';
 }
 
 function getFinalKategori() {
@@ -775,10 +917,10 @@ function uploadFile(input, type) {
   reader.onload = e => {
     const preview = document.getElementById(type + 'Preview');
     if (!preview) return;
-    if (type === 'gambar') {
-      preview.innerHTML = `<img src="${e.target.result}"><button class="rm" onclick="removeFile('${type}')">×</button>`;
-    } else {
+    if (type === 'audio') {
       preview.innerHTML = `<audio controls src="${e.target.result}"></audio><button class="rm" onclick="removeFile('${type}')">×</button>`;
+    } else {
+      preview.innerHTML = `<img src="${e.target.result}"><button class="rm" onclick="removeFile('${type}')">×</button>`;
     }
   };
   reader.readAsDataURL(file);
@@ -887,6 +1029,8 @@ function renderList() {
     const realIndex = data.indexOf(q);
     const tags = [];
     if (q.gambar) tags.push('<span class="tag img"><i class="fas fa-image"></i> Gambar</span>');
+    const hasOpsiImg = q.opsiAImg || q.opsiBImg || q.opsiCImg || q.opsiDImg;
+    if (hasOpsiImg) tags.push('<span class="tag img"><i class="fas fa-images"></i> Opsi Gambar</span>');
     if (q.audio)  tags.push('<span class="tag audio"><i class="fas fa-volume-up"></i> Audio</span>');
     tags.push(`<span class="tag">${q.section === 'isian' ? 'Isian' : 'Pilihan'}</span>`);
     if (q.kategori) {
@@ -958,17 +1102,31 @@ async function saveSoal() {
     let gambarUrl = uploadedUrls.gambar || '';
     let audioUrl = uploadedUrls.audio || '';
     if (pendingFiles.gambar) {
-      btn.innerHTML = '<span class="spinner"></span> Upload gambar...';
+      btn.innerHTML = '<span class="spinner"></span> Upload gambar soal...';
       gambarUrl = await uploadOneFile('gambar');
     }
     if (pendingFiles.audio) {
       btn.innerHTML = '<span class="spinner"></span> Upload audio...';
       audioUrl  = await uploadOneFile('audio');
     }
+    let opsiAImgUrl = uploadedUrls.opsiAImg || '';
+    let opsiBImgUrl = uploadedUrls.opsiBImg || '';
+    let opsiCImgUrl = uploadedUrls.opsiCImg || '';
+    let opsiDImgUrl = uploadedUrls.opsiDImg || '';
+    if (pendingFiles.opsiAImg) { btn.innerHTML = '<span class="spinner"></span> Upload opsi A...'; opsiAImgUrl = await uploadOneFile('opsiAImg'); }
+    if (pendingFiles.opsiBImg) { btn.innerHTML = '<span class="spinner"></span> Upload opsi B...'; opsiBImgUrl = await uploadOneFile('opsiBImg'); }
+    if (pendingFiles.opsiCImg) { btn.innerHTML = '<span class="spinner"></span> Upload opsi C...'; opsiCImgUrl = await uploadOneFile('opsiCImg'); }
+    if (pendingFiles.opsiDImg) { btn.innerHTML = '<span class="spinner"></span> Upload opsi D...'; opsiDImgUrl = await uploadOneFile('opsiDImg'); }
 
     btn.innerHTML = '<span class="spinner"></span> Simpan ke server...';
 
-    const payload = { username: _user.username, section, kategori, soal, jawaban, gambar: gambarUrl, audio: audioUrl, opsiA, opsiB, opsiC, opsiD, pembahasan };
+    const payload = {
+      username: _user.username, section, kategori, soal, jawaban,
+      gambar: gambarUrl, audio: audioUrl,
+      opsiA, opsiB, opsiC, opsiD, pembahasan,
+      opsiAImg: opsiAImgUrl, opsiBImg: opsiBImgUrl,
+      opsiCImg: opsiCImgUrl, opsiDImg: opsiDImgUrl
+    };
     if (editId) { payload.id = data[parseInt(editId)].id; payload.action = 'update'; }
     else payload.action = 'add';
 
@@ -987,7 +1145,6 @@ async function saveSoal() {
       }
     }
 
-    // Kalau gagal / timeout → VERIFIKASI
     if (!res || lastError || res.__empty || res.__invalid) {
       btn.innerHTML = '<span class="spinner"></span> Verifikasi...';
       await new Promise(r => setTimeout(r, 3000));
@@ -1067,8 +1224,16 @@ function editSoal(i) {
   const opsiCEl = document.getElementById('opsiC'); if (opsiCEl) opsiCEl.value = q.opsiC || '';
   const opsiDEl = document.getElementById('opsiD'); if (opsiDEl) opsiDEl.value = q.opsiD || '';
   const pembEl = document.getElementById('pembahasan'); if (pembEl) pembEl.value = q.pembahasan || '';
+
   pendingFiles.gambar = null; pendingFiles.audio = null;
+  pendingFiles.opsiAImg = null; pendingFiles.opsiBImg = null; pendingFiles.opsiCImg = null; pendingFiles.opsiDImg = null;
+
   uploadedUrls.gambar = q.gambar || ''; uploadedUrls.audio = q.audio || '';
+  uploadedUrls.opsiAImg = q.opsiAImg || '';
+  uploadedUrls.opsiBImg = q.opsiBImg || '';
+  uploadedUrls.opsiCImg = q.opsiCImg || '';
+  uploadedUrls.opsiDImg = q.opsiDImg || '';
+
   const gp = document.getElementById('gambarPreview');
   if (gp) gp.innerHTML = q.gambar ? `<img src="${q.gambar}"><button class="rm" onclick="removeFile('gambar')">×</button>` : '';
   const ap = document.getElementById('audioPreview');
@@ -1077,6 +1242,21 @@ function editSoal(i) {
   if (gs) gs.innerHTML = q.gambar ? '<span class="upload-status ok">✅ Ada</span>' : '';
   const as = document.getElementById('audioStatus');
   if (as) as.innerHTML = q.audio ? '<span class="upload-status ok">✅ Ada</span>' : '';
+
+  ['opsiAImg', 'opsiBImg', 'opsiCImg', 'opsiDImg'].forEach(k => {
+    const p = document.getElementById(k + 'Preview');
+    const u = document.getElementById(k + 'Url');
+    if (p && u) {
+      if (uploadedUrls[k]) {
+        p.innerHTML = `<img src="${uploadedUrls[k]}"><button class="rm" onclick="removeFile('${k}')">×</button>`;
+        u.value = uploadedUrls[k];
+      } else {
+        p.innerHTML = '';
+        u.value = '';
+      }
+    }
+  });
+
   onSectionChange();
   if (q.section === 'isian') {
     const isianEl = document.getElementById('jawabanIsian');
@@ -1117,6 +1297,7 @@ function resetForm() {
   setVal('kategoriUtama', 'eps');
   setVal('temaKategori', 'transportasi');
   onKategoriChange();
+
   setVal('soal', '');
   setVal('opsiA', '');
   setVal('opsiB', '');
@@ -1133,8 +1314,16 @@ function resetForm() {
   setHTML('gambarStatus', '');
   setHTML('audioStatus', '');
   currentJawaban = '';
-  pendingFiles = { gambar: null, audio: null };
-  uploadedUrls = { gambar: '', audio: '' };
+
+  pendingFiles = { gambar: null, audio: null, opsiAImg: null, opsiBImg: null, opsiCImg: null, opsiDImg: null };
+  uploadedUrls = { gambar: '', audio: '', opsiAImg: '', opsiBImg: '', opsiCImg: '', opsiDImg: '' };
+
+  ['opsiAImg', 'opsiBImg', 'opsiCImg', 'opsiDImg'].forEach(k => {
+    const p = document.getElementById(k + 'Preview'); if (p) p.innerHTML = '';
+    const u = document.getElementById(k + 'Url'); if (u) u.value = '';
+    const f = document.getElementById(k + 'File'); if (f) f.value = '';
+  });
+
   document.querySelectorAll('#jawabanRadios label').forEach(l => l.classList.remove('checked'));
   setText('formTitle', 'Tambah Soal Baru');
   setText('saveBtnText', 'Simpan Soal');
@@ -1162,7 +1351,8 @@ function renderUsers() {
   const search = (searchEl ? searchEl.value : '').toLowerCase();
   const filtered = usersData.filter(u =>
     u.username.toLowerCase().includes(search) ||
-    (u.nama || '').toLowerCase().includes(search)
+    (u.nama || '').toLowerCase().includes(search) ||
+    (u.email || '').toLowerCase().includes(search)
   );
   setText('totalUsers', usersData.length);
   if (filtered.length === 0) {
@@ -1189,6 +1379,7 @@ function renderUsers() {
               <span class="badge-role ${isAdmin ? 'admin' : 'user'}">${isAdmin ? 'ADMIN' : 'PELAJAR'}</span>
               <span class="badge-quota ${quotaEmpty ? 'empty' : ''}">📊 ${remain}/${u.quotaMax}</span>
               <span>📅 ${u.createdAt}</span>
+              ${u.email ? `<span class="badge-email">📧 ${u.email}</span>` : ''}
             </div>
           </div>
           <div class="actions-right">
@@ -1631,11 +1822,581 @@ function logoutAdmin(e) {
   location.href = 'login.html';
 }
 
+// ===== NOTIF DROPDOWN =====
+function toggleNotifDropdown(e) {
+  e.preventDefault();
+  e.stopPropagation();
+  const wrapper = document.getElementById('notifWrapper');
+  const isOpen = wrapper.classList.contains('open');
+  document.querySelectorAll('.notif-wrapper.open').forEach(w => w.classList.remove('open'));
+  if (!isOpen) { wrapper.classList.add('open'); loadNotifDropdown(); }
+}
+document.addEventListener('click', function(e) {
+  const wrapper = document.getElementById('notifWrapper');
+  if (wrapper && !wrapper.contains(e.target)) wrapper.classList.remove('open');
+});
+
+function loadNotifDropdown() {
+  const body = document.getElementById('notifBody');
+  body.innerHTML = `<div class="notif-empty"><i class="fas fa-spinner fa-spin"></i> Memuat...</div>`;
+  safeGet('action=getNotifications&username=' + encodeURIComponent(_user.username), 30000)
+    .then(res => {
+      if (!res.success || !res.notifications) {
+        body.innerHTML = `<div class="notif-empty"><i class="fas fa-bell-slash"></i> Gagal memuat</div>`;
+        return;
+      }
+      const list = res.notifications.slice(0, 10);
+      if (list.length === 0) {
+        body.innerHTML = `<div class="notif-empty"><i class="fas fa-bell-slash"></i> Belum ada notifikasi</div>`;
+        return;
+      }
+      const iconMap = {
+        'bantuan': 'fa-question-circle', 'balasan': 'fa-comment-dots',
+        'kuota': 'fa-ticket-alt', 'sistem': 'fa-info-circle',
+        'request': 'fa-paper-plane', 'chat': 'fa-comments', 'info': 'fa-bell'
+      };
+      let html = '';
+      list.forEach(n => {
+        const ic = iconMap[n.tipe] || 'fa-bell';
+        const url = n.linkUrl || 'notifikasi.html';
+        html += `
+          <div class="notif-item-drop tipe-${n.tipe} ${!n.isRead ? 'unread' : ''}" onclick="handleNotifClick(event, ${n.id}, '${url.replace(/'/g, "\\'")}')">
+            <div class="ic"><i class="fas ${ic}"></i></div>
+            <div class="tx">
+              <div class="ttl">${n.judul || 'Notifikasi'}</div>
+              <div class="msg">${n.pesan || ''}</div>
+              <div class="tm">${n.tanggal}</div>
+            </div>
+          </div>`;
+      });
+      body.innerHTML = html;
+    })
+    .catch(() => {
+      body.innerHTML = `<div class="notif-empty"><i class="fas fa-exclamation-triangle"></i> Gagal memuat</div>`;
+    });
+}
+
+function handleNotifClick(e, notifId, url) {
+  e.stopPropagation();
+  safePost({ action: 'markNotifRead', username: _user.username, notifId })
+    .then(() => updateNotifBadge()).catch(() => {});
+  document.getElementById('notifWrapper').classList.remove('open');
+  if (url && url !== 'notifikasi.html') {
+    setTimeout(() => location.href = url, 200);
+  } else {
+    location.href = 'notifikasi.html';
+  }
+}
+
+function markAllNotifRead(e) {
+  e.stopPropagation();
+  safePost({ action: 'markAllNotifRead', username: _user.username })
+    .then(() => { loadNotifDropdown(); updateNotifBadge(); })
+    .catch(() => {});
+}
+
+// ============================================================
+//  ⚡ CHAT ADMIN — Search + Gambar + Read Receipts + Push Notif
+// ============================================================
+let chatRooms = [];
+let currentChatRoom = null;
+let chatPollTimer = null;
+let lastNotifCount = 0;
+
+async function requestNotifPermission() {
+  if (!('Notification' in window)) return false;
+  if (Notification.permission === 'granted') return true;
+  if (Notification.permission === 'denied') return false;
+  const perm = await Notification.requestPermission();
+  return perm === 'granted';
+}
+
+function showPushNotif(title, body, tag) {
+  if (!('Notification' in window)) return;
+  if (Notification.permission !== 'granted') return;
+  try {
+    const n = new Notification(title, {
+      body: body,
+      icon: 'https://cdn-icons-png.flaticon.com/512/2965/2965345.png',
+      tag: tag || 'chat-notif',
+      badge: 'https://cdn-icons-png.flaticon.com/512/2965/2965345.png'
+    });
+    setTimeout(() => n.close(), 8000);
+    n.onclick = function() {
+      window.focus();
+      if (tag && tag.startsWith('chat:')) {
+        const roomKey = tag.replace('chat:', '');
+        const room = chatRooms.find(r => r.roomKey === roomKey);
+        if (room) openAdminChat(room.roomKey, room.userId, room.nama, room.foto);
+      }
+      n.close();
+    };
+  } catch(e) { console.warn('Push notif gagal:', e); }
+}
+
+function detectNewChats(oldRooms, newRooms) {
+  const oldMap = {};
+  oldRooms.forEach(r => { oldMap[r.roomKey] = Number(r.unread) || 0; });
+  newRooms.forEach(r => {
+    const oldUnread = oldMap[r.roomKey] || 0;
+    const newUnread = Number(r.unread) || 0;
+    if (newUnread > oldUnread) {
+      showPushNotif(
+        '💬 Chat baru dari ' + (r.nama || r.userId),
+        r.lastPesan || 'Ada pesan baru',
+        'chat:' + r.roomKey
+      );
+    }
+  });
+}
+
+function loadChatRooms() {
+  const box = document.getElementById('chatRoomList');
+  if (!box) return;
+  box.innerHTML = `<div class="loading-block"><div class="spinner dark"></div><p style="margin-top:10px;">Memuat chat...</p></div>`;
+
+  safeGet('action=getChatList&username=' + encodeURIComponent(_user.username) + '&isAdmin=true', 60000)
+    .then(res => {
+      if (!res.success) {
+        box.innerHTML = `<div class="empty-block"><p>${res.msg || 'Gagal memuat'}</p></div>`;
+        return;
+      }
+      const newRooms = res.rooms || [];
+      if (chatRooms.length > 0) detectNewChats(chatRooms, newRooms);
+      chatRooms = newRooms;
+      renderChatRooms();
+    })
+    .catch(err => {
+      console.error('[chat] error:', err);
+      box.innerHTML = `<div class="empty-block"><i class="fas fa-exclamation-triangle"></i><p>Gagal memuat chat</p></div>`;
+    });
+}
+
+function renderChatRooms(filteredRooms) {
+  const box = document.getElementById('chatRoomList');
+  if (!box) return;
+
+  const rooms = filteredRooms || chatRooms;
+
+  const unreadTotal = chatRooms.reduce((s, r) => s + (Number(r.unread) || 0), 0);
+  const badge = document.getElementById('chatTabBadge');
+  if (badge) {
+    if (unreadTotal > 0) {
+      badge.textContent = unreadTotal;
+      badge.style.display = 'inline-block';
+    } else {
+      badge.style.display = 'none';
+    }
+  }
+
+  if (rooms.length === 0) {
+    box.innerHTML = `<div class="empty-block">
+      <i class="fas fa-comments"></i>
+      <p>Belum ada chat dari user</p>
+      <p style="font-size:12px;margin-top:8px;color:var(--text-muted);">
+        Chat akan muncul di sini setelah user mengirim pesan
+      </p>
+    </div>`;
+    return;
+  }
+
+  let html = '';
+  rooms.forEach(r => {
+    const init = (r.nama || r.userId || 'U').charAt(0).toUpperCase();
+    const avatar = r.foto
+      ? `<img src="${r.foto}" class="avatar" onerror="this.outerHTML='<div class=&quot;avatar&quot;>${init}</div>'">`
+      : `<div class="avatar">${init}</div>`;
+
+    const unreadBadge = (Number(r.unread) > 0)
+      ? `<span style="background:#d9534f;color:#fff;font-size:10px;font-weight:800;padding:2px 8px;border-radius:10px;margin-left:6px;">${r.unread} baru</span>`
+      : '';
+
+    let matchedHtml = '';
+    if (r.matchedMessages && r.matchedMessages.length > 0) {
+      matchedHtml = `<div style="margin-top:6px;padding:6px 10px;background:var(--sub-bg);border-radius:6px;font-size:11px;color:var(--text-muted);border-left:3px solid var(--blue);">
+        <i class="fas fa-search"></i> Cocok: "${escapeHtml(r.matchedMessages[0])}"
+      </div>`;
+    }
+
+    html += `
+      <div class="user-card" onclick="openAdminChat('${escapeAttr(r.roomKey)}', '${escapeAttr(r.userId)}', '${escapeAttr(r.nama || r.userId)}', '${escapeAttr(r.foto || '')}')" style="cursor:pointer;">
+        <div class="row">
+          ${avatar}
+          <div class="info">
+            <div class="name">${escapeHtml(r.nama || r.userId)} ${unreadBadge}</div>
+            <div class="uname" style="margin-top:4px;font-size:13px;color:var(--text);">${escapeHtml(r.lastPesan || '(belum ada pesan)')}</div>
+            <div class="meta"><span>📅 ${escapeHtml(r.lastTanggal || '-')}</span></div>
+            ${matchedHtml}
+          </div>
+          <div class="actions-right">
+            <button class="btn btn-teal btn-xs"><i class="fas fa-reply"></i> Buka</button>
+          </div>
+        </div>
+      </div>`;
+  });
+  box.innerHTML = html;
+}
+
+function escapeHtml(t) {
+  const div = document.createElement('div');
+  div.textContent = String(t == null ? '' : t);
+  return div.innerHTML;
+}
+
+function escapeAttr(t) {
+  return String(t == null ? '' : t)
+    .replace(/\\/g, '\\\\')
+    .replace(/'/g, "\\'")
+    .replace(/"/g, '&quot;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;');
+}
+
+let searchDebounce = null;
+function onSearchChat(val) {
+  clearTimeout(searchDebounce);
+  searchDebounce = setTimeout(() => {
+    const q = String(val || '').trim();
+    if (!q) { renderChatRooms(); return; }
+    const box = document.getElementById('chatRoomList');
+    box.innerHTML = `<div class="loading-block"><div class="spinner dark"></div><p style="margin-top:10px;">Mencari "${escapeHtml(q)}"...</p></div>`;
+    safeGet('action=searchChat&username=' + encodeURIComponent(_user.username) + '&q=' + encodeURIComponent(q), 60000)
+      .then(res => {
+        if (!res.success) {
+          box.innerHTML = `<div class="empty-block"><p>${escapeHtml(res.msg || 'Gagal')}</p></div>`;
+          return;
+        }
+        const rooms = res.rooms || [];
+        if (rooms.length === 0) {
+          box.innerHTML = `<div class="empty-block"><i class="fas fa-search"></i><p>Tidak ada hasil untuk "${escapeHtml(q)}"</p></div>`;
+          return;
+        }
+        renderChatRooms(rooms);
+      })
+      .catch(() => {
+        box.innerHTML = `<div class="empty-block"><p>Gagal mencari</p></div>`;
+      });
+  }, 400);
+}
+
+function openAdminChat(roomKey, userId, nama, foto) {
+  currentChatRoom = { roomKey, userId, nama };
+
+  document.getElementById('chatModalName').textContent = nama;
+
+  const init = (nama || userId || 'U').charAt(0).toUpperCase();
+  const avatarEl = document.getElementById('chatModalAvatar');
+  if (foto) {
+    avatarEl.innerHTML = `<img src="${foto}" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">`;
+  } else {
+    avatarEl.textContent = init;
+  }
+
+  openModal('modalChat');
+  loadAdminChatMessages();
+
+  if (chatPollTimer) clearInterval(chatPollTimer);
+  chatPollTimer = setInterval(() => {
+    if (document.getElementById('modalChat').classList.contains('show')) {
+      loadAdminChatMessages(true);
+    } else {
+      clearInterval(chatPollTimer);
+      chatPollTimer = null;
+    }
+  }, 5000);
+
+  setTimeout(() => {
+    const inp = document.getElementById('chatModalInput');
+    if (inp) inp.focus();
+  }, 300);
+}
+
+function parseMsg(pesan) {
+  if (typeof pesan === 'string' && pesan.startsWith('IMG||')) {
+    const parts = pesan.split('||');
+    return { tipe: 'image', url: parts[1] || '', caption: parts.slice(2).join('||') || '' };
+  }
+  return { tipe: 'text', url: '', caption: pesan };
+}
+
+function loadAdminChatMessages(silent) {
+  if (!currentChatRoom) return;
+  const body = document.getElementById('chatModalBody');
+
+  if (!silent) {
+    body.innerHTML = `<div style="text-align:center;padding:20px;color:var(--text-muted);font-size:13px;"><i class="fas fa-spinner fa-spin"></i> Memuat...</div>`;
+  }
+
+  const url = 'action=getChat&username=' + encodeURIComponent(_user.username) +
+              '&roomKey=' + encodeURIComponent(currentChatRoom.roomKey);
+
+  Promise.all([
+    safeGet(url, 60000),
+    safeGet('action=getReadReceipts&username=' + encodeURIComponent(currentChatRoom.userId), 30000).catch(() => ({ success: false, rooms: {} }))
+  ])
+  .then(([res, readRes]) => {
+    if (!res.success) {
+      if (!silent) {
+        body.innerHTML = `<div style="text-align:center;padding:20px;color:var(--text-muted);">${escapeHtml(res.msg || 'Gagal memuat')}</div>`;
+      }
+      return;
+    }
+
+    const msgs = res.messages || [];
+    if (msgs.length === 0) {
+      body.innerHTML = `<div style="text-align:center;padding:40px;color:var(--text-muted);font-size:13px;">
+        <i class="fas fa-comment-slash" style="font-size:32px;opacity:.3;display:block;margin-bottom:8px;"></i>
+        Belum ada chat
+      </div>`;
+      return;
+    }
+
+    const userReadAt = (readRes && readRes.rooms) ? (readRes.rooms[currentChatRoom.roomKey] || '') : '';
+
+    let html = '';
+    msgs.forEach(m => {
+      const cls = m.isMine ? 'mine' : 'theirs';
+      const tgl = String(m.tanggal || '').split(' ')[1] || '';
+      const tglShort = tgl.substring(0, 5);
+      const parsed = parseMsg(m.pesan);
+
+      let readHtml = '';
+      if (m.isMine && userReadAt) {
+        const tglPesan = String(m.tanggal || '');
+        if (tglPesan <= userReadAt) {
+          readHtml = `<span style="font-size:10px;opacity:.85;margin-left:6px;" title="Dibaca ${userReadAt}">✓✓</span>`;
+        } else {
+          readHtml = `<span style="font-size:10px;opacity:.6;margin-left:6px;" title="Terkirim">✓</span>`;
+        }
+      }
+
+      let bubbleHtml = '';
+      if (parsed.tipe === 'image') {
+        bubbleHtml = `
+          <div style="margin-bottom:6px;">
+            <img src="${escapeAttr(parsed.url)}" onclick="window.open('${escapeAttr(parsed.url)}','_blank')" style="max-width:100%;max-height:240px;border-radius:8px;cursor:pointer;display:block;" onerror="this.style.display='none'">
+          </div>
+          ${parsed.caption ? `<div>${escapeHtml(parsed.caption)}</div>` : ''}
+        `;
+      } else {
+        bubbleHtml = escapeHtml(parsed.caption);
+      }
+
+      html += `<div class="chat-msg ${cls}">${bubbleHtml}<span style="font-size:10px;opacity:.7;margin-top:4px;display:block;">${tglShort}${readHtml}</span></div>`;
+    });
+
+    body.innerHTML = html;
+    body.scrollTop = body.scrollHeight;
+
+    safePost({ action: 'markChatRead', username: _user.username, roomKey: currentChatRoom.roomKey })
+      .then(() => {
+        const room = chatRooms.find(r => r.roomKey === currentChatRoom.roomKey);
+        if (room) room.unread = 0;
+        renderChatRooms();
+      })
+      .catch(() => {});
+  })
+  .catch(err => {
+    console.error('[chat] load error:', err);
+    if (!silent) {
+      body.innerHTML = `<div style="text-align:center;padding:20px;color:var(--text-muted);">Gagal memuat</div>`;
+    }
+  });
+}
+
+async function sendAdminChat() {
+  if (!currentChatRoom) return;
+  const input = document.getElementById('chatModalInput');
+  const pesan = input.value.trim();
+  if (!pesan) return;
+
+  const btn = document.getElementById('chatModalSend');
+  btn.disabled = true;
+
+  const body = document.getElementById('chatModalBody');
+  const tempId = 'temp_' + Date.now();
+  const now = new Date();
+  const timeStr = String(now.getHours()).padStart(2,'0') + ':' + String(now.getMinutes()).padStart(2,'0');
+
+  const emptyMsg = body.querySelector('div[style*="text-align:center"]');
+  if (emptyMsg) emptyMsg.remove();
+
+  const tempDiv = document.createElement('div');
+  tempDiv.className = 'chat-msg mine';
+  tempDiv.id = tempId;
+  tempDiv.innerHTML = `${escapeHtml(pesan)}<span style="font-size:10px;opacity:.7;margin-top:4px;display:block;">${timeStr} ⏳</span>`;
+  body.appendChild(tempDiv);
+  body.scrollTop = body.scrollHeight;
+  input.value = '';
+
+  try {
+    const res = await safePost({
+      action: 'sendChat',
+      username: _user.username,
+      toUser: currentChatRoom.userId,
+      pesan
+    });
+
+    if (res.success) {
+      loadAdminChatMessages(true);
+      setTimeout(loadChatRooms, 500);
+    } else {
+      const t = document.getElementById(tempId);
+      if (t) t.remove();
+      input.value = pesan;
+      alert('❌ ' + (res.msg || 'Gagal kirim'));
+    }
+  } catch (err) {
+    const t = document.getElementById(tempId);
+    if (t) t.remove();
+    input.value = pesan;
+    alert('❌ ' + err.message);
+  } finally {
+    btn.disabled = false;
+    input.focus();
+  }
+}
+
+function pickChatImage() {
+  if (!currentChatRoom) return;
+  const inp = document.createElement('input');
+  inp.type = 'file';
+  inp.accept = 'image/*';
+  inp.onchange = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    if (file.size > 5 * 1024 * 1024) { alert('⚠️ Gambar max 5MB'); return; }
+    await uploadAndSendImage(file);
+  };
+  inp.click();
+}
+
+async function uploadAndSendImage(file) {
+  const body = document.getElementById('chatModalBody');
+  const btn = document.getElementById('chatImgBtn');
+  if (btn) btn.disabled = true;
+
+  const tempId = 'temp_img_' + Date.now();
+  const now = new Date();
+  const timeStr = String(now.getHours()).padStart(2,'0') + ':' + String(now.getMinutes()).padStart(2,'0');
+
+  const reader = new FileReader();
+  reader.onload = e => {
+    const tempDiv = document.createElement('div');
+    tempDiv.className = 'chat-msg mine';
+    tempDiv.id = tempId;
+    tempDiv.innerHTML = `
+      <div style="margin-bottom:6px;">
+        <img src="${e.target.result}" style="max-width:100%;max-height:240px;border-radius:8px;opacity:.6;">
+      </div>
+      <span style="font-size:10px;opacity:.7;margin-top:4px;display:block;">${timeStr} ⏳ Upload...</span>
+    `;
+    body.appendChild(tempDiv);
+    body.scrollTop = body.scrollHeight;
+  };
+  reader.readAsDataURL(file);
+
+  try {
+    const base64 = await fileToBase64(file);
+    const uploadRes = await safePost({
+      action: 'upload',
+      username: _user.username,
+      filename: file.name,
+      base64: base64.split(',')[1] || base64
+    }, 120000);
+
+    if (!uploadRes.success || !uploadRes.url) throw new Error(uploadRes.msg || 'Gagal upload');
+
+    const sendRes = await safePost({
+      action: 'sendChat',
+      username: _user.username,
+      toUser: currentChatRoom.userId,
+      pesan: '',
+      gambar: uploadRes.url
+    });
+
+    if (sendRes.success) {
+      loadAdminChatMessages(true);
+      setTimeout(loadChatRooms, 500);
+    } else throw new Error(sendRes.msg || 'Gagal kirim');
+  } catch(err) {
+    const t = document.getElementById(tempId);
+    if (t) t.remove();
+    alert('❌ ' + err.message);
+  } finally {
+    if (btn) btn.disabled = false;
+  }
+}
+
+function fileToBase64(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+}
+
+function updateChatTabBadge() {
+  safeGet('action=getChatUnread&username=' + encodeURIComponent(_user.username) + '&isAdmin=true', 30000)
+    .then(res => {
+      if (res.success) {
+        const badge = document.getElementById('chatTabBadge');
+        if (badge) {
+          if (res.count > 0) {
+            badge.textContent = res.count;
+            badge.style.display = 'inline-block';
+          } else {
+            badge.style.display = 'none';
+          }
+        }
+      }
+    })
+    .catch(() => {});
+}
+setInterval(updateChatTabBadge, 30000);
+
+// ⚡ Banner aktifkan notif
+setTimeout(() => {
+  if ('Notification' in window && Notification.permission === 'default') {
+    const tabChat = document.getElementById('tab-chat');
+    if (tabChat && !document.getElementById('notifPermBanner')) {
+      const banner = document.createElement('div');
+      banner.id = 'notifPermBanner';
+      banner.style.cssText = 'background:linear-gradient(135deg,#26a69a,#00796b);color:#fff;padding:14px 18px;border-radius:12px;margin-bottom:16px;display:flex;align-items:center;gap:12px;flex-wrap:wrap;';
+      banner.innerHTML = `
+        <i class="fas fa-bell" style="font-size:20px;"></i>
+        <div style="flex:1;min-width:200px;">
+          <div style="font-weight:700;font-size:14px;">Aktifkan Notifikasi Browser</div>
+          <div style="font-size:12px;opacity:.9;margin-top:2px;">Biar kamu dapat notif saat ada chat baru dari user</div>
+        </div>
+        <button onclick="enableNotif()" style="background:#fff;color:#26a69a;border:none;padding:8px 16px;border-radius:8px;font-weight:700;font-size:13px;cursor:pointer;font-family:inherit;">
+          <i class="fas fa-bell"></i> Aktifkan
+        </button>
+      `;
+      const firstCard = tabChat.querySelector('.card');
+      if (firstCard) firstCard.parentNode.insertBefore(banner, firstCard);
+    }
+  }
+}, 1500);
+
+async function enableNotif() {
+  const ok = await requestNotifPermission();
+  if (ok) {
+    showPushNotif('✅ Notifikasi Aktif!', 'Kamu akan dapat notif saat ada chat baru', 'welcome');
+    const b = document.getElementById('notifPermBanner');
+    if (b) b.remove();
+  } else {
+    alert('⚠️ Izin notifikasi ditolak. Buka pengaturan browser untuk mengaktifkan.');
+  }
+}
+
 // ===== INIT =====
 onSectionChange();
 onKategoriChange();
 loadData();
 updateNotifBadge();
+updateChatTabBadge();
 
 safeGet('action=getRequests&status=pending&adminUsername=' + encodeURIComponent(_user.username), 30000)
   .then(res => {
