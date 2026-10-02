@@ -14,6 +14,7 @@
   --text:#333;--text-muted:#888;--title-color:#154a82;
   --sub-bg:#f5f7fa;--input-bg:#fff;--input-text:#333;
   --topbar-bg:#fff;--topbar-shadow:0 4px 16px rgba(0,0,0,.08);
+  --gold:#ffb800;--gold-dark:#cc9400;
 }
 [data-theme="dark"]{
   --blue:#5b9cff;--blue-dark:#3a7bd5;--blue-light:#1e3556;
@@ -23,6 +24,7 @@
   --text:#e8eef7;--text-muted:#8b9bb4;--title-color:#5b9cff;
   --sub-bg:#0f1626;--input-bg:#0f1626;--input-text:#e8eef7;
   --topbar-bg:#151d2e;--topbar-shadow:0 4px 16px rgba(0,0,0,.4);
+  --gold:#ffd700;--gold-dark:#ffb800;
 }
 *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI','Malgun Gothic',-apple-system,sans-serif;}
 body{background:var(--bg);min-height:100vh;color:var(--text);transition:background .3s,color .3s;}
@@ -93,6 +95,8 @@ body{background:var(--bg);min-height:100vh;color:var(--text);transition:backgrou
 .btn-purple:hover{filter:brightness(1.1);}
 .btn-teal{background:var(--teal);color:#fff;}
 .btn-teal:hover{filter:brightness(1.1);}
+.btn-gold{background:linear-gradient(135deg,var(--gold),var(--gold-dark));color:#fff;font-weight:800;}
+.btn-gold:hover{filter:brightness(1.1);}
 .btn-sm{padding:6px 12px;font-size:12px;}
 .btn-xs{padding:4px 10px;font-size:11px;}
 .actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:6px;}
@@ -102,6 +106,7 @@ body{background:var(--bg);min-height:100vh;color:var(--text);transition:backgrou
 .q-item .num{background:var(--blue);color:#fff;width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;flex-shrink:0;}
 .q-item .info{flex:1;min-width:0;}
 .q-item .info .txt{font-size:14px;color:var(--text);margin-bottom:4px;word-break:break-word;}
+.q-item .info .instruksi-txt{font-size:12px;color:var(--text-muted);font-style:italic;background:var(--sub-bg);padding:6px 10px;border-left:3px solid var(--blue);border-radius:4px;margin-bottom:6px;line-height:1.5;}
 .q-item .info .meta{font-size:12px;color:var(--text-muted);display:flex;gap:12px;flex-wrap:wrap;align-items:center;}
 .q-item .info .meta .tag{background:var(--blue-light);color:var(--blue);padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600;}
 .q-item .info .meta .tag.audio{background:#fde8e8;color:#a33;}
@@ -109,6 +114,7 @@ body{background:var(--bg);min-height:100vh;color:var(--text);transition:backgrou
 .q-item .info .meta .tag.ans{background:#fff5e0;color:#8a6a1a;}
 .q-item .info .meta .tag.kat{background:#e8e0fa;color:#5e35b1;}
 .q-item .info .meta .tag.tema{background:#e0f2f1;color:#00695c;}
+.q-item .info .meta .tag.instruksi{background:#e0f2f1;color:#00695c;}
 .q-item .thumb{width:60px;height:60px;object-fit:cover;border-radius:6px;flex-shrink:0;}
 .q-item .btns{display:flex;flex-direction:column;gap:6px;flex-shrink:0;}
 .jawaban-radios{display:flex;gap:10px;flex-wrap:wrap;}
@@ -132,13 +138,15 @@ body{background:var(--bg);min-height:100vh;color:var(--text);transition:backgrou
 .user-card:hover{border-color:var(--blue);}
 .user-card .row{display:flex;align-items:center;gap:14px;flex-wrap:wrap;}
 .user-card .avatar{width:44px;height:44px;border-radius:50%;object-fit:cover;background:linear-gradient(135deg,var(--blue),var(--blue-dark));color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:18px;flex-shrink:0;}
+.user-card .avatar.gold{background:linear-gradient(135deg,var(--gold),var(--gold-dark));color:#7a4a00;font-size:20px;}
 .user-card .info{flex:1;min-width:180px;}
-.user-card .info .name{font-size:15px;font-weight:700;color:var(--text);margin-bottom:2px;}
+.user-card .info .name{font-size:15px;font-weight:700;color:var(--text);margin-bottom:2px;display:flex;align-items:center;gap:8px;}
 .user-card .info .uname{font-size:12px;color:var(--text-muted);}
-.user-card .info .meta{font-size:11px;color:var(--text-muted);margin-top:4px;display:flex;gap:10px;flex-wrap:wrap;}
+.user-card .info .meta{font-size:11px;color:var(--text-muted);margin-top:4px;display:flex;gap:10px;flex-wrap:wrap;align-items:center;}
 .user-card .info .meta .badge-role{padding:2px 8px;border-radius:10px;font-weight:700;font-size:10px;}
 .user-card .info .meta .badge-role.admin{background:#fde8e8;color:#a33;}
 .user-card .info .meta .badge-role.user{background:var(--blue-light);color:var(--blue);}
+.user-card .info .meta .badge-role.premium{background:linear-gradient(135deg,var(--gold),var(--gold-dark));color:#7a4a00;}
 .user-card .info .meta .badge-quota{padding:2px 8px;border-radius:10px;font-weight:700;font-size:10px;background:#fff5e0;color:#8a6a1a;}
 .user-card .info .meta .badge-quota.empty{background:#fde8e8;color:#a33;}
 .user-card .info .meta .badge-email{background:#e8f5ee;color:#1f7f53;font-weight:700;padding:2px 8px;border-radius:10px;font-size:10px;display:inline-flex;align-items:center;gap:4px;word-break:break-all;}
@@ -214,6 +222,56 @@ input:checked + .slider:before{transform:translateX(24px);}
 .chat-msg.mine{align-self:flex-end;background:linear-gradient(135deg,#26a69a,#00796b);color:#fff;border-bottom-right-radius:4px;}
 .chat-msg.theirs{align-self:flex-start;background:var(--card-bg);color:var(--text);border:1px solid var(--border);border-bottom-left-radius:4px;}
 #chatModalBody{display:flex;flex-direction:column;gap:10px;}
+
+/* Premium card */
+.premium-card-box{
+  background:linear-gradient(135deg,#fff8e0,#fffbf0);
+  border:2px solid var(--gold);
+  border-radius:12px;
+  padding:18px;
+  margin-bottom:14px;
+  position:relative;
+  overflow:hidden;
+}
+[data-theme="dark"] .premium-card-box{
+  background:linear-gradient(135deg,#3a2e10,#4a3a15);
+}
+.premium-card-box::before{
+  content:'💎';
+  position:absolute;
+  right:14px;
+  top:50%;
+  transform:translateY(-50%);
+  font-size:60px;
+  opacity:.15;
+}
+.premium-card-box .prem-name{
+  font-size:15px;
+  font-weight:800;
+  color:var(--text);
+  margin-bottom:4px;
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+.premium-card-box .prem-name .crown{color:var(--gold);font-size:16px;}
+.premium-card-box .prem-detail{
+  font-size:13px;
+  color:var(--text);
+  line-height:1.6;
+  position:relative;
+  z-index:1;
+}
+.premium-card-box .prem-detail strong{color:var(--gold-dark);}
+[data-theme="dark"] .premium-card-box .prem-detail strong{color:var(--gold);}
+.premium-card-box .prem-actions{
+  margin-top:12px;
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+  position:relative;
+  z-index:1;
+}
 @media(max-width:700px){
   .row-2,.row-4{grid-template-columns:1fr;}
   .card{padding:20px;}
@@ -260,6 +318,10 @@ input:checked + .slider:before{transform:translateX(24px);}
     </button>
     <button class="tab-btn" data-tab="users" onclick="switchTab('users')">
       <i class="fas fa-users"></i> Kelola User
+    </button>
+    <button class="tab-btn" data-tab="langganan" onclick="switchTab('langganan')">
+      <i class="fas fa-crown"></i> Langganan
+      <span class="badge-pill" id="premiumBadge" style="display:none;">0</span>
     </button>
     <button class="tab-btn" data-tab="requests" onclick="switchTab('requests')">
       <i class="fas fa-envelope-open-text"></i> Request Kuota
@@ -322,6 +384,12 @@ input:checked + .slider:before{transform:translateX(24px);}
           <option value="umum">📚 Kosakata Umum</option>
         </select>
         <div class="hint">Tema ini menentukan dropdown di dashboard user</div>
+      </div>
+
+      <div class="form-group">
+        <label><i class="fas fa-info-circle" style="color:var(--blue);"></i> Instruksi / Petunjuk Soal (opsional)</label>
+        <textarea id="instruksi" placeholder="Contoh: 다음을 듣고 알맞은 답을 고르십시오. (Dengarkan dan pilih jawaban yang tepat)" style="min-height:60px;"></textarea>
+        <div class="hint">Muncul di atas soal sebagai petunjuk. Kosongkan kalau soal tidak butuh instruksi.</div>
       </div>
 
       <div class="form-group">
@@ -479,6 +547,38 @@ input:checked + .slider:before{transform:translateX(24px);}
       </div>
       <div id="usersList">
         <div class="loading-block"><div class="spinner dark"></div><p style="margin-top:10px;">Memuat user...</p></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB LANGGANAN (BARU) -->
+  <div id="tab-langganan" class="tab-content">
+    <div class="card">
+      <h2><i class="fas fa-crown" style="color:var(--gold);"></i> Kelola Langganan Premium</h2>
+      <p style="font-size:13px;color:var(--text-muted);margin-bottom:18px;line-height:1.6;">
+        Approve request premium user. Setelah di-approve, user langsung dapat akses unlimited sesuai paket.
+      </p>
+
+      <div class="form-group">
+        <label>Filter Status</label>
+        <select id="filterPremiumStatus" onchange="loadPremiumRequests()">
+          <option value="pending_premium">Pending (belum diproses)</option>
+          <option value="all">Semua</option>
+        </select>
+      </div>
+
+      <div id="premiumReqList">
+        <div class="loading-block"><div class="spinner dark"></div><p style="margin-top:10px;">Memuat request...</p></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2><i class="fas fa-users-cog"></i> User Premium Aktif</h2>
+      <p style="font-size:13px;color:var(--text-muted);margin-bottom:18px;">
+        Daftar user yang sedang berlangganan premium.
+      </p>
+      <div id="premiumUsersList">
+        <div class="loading-block"><div class="spinner dark"></div><p style="margin-top:10px;">Memuat...</p></div>
       </div>
     </div>
   </div>
@@ -702,6 +802,51 @@ input:checked + .slider:before{transform:translateX(24px);}
   </div>
 </div>
 
+<!-- MODAL: PREMIUM (APPROVE) -->
+<div class="modal-back" id="modalPremium">
+  <div class="modal-box">
+    <div style="text-align:center;margin-bottom:20px;">
+      <div style="width:70px;height:70px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--gold-dark));display:flex;align-items:center;justify-content:center;font-size:32px;color:#fff;margin:0 auto 12px;box-shadow:0 8px 20px rgba(255,184,0,.4);">
+        <i class="fas fa-crown"></i>
+      </div>
+      <h2 style="justify-content:center;margin-bottom:4px;">Aktivasi Premium</h2>
+      <p class="desc" id="modalPremiumDesc" style="margin-bottom:0;">-</p>
+    </div>
+
+    <div class="form-group">
+      <label>Paket Langganan</label>
+      <select id="premiumPaketSelect" onchange="updatePremiumPreview()">
+        <option value="30">Bulanan (30 hari) — Rp 20.000</option>
+        <option value="90">3 Bulan (90 hari) — Rp 50.000</option>
+        <option value="365">1 Tahun (365 hari) — Rp 180.000</option>
+        <option value="custom">Custom (isi manual)</option>
+      </select>
+    </div>
+
+    <div class="form-group" id="customDaysBox" style="display:none;">
+      <label>Jumlah Hari Custom</label>
+      <input type="number" id="premiumDaysInput" min="1" value="30" oninput="updatePremiumPreview()">
+    </div>
+
+    <div class="premium-card-box" style="margin-bottom:16px;">
+      <div class="prem-name"><i class="fas fa-crown crown"></i> Preview Aktivasi</div>
+      <div class="prem-detail">
+        User: <strong id="premPreviewUser">-</strong><br>
+        Durasi: <strong id="premPreviewDays">30 hari</strong><br>
+        Berlaku sampai: <strong id="premPreviewUntil">-</strong><br>
+        Status setelah: <strong>PREMIUM (unlimited)</strong>
+      </div>
+    </div>
+
+    <div style="display:flex;gap:10px;">
+      <button class="btn btn-secondary" onclick="closeModal('modalPremium')" style="flex:1;">Batal</button>
+      <button class="btn btn-gold" onclick="doActivatePremium()" style="flex:1;">
+        <i class="fas fa-crown"></i> Aktifkan Premium
+      </button>
+    </div>
+  </div>
+</div>
+
 <!-- MODAL: REPLY TICKET -->
 <div class="modal-back" id="modalReply">
   <div class="modal-box">
@@ -757,7 +902,7 @@ function toggleTheme(){
 applyTheme(localStorage.getItem('theme') || 'light');
 
 // ⚠️ GANTI URL INI
-const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxgov9M_0EcaqEh15k2piFH9XZGiFC_05mgl_PeZ166pqxCzYlWl7AaW9xLnWFilFwE/exec';
+const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwGsUnn93GQGnCGYITxYas-ig5BGa0O1191cxp_wNjeESRYsCJZgsYXClQNKGSyDAjQ/exec';
 
 async function fetchWithTimeout(url, options = {}, timeoutMs = 90000) {
   const controller = new AbortController();
@@ -819,6 +964,7 @@ let ticketsData = [];
 let currentTargetUser = null;
 let currentTargetReq = null;
 let currentTargetTicket = null;
+let currentPremiumTarget = null;
 let configData = {};
 
 function showToast(msg, type='') {
@@ -840,6 +986,7 @@ function switchTab(tab) {
   document.querySelectorAll('.tab-btn').forEach(b => b.classList.toggle('active', b.dataset.tab === tab));
   document.querySelectorAll('.tab-content').forEach(c => c.classList.toggle('active', c.id === 'tab-' + tab));
   if (tab === 'users') loadUsers();
+  if (tab === 'langganan') loadPremiumRequests();
   if (tab === 'requests') loadRequests();
   if (tab === 'tickets') loadTickets();
   if (tab === 'chat') loadChatRooms();
@@ -1037,13 +1184,20 @@ function renderList() {
       const isKosakata = String(q.kategori).toLowerCase().startsWith('kosakata_');
       tags.push(`<span class="tag ${isKosakata ? 'tema' : 'kat'}"><i class="fas fa-folder"></i> ${getTemaLabel(q.kategori)}</span>`);
     }
+    if (q.instruksi) {
+      tags.push('<span class="tag instruksi"><i class="fas fa-info-circle"></i> Instruksi</span>');
+    }
     const jawabDisplay = (q.section === 'isian') ? q.jawaban : (CIRCLES[q.jawaban] || q.jawaban);
     tags.push(`<span class="tag ans">Jawaban: ${jawabDisplay}</span>`);
     const thumb = q.gambar ? `<img src="${q.gambar}" class="thumb" onerror="this.style.display='none'">` : '';
+    const instruksiHtml = q.instruksi
+      ? `<div class="instruksi-txt">📌 ${escapeHtml(q.instruksi)}</div>`
+      : '';
     html += `
       <div class="q-item">
         <div class="num">${realIndex + 1}</div>
         <div class="info">
+          ${instruksiHtml}
           <div class="txt">${q.soal || '(soal tanpa teks)'}</div>
           <div class="meta">${tags.join('')}</div>
         </div>
@@ -1058,6 +1212,12 @@ function renderList() {
   box.innerHTML = html;
 }
 
+function escapeHtml(t) {
+  const div = document.createElement('div');
+  div.textContent = String(t == null ? '' : t);
+  return div.innerHTML;
+}
+
 async function saveSoal() {
   const soalEl = document.getElementById('soal');
   const sectionEl = document.getElementById('section');
@@ -1066,10 +1226,12 @@ async function saveSoal() {
   const opsiCEl = document.getElementById('opsiC');
   const opsiDEl = document.getElementById('opsiD');
   const pembahasanEl = document.getElementById('pembahasan');
+  const instruksiEl = document.getElementById('instruksi');
 
   const soal = soalEl ? soalEl.value.trim() : '';
   const section = sectionEl ? sectionEl.value : 'pilihan_teks';
   const kategori = getFinalKategori();
+  const instruksi = instruksiEl ? instruksiEl.value.trim() : '';
   const opsiA = opsiAEl ? opsiAEl.value.trim() : '';
   const opsiB = opsiBEl ? opsiBEl.value.trim() : '';
   const opsiC = opsiCEl ? opsiCEl.value.trim() : '';
@@ -1122,6 +1284,7 @@ async function saveSoal() {
 
     const payload = {
       username: _user.username, section, kategori, soal, jawaban,
+      instruksi,
       gambar: gambarUrl, audio: audioUrl,
       opsiA, opsiB, opsiC, opsiD, pembahasan,
       opsiAImg: opsiAImgUrl, opsiBImg: opsiBImgUrl,
@@ -1218,6 +1381,7 @@ function editSoal(i) {
   const temaEl = document.getElementById('temaKategori'); if (temaEl) temaEl.value = temaKat;
   onKategoriChange();
 
+  const instruksiEl = document.getElementById('instruksi'); if (instruksiEl) instruksiEl.value = q.instruksi || '';
   const soalEl = document.getElementById('soal'); if (soalEl) soalEl.value = q.soal || '';
   const opsiAEl = document.getElementById('opsiA'); if (opsiAEl) opsiAEl.value = q.opsiA || '';
   const opsiBEl = document.getElementById('opsiB'); if (opsiBEl) opsiBEl.value = q.opsiB || '';
@@ -1298,6 +1462,7 @@ function resetForm() {
   setVal('temaKategori', 'transportasi');
   onKategoriChange();
 
+  setVal('instruksi', '');
   setVal('soal', '');
   setVal('opsiA', '');
   setVal('opsiB', '');
@@ -1364,10 +1529,16 @@ function renderUsers() {
     const remain = Math.max(0, u.quotaMax - u.quotaUsed);
     const quotaEmpty = remain === 0;
     const isAdmin = u.role === 'admin';
+    const isPrem = (u.plan === 'premium');
     const avatarInit = (u.nama || u.username).charAt(0).toUpperCase();
     const avatarImg = u.foto
       ? `<img src="${u.foto}" class="avatar" onerror="this.outerHTML='<div class=&quot;avatar&quot;>${avatarInit}</div>'">`
       : `<div class="avatar">${avatarInit}</div>`;
+
+    let roleBadge = `<span class="badge-role user">PELAJAR</span>`;
+    if (isAdmin) roleBadge = `<span class="badge-role admin">ADMIN</span>`;
+    else if (isPrem) roleBadge = `<span class="badge-role premium">👑 PREMIUM</span>`;
+
     html += `
       <div class="user-card">
         <div class="row">
@@ -1376,9 +1547,10 @@ function renderUsers() {
             <div class="name">${u.nama || u.username}</div>
             <div class="uname">@${u.username}</div>
             <div class="meta">
-              <span class="badge-role ${isAdmin ? 'admin' : 'user'}">${isAdmin ? 'ADMIN' : 'PELAJAR'}</span>
+              ${roleBadge}
               <span class="badge-quota ${quotaEmpty ? 'empty' : ''}">📊 ${remain}/${u.quotaMax}</span>
               <span>📅 ${u.createdAt}</span>
+              ${u.premiumUntil ? `<span style="background:linear-gradient(135deg,var(--gold),var(--gold-dark));color:#fff;font-weight:700;padding:2px 8px;border-radius:10px;font-size:10px;">👑 s/d ${u.premiumUntil}</span>` : ''}
               ${u.email ? `<span class="badge-email">📧 ${u.email}</span>` : ''}
             </div>
           </div>
@@ -1386,6 +1558,7 @@ function renderUsers() {
             ${u.hasPlain ? `<button class="btn btn-purple btn-xs" onclick="openViewPw('${u.username}')"><i class="fas fa-eye"></i> Lihat Pass</button>` : ''}
             <button class="btn btn-warning btn-xs" onclick="openResetPw('${u.username}')"><i class="fas fa-key"></i> Reset</button>
             <button class="btn btn-primary btn-xs" onclick="openSetQuota('${u.username}', ${u.quotaMax})"><i class="fas fa-edit"></i> Kuota</button>
+            ${!isAdmin ? `<button class="btn btn-gold btn-xs" onclick="openPremiumActivate('${u.username}')" title="Aktifkan/kelola premium"><i class="fas fa-crown"></i> Premium</button>` : ''}
             ${!isAdmin ? `<button class="btn btn-danger btn-xs" onclick="deleteUser('${u.username}')"><i class="fas fa-trash"></i></button>` : ''}
           </div>
         </div>
@@ -1509,6 +1682,280 @@ async function deleteUser(username) {
     if (res.success) { showToast('🗑️ User dihapus', 'success'); setTimeout(loadUsers, 500); }
     else alert('❌ ' + (res.msg || 'Gagal'));
   } catch(err) { alert('❌ ' + err.message); }
+}
+
+// ===== PREMIUM =====
+function openPremiumActivate(username) {
+  currentPremiumTarget = username;
+  const targetUser = usersData.find(u => u.username === username);
+  const isPrem = targetUser && targetUser.plan === 'premium';
+
+  setText('modalPremiumDesc', `User: ${targetUser ? (targetUser.nama || username) : username} (@${username})`);
+  setText('premPreviewUser', targetUser ? (targetUser.nama || username) : username);
+
+  const sel = document.getElementById('premiumPaketSelect');
+  if (sel) sel.value = '30';
+  const custBox = document.getElementById('customDaysBox');
+  if (custBox) custBox.style.display = 'none';
+
+  updatePremiumPreview();
+  openModal('modalPremium');
+}
+
+function updatePremiumPreview() {
+  const sel = document.getElementById('premiumPaketSelect');
+  const custBox = document.getElementById('customDaysBox');
+  const daysInput = document.getElementById('premiumDaysInput');
+  let days = 30;
+
+  if (sel) {
+    if (sel.value === 'custom') {
+      if (custBox) custBox.style.display = 'block';
+      days = parseInt(daysInput ? daysInput.value : '30', 10) || 30;
+    } else {
+      if (custBox) custBox.style.display = 'none';
+      days = parseInt(sel.value, 10) || 30;
+    }
+  }
+
+  const until = new Date(Date.now() + days * 24 * 60 * 60 * 1000);
+  const untilStr = until.toLocaleDateString('id-ID', { day: '2-digit', month: 'short', year: 'numeric' });
+
+  setText('premPreviewDays', days + ' hari');
+  setText('premPreviewUntil', untilStr);
+}
+
+async function doActivatePremium() {
+  if (!currentPremiumTarget) return;
+  const sel = document.getElementById('premiumPaketSelect');
+  const daysInput = document.getElementById('premiumDaysInput');
+  let days = 30;
+  if (sel) {
+    if (sel.value === 'custom') days = parseInt(daysInput ? daysInput.value : '30', 10) || 30;
+    else days = parseInt(sel.value, 10) || 30;
+  }
+
+  try {
+    const res = await safePost({
+      action: 'adminActivatePremium',
+      username: _user.username,
+      targetUsername: currentPremiumTarget,
+      days: days
+    });
+    if (res.success) {
+      closeModal('modalPremium');
+      showToast('👑 Premium aktif ' + days + ' hari untuk ' + currentPremiumTarget, 'success');
+      setTimeout(loadUsers, 500);
+    } else {
+      alert('❌ ' + (res.msg || 'Gagal aktivasi'));
+    }
+  } catch(err) {
+    alert('❌ ' + err.message);
+  }
+}
+
+function loadPremiumRequests() {
+  const box = document.getElementById('premiumReqList');
+  if (!box) return;
+  box.innerHTML = `<div class="loading-block"><div class="spinner dark"></div><p style="margin-top:10px;">Memuat request premium...</p></div>`;
+
+  const sel = document.getElementById('filterPremiumStatus');
+  const status = sel ? sel.value : 'pending_premium';
+
+  safeGet('action=getRequests&status=' + status + '&adminUsername=' + encodeURIComponent(_user.username), 60000)
+    .then(res => {
+      if (res.success) {
+        const list = (res.requests || []).filter(r =>
+          r.status === 'pending_premium' || (r.pesan || '').includes('[PREMIUM')
+        );
+        renderPremiumRequests(list);
+        updatePremiumBadge(list);
+      } else {
+        box.innerHTML = `<div class="empty-block"><p>Gagal memuat</p></div>`;
+      }
+    })
+    .catch(() => {
+      box.innerHTML = `<div class="empty-block"><i class="fas fa-exclamation-triangle"></i><p>Error</p></div>`;
+    });
+
+  // Load premium users
+  loadPremiumUsers();
+}
+
+function updatePremiumBadge(list) {
+  const pendingCount = list.filter(r => r.status === 'pending_premium').length;
+  const badge = document.getElementById('premiumBadge');
+  if (badge) {
+    if (pendingCount > 0) {
+      badge.textContent = pendingCount;
+      badge.style.display = 'inline-block';
+    } else {
+      badge.style.display = 'none';
+    }
+  }
+}
+
+function renderPremiumRequests(list) {
+  const box = document.getElementById('premiumReqList');
+  if (!box) return;
+
+  if (list.length === 0) {
+    box.innerHTML = `<div class="empty-block">
+      <i class="fas fa-crown"></i>
+      <p>Belum ada request premium</p>
+    </div>`;
+    return;
+  }
+
+  let html = '';
+  list.forEach(r => {
+    const pesanClean = (r.pesan || '').replace('[PREMIUM ', '').replace(']', '');
+    const isPending = r.status === 'pending_premium';
+    const isApproved = r.status === 'approved';
+
+    let statusBadge = '';
+    if (isPending) statusBadge = `<span style="background:#fff5e0;color:#8a6a1a;padding:2px 10px;border-radius:10px;font-weight:700;font-size:10px;">⏳ PENDING</span>`;
+    else if (isApproved) statusBadge = `<span style="background:#e8f5ee;color:#1f7f53;padding:2px 10px;border-radius:10px;font-weight:700;font-size:10px;">✅ APPROVED</span>`;
+    else statusBadge = `<span style="background:#fde8e8;color:#a33;padding:2px 10px;border-radius:10px;font-weight:700;font-size:10px;">❌ REJECTED</span>`;
+
+    html += `
+      <div class="premium-card-box">
+        <div class="prem-name">
+          <i class="fas fa-crown crown"></i>
+          ${r.nama || r.username} <span style="font-size:12px;color:var(--text-muted);font-weight:400;">@${r.username}</span>
+          ${statusBadge}
+        </div>
+        <div class="prem-detail">
+          <strong>${escapeHtml(pesanClean)}</strong><br>
+          <span style="font-size:12px;color:var(--text-muted);">📅 Request: ${r.tanggal || '-'}</span>
+        </div>
+        ${isPending ? `
+          <div class="prem-actions">
+            <button class="btn btn-gold btn-sm" onclick="approvePremium('${r.username}', '${r.id}')">
+              <i class="fas fa-crown"></i> Approve & Aktifkan
+            </button>
+            <button class="btn btn-secondary btn-sm" onclick="rejectPremium('${r.id}')">
+              <i class="fas fa-times"></i> Reject
+            </button>
+          </div>
+        ` : ''}
+      </div>`;
+  });
+  box.innerHTML = html;
+}
+
+function approvePremium(username, reqId) {
+  // Buka modal premium dengan user tersebut
+  openPremiumActivate(username);
+}
+
+async function rejectPremium(reqId) {
+  if (!confirm('Tolak request premium ini?')) return;
+  try {
+    const res = await safePost({
+      action: 'adminRejectRequest',
+      username: _user.username,
+      requestId: reqId
+    });
+    if (res.success) {
+      showToast('❌ Request premium ditolak', 'success');
+      setTimeout(loadPremiumRequests, 500);
+    } else {
+      alert('❌ ' + (res.msg || 'Gagal'));
+    }
+  } catch(err) {
+    alert('❌ ' + err.message);
+  }
+}
+
+function loadPremiumUsers() {
+  const box = document.getElementById('premiumUsersList');
+  if (!box) return;
+
+  if (usersData.length === 0) {
+    // Load users dulu
+    safeGet('action=getUsers&adminUsername=' + encodeURIComponent(_user.username), 60000)
+      .then(res => {
+        if (res.success) {
+          usersData = res.users || [];
+          renderPremiumUsers();
+        }
+      })
+      .catch(() => {
+        box.innerHTML = `<div class="empty-block"><p>Gagal memuat</p></div>`;
+      });
+  } else {
+    renderPremiumUsers();
+  }
+}
+
+function renderPremiumUsers() {
+  const box = document.getElementById('premiumUsersList');
+  if (!box) return;
+
+  const premiumUsers = usersData.filter(u => u.plan === 'premium');
+
+  if (premiumUsers.length === 0) {
+    box.innerHTML = `<div class="empty-block">
+      <i class="fas fa-crown"></i>
+      <p>Belum ada user premium aktif</p>
+    </div>`;
+    return;
+  }
+
+  let html = '';
+  premiumUsers.forEach(u => {
+    const untilStr = u.premiumUntil || '-';
+    let daysLeft = 0;
+    if (u.premiumUntil) {
+      const exp = new Date(u.premiumUntil);
+      if (!isNaN(exp.getTime())) {
+        daysLeft = Math.max(0, Math.ceil((exp.getTime() - Date.now()) / (24 * 60 * 60 * 1000)));
+      }
+    }
+
+    html += `
+      <div class="user-card">
+        <div class="row">
+          <div class="avatar gold"><i class="fas fa-crown"></i></div>
+          <div class="info">
+            <div class="name">${u.nama || u.username}</div>
+            <div class="uname">@${u.username}</div>
+            <div class="meta">
+              <span class="badge-role premium">👑 PREMIUM</span>
+              <span style="background:#fff5e0;color:#8a6a1a;font-weight:700;padding:2px 8px;border-radius:10px;font-size:10px;">
+                ⏱️ Sisa: ${daysLeft} hari
+              </span>
+              <span style="font-size:11px;">Berakhir: ${untilStr}</span>
+            </div>
+          </div>
+          <div class="actions-right">
+            <button class="btn btn-warning btn-xs" onclick="openPremiumActivate('${u.username}')"><i class="fas fa-plus"></i> Extend</button>
+            <button class="btn btn-danger btn-xs" onclick="deactivatePremiumUser('${u.username}')"><i class="fas fa-times"></i> Nonaktifkan</button>
+          </div>
+        </div>
+      </div>`;
+  });
+  box.innerHTML = html;
+}
+
+async function deactivatePremiumUser(username) {
+  if (!confirm('Nonaktifkan premium user ' + username + '?')) return;
+  try {
+    const res = await safePost({
+      action: 'adminDeactivatePremium',
+      username: _user.username,
+      targetUsername: username
+    });
+    if (res.success) {
+      showToast('✅ Premium dinonaktifkan', 'success');
+      setTimeout(() => { loadPremiumUsers(); loadUsers(); }, 500);
+    } else {
+      alert('❌ ' + (res.msg || 'Gagal'));
+    }
+  } catch(err) {
+    alert('❌ ' + err.message);
+  }
 }
 
 // ===== REQUESTS =====
@@ -1896,7 +2343,7 @@ function markAllNotifRead(e) {
 }
 
 // ============================================================
-//  ⚡ CHAT ADMIN — Search + Gambar + Read Receipts + Push Notif
+//  CHAT ADMIN
 // ============================================================
 let chatRooms = [];
 let currentChatRoom = null;
@@ -2035,12 +2482,6 @@ function renderChatRooms(filteredRooms) {
       </div>`;
   });
   box.innerHTML = html;
-}
-
-function escapeHtml(t) {
-  const div = document.createElement('div');
-  div.textContent = String(t == null ? '' : t);
-  return div.innerHTML;
 }
 
 function escapeAttr(t) {
@@ -2356,7 +2797,6 @@ function updateChatTabBadge() {
 }
 setInterval(updateChatTabBadge, 30000);
 
-// ⚡ Banner aktifkan notif
 setTimeout(() => {
   if ('Notification' in window && Notification.permission === 'default') {
     const tabChat = document.getElementById('tab-chat');
@@ -2398,6 +2838,7 @@ loadData();
 updateNotifBadge();
 updateChatTabBadge();
 
+// Load badge premium & request & tickets
 safeGet('action=getRequests&status=pending&adminUsername=' + encodeURIComponent(_user.username), 30000)
   .then(res => {
     if (res.success && res.requests && res.requests.length > 0) {
@@ -2405,6 +2846,19 @@ safeGet('action=getRequests&status=pending&adminUsername=' + encodeURIComponent(
       if (badge) {
         badge.textContent = res.requests.length;
         badge.style.display = 'inline-block';
+      }
+    }
+  })
+  .catch(() => {});
+
+safeGet('action=getRequests&status=pending_premium&adminUsername=' + encodeURIComponent(_user.username), 30000)
+  .then(res => {
+    if (res.success && res.requests) {
+      const premCount = res.requests.filter(r => r.status === 'pending_premium').length;
+      const badge = document.getElementById('premiumBadge');
+      if (badge) {
+        if (premCount > 0) { badge.textContent = premCount; badge.style.display = 'inline-block'; }
+        else badge.style.display = 'none';
       }
     }
   })
