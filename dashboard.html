@@ -15,6 +15,7 @@
   --tag-bg:#e8f0fa; --tag-text:#1e5fa8;
   --dropdown-bg:#fff; --dropdown-shadow:0 8px 24px rgba(0,0,0,.15);
   --skeleton-bg:#e0e6ed; --skeleton-shine:#f0f4f8;
+  --gold:#ffb800; --gold-dark:#cc9400; --gold-light:#fff8e0;
 }
 [data-theme="dark"]{
   --bg:#0a111f; --card-bg:#151d2e; --card-shadow:0 4px 16px rgba(0,0,0,.4);
@@ -25,6 +26,7 @@
   --tag-bg:#1e3556; --tag-text:#5b9cff;
   --dropdown-bg:#1a2233; --dropdown-shadow:0 8px 24px rgba(0,0,0,.5);
   --skeleton-bg:#1e2a3f; --skeleton-shine:#2a3854;
+  --gold:#ffd700; --gold-dark:#ffb800; --gold-light:#3a2e10;
 }
 *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI','Malgun Gothic',-apple-system,sans-serif;}
 body{background:var(--bg);min-height:100vh;color:var(--text);transition:background .3s,color .3s;}
@@ -39,6 +41,16 @@ body{background:var(--bg);min-height:100vh;color:var(--text);transition:backgrou
 .topbar .user .badge{font-size:10px;padding:2px 8px;border-radius:10px;font-weight:700;}
 .topbar .user .badge.admin{background:#fde8e8;color:#a33;}
 .topbar .user .badge.user{background:var(--tag-bg);color:var(--tag-text);}
+.topbar .user .badge.premium{
+  background:linear-gradient(135deg,var(--gold),var(--gold-dark));
+  color:#7a4a00;
+  box-shadow:0 0 10px rgba(255,184,0,.5);
+  animation:shine-premium 2s infinite;
+}
+@keyframes shine-premium{
+  0%,100%{box-shadow:0 0 10px rgba(255,184,0,.5);}
+  50%{box-shadow:0 0 20px rgba(255,184,0,.9);}
+}
 .topbar .btn-icon{background:transparent;border:1.5px solid var(--border);color:var(--text);width:38px;height:38px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:14px;transition:.2s;position:relative;text-decoration:none;}
 .topbar .btn-icon:hover{background:var(--sub-bg);border-color:var(--link-color);color:var(--link-color);}
 .topbar .btn-icon .notif-badge{
@@ -206,6 +218,32 @@ body{background:var(--bg);min-height:100vh;color:var(--text);transition:backgrou
 .quota-banner .btn-request{background:#fff;color:#d9534f;border:none;padding:10px 20px;border-radius:10px;font-weight:700;font-size:13px;cursor:pointer;font-family:inherit;display:inline-flex;align-items:center;gap:8px;transition:.2s;}
 .quota-banner .btn-request:hover{transform:translateY(-2px);box-shadow:0 4px 12px rgba(0,0,0,.2);}
 
+/* Premium banner */
+.premium-banner{
+  background:linear-gradient(135deg,var(--gold),var(--gold-dark));
+  color:#7a4a00;border-radius:14px;padding:20px 24px;margin-bottom:24px;
+  display:flex;align-items:center;gap:18px;flex-wrap:wrap;
+  box-shadow:0 8px 24px rgba(255,165,0,.35);
+  position:relative;overflow:hidden;
+}
+.premium-banner::before{
+  content:'👑';
+  position:absolute;right:20px;top:50%;transform:translateY(-50%);
+  font-size:80px;opacity:.15;
+}
+.premium-banner .ico-big{
+  width:56px;height:56px;border-radius:50%;background:rgba(255,255,255,.4);
+  display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0;color:#7a4a00;
+}
+.premium-banner .txt{flex:1;min-width:200px;position:relative;z-index:1;}
+.premium-banner .txt h3{font-size:16px;font-weight:800;margin-bottom:4px;}
+.premium-banner .txt p{font-size:13px;opacity:.9;line-height:1.5;}
+.premium-banner .days-badge{
+  background:rgba(255,255,255,.5);border:2px solid rgba(255,255,255,.7);
+  padding:8px 20px;border-radius:30px;font-weight:800;font-size:16px;
+  position:relative;z-index:1;
+}
+
 .quick-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:26px;}
 .qs{background:var(--stat-bg);border-radius:12px;padding:18px 20px;box-shadow:var(--card-shadow);display:flex;align-items:center;gap:14px;transition:.3s;}
 .qs .icon{width:44px;height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;color:#fff;flex-shrink:0;}
@@ -222,6 +260,19 @@ body{background:var(--bg);min-height:100vh;color:var(--text);transition:backgrou
 .menu.history-card{border-color:#f0ad4e;}
 .menu.help-card{border-color:#26a69a;}
 .menu.help-card:hover{border-color:#00796b;box-shadow:0 12px 30px rgba(38,166,154,.25);}
+.menu.premium-card{
+  background:linear-gradient(135deg,var(--gold-light),var(--card-bg));
+  border-color:var(--gold);
+}
+.menu.premium-card:hover{
+  box-shadow:0 12px 30px rgba(255,184,0,.4);
+  border-color:var(--gold-dark);
+}
+.menu.premium-card .ico{
+  background:linear-gradient(135deg,var(--gold),var(--gold-dark));
+}
+.menu.premium-card h3{color:var(--gold-dark);}
+[data-theme="dark"] .menu.premium-card h3{color:var(--gold);}
 .menu .ico{width:52px;height:52px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;color:#fff;margin-bottom:16px;}
 .menu h3{font-size:16px;color:var(--title-color);margin-bottom:6px;}
 .menu p{font-size:13px;color:var(--text-muted);line-height:1.5;}
@@ -288,22 +339,27 @@ body{background:var(--bg);min-height:100vh;color:var(--text);transition:backgrou
 .kuota-popup-icon.ok{background:linear-gradient(135deg,#2fa36b,#1f7f53);}
 .kuota-popup-icon.empty{background:linear-gradient(135deg,#d9534f,#c9302c);}
 .kuota-popup-icon.admin{background:linear-gradient(135deg,#7c4dff,#5e35b1);}
+.kuota-popup-icon.premium{background:linear-gradient(135deg,var(--gold),var(--gold-dark));}
 .kuota-popup-title{text-align:center;font-size:20px;font-weight:800;color:var(--title-color);margin-bottom:6px;}
 .kuota-popup-subtitle{text-align:center;font-size:13px;color:var(--text-muted);margin-bottom:24px;line-height:1.5;}
 .kuota-info-box{background:var(--sub-bg);border-radius:12px;padding:20px;text-align:center;margin-bottom:20px;border:2px dashed var(--border);}
 .kuota-info-box.ok{border-color:#2fa36b;background:linear-gradient(135deg,rgba(47,163,107,.08),rgba(47,163,107,.02));}
 .kuota-info-box.empty{border-color:#d9534f;background:linear-gradient(135deg,rgba(217,83,79,.08),rgba(217,83,79,.02));}
 .kuota-info-box.admin{border-color:#7c4dff;background:linear-gradient(135deg,rgba(124,77,255,.08),rgba(124,77,255,.02));}
+.kuota-info-box.premium{border-color:var(--gold);background:linear-gradient(135deg,rgba(255,184,0,.1),rgba(255,184,0,.02));}
 .kuota-big-num{font-size:48px;font-weight:900;line-height:1;margin-bottom:6px;}
 .kuota-big-num.ok{color:#2fa36b;}
 .kuota-big-num.empty{color:#d9534f;}
 .kuota-big-num.admin{color:#7c4dff;}
+.kuota-big-num.premium{color:var(--gold-dark);}
+[data-theme="dark"] .kuota-big-num.premium{color:var(--gold);}
 .kuota-info-label{font-size:12px;color:var(--text-muted);text-transform:uppercase;letter-spacing:1.5px;font-weight:700;margin-bottom:4px;}
 .kuota-info-detail{font-size:13px;color:var(--text);font-weight:600;margin-top:10px;}
 .kuota-popup-catatan{padding:12px 16px;border-radius:10px;font-size:12px;line-height:1.5;margin-bottom:18px;}
 .kuota-popup-catatan.ok{background:#e8f5ee;color:#1f7f53;border-left:3px solid #2fa36b;}
 .kuota-popup-catatan.empty{background:#fde8e8;color:#a33;border-left:3px solid #d9534f;}
 .kuota-popup-catatan.admin{background:#f0e8ff;color:#5e35b1;border-left:3px solid #7c4dff;}
+.kuota-popup-catatan.premium{background:var(--gold-light);color:#7a4a00;border-left:3px solid var(--gold);}
 .kuota-popup-buttons{display:flex;gap:10px;flex-wrap:wrap;}
 .kuota-popup-buttons .btn{flex:1;justify-content:center;padding:14px;font-size:15px;}
 
@@ -314,6 +370,77 @@ body{background:var(--bg);min-height:100vh;color:var(--text);transition:backgrou
 .btn-warning:hover:not(:disabled){filter:brightness(1.1);}
 .btn-secondary{background:var(--sub-bg);color:var(--text);border:1px solid var(--border);}
 .btn-secondary:hover:not(:disabled){background:var(--border);}
+.btn-gold{background:linear-gradient(135deg,var(--gold),var(--gold-dark));color:#7a4a00;font-weight:800;}
+.btn-gold:hover:not(:disabled){filter:brightness(1.1);transform:translateY(-2px);box-shadow:0 6px 16px rgba(255,184,0,.35);}
+
+/* ⚡ WELCOME POPUP */
+.welcome-popup .modal-box{max-width:460px;text-align:center;}
+.welcome-popup .kuota-popup-icon{background:linear-gradient(135deg,#1e5fa8,#154a82);}
+.welcome-popup .kuota-popup-catatan{text-align:left;}
+
+/* ⚡ LINK BELI KUOTA */
+.buy-quota-link{
+  color:#c9302c;
+  font-weight:800;
+  text-decoration:underline;
+  transition:.2s;
+}
+.buy-quota-link:hover{
+  color:#a32522;
+  text-decoration:none;
+}
+[data-theme="dark"] .buy-quota-link{
+  color:#ff6b6b;
+}
+[data-theme="dark"] .buy-quota-link:hover{
+  color:#ff8787;
+}
+
+/* ===== PAKET PREMIUM GRID ===== */
+.paket-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin:20px 0;}
+.paket{
+  border:2px solid var(--border);border-radius:14px;padding:16px 12px;text-align:center;
+  cursor:pointer;transition:.2s;position:relative;background:var(--card-bg);
+}
+.paket:hover{border-color:var(--gold);transform:translateY(-3px);box-shadow:0 8px 20px rgba(255,184,0,.2);}
+.paket.selected{border-color:var(--gold);background:linear-gradient(180deg,var(--gold-light),var(--card-bg));box-shadow:0 8px 20px rgba(255,184,0,.25);}
+.paket.selected::before{
+  content:'✓';position:absolute;top:-10px;right:-10px;
+  width:26px;height:26px;border-radius:50%;
+  background:linear-gradient(135deg,var(--gold),var(--gold-dark));
+  color:#fff;display:flex;align-items:center;justify-content:center;
+  font-weight:800;font-size:12px;box-shadow:0 2px 8px rgba(255,184,0,.4);
+}
+.paket .nama{font-size:13px;font-weight:700;color:var(--text);margin-bottom:8px;}
+.paket .harga{font-size:18px;font-weight:800;color:var(--gold-dark);line-height:1;}
+[data-theme="dark"] .paket .harga{color:var(--gold);}
+.paket .harga small{font-size:10px;font-weight:600;color:var(--text-muted);display:block;margin-top:2px;}
+.paket .durasi{font-size:11px;color:var(--text-muted);margin-top:6px;}
+.paket .hemat{
+  display:inline-block;background:#e8f5ee;color:#1f7f53;font-size:10px;font-weight:700;
+  padding:2px 8px;border-radius:10px;margin-top:8px;
+}
+.paket .populer-tag{
+  position:absolute;top:-10px;left:50%;transform:translateX(-50%);
+  background:linear-gradient(135deg,var(--gold),var(--gold-dark));
+  color:#fff;font-size:10px;font-weight:800;padding:3px 12px;border-radius:10px;
+  letter-spacing:1px;white-space:nowrap;
+}
+
+/* Benefit list */
+.benefit-list{
+  background:var(--sub-bg);border-radius:12px;padding:16px 18px;margin-bottom:18px;
+}
+.benefit-list .label{
+  font-size:12px;font-weight:700;color:var(--text-muted);
+  text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;
+}
+.benefit-list .item{
+  display:flex;align-items:flex-start;gap:10px;
+  font-size:13px;color:var(--text);line-height:1.5;margin-bottom:8px;
+}
+.benefit-list .item:last-child{margin-bottom:0;}
+.benefit-list .item i{color:#2fa36b;margin-top:3px;flex-shrink:0;}
 
 @media(max-width:600px){
   .wrap{margin:20px auto;padding-bottom:90px;}
@@ -321,6 +448,7 @@ body{background:var(--bg);min-height:100vh;color:var(--text);transition:backgrou
   .topbar .user{display:none;}
   .quick-stats{grid-template-columns:1fr;}
   .quota-banner{padding:16px;}
+  .premium-banner{padding:16px;}
   .dropdown-panel{position:fixed;top:auto;bottom:0;left:0;right:0;border-radius:20px 20px 0 0;max-height:70vh;animation:slideUp .3s ease;}
   @keyframes slideUp{from{transform:translateY(100%);}to{transform:translateY(0);}}
   .kuota-popup-icon{width:64px;height:64px;font-size:28px;}
@@ -328,6 +456,7 @@ body{background:var(--bg);min-height:100vh;color:var(--text);transition:backgrou
   .notif-dropdown{position:fixed;top:70px;right:12px;left:12px;width:auto;}
   .chat-popup{bottom:90px;right:12px;left:12px;width:auto;}
   .chat-fab{bottom:20px;right:20px;width:56px;height:56px;font-size:22px;}
+  .paket-grid{grid-template-columns:1fr 1fr;}
 }
 </style>
 </head>
@@ -342,6 +471,9 @@ body{background:var(--bg);min-height:100vh;color:var(--text);transition:backgrou
       <span id="userEmail" style="font-size:11px;color:var(--text-muted);">-</span>
     </div>
     <span class="badge" id="userRole">-</span>
+    <span class="badge premium" id="premiumBadge" style="display:none;">
+      <i class="fas fa-crown"></i> PREMIUM
+    </span>
   </span>
 
   <div class="notif-wrapper" id="notifWrapper">
@@ -378,9 +510,18 @@ body{background:var(--bg);min-height:100vh;color:var(--text);transition:backgrou
       <p id="quotaDesc">Sebentar ya</p>
     </div>
     <div class="quota-badge" id="quotaBadge">...</div>
-    <button class="btn-request" id="btnRequest" onclick="openRequestModal()" style="display:none;">
-      <i class="fas fa-paper-plane"></i> Minta Tambah Kuota
+    <button class="btn-request" id="btnRequest" onclick="bukaBeliKuota()" style="display:none;">
+      <i class="fas fa-shopping-cart"></i> Beli Kuota
     </button>
+  </div>
+
+  <div id="premiumBanner" class="premium-banner" style="display:none;">
+    <div class="ico-big"><i class="fas fa-crown"></i></div>
+    <div class="txt">
+      <h3>💎 Kamu Premium!</h3>
+      <p id="premiumBannerDesc">Akses unlimited ke semua ujian</p>
+    </div>
+    <div class="days-badge" id="premiumDaysBadge">-- hari</div>
   </div>
 
   <div class="quick-stats">
@@ -409,6 +550,12 @@ body{background:var(--bg);min-height:100vh;color:var(--text);transition:backgrou
 
   <div class="section-title">👤 Akun Saya</div>
   <div class="grid" style="margin-bottom:20px;">
+    <div class="menu premium-card" onclick="openPremiumModal()">
+      <div class="ico"><i class="fas fa-crown"></i></div>
+      <h3 id="premiumMenuTitle">💎 Premium</h3>
+      <p id="premiumMenuDesc">Unlimited ujian Rp 20.000/bulan</p>
+      <i class="fas fa-chevron-right arrow"></i>
+    </div>
     <a class="menu profile-card" href="profil.html">
       <div class="ico ico-purple"><i class="fas fa-user-edit"></i></div>
       <h3>Edit Profil</h3>
@@ -518,6 +665,23 @@ body{background:var(--bg);min-height:100vh;color:var(--text);transition:backgrou
   </div>
 </div>
 
+<!-- POPUP WELCOME -->
+<div id="welcomePopup" class="modal-back welcome-popup">
+  <div class="modal-box">
+    <div class="kuota-popup-icon" id="welcomeIcon">
+      <i class="fas fa-star"></i>
+    </div>
+    <div class="kuota-popup-title" id="welcomeTitle">Selamat Datang! 👋</div>
+    <div class="kuota-popup-subtitle" id="welcomeSubtitle">Semangat belajar bahasa Korea hari ini!</div>
+
+    <div id="welcomeContent" style="margin-bottom:0;"></div>
+
+    <p style="text-align:center;font-size:12px;color:var(--text-muted);margin-top:20px;">
+      Klik di mana saja untuk menutup
+    </p>
+  </div>
+</div>
+
 <div id="kuotaPopup" class="modal-back">
   <div class="modal-box">
     <div class="kuota-popup-icon ok" id="kuotaPopupIcon">
@@ -537,6 +701,42 @@ body{background:var(--bg);min-height:100vh;color:var(--text);transition:backgrou
       <button class="btn btn-secondary" onclick="closeModal('kuotaPopup')"><i class="fas fa-times"></i> Batal</button>
       <button class="btn btn-primary" id="kuotaBtnMulai" onclick="mulaiSoal()"><i class="fas fa-rocket"></i> Mulai Soal</button>
     </div>
+  </div>
+</div>
+
+<!-- MODAL PREMIUM -->
+<div id="premiumModal" class="modal-back">
+  <div class="modal-box" style="max-width:520px;">
+    <div style="text-align:center;margin-bottom:20px;">
+      <div style="width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--gold-dark));display:flex;align-items:center;justify-content:center;font-size:36px;color:#fff;margin:0 auto 12px;box-shadow:0 8px 24px rgba(255,184,0,.4);">
+        <i class="fas fa-crown"></i>
+      </div>
+      <div style="font-size:22px;font-weight:800;color:var(--title-color);">Langganan Premium</div>
+      <div style="font-size:13px;color:var(--text-muted);margin-top:6px;">Unlimited ujian, tanpa batas kuota</div>
+    </div>
+
+    <div class="paket-grid" id="paketGrid"></div>
+
+    <div class="benefit-list">
+      <div class="label">✨ Benefit Premium</div>
+      <div class="item"><i class="fas fa-check-circle"></i> <div>Unlimited ujian (tanpa batas kuota)</div></div>
+      <div class="item"><i class="fas fa-check-circle"></i> <div>Semua kategori soal terbuka</div></div>
+      <div class="item"><i class="fas fa-check-circle"></i> <div>Sertifikat otomatis setelah lulus</div></div>
+      <div class="item"><i class="fas fa-check-circle"></i> <div>Prioritas bantuan admin</div></div>
+    </div>
+
+    <div style="display:flex;gap:10px;">
+      <button class="btn btn-secondary" onclick="closeModal('premiumModal')" style="flex:1;justify-content:center;padding:13px;">
+        <i class="fas fa-times"></i> Nanti Aja
+      </button>
+      <button class="btn btn-gold" onclick="langgananSekarang()" style="flex:2;justify-content:center;padding:13px;">
+        <i class="fas fa-crown"></i> Langganan Sekarang
+      </button>
+    </div>
+
+    <p style="text-align:center;font-size:11px;color:var(--text-muted);margin-top:14px;">
+      Setelah klik, kamu akan diarahkan ke WhatsApp admin untuk konfirmasi pembayaran.
+    </p>
   </div>
 </div>
 
@@ -568,7 +768,154 @@ function toggleTheme(){
 }
 applyTheme(localStorage.getItem('theme') || 'light');
 
-const API = 'https://script.google.com/macros/s/AKfycbxgov9M_0EcaqEh15k2piFH9XZGiFC_05mgl_PeZ166pqxCzYlWl7AaW9xLnWFilFwE/exec';
+const API = 'https://script.google.com/macros/s/AKfycbwGsUnn93GQGnCGYITxYas-ig5BGa0O1191cxp_wNjeESRYsCJZgsYXClQNKGSyDAjQ/exec';
+
+// ============================================================
+//  ⚡ KONFIGURASI PREMIUM
+// ============================================================
+// Ganti nomor WA admin (format 62xxx tanpa +)
+const WHATSAPP_ADMIN = '6281234567890';
+
+// Link beli kuota alternatif (kalau user gak mau premium, bisa topup kuota biasa)
+// Bisa dikosongkan kalau gak ada
+const BELI_KUOTA_URL = 'https://wa.me/6281234567890?text=Halo%20Admin%2C%20saya%20mau%20beli%20kuota%20ujian%20EPS-TOPIK';
+
+const PREMIUM_PAKET = [
+  { id: 'bulanan', label: 'Bulanan', harga: 20000, days: 30, populer: true },
+  { id: '3bulan', label: '3 Bulan', harga: 50000, days: 90, hemat: '17%' },
+  { id: '1tahun', label: '1 Tahun', harga: 180000, days: 365, hemat: '25%' }
+];
+
+let selectedPaket = 'bulanan';
+
+function isPremiumUser() {
+  if (!user) return false;
+  if (String(user.plan || '').toLowerCase() !== 'premium') return false;
+  if (!user.premiumUntil) return false;
+  const exp = new Date(user.premiumUntil);
+  return !isNaN(exp.getTime()) && exp.getTime() > Date.now();
+}
+
+function getDaysLeft() {
+  if (!isPremiumUser()) return 0;
+  const exp = new Date(user.premiumUntil);
+  return Math.max(0, Math.ceil((exp.getTime() - Date.now()) / (24 * 60 * 60 * 1000)));
+}
+
+function renderPremiumBadge() {
+  const badge = document.getElementById('premiumBadge');
+  const banner = document.getElementById('premiumBanner');
+  const bannerDesc = document.getElementById('premiumBannerDesc');
+  const daysBadge = document.getElementById('premiumDaysBadge');
+  const menuDesc = document.getElementById('premiumMenuDesc');
+  const menuTitle = document.getElementById('premiumMenuTitle');
+
+  if (isPremiumUser()) {
+    const days = getDaysLeft();
+    if (badge) badge.style.display = 'inline-block';
+    if (banner) banner.style.display = 'flex';
+    if (bannerDesc) bannerDesc.textContent = `Akses unlimited ke semua ujian · Berakhir dalam ${days} hari`;
+    if (daysBadge) daysBadge.textContent = `${days} hari`;
+    if (menuDesc) menuDesc.textContent = `Premium aktif · ${days} hari lagi`;
+    if (menuTitle) menuTitle.textContent = `💎 Premium Aktif`;
+  } else {
+    if (badge) badge.style.display = 'none';
+    if (banner) banner.style.display = 'none';
+    if (menuDesc) menuDesc.textContent = 'Unlimited ujian Rp 20.000/bulan';
+    if (menuTitle) menuTitle.textContent = `💎 Premium`;
+  }
+}
+
+function renderPaketGrid() {
+  const grid = document.getElementById('paketGrid');
+  if (!grid) return;
+  let html = '';
+  PREMIUM_PAKET.forEach(p => {
+    const selected = selectedPaket === p.id ? 'selected' : '';
+    html += `
+      <div class="paket ${selected}" onclick="pilihPaket('${p.id}', event)" data-paket="${p.id}">
+        ${p.populer ? '<div class="populer-tag">POPULER</div>' : ''}
+        <div class="nama">${p.label}</div>
+        <div class="harga">Rp ${p.harga.toLocaleString('id-ID')}<small>${p.days} hari</small></div>
+        ${p.hemat ? `<div class="hemat">Hemat ${p.hemat}</div>` : ''}
+      </div>`;
+  });
+  grid.innerHTML = html;
+}
+
+function pilihPaket(id, event) {
+  if (event) event.stopPropagation();
+  selectedPaket = id;
+  document.querySelectorAll('.paket').forEach(el => {
+    el.classList.toggle('selected', el.dataset.paket === id);
+  });
+}
+
+function openPremiumModal() {
+  if (isPremiumUser()) {
+    const days = getDaysLeft();
+    alert(`💎 Kamu udah Premium!\n\nSisa: ${days} hari\nBerakhir: ${user.premiumUntil}\n\nNikmati akses unlimited ke semua ujian.`);
+    return;
+  }
+  renderPaketGrid();
+  openModal('premiumModal');
+}
+
+async function langgananSekarang() {
+  const paket = PREMIUM_PAKET.find(p => p.id === selectedPaket) || PREMIUM_PAKET[0];
+  const pesan = encodeURIComponent(
+    `Halo Admin, saya mau langganan PREMIUM EPS-TOPIK.\n\n` +
+    `👤 Username: ${user.username}\n` +
+    `📛 Nama: ${user.nama || user.username}\n` +
+    `💎 Paket: ${paket.label}\n` +
+    `💰 Harga: Rp ${paket.harga.toLocaleString('id-ID')}\n` +
+    `⏱️ Durasi: ${paket.days} hari\n\n` +
+    `Mohon info cara pembayarannya. Terima kasih!`
+  );
+
+  // Kirim notif ke backend (biar admin lihat di tab Langganan)
+  try {
+    await fetch(API, {
+      method: 'POST',
+      headers: {'Content-Type':'text/plain;charset=utf-8'},
+      body: JSON.stringify({
+        action: 'requestPremium',
+        username: user.username,
+        paket: paket.id,
+        harga: paket.harga,
+        catatan: `Paket ${paket.label} - ${paket.days} hari`
+      })
+    });
+  } catch(e) {
+    console.warn('Gagal kirim notif premium:', e);
+  }
+
+  // Buka WhatsApp
+  const waUrl = `https://wa.me/${WHATSAPP_ADMIN}?text=${pesan}`;
+  window.open(waUrl, '_blank');
+
+  // Close modal
+  closeModal('premiumModal');
+}
+
+async function refreshPremiumStatus() {
+  try {
+    const r = await fetch(API + '?action=getPremiumInfo&username=' + encodeURIComponent(user.username) + '&t=' + Date.now());
+    const res = await r.json();
+    if (res.success) {
+      user.plan = res.plan || 'free';
+      user.premiumUntil = res.premiumUntil || '';
+      localStorage.setItem('user', JSON.stringify(user));
+      renderPremiumBadge();
+    }
+  } catch(e) {
+    console.warn('Gagal refresh premium:', e);
+  }
+}
+
+function bukaBeliKuota() {
+  window.open(BELI_KUOTA_URL, '_blank');
+}
 
 const TEMA_KOSAKATA = [
   { value: 'transportasi',   label: 'Transportasi',     desc: 'Bus, kereta, taksi, dll',    icon: 'fa-bus',            icoClass: 'ico-transportasi' },
@@ -708,7 +1055,7 @@ function markAllNotifRead(e) {
 }
 
 // ============================================================
-//  CHAT — Support ADMIN & USER (Gambar + Push Notif + Read Receipt)
+//  CHAT
 // ============================================================
 let currentChatRoom = null;
 let chatRooms = [];
@@ -872,7 +1219,6 @@ function renderChatRooms() {
     body.innerHTML = `<div class="chat-empty">
       <i class="fas fa-comments"></i>
       Belum ada chat dari user
-      <p style="font-size:11px;margin-top:8px;opacity:.7;">Chat akan muncul setelah user mengirim pesan</p>
     </div>`;
     return;
   }
@@ -967,9 +1313,9 @@ function renderChatRoomMessages(msgs, userReadAt) {
     if (m.isMine && userReadAt) {
       const tglPesan = String(m.tanggal || '');
       if (tglPesan <= userReadAt) {
-        readHtml = `<span style="font-size:10px;opacity:.85;margin-left:6px;" title="Dibaca ${userReadAt}">✓✓</span>`;
+        readHtml = `<span style="font-size:10px;opacity:.85;margin-left:6px;">✓✓</span>`;
       } else {
-        readHtml = `<span style="font-size:10px;opacity:.6;margin-left:6px;" title="Terkirim">✓</span>`;
+        readHtml = `<span style="font-size:10px;opacity:.6;margin-left:6px;">✓</span>`;
       }
     }
 
@@ -1324,14 +1670,15 @@ function openKuotaPopupKosakata(tema, label, icon) {
 
 function tampilkanPopupKuota(label, desc, icon) {
   const isAdmin = user.role === 'admin';
+  const isPrem = isPremiumUser();
   const used = Number(user.quotaUsed) || 0;
   const max = Number(user.quotaMax) || 3;
   const remain = Math.max(0, max - used);
-  const canExam = isAdmin || (used < max);
+  const canExam = isAdmin || isPrem || (used < max);
 
   const iconEl = document.getElementById('kuotaPopupIcon');
   const iconFa = document.getElementById('kuotaPopupIconFa');
-  if (iconEl) iconEl.className = 'kuota-popup-icon ' + (isAdmin ? 'admin' : (canExam ? 'ok' : 'empty'));
+  if (iconEl) iconEl.className = 'kuota-popup-icon ' + (isAdmin ? 'admin' : (isPrem ? 'premium' : (canExam ? 'ok' : 'empty')));
   if (iconFa) iconFa.className = 'fas ' + (icon || 'fa-book');
 
   const titleEl = document.getElementById('kuotaPopupTitle');
@@ -1349,16 +1696,25 @@ function tampilkanPopupKuota(label, desc, icon) {
     if (bigNum) { bigNum.className = 'kuota-big-num admin'; bigNum.textContent = '∞'; }
     if (infoDetail) infoDetail.textContent = 'Admin bebas akses semua ujian';
     if (catatan) { catatan.className = 'kuota-popup-catatan admin'; catatan.innerHTML = '👑 Sebagai admin, kamu bisa mengerjakan ujian tanpa batas kuota.'; }
+  } else if (isPrem) {
+    const days = getDaysLeft();
+    if (infoBox) infoBox.className = 'kuota-info-box premium';
+    if (bigNum) { bigNum.className = 'kuota-big-num premium'; bigNum.textContent = '∞'; }
+    if (infoDetail) infoDetail.textContent = `Premium aktif · ${days} hari lagi`;
+    if (catatan) { catatan.className = 'kuota-popup-catatan premium'; catatan.innerHTML = '👑 Kamu Premium! Nikmati akses unlimited ke semua ujian.'; }
   } else if (canExam) {
     if (infoBox) infoBox.className = 'kuota-info-box ok';
     if (bigNum) { bigNum.className = 'kuota-big-num ok'; bigNum.textContent = remain; }
     if (infoDetail) infoDetail.textContent = `dari ${max} kuota ujian`;
-    if (catatan) { catatan.className = 'kuota-popup-catatan ok'; catatan.innerHTML = '💡 Setiap kali kamu menyelesaikan ujian, kuota akan berkurang <strong>1</strong>.'; }
+    if (catatan) { catatan.className = 'kuota-popup-catatan ok'; catatan.innerHTML = '💡 Setiap kali kamu menyelesaikan ujian, kuota akan berkurang <strong>1</strong>. Mau unlimited? <a href="#" onclick="event.preventDefault();closeModal(\'kuotaPopup\');openPremiumModal();" style="color:var(--gold-dark);font-weight:800;text-decoration:underline;">Upgrade Premium</a>'; }
   } else {
     if (infoBox) infoBox.className = 'kuota-info-box empty';
     if (bigNum) { bigNum.className = 'kuota-big-num empty'; bigNum.textContent = '0'; }
     if (infoDetail) infoDetail.textContent = `dari ${max} kuota ujian`;
-    if (catatan) { catatan.className = 'kuota-popup-catatan empty'; catatan.innerHTML = '🔒 Kuota kamu sudah habis. Hubungi admin untuk minta tambahan kuota.'; }
+    if (catatan) {
+      catatan.className = 'kuota-popup-catatan empty';
+      catatan.innerHTML = `🔒 Kuota kamu sudah habis. <a href="#" onclick="event.preventDefault();closeModal('kuotaPopup');openPremiumModal();" style="color:var(--gold-dark);font-weight:800;text-decoration:underline;">Upgrade Premium Rp 20.000/bulan</a> untuk unlimited, atau <a href="${BELI_KUOTA_URL}" target="_blank" style="color:#c9302c;font-weight:800;text-decoration:underline;">beli kuota satuan</a>.`;
+    }
   }
 
   const btnMulai = document.getElementById('kuotaBtnMulai');
@@ -1369,9 +1725,9 @@ function tampilkanPopupKuota(label, desc, icon) {
     btnMulai.onclick = mulaiSoal;
   } else {
     btnMulai.disabled = false;
-    btnMulai.className = 'btn btn-warning';
-    btnMulai.innerHTML = '<i class="fas fa-paper-plane"></i> Minta Kuota';
-    btnMulai.onclick = () => { closeModal('kuotaPopup'); openRequestModal(); };
+    btnMulai.className = 'btn btn-gold';
+    btnMulai.innerHTML = '<i class="fas fa-crown"></i> Upgrade Premium';
+    btnMulai.onclick = () => { closeModal('kuotaPopup'); openPremiumModal(); };
   }
 
   openModal('kuotaPopup');
@@ -1406,17 +1762,23 @@ function loadStats() {
 
 function updateQuotaUI() {
   const banner = document.getElementById('quotaBanner');
-  const badge = document.getElementById('quotaBadge');
-  const title = document.getElementById('quotaTitle');
-  const desc = document.getElementById('quotaDesc');
-  const btnReq = document.getElementById('btnRequest');
 
   if (!banner) return;
   if (user.role === 'admin') { banner.style.display = 'none'; return; }
 
+  // Kalau premium, sembunyikan banner kuota
+  if (isPremiumUser()) {
+    banner.style.display = 'none';
+    return;
+  }
+
   if (user.quotaMax === undefined || user.quotaMax === null) {
     banner.style.display = 'flex';
     banner.className = 'quota-banner loading';
+    const badge = document.getElementById('quotaBadge');
+    const title = document.getElementById('quotaTitle');
+    const desc = document.getElementById('quotaDesc');
+    const btnReq = document.getElementById('btnRequest');
     if (badge) badge.textContent = '...';
     if (title) title.textContent = 'Memuat kuota...';
     if (desc) desc.textContent = 'Sebentar ya';
@@ -1425,6 +1787,11 @@ function updateQuotaUI() {
   }
 
   banner.style.display = 'flex';
+  const badge = document.getElementById('quotaBadge');
+  const title = document.getElementById('quotaTitle');
+  const desc = document.getElementById('quotaDesc');
+  const btnReq = document.getElementById('btnRequest');
+
   const used = Number(user.quotaUsed) || 0;
   const max = Number(user.quotaMax) || 3;
   const remain = Math.max(0, max - used);
@@ -1438,7 +1805,7 @@ function updateQuotaUI() {
   } else {
     banner.className = 'quota-banner empty';
     if (title) title.textContent = `Kuota Ujian Habis`;
-    if (desc) desc.textContent = `Kamu sudah pakai ${used} dari ${max} kuota. Hubungi admin untuk tambah kuota.`;
+    if (desc) desc.textContent = `Kamu sudah pakai ${used} dari ${max} kuota. Upgrade premium untuk unlimited!`;
     if (btnReq) btnReq.style.display = 'inline-flex';
   }
 }
@@ -1507,14 +1874,108 @@ function logout(e) {
   location.href = 'login.html';
 }
 
+// ============================================================
+//  WELCOME POPUP
+// ============================================================
+function shouldShowWelcome() {
+  const currentSessionId = sessionStorage.getItem('login_session_id') || '';
+  const lastShownSession = sessionStorage.getItem('welcome_shown_session') || '';
+  if (currentSessionId && lastShownSession === currentSessionId) return false;
+  return true;
+}
+
+function buildWelcomeContent() {
+  const isAdmin = user.role === 'admin';
+  const isPrem = isPremiumUser();
+  const used = Number(user.quotaUsed) || 0;
+  const max = Number(user.quotaMax) || 3;
+  const remain = Math.max(0, max - used);
+
+  const hour = new Date().getHours();
+  let greeting = 'Selamat Datang';
+  if (hour < 11) greeting = 'Selamat Pagi';
+  else if (hour < 15) greeting = 'Selamat Siang';
+  else if (hour < 18) greeting = 'Selamat Sore';
+  else greeting = 'Selamat Malam';
+
+  const titleEl = document.getElementById('welcomeTitle');
+  const subEl = document.getElementById('welcomeSubtitle');
+  if (titleEl) titleEl.textContent = `${greeting}, ${user.nama || user.username}! 👋`;
+
+  if (isAdmin) {
+    if (subEl) subEl.textContent = 'Panel admin siap. Kelola soal & user hari ini!';
+    return `
+      <div class="kuota-popup-catatan admin" style="margin-bottom:0;">
+        👑 <strong>Kamu login sebagai Admin</strong><br>
+        Akses semua fitur tanpa batas kuota.
+      </div>`;
+  }
+
+  if (isPrem) {
+    const days = getDaysLeft();
+    if (subEl) subEl.textContent = 'Premium aktif, selamat belajar tanpa batas!';
+    return `
+      <div class="kuota-popup-catatan premium" style="margin-bottom:0;">
+        👑 <strong>Kamu Premium!</strong><br>
+        Akses unlimited · Sisa ${days} hari lagi.
+      </div>`;
+  }
+
+  if (remain > 0) {
+    if (subEl) subEl.textContent = 'Semangat belajar bahasa Korea hari ini!';
+    return `
+      <div class="kuota-popup-catatan ok" style="margin-bottom:0;">
+        🎯 <strong>Kuota Ujian:</strong> ${remain} / ${max}<br>
+        Kamu bisa mengerjakan ${remain} ujian lagi hari ini.
+      </div>`;
+  }
+
+  if (subEl) subEl.textContent = 'Yuk, upgrade premium biar bisa unlimited!';
+  return `
+    <div class="kuota-popup-catatan empty" style="margin-bottom:0;">
+      🔒 <strong>Kuota Ujian Habis</strong><br>
+      <a href="#" onclick="event.preventDefault();closeWelcomePopup();openPremiumModal();" style="color:var(--gold-dark);font-weight:800;text-decoration:underline;">Upgrade Premium Rp 20.000/bulan</a> untuk unlimited ujian.
+    </div>`;
+}
+
+function showWelcomePopup() {
+  if (!shouldShowWelcome()) return;
+  const contentEl = document.getElementById('welcomeContent');
+  if (contentEl) contentEl.innerHTML = buildWelcomeContent();
+
+  setTimeout(() => {
+    openModal('welcomePopup');
+    const currentSessionId = sessionStorage.getItem('login_session_id') || '';
+    sessionStorage.setItem('welcome_shown_session', currentSessionId);
+  }, 500);
+}
+
+function closeWelcomePopup() {
+  closeModal('welcomePopup');
+}
+
+document.addEventListener('click', function(e) {
+  const welcomePopup = document.getElementById('welcomePopup');
+  if (!welcomePopup || !welcomePopup.classList.contains('show')) return;
+  if (e.target === welcomePopup) {
+    closeWelcomePopup();
+  }
+});
+
 // ===== INIT =====
 renderTemaList();
+renderPremiumBadge();
 updateQuotaUI();
 updateNotifBadge();
 updateChatBadge();
 loadStats();
-refreshQuota();
-refreshUserProfile();
+
+Promise.all([refreshQuota(), refreshUserProfile(), refreshPremiumStatus()])
+  .then(() => {
+    renderPremiumBadge();
+    updateQuotaUI();
+    showWelcomePopup();
+  });
 </script>
 </body>
 </html>
