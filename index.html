@@ -224,9 +224,30 @@ function validatePassword(el) {
   }
 }
 
-const API = 'https://script.google.com/macros/s/AKfycbxgov9M_0EcaqEh15k2piFH9XZGiFC_05mgl_PeZ166pqxCzYlWl7AaW9xLnWFilFwE/exec';
+const API = 'https://script.google.com/macros/s/AKfycbwGsUnn93GQGnCGYITxYas-ig5BGa0O1191cxp_wNjeESRYsCJZgsYXClQNKGSyDAjQ/exec';
 
-if (localStorage.getItem('user')) location.href = 'dashboard.html';
+// ============================================================
+//  ⚡ RESET WELCOME POPUP FLAG
+//  Dipanggil sebelum redirect ke dashboard — biar popup muncul
+// ============================================================
+function resetWelcomeFlag() {
+  try {
+    sessionStorage.removeItem('welcome_shown');
+    sessionStorage.removeItem('welcome_shown_at');
+    sessionStorage.removeItem('welcome_shown_session');
+    // Set login session ID baru
+    sessionStorage.setItem('login_session_id', Date.now().toString());
+    console.log('✅ Welcome flag reset, login_session_id:', sessionStorage.getItem('login_session_id'));
+  } catch(e) {
+    console.warn('Reset welcome flag gagal:', e);
+  }
+}
+
+// ⚡ Kalau udah login, langsung redirect ke dashboard
+if (localStorage.getItem('user')) {
+  resetWelcomeFlag();
+  location.href = 'dashboard.html';
+}
 
 function switchTab(t) {
   const isLogin = t === 'login';
@@ -276,6 +297,10 @@ async function doLogin(e) {
     const res = await post({ action:'login', username, password });
     if (res.success) {
       localStorage.setItem('user', JSON.stringify(res.user));
+
+      // ⚡ RESET welcome popup flag — biar muncul di dashboard
+      resetWelcomeFlag();
+
       const roleLabel = res.user.role === 'admin' ? 'Admin' : 'Pelajar';
       showMsg(`✅ Login berhasil sebagai ${roleLabel}! Mengalihkan...`, 'ok');
       setTimeout(() => location.href = 'dashboard.html', 700);
