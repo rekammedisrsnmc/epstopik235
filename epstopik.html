@@ -22,18 +22,71 @@
 *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI','Malgun Gothic',-apple-system,sans-serif;}
 body{background:var(--bg);min-height:100vh;color:var(--text);transition:background .3s,color .3s;}
 .exam-paper{max-width:800px;margin:30px auto;background:var(--card-bg);box-shadow:var(--shadow);border-radius:4px;padding:50px 60px;transition:background .3s;}
-.exam-title{text-align:center;font-size:15px;color:var(--muted);margin-bottom:8px;}
-.exam-heading{text-align:center;font-size:22px;font-weight:700;padding:12px 0;border-top:2px solid var(--text);border-bottom:2px solid var(--text);margin:15px 0 30px 0;letter-spacing:3px;color:var(--text);}
+.exam-title{text-align:center;font-size:15px;color:var(--muted);margin-bottom:30px;}
 .question{margin-bottom:32px;}
-.question-num{font-size:15px;font-weight:700;color:var(--text);margin-bottom:12px;}
+
+/* ⚡ NOMOR SOAL — sekarang di dalam body */
+.question-num{
+  font-size:15px;
+  font-weight:700;
+  color:var(--text);
+  flex-shrink:0;
+  min-width:32px;
+  padding-top:2px;
+}
 .question-num::after{content:'.';}
-.question-body{display:flex;gap:24px;align-items:flex-start;padding-left:20px;}
-.question-media{flex-shrink:0;width:220px;display:flex;flex-direction:column;align-items:center;gap:8px;}
-.question-media img{max-width:100%;max-height:180px;border-radius:4px;object-fit:contain;}
+
+/* ⚡ INSTRUKSI — kotak petunjuk di atas soal */
+.question-instruction{
+  font-size:13px;
+  color:var(--muted);
+  font-style:italic;
+  padding:10px 14px;
+  background:var(--sub-bg);
+  border-left:3px solid var(--blue);
+  border-radius:6px;
+  margin-bottom:12px;
+  line-height:1.6;
+  display:flex;
+  align-items:flex-start;
+  gap:8px;
+}
+.question-instruction::before{
+  content:'📌';
+  flex-shrink:0;
+  font-style:normal;
+}
+
+/* ⚡ BODY — nomor + media + content */
+.question-body{
+  display:flex;
+  gap:16px;
+  align-items:flex-start;
+  padding-left:0;
+}
+
+.question-media{
+  flex-shrink:0;
+  width:200px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:8px;
+}
+.question-media img{
+  max-width:100%;
+  max-height:180px;
+  border-radius:4px;
+  object-fit:contain;
+  border:1px solid var(--border);
+  padding:4px;
+  background:#fff;
+}
+
 .question-text{font-size:15px;line-height:1.8;color:var(--text);margin-bottom:10px;}
 .question-content{flex:1;min-width:0;}
 .question-media audio{width:100%;margin-top:8px;}
-.kategori-badge{display:inline-block;padding:2px 10px;border-radius:10px;font-size:10px;font-weight:700;background:var(--blue-light);color:var(--blue);margin-bottom:8px;letter-spacing:1px;}
+
 .options{list-style:none;display:grid;grid-template-columns:1fr 1fr;gap:8px 20px;margin-top:12px;}
 .options.vertical{grid-template-columns:1fr;}
 .options li{font-size:15px;line-height:1.6;color:var(--text);padding:6px 10px;border-radius:6px;cursor:pointer;transition:0.15s;display:flex;align-items:center;gap:8px;border:2px solid transparent;user-select:none;}
@@ -91,6 +144,7 @@ body{background:var(--bg);min-height:100vh;color:var(--text);transition:backgrou
 .review-item .rhead .no{color:var(--red);}
 .review-item .rq{font-size:14px;margin-bottom:10px;color:var(--text);}
 .review-item .ra{font-size:13px;color:var(--muted);background:var(--sub-bg);padding:8px 12px;border-radius:6px;}
+.review-item .rinstruksi{font-size:12px;color:var(--muted);font-style:italic;padding:8px 12px;background:var(--sub-bg);border-left:3px solid var(--blue);border-radius:4px;margin-bottom:8px;}
 .cert-hint{margin-top:20px;padding:14px 18px;background:linear-gradient(135deg,#fff8e1,#fffbf0);border:2px dashed #f0ad4e;border-radius:10px;font-size:13px;color:#8a6a1a;display:flex;align-items:center;gap:10px;}
 .cert-hint i{font-size:20px;color:#f0ad4e;}
 .saved-badge{display:inline-flex;align-items:center;gap:6px;font-size:12px;color:#2fa36b;background:#e8f5ee;padding:4px 12px;border-radius:20px;margin-top:8px;}
@@ -107,10 +161,12 @@ footer{text-align:center;padding:24px 20px;color:var(--muted);font-size:13px;}
 @media(max-width:700px){
   .exam-paper{padding:30px 20px;margin:15px;}
   .nav-bar{padding:0 20px;}
-  .question-body{flex-direction:column;padding-left:10px;}
+  .question-body{flex-direction:column;padding-left:0;}
   .question-media{width:100%;}
   .options{grid-template-columns:1fr;}
   .stat-grid{grid-template-columns:1fr;}
+  .question-instruction{font-size:12px;padding:8px 12px;}
+  .question-num{min-width:auto;padding-top:0;margin-bottom:8px;}
 }
 </style>
 </head>
@@ -149,7 +205,7 @@ function toggleTheme(){
 }
 applyTheme(localStorage.getItem('theme') || 'light');
 
-const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxgov9M_0EcaqEh15k2piFH9XZGiFC_05mgl_PeZ166pqxCzYlWl7AaW9xLnWFilFwE/exec';
+const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwGsUnn93GQGnCGYITxYas-ig5BGa0O1191cxp_wNjeESRYsCJZgsYXClQNKGSyDAjQ/exec';
 
 const _user = JSON.parse(localStorage.getItem('user') || 'null');
 if (!_user) location.href = 'login.html';
@@ -168,23 +224,28 @@ let resultSaved = false;
 
 const CIRCLES = { '1':'①', '2':'②', '3':'③', '4':'④' };
 
+// ===== ESCAPE HTML =====
+function escapeHtml(str) {
+  const div = document.createElement('div');
+  div.textContent = String(str == null ? '' : str);
+  return div.innerHTML;
+}
+
 // ===== CHECK QUOTA =====
 async function checkQuota() {
-  // Admin bypass
   if (_user.role === 'admin') return true;
 
   try {
     const r = await fetch(APPS_SCRIPT_URL + '?action=getQuota&username=' + encodeURIComponent(_user.username) + '&t=' + Date.now());
     const res = await r.json();
     if (res.success) {
-      // Update user quota di localStorage
       _user.quotaUsed = res.quotaUsed;
       _user.quotaMax = res.quotaMax;
       localStorage.setItem('user', JSON.stringify(_user));
       return res.canExam;
     }
   } catch(e) {}
-  return true; // Kalau gagal cek, biarin aja (fallback)
+  return true;
 }
 
 function showBlockedScreen() {
@@ -284,6 +345,11 @@ function renderQuestion() {
   document.getElementById('answeredNum').textContent = answeredCount;
   document.getElementById('progressFill').style.width = ((currentIndex + 1) / total) * 100 + '%';
 
+  // ⚡ Instruksi (dari admin)
+  const instruksiHtml = q.instruksi
+    ? `<div class="question-instruction">${escapeHtml(q.instruksi)}</div>`
+    : '';
+
   let mediaHtml = '';
   if (q.gambar) mediaHtml += `<img src="${q.gambar}" alt="gambar soal" onerror="this.style.display='none'">`;
   if (q.audio) mediaHtml += `<audio controls preload="metadata" style="width:100%;"><source src="${q.audio}"></audio>`;
@@ -293,23 +359,22 @@ function renderQuestion() {
     const val = (answers[currentIndex] || '').replace(/"/g, '&quot;');
     optionsHtml = `<input type="text" class="fill-input" id="fillInput" placeholder="답을 입력하세요..." value="${val}" oninput="saveAnswer(this.value)">`;
   } else {
-  const opts = [
+    const opts = [
       { n:'1', t:q.opsiA, img:q.opsiAImg },
       { n:'2', t:q.opsiB, img:q.opsiBImg },
       { n:'3', t:q.opsiC, img:q.opsiCImg },
       { n:'4', t:q.opsiD, img:q.opsiDImg }
-    ].filter(o => o.t || o.img);  // ⚡ Tampilkan kalau ada text ATAU gambar
+    ].filter(o => o.t || o.img);
 
     const cls = (q.section === 'pilihan_gambar') ? '' : 'vertical';
     optionsHtml = `<ul class="options ${cls}">`;
     opts.forEach(o => {
       const sel = String(answers[currentIndex]) === o.n ? 'selected' : '';
-      
-      // ⚡ Kalau ada gambar, tampilkan gambar
+
       const contentHtml = o.img
-        ? `<img src="${o.img}" style="max-width:100%;max-height:80px;border-radius:6px;object-fit:contain;" onerror="this.style.display='none';this.nextSibling.style.display='inline'"><span style="display:none;">${o.t || ''}</span>`
-        : `<span>${o.t || ''}</span>`;
-      
+        ? `<img src="${o.img}" style="max-width:100%;max-height:80px;border-radius:6px;object-fit:contain;" onerror="this.style.display='none';this.nextSibling.style.display='inline'"><span style="display:none;">${escapeHtml(o.t || '')}</span>`
+        : `<span>${escapeHtml(o.t || '')}</span>`;
+
       optionsHtml += `
         <li class="${sel}" onclick="selectAnswer('${o.n}')">
           <span class="circle">${CIRCLES[o.n]}</span>
@@ -319,11 +384,26 @@ function renderQuestion() {
     optionsHtml += '</ul>';
   }
 
-  const katBadge = q.kategori ? `<div class="kategori-badge">${q.kategori.toUpperCase()}</div>` : '';
+  // ⚡ Nomor soal dipindah KE DALAM question-body
   const hasMedia = mediaHtml !== '';
+  const numHtml = `<div class="question-num">${currentIndex + 1}</div>`;
+
+  const contentHtml = `
+    ${instruksiHtml}
+    ${q.soal ? `<div class="question-text">${escapeHtml(q.soal)}</div>` : ''}
+    ${optionsHtml}
+  `;
+
   const bodyHtml = hasMedia
-    ? `<div class="question-body"><div class="question-media">${mediaHtml}</div><div class="question-content">${katBadge}${q.soal ? `<div class="question-text">${q.soal}</div>` : ''}${optionsHtml}</div></div>`
-    : `<div class="question-body" style="padding-left:0;"><div class="question-content">${katBadge}${q.soal ? `<div class="question-text">${q.soal}</div>` : ''}${optionsHtml}</div></div>`;
+    ? `<div class="question-body">
+         ${numHtml}
+         <div class="question-media">${mediaHtml}</div>
+         <div class="question-content">${contentHtml}</div>
+       </div>`
+    : `<div class="question-body">
+         ${numHtml}
+         <div class="question-content" style="flex:1;">${contentHtml}</div>
+       </div>`;
 
   const isFirst = currentIndex === 0;
   const isLast = currentIndex === total - 1;
@@ -331,9 +411,7 @@ function renderQuestion() {
   app.innerHTML = `
     <div class="exam-paper fade" id="paper">
       <div class="exam-title">고용허가제 한국어능력시험 (EPS-TOPIK)</div>
-      <div class="exam-heading">읽기 ( ${total} 문항 )</div>
       <div class="question">
-        <div class="question-num">${currentIndex + 1}</div>
         ${bodyHtml}
       </div>
     </div>
@@ -475,7 +553,6 @@ function saveResultToServer(skor, benar, salah, kosong, total, benarL, totalL, b
     let res; try { res = JSON.parse(text); } catch(e) { res = { success: false }; }
     if (statusBox) {
       if (res.success) {
-        // Update quota di localStorage
         _user.quotaUsed = res.quotaUsed;
         _user.quotaMax = res.quotaMax;
         localStorage.setItem('user', JSON.stringify(_user));
@@ -506,14 +583,18 @@ function showReview() {
     else ok = ua === ca;
     const dispUA = (q.section === 'isian') ? (ua || '(kosong)') : (CIRCLES[ua] || ua || '(kosong)');
     const dispCA = (q.section === 'isian') ? ca : (CIRCLES[ca] || ca);
+    const instruksiHtml = q.instruksi
+      ? `<div class="rinstruksi">📌 ${escapeHtml(q.instruksi)}</div>`
+      : '';
     html += `
       <div class="review-item ${ok ? 'correct' : 'wrong'}">
         <div class="rhead">
-          <span>Soal ${i + 1} ${q.kategori ? `· ${q.kategori}` : ''}</span>
+          <span>Soal ${i + 1} ${q.kategori ? `· ${escapeHtml(q.kategori)}` : ''}</span>
           <span class="${ok ? 'ok' : 'no'}">${ok ? '✓ Benar' : '✗ Salah'}</span>
         </div>
-        <div class="rq">${q.soal || '(gambar/audio)'}</div>
-        <div class="ra">Jawaban Anda: <strong>${dispUA}</strong><br>Jawaban Benar: <strong style="color:var(--green);">${dispCA}</strong>${q.pembahasan ? `<br><br><strong>Pembahasan:</strong> ${q.pembahasan}` : ''}</div>
+        ${instruksiHtml}
+        <div class="rq">${q.soal ? escapeHtml(q.soal) : '(gambar/audio)'}</div>
+        <div class="ra">Jawaban Anda: <strong>${escapeHtml(dispUA)}</strong><br>Jawaban Benar: <strong style="color:var(--green);">${escapeHtml(dispCA)}</strong>${q.pembahasan ? `<br><br><strong>Pembahasan:</strong> ${escapeHtml(q.pembahasan)}` : ''}</div>
       </div>`;
   });
   box.innerHTML = html;
