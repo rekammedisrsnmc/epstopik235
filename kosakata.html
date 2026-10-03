@@ -7,124 +7,577 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <style>
 :root{
-  --blue:#1e5fa8; --blue-dark:#154a82; --blue-light:#e8f0fa;
-  --bg:#f5f7fa; --border:#d0d7e2; --text:#1a1a1a;
-  --shadow:0 4px 16px rgba(0,0,0,.08);
-  --red:#d9534f; --green:#2fa36b; --yellow:#f0ad4e;
-  --card-bg:#fff; --muted:#888; --sub-bg:#f5f7fa;
-  --purple:#7c4dff; --teal:#26a69a;
+  --bg:#fafafa;
+  --card-bg:#ffffff;
+  --text:#1a1a1a;
+  --muted:#8a8a8a;
+  --border:#e5e5e5;
+  --accent:#2563eb;
+  --accent-hover:#1d4ed8;
+  --accent-light:#eff6ff;
+  --sub-bg:#f5f5f5;
+  --red:#dc2626;
+  --green:#16a34a;
+  --yellow:#d97706;
+  --teal:#0d9488;
 }
 [data-theme="dark"]{
-  --blue:#5b9cff; --blue-dark:#3a7bd5; --blue-light:#1e3556;
-  --bg:#0a111f; --border:#2a3448; --text:#e8eef7;
-  --shadow:0 4px 16px rgba(0,0,0,.4);
-  --card-bg:#151d2e; --muted:#8b9bb4; --sub-bg:#0f1626;
-  --purple:#b39ddb; --teal:#4db6ac;
+  --bg:#0f0f0f;
+  --card-bg:#1a1a1a;
+  --text:#ededed;
+  --muted:#888;
+  --border:#2a2a2a;
+  --accent:#5b9cff;
+  --accent-hover:#7ab0ff;
+  --accent-light:#152040;
+  --sub-bg:#141414;
+  --red:#f87171;
+  --green:#4ade80;
+  --yellow:#fbbf24;
+  --teal:#2dd4bf;
 }
-*{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI','Malgun Gothic',-apple-system,sans-serif;}
-body{background:var(--bg);min-height:100vh;color:var(--text);transition:background .3s,color .3s;}
-.exam-paper{max-width:760px;margin:30px auto;background:var(--card-bg);box-shadow:var(--shadow);border-radius:16px;padding:40px 50px;position:relative;transition:background .3s;overflow:hidden;}
-.exam-paper::before{content:'';position:absolute;top:0;left:0;right:0;height:6px;background:linear-gradient(90deg,#2fa36b,#26a69a,#1e5fa8);}
-.exam-icon{text-align:center;font-size:44px;margin-bottom:8px;}
-.exam-title{text-align:center;font-size:14px;color:var(--muted);margin-bottom:6px;letter-spacing:2px;text-transform:uppercase;font-weight:600;}
-.exam-heading{text-align:center;font-size:24px;font-weight:800;margin:8px 0 6px 0;color:var(--blue);letter-spacing:1px;}
-.exam-subtitle{text-align:center;font-size:13px;color:var(--muted);margin-bottom:28px;}
-.tema-badge{display:inline-block;padding:4px 14px;border-radius:20px;font-size:11px;font-weight:800;background:linear-gradient(135deg,#2fa36b,#26a69a);color:#fff;letter-spacing:1.5px;margin:0 auto 16px;text-align:center;display:table;}
-.question{margin-bottom:32px;}
-.question-num{font-size:13px;font-weight:700;color:var(--blue);margin-bottom:10px;display:inline-block;background:var(--blue-light);padding:4px 12px;border-radius:20px;letter-spacing:1px;}
-.question-body{display:flex;gap:24px;align-items:flex-start;}
-.question-media{flex-shrink:0;width:200px;display:flex;flex-direction:column;align-items:center;gap:8px;}
-.question-media img{max-width:100%;max-height:180px;border-radius:10px;object-fit:contain;box-shadow:0 4px 12px rgba(0,0,0,.08);}
-.question-text{font-size:17px;line-height:1.7;color:var(--text);margin-bottom:12px;font-weight:500;}
+*{margin:0;padding:0;box-sizing:border-box;
+  font-family:-apple-system,'Segoe UI',Roboto,'Malgun Gothic',sans-serif;}
+body{
+  background:var(--bg);
+  min-height:100vh;
+  color:var(--text);
+  font-size:15px;
+  line-height:1.6;
+  transition:background .2s,color .2s;
+}
+
+.exam-paper{
+  max-width:760px;
+  margin:24px auto;
+  background:var(--card-bg);
+  border:1px solid var(--border);
+  border-radius:10px;
+  padding:36px 44px;
+  position:relative;
+}
+.exam-icon{
+  text-align:center;
+  font-size:38px;
+  margin-bottom:6px;
+}
+.exam-title{
+  text-align:center;
+  font-size:12px;
+  color:var(--muted);
+  margin-bottom:4px;
+  letter-spacing:2px;
+  text-transform:uppercase;
+  font-weight:500;
+}
+.exam-heading{
+  text-align:center;
+  font-size:22px;
+  font-weight:600;
+  margin:6px 0 4px 0;
+  color:var(--text);
+  letter-spacing:-0.3px;
+}
+.exam-subtitle{
+  text-align:center;
+  font-size:13px;
+  color:var(--muted);
+  margin-bottom:24px;
+}
+
+.tema-badge{
+  display:table;
+  margin:0 auto 18px;
+  padding:4px 14px;
+  border-radius:20px;
+  font-size:11px;
+  font-weight:600;
+  background:var(--sub-bg);
+  color:var(--teal);
+  border:1px solid var(--border);
+  letter-spacing:1.2px;
+}
+
+.question{margin-bottom:28px;}
+.question-num{
+  font-size:12px;
+  font-weight:500;
+  color:var(--muted);
+  margin-bottom:10px;
+  display:inline-block;
+  background:var(--sub-bg);
+  padding:3px 12px;
+  border-radius:20px;
+  letter-spacing:.5px;
+}
+.question-body{
+  display:flex;
+  gap:20px;
+  align-items:flex-start;
+}
+.question-media{
+  flex-shrink:0;
+  width:200px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:8px;
+}
+.question-media img{
+  max-width:100%;
+  max-height:180px;
+  border-radius:8px;
+  object-fit:contain;
+  border:1px solid var(--border);
+  padding:4px;
+  background:var(--card-bg);
+}
+.question-text{
+  font-size:16px;
+  line-height:1.7;
+  color:var(--text);
+  margin-bottom:12px;
+  font-weight:500;
+}
 .question-content{flex:1;min-width:0;}
 .question-media audio{width:100%;margin-top:8px;}
-.options{list-style:none;display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px;}
+
+.options{
+  list-style:none;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:8px;
+  margin-top:12px;
+}
 .options.vertical{grid-template-columns:1fr;}
-.options li{font-size:15px;line-height:1.5;color:var(--text);padding:12px 16px;border-radius:10px;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:10px;border:2px solid var(--border);user-select:none;background:var(--card-bg);}
-.options li:hover{background:var(--blue-light);border-color:var(--blue);transform:translateY(-1px);}
-.options li.selected{background:var(--blue-light);border-color:var(--blue);font-weight:700;}
-.options li.selected .circle{color:var(--blue);}
-.options li .circle{font-size:16px;color:var(--muted);flex-shrink:0;font-weight:700;}
-.fill-input{width:100%;padding:14px 18px;border:2px solid var(--border);border-radius:10px;font-size:16px;margin-top:10px;font-family:inherit;background:var(--card-bg);color:var(--text);transition:.2s;}
-.fill-input:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 4px rgba(30,95,168,.15);}
-.nav-bar{max-width:760px;margin:0 auto 30px;padding:0 50px;display:flex;gap:12px;justify-content:space-between;flex-wrap:wrap;}
-.btn{padding:12px 24px;border:none;border-radius:10px;font-weight:700;font-size:14px;cursor:pointer;transition:.2s;display:inline-flex;align-items:center;gap:8px;font-family:inherit;text-decoration:none;}
-.btn:disabled{opacity:0.4;cursor:not-allowed;}
-.btn-primary{background:var(--blue);color:#fff;}
-.btn-primary:hover:not(:disabled){filter:brightness(1.15);transform:translateY(-1px);}
-.btn-secondary{background:var(--sub-bg);color:var(--text);border:1px solid var(--border);}
-.btn-secondary:hover:not(:disabled){background:var(--border);}
+.options li{
+  font-size:15px;
+  line-height:1.5;
+  color:var(--text);
+  padding:10px 14px;
+  border-radius:8px;
+  cursor:pointer;
+  transition:.15s;
+  display:flex;
+  align-items:center;
+  gap:10px;
+  border:1.5px solid var(--border);
+  user-select:none;
+  background:var(--card-bg);
+}
+.options li:hover{border-color:var(--accent);}
+.options li.selected{
+  background:var(--accent-light);
+  border-color:var(--accent);
+  font-weight:500;
+}
+.options li.selected .circle{color:var(--accent);}
+.options li .circle{
+  font-size:15px;
+  color:var(--muted);
+  flex-shrink:0;
+  font-weight:500;
+}
+
+.fill-input{
+  width:100%;
+  padding:12px 16px;
+  border:1.5px solid var(--border);
+  border-radius:8px;
+  font-size:15px;
+  margin-top:10px;
+  font-family:inherit;
+  background:var(--card-bg);
+  color:var(--text);
+  transition:.15s;
+}
+.fill-input:focus{
+  outline:none;
+  border-color:var(--accent);
+}
+
+.nav-bar{
+  max-width:760px;
+  margin:0 auto 24px;
+  padding:0 44px;
+  display:flex;
+  gap:12px;
+  justify-content:space-between;
+  flex-wrap:wrap;
+}
+
+.btn{
+  padding:10px 20px;
+  border:none;
+  border-radius:8px;
+  font-weight:500;
+  font-size:14px;
+  cursor:pointer;
+  transition:.15s;
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  font-family:inherit;
+  text-decoration:none;
+}
+.btn:disabled{opacity:.4;cursor:not-allowed;}
+.btn-primary{background:var(--accent);color:#fff;}
+.btn-primary:hover:not(:disabled){background:var(--accent-hover);}
+.btn-secondary{
+  background:transparent;
+  color:var(--text);
+  border:1px solid var(--border);
+}
+.btn-secondary:hover:not(:disabled){background:var(--sub-bg);border-color:var(--muted);}
 .btn-success{background:var(--green);color:#fff;}
-.btn-success:hover{filter:brightness(1.1);transform:translateY(-1px);}
+.btn-success:hover:not(:disabled){filter:brightness(1.1);}
 .btn-warning{background:var(--yellow);color:#fff;}
-.exam-info{max-width:760px;margin:20px auto 0;padding:14px 22px;background:var(--card-bg);border-radius:12px;box-shadow:var(--shadow);display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;}
-.exam-info .item{font-size:13px;color:var(--muted);display:flex;align-items:center;gap:6px;}
-.exam-info .item strong{color:var(--blue);font-size:15px;}
-.exam-info .btn-icon{background:transparent;border:1.5px solid var(--border);color:var(--text);width:38px;height:38px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:14px;transition:.2s;}
-.exam-info .btn-icon:hover{background:var(--sub-bg);border-color:var(--blue);color:var(--blue);}
-.timer{background:linear-gradient(135deg,#2fa36b,#26a69a);color:#fff;padding:8px 18px;border-radius:30px;font-weight:700;font-size:15px;display:flex;align-items:center;gap:8px;}
+.btn-warning:hover:not(:disabled){filter:brightness(1.1);}
+.btn-danger{background:var(--red);color:#fff;}
+.btn-danger:hover:not(:disabled){filter:brightness(1.1);}
+
+.exam-info{
+  max-width:760px;
+  margin:16px auto 0;
+  padding:12px 20px;
+  background:var(--card-bg);
+  border:1px solid var(--border);
+  border-radius:10px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:12px;
+  flex-wrap:wrap;
+}
+.exam-info .item{
+  font-size:13px;
+  color:var(--muted);
+  display:flex;
+  align-items:center;
+  gap:6px;
+}
+.exam-info .item strong{
+  color:var(--text);
+  font-size:15px;
+  font-weight:600;
+}
+.exam-info .btn-icon{
+  background:transparent;
+  border:1px solid var(--border);
+  color:var(--muted);
+  width:36px;height:36px;border-radius:50%;
+  cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  font-size:13px;transition:.15s;
+}
+.exam-info .btn-icon:hover{color:var(--text);border-color:var(--text);}
+
+/* Tombol keluar */
+.btn-exit{
+  background:transparent;
+  border:1px solid var(--border);
+  color:var(--muted);
+  padding:7px 14px;
+  border-radius:8px;
+  cursor:pointer;
+  font-family:inherit;
+  font-size:13px;
+  font-weight:500;
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  transition:.15s;
+}
+.btn-exit:hover{color:var(--red);border-color:var(--red);background:transparent;}
+
+.timer{
+  background:var(--accent);
+  color:#fff;
+  padding:6px 16px;
+  border-radius:20px;
+  font-weight:600;
+  font-size:14px;
+  display:flex;
+  align-items:center;
+  gap:6px;
+}
 .timer.warning{background:var(--yellow);}
-.timer.danger{background:var(--red);animation:pulse 1s infinite;}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.75}}
-.progress-wrap{max-width:760px;margin:12px auto 0;height:8px;background:var(--sub-bg);border-radius:8px;overflow:hidden;}
-.progress-fill{height:100%;background:linear-gradient(90deg,#2fa36b,#26a69a,#1e5fa8);width:0%;transition:width .3s;border-radius:8px;}
+.timer.danger{background:var(--red);}
+
+.progress-wrap{
+  max-width:760px;
+  margin:10px auto 0;
+  height:3px;
+  background:var(--sub-bg);
+  border-radius:3px;
+  overflow:hidden;
+}
+.progress-fill{
+  height:100%;
+  background:var(--accent);
+  width:0%;
+  transition:width .3s;
+}
+
 .spinner-container{text-align:center;padding:100px 20px;}
-.spinner{display:inline-block;width:44px;height:44px;border:4px solid var(--sub-bg);border-top-color:var(--blue);border-radius:50%;animation:spin 0.8s linear infinite;}
+.spinner{
+  display:inline-block;
+  width:36px;height:36px;
+  border:2px solid var(--border);
+  border-top-color:var(--accent);
+  border-radius:50%;
+  animation:spin .8s linear infinite;
+}
 @keyframes spin{100%{transform:rotate(360deg)}}
-.spinner-container p{margin-top:14px;color:var(--muted);}
-.result-wrap{max-width:760px;margin:30px auto;padding:40px;background:var(--card-bg);border-radius:16px;box-shadow:var(--shadow);text-align:center;position:relative;overflow:hidden;}
-.result-wrap::before{content:'';position:absolute;top:0;left:0;right:0;height:6px;background:linear-gradient(90deg,#2fa36b,#26a69a,#1e5fa8);}
-.result-wrap h1{color:var(--blue);margin-bottom:8px;}
-.result-wrap .sub{color:var(--muted);margin-bottom:24px;}
-.score-big{width:180px;height:180px;border-radius:50%;background:linear-gradient(135deg,#2fa36b,#1f7f53);color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;margin:0 auto 24px;box-shadow:0 12px 40px rgba(47,163,107,.4);border:6px solid rgba(255,255,255,.2);}
-.score-big .num{font-size:56px;font-weight:800;line-height:1;}
-.score-big .lbl{font-size:12px;opacity:0.9;margin-top:6px;letter-spacing:2px;font-weight:700;}
-.stat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:24px 0;}
-.stat{padding:18px;background:var(--sub-bg);border-radius:12px;transition:.2s;}
-.stat:hover{transform:translateY(-2px);}
-.stat .n{font-size:28px;font-weight:800;}
-.stat .l{font-size:12px;color:var(--muted);margin-top:4px;font-weight:600;}
+.spinner-container p{margin-top:14px;color:var(--muted);font-size:13px;}
+
+.result-wrap{
+  max-width:760px;
+  margin:24px auto;
+  padding:36px;
+  background:var(--card-bg);
+  border:1px solid var(--border);
+  border-radius:12px;
+  text-align:center;
+}
+.result-wrap h1{
+  color:var(--text);
+  margin-bottom:6px;
+  font-size:22px;
+  font-weight:600;
+  letter-spacing:-0.3px;
+}
+.result-wrap .sub{
+  color:var(--muted);
+  margin-bottom:24px;
+  font-size:13px;
+}
+
+.score-big{
+  width:140px;
+  height:140px;
+  border-radius:16px;
+  background:var(--card-bg);
+  border:2px solid currentColor;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  margin:0 auto 20px;
+}
+.score-big .num{
+  font-size:44px;
+  font-weight:700;
+  line-height:1;
+  letter-spacing:-1px;
+}
+.score-big .lbl{
+  font-size:11px;
+  opacity:.7;
+  margin-top:6px;
+  letter-spacing:1.5px;
+  font-weight:600;
+}
+
+.stat-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:10px;
+  margin:20px 0;
+}
+.stat{
+  padding:16px;
+  background:var(--sub-bg);
+  border-radius:10px;
+}
+.stat .n{font-size:22px;font-weight:700;letter-spacing:-0.5px;}
+.stat .l{font-size:11px;color:var(--muted);margin-top:4px;font-weight:500;}
 .stat.green .n{color:var(--green);}
 .stat.red .n{color:var(--red);}
 .stat.gray .n{color:var(--muted);}
-.review-item{text-align:left;background:var(--card-bg);border:1.5px solid var(--border);border-radius:12px;padding:18px;margin-bottom:12px;transition:.2s;}
-.review-item:hover{border-color:var(--blue);}
-.review-item.correct{border-left:5px solid var(--green);}
-.review-item.wrong{border-left:5px solid var(--red);}
-.review-item .rhead{display:flex;justify-content:space-between;font-size:13px;font-weight:700;margin-bottom:8px;}
+
+.review-item{
+  text-align:left;
+  background:var(--card-bg);
+  border:1px solid var(--border);
+  border-radius:10px;
+  padding:16px;
+  margin-bottom:10px;
+}
+.review-item.correct{border-left:3px solid var(--green);}
+.review-item.wrong{border-left:3px solid var(--red);}
+.review-item .rhead{
+  display:flex;
+  justify-content:space-between;
+  font-size:13px;
+  font-weight:600;
+  margin-bottom:8px;
+}
 .review-item .rhead .ok{color:var(--green);}
 .review-item .rhead .no{color:var(--red);}
 .review-item .rq{font-size:14px;margin-bottom:10px;color:var(--text);}
-.review-item .ra{font-size:13px;color:var(--muted);background:var(--sub-bg);padding:10px 14px;border-radius:8px;line-height:1.6;}
-.cert-hint{margin-top:20px;padding:14px 18px;background:linear-gradient(135deg,#fff8e1,#fffbf0);border:2px dashed #f0ad4e;border-radius:12px;font-size:13px;color:#8a6a1a;display:flex;align-items:center;gap:10px;}
-.cert-hint i{font-size:22px;color:#f0ad4e;}
-.saved-badge{display:inline-flex;align-items:center;gap:6px;font-size:12px;color:#2fa36b;background:#e8f5ee;padding:6px 14px;border-radius:20px;margin-top:8px;font-weight:600;}
-footer{text-align:center;padding:24px 20px;color:var(--muted);font-size:13px;}
-@keyframes fadeUp{from{opacity:0;transform:translateY(15px)}to{opacity:1}}
-.fade{animation:fadeUp .4s ease;}
-.blocked-wrap{max-width:600px;margin:60px auto;padding:40px;background:var(--card-bg);border-radius:16px;box-shadow:var(--shadow);text-align:center;}
-.blocked-wrap .icon-big{font-size:64px;margin-bottom:16px;}
-.blocked-wrap h1{color:var(--red);margin-bottom:12px;font-size:22px;}
-.blocked-wrap p{color:var(--muted);font-size:14px;line-height:1.6;margin-bottom:24px;}
+.review-item .ra{
+  font-size:13px;
+  color:var(--text);
+  background:var(--sub-bg);
+  padding:10px 14px;
+  border-radius:8px;
+  line-height:1.7;
+}
+
+.cert-hint{
+  margin-top:16px;
+  padding:14px 18px;
+  background:var(--sub-bg);
+  border:1px dashed var(--yellow);
+  border-radius:10px;
+  font-size:13px;
+  color:var(--text);
+  display:flex;
+  align-items:center;
+  gap:10px;
+  text-align:left;
+}
+.cert-hint i{font-size:18px;color:var(--yellow);flex-shrink:0;}
+
+.saved-badge{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  font-size:12px;
+  color:var(--green);
+  background:var(--sub-bg);
+  border:1px solid var(--border);
+  padding:4px 12px;
+  border-radius:20px;
+  margin-top:8px;
+  font-weight:500;
+}
+
+footer{
+  text-align:center;
+  padding:24px 20px;
+  color:var(--muted);
+  font-size:12px;
+}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.fade{animation:fadeUp .3s ease;}
+
+.blocked-wrap{
+  max-width:520px;
+  margin:60px auto;
+  padding:36px;
+  background:var(--card-bg);
+  border:1px solid var(--border);
+  border-radius:12px;
+  text-align:center;
+}
+.blocked-wrap .icon-big{
+  font-size:48px;
+  margin-bottom:14px;
+}
+.blocked-wrap h1{
+  color:var(--text);
+  margin-bottom:10px;
+  font-size:18px;
+  font-weight:600;
+}
+.blocked-wrap p{
+  color:var(--muted);
+  font-size:13px;
+  line-height:1.7;
+  margin-bottom:22px;
+}
+
+/* ===== MODAL EXIT ===== */
+.modal-back{
+  display:none;
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.5);
+  z-index:200;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+  animation:fadeIn .15s ease;
+}
+.modal-back.show{display:flex;}
+@keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
+
+.modal-box{
+  background:var(--card-bg);
+  border:1px solid var(--border);
+  border-radius:12px;
+  padding:28px;
+  max-width:400px;
+  width:100%;
+  box-shadow:0 20px 60px rgba(0,0,0,.25);
+  text-align:center;
+  animation:popIn .2s cubic-bezier(.34,1.56,.64,1);
+}
+@keyframes popIn{
+  from{opacity:0;transform:scale(.92);}
+  to{opacity:1;transform:scale(1);}
+}
+.modal-box .icon-warn{
+  width:56px;height:56px;border-radius:50%;
+  background:var(--sub-bg);
+  color:var(--red);
+  border:1px solid var(--border);
+  display:flex;align-items:center;justify-content:center;
+  font-size:22px;margin:0 auto 16px;
+}
+.modal-box h2{
+  color:var(--text);
+  font-size:17px;
+  font-weight:600;
+  margin-bottom:8px;
+}
+.modal-box p.desc{
+  color:var(--muted);
+  font-size:13px;
+  line-height:1.6;
+  margin-bottom:22px;
+}
+.modal-box .modal-buttons{
+  display:flex;
+  gap:10px;
+}
+.modal-box .modal-buttons .btn{
+  flex:1;
+  justify-content:center;
+  padding:11px;
+}
+
 @media(max-width:700px){
-  .exam-paper{padding:28px 20px;margin:15px;border-radius:12px;}
-  .nav-bar{padding:0 20px;}
+  .exam-paper{padding:24px 18px;margin:12px;border-radius:8px;}
+  .nav-bar{padding:0 16px;}
   .question-body{flex-direction:column;}
   .question-media{width:100%;}
   .options{grid-template-columns:1fr;}
   .stat-grid{grid-template-columns:1fr;}
-  .score-big{width:150px;height:150px;}
-  .score-big .num{font-size:46px;}
-  .exam-heading{font-size:20px;}
+  .score-big{width:120px;height:120px;}
+  .score-big .num{font-size:36px;}
+  .result-wrap{padding:24px 18px;margin:12px;}
+  .exam-heading{font-size:19px;}
+  .exam-info{gap:8px;padding:10px 14px;}
+  .exam-info .item{font-size:12px;}
+  .btn-exit{padding:6px 10px;font-size:12px;}
 }
 </style>
 </head>
 <body>
 
 <div class="exam-info" id="examInfo" style="display:none;">
-  <div class="item">📝 Soal <strong id="curNum">1</strong> / <strong id="totNum">-</strong></div>
-  <div class="item">✅ Terjawab: <strong id="answeredNum">0</strong></div>
-  <button class="btn-icon" onclick="toggleTheme()" title="Toggle dark mode"><i class="fas fa-moon" id="themeIcon"></i></button>
+  <div class="item">Soal <strong id="curNum">1</strong> / <strong id="totNum">-</strong></div>
+  <div class="item">Terjawab: <strong id="answeredNum">0</strong></div>
+  <button class="btn-icon" onclick="toggleTheme()" title="Ganti tema">
+    <i class="fas fa-moon" id="themeIcon"></i>
+  </button>
+  <button class="btn-exit" onclick="confirmExit()" title="Keluar dari latihan">
+    <i class="fas fa-sign-out-alt"></i> Keluar
+  </button>
   <div class="timer" id="timerBox"><i class="fas fa-clock"></i> <span id="timerText">--:--</span></div>
 </div>
 <div class="progress-wrap" id="progressWrap" style="display:none;">
@@ -140,6 +593,25 @@ footer{text-align:center;padding:24px 20px;color:var(--muted);font-size:13px;}
 
 <footer>한국어 어휘 (Kosakata Bahasa Korea) — EPS-TOPIK Practice</footer>
 
+<!-- ===== MODAL KONFIRMASI KELUAR ===== -->
+<div id="exitModal" class="modal-back">
+  <div class="modal-box">
+    <div class="icon-warn"><i class="fas fa-sign-out-alt"></i></div>
+    <h2 id="exitModalTitle">Yakin mau keluar?</h2>
+    <p class="desc" id="exitModalDesc">
+      Kalau keluar sekarang, jawaban yang belum disubmit akan hilang.
+    </p>
+    <div class="modal-buttons">
+      <button class="btn btn-secondary" onclick="closeExitModal()">
+        <i class="fas fa-times"></i> Batal
+      </button>
+      <button class="btn btn-danger" onclick="doExit()">
+        <i class="fas fa-sign-out-alt"></i> Ya, Keluar
+      </button>
+    </div>
+  </div>
+</div>
+
 <script>
 function applyTheme(t){
   document.documentElement.setAttribute('data-theme', t);
@@ -154,12 +626,11 @@ function toggleTheme(){
 }
 applyTheme(localStorage.getItem('theme') || 'light');
 
-const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwGsUnn93GQGnCGYITxYas-ig5BGa0O1191cxp_wNjeESRYsCJZgsYXClQNKGSyDAjQ/exec';
+const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyKZQU0IFhCrTBD1Jk7imOEuOLSBjGE962ZgSThd52ltWL_4mMvwOxNgUe3EuZA3k7e/exec';
 
 const _user = JSON.parse(localStorage.getItem('user') || 'null');
 if (!_user) location.href = 'login.html';
 
-// ===== DAFTAR TEMA =====
 const TEMA_MAP = {
   'transportasi':   { label: 'Transportasi',     icon: 'fa-bus',            icoClass: 'ico-transportasi' },
   'makanan':        { label: 'Makanan & Minuman', icon: 'fa-utensils',      icoClass: 'ico-makanan' },
@@ -174,15 +645,10 @@ const TEMA_MAP = {
   'umum':           { label: 'Kosakata Umum',    icon: 'fa-book',          icoClass: 'ico-umum' }
 };
 
-// ===== BACA TEMA DARI URL =====
 const params = new URLSearchParams(location.search);
 const tema = params.get('tema') || 'umum';
 const temaInfo = TEMA_MAP[tema] || { label: 'Kosakata', icon: 'fa-book' };
 const isSemuaTema = (tema === 'semua');
-
-// Kategori yang dikirim ke API
-// Kalau "semua" → query semua yang berawalan kosakata_
-// Kalau tema spesifik → kosakata_<tema>
 const kategoriQuery = isSemuaTema ? 'kosakata' : 'kosakata_' + tema;
 
 let questions = [];
@@ -195,6 +661,58 @@ let isFinished = false;
 let resultSaved = false;
 
 const CIRCLES = { '1':'①', '2':'②', '3':'③', '4':'④' };
+
+// ===== EXIT CONFIRM =====
+function confirmExit() {
+  const titleEl = document.getElementById('exitModalTitle');
+  const descEl = document.getElementById('exitModalDesc');
+
+  if (isFinished || !startTime) {
+    if (titleEl) titleEl.textContent = 'Keluar ke dashboard?';
+    if (descEl) descEl.textContent = 'Kamu akan kembali ke halaman dashboard.';
+  } else {
+    const answeredCount = Object.keys(answers).filter(k => answers[k] !== '' && answers[k] !== undefined).length;
+    if (titleEl) titleEl.textContent = 'Yakin mau keluar?';
+    if (descEl) {
+      if (answeredCount > 0) {
+        descEl.innerHTML = `Kamu sudah menjawab <strong>${answeredCount} soal</strong>.<br>Kalau keluar sekarang, semua jawaban & progress akan <strong>hilang</strong>.`;
+      } else {
+        descEl.textContent = 'Kalau keluar sekarang, progress latihan akan hilang.';
+      }
+    }
+  }
+
+  document.getElementById('exitModal').classList.add('show');
+}
+
+function closeExitModal() {
+  document.getElementById('exitModal').classList.remove('show');
+}
+
+function doExit() {
+  if (timerInterval) {
+    clearInterval(timerInterval);
+    timerInterval = null;
+  }
+  isFinished = true;
+  location.href = 'dashboard.html';
+}
+
+// Klik backdrop untuk tutup
+document.addEventListener('click', function(e) {
+  const m = document.getElementById('exitModal');
+  if (m && m.classList.contains('show') && e.target === m) {
+    closeExitModal();
+  }
+});
+
+// ESC juga bisa tutup
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') {
+    const m = document.getElementById('exitModal');
+    if (m && m.classList.contains('show')) closeExitModal();
+  }
+});
 
 async function checkQuota() {
   if (_user.role === 'admin') return true;
@@ -232,7 +750,6 @@ async function loadQuestions() {
 
   app.innerHTML = `<div class="spinner-container"><div class="spinner"></div><p>Memuat soal kosakata...</p></div>`;
 
-  // Kalau "semua", panggil getData tanpa filter, terus filter client-side
   const url = isSemuaTema
     ? APPS_SCRIPT_URL + '?action=getData&kategori=all&t=' + Date.now()
     : APPS_SCRIPT_URL + '?action=getData&kategori=' + encodeURIComponent(kategoriQuery) + '&t=' + Date.now();
@@ -242,7 +759,6 @@ async function loadQuestions() {
     .then(data => {
       let filtered = Array.isArray(data) ? data : [];
 
-      // Kalau "semua tema", filter cuma yang berawalan "kosakata"
       if (isSemuaTema) {
         filtered = filtered.filter(q => String(q.kategori || '').toLowerCase().startsWith('kosakata'));
       }
@@ -335,8 +851,8 @@ function renderQuestion() {
   }
 
   const badgeHtml = isSemuaTema
-    ? `<div class="tema-badge">📚 SEMUA TEMA</div>`
-    : `<div class="tema-badge">📚 ${temaInfo.label.toUpperCase()}</div>`;
+    ? `<div class="tema-badge">SEMUA TEMA</div>`
+    : `<div class="tema-badge">${temaInfo.label.toUpperCase()}</div>`;
 
   const hasMedia = mediaHtml !== '';
   const bodyHtml = hasMedia
@@ -409,11 +925,11 @@ function finishExam(timeUp) {
   document.getElementById('examInfo').style.display = 'none';
   document.getElementById('progressWrap').style.display = 'none';
 
-  let grade = 'A', color = 'linear-gradient(135deg,#2fa36b,#1f7f53)', gradeText = 'Luar Biasa!';
+  let grade = 'A', color = 'var(--green)', gradeText = 'Luar Biasa!';
   if (score < 90) { grade = 'B'; gradeText = 'Bagus!'; }
-  if (score < 80) { grade = 'C'; color = 'linear-gradient(135deg,#f0ad4e,#ec971f)'; gradeText = 'Cukup Baik'; }
-  if (score < 70) { grade = 'D'; color = 'linear-gradient(135deg,#f0ad4e,#ec971f)'; gradeText = 'Perlu Belajar Lagi'; }
-  if (score < 60) { grade = 'E'; color = 'linear-gradient(135deg,#d9534f,#c9302c)'; gradeText = 'Ayo Semangat!'; }
+  if (score < 80) { grade = 'C'; color = 'var(--yellow)'; gradeText = 'Cukup Baik'; }
+  if (score < 70) { grade = 'D'; color = 'var(--yellow)'; gradeText = 'Perlu Belajar Lagi'; }
+  if (score < 60) { grade = 'E'; color = 'var(--red)'; gradeText = 'Ayo Semangat!'; }
 
   const canCert = score >= 70;
 
@@ -421,16 +937,16 @@ function finishExam(timeUp) {
     <div class="result-wrap fade">
       <div class="exam-icon">🎉</div>
       <h1>Latihan Selesai!</h1>
-      <p class="sub">${timeUp ? '⏰ Waktu habis' : 'Hasil latihan kosakata kamu'} — ${gradeText}</p>
-      <div class="score-big" style="background:${color}"><div class="num">${score}</div><div class="lbl">SKOR AKHIR</div></div>
-      <p style="font-size:20px;font-weight:800;color:var(--blue);margin-bottom:20px;">Grade ${grade}</p>
+      <p class="sub">${timeUp ? 'Waktu habis' : 'Hasil latihan kosakata kamu'} — ${gradeText}</p>
+      <div class="score-big" style="color:${color};"><div class="num">${score}</div><div class="lbl">SKOR AKHIR</div></div>
+      <p style="font-size:16px;font-weight:600;color:${color};margin-bottom:20px;">Grade ${grade}</p>
       <div class="stat-grid">
         <div class="stat green"><div class="n">${correct}</div><div class="l">정답 (Benar)</div></div>
         <div class="stat red"><div class="n">${wrong}</div><div class="l">오답 (Salah)</div></div>
         <div class="stat gray"><div class="n">${blank}</div><div class="l">미응답 (Kosong)</div></div>
       </div>
       <div id="saveStatus" style="text-align:center;"></div>
-      ${canCert ? `<div class="cert-hint"><i class="fas fa-award"></i><div style="text-align:left;"><strong>Selamat! 🎉</strong><br>Skor kamu ≥ 70. Bisa cetak sertifikat di halaman Riwayat.</div></div>` : ''}
+      ${canCert ? `<div class="cert-hint"><i class="fas fa-award"></i><div><strong>Selamat!</strong><br>Skor kamu ≥ 70. Bisa cetak sertifikat di halaman Riwayat.</div></div>` : ''}
       <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:20px;">
         <a href="dashboard.html" class="btn btn-secondary"><i class="fas fa-home"></i> Dashboard</a>
         <a href="riwayat.html" class="btn btn-warning"><i class="fas fa-history"></i> Riwayat</a>
@@ -450,7 +966,6 @@ function saveResultToServer(skor, benar, salah, kosong, total) {
   const statusBox = document.getElementById('saveStatus');
   if (statusBox) statusBox.innerHTML = '<span class="saved-badge"><i class="fas fa-spinner fa-spin"></i> Menyimpan hasil...</span>';
 
-  // Simpan kategori dengan format: kosakata_<tema> (atau "kosakata" kalau semua tema)
   const saveKategori = isSemuaTema ? 'kosakata' : 'kosakata_' + tema;
 
   fetch(APPS_SCRIPT_URL, {
@@ -474,15 +989,15 @@ function saveResultToServer(skor, benar, salah, kosong, total) {
         _user.quotaMax = res.quotaMax;
         localStorage.setItem('user', JSON.stringify(_user));
         const remain = res.remaining;
-        const remainText = remain > 0 ? ` · Sisa kuota: ${remain}` : ' · ⚠️ Kuota habis';
+        const remainText = remain > 0 ? ` · Sisa kuota: ${remain}` : ' · Kuota habis';
         statusBox.innerHTML = `<span class="saved-badge"><i class="fas fa-check"></i> Hasil tersimpan${remainText}</span>`;
       } else {
-        statusBox.innerHTML = '<span class="saved-badge" style="background:#fde8e8;color:#a33;"><i class="fas fa-times"></i> ' + (res.msg || 'Gagal simpan hasil') + '</span>';
+        statusBox.innerHTML = '<span class="saved-badge" style="background:var(--sub-bg);color:var(--red);border-color:var(--red);"><i class="fas fa-times"></i> ' + (res.msg || 'Gagal simpan hasil') + '</span>';
       }
     }
   })
   .catch(() => {
-    if (statusBox) statusBox.innerHTML = '<span class="saved-badge" style="background:#fde8e8;color:#a33;"><i class="fas fa-times"></i> Gagal simpan hasil</span>';
+    if (statusBox) statusBox.innerHTML = '<span class="saved-badge" style="background:var(--sub-bg);color:var(--red);border-color:var(--red);"><i class="fas fa-times"></i> Gagal simpan hasil</span>';
   });
 }
 
@@ -500,7 +1015,7 @@ function showReview() {
     const dispCA = (q.section === 'isian') ? ca : (CIRCLES[ca] || ca);
     html += `
       <div class="review-item ${ok ? 'correct' : 'wrong'}">
-        <div class="rhead"><span>Soal ${i + 1}</span><span class="${ok ? 'ok' : 'no'}">${ok ? '✓ Benar' : '✗ Salah'}</span></div>
+        <div class="rhead"><span>Soal ${i + 1}</span><span class="${ok ? 'ok' : 'no'}">${ok ? 'Benar' : 'Salah'}</span></div>
         <div class="rq">${q.soal || '(gambar/audio)'}</div>
         <div class="ra">Jawaban Anda: <strong>${dispUA}</strong><br>Jawaban Benar: <strong style="color:var(--green);">${dispCA}</strong>${q.pembahasan ? `<br><br><strong>Pembahasan:</strong> ${q.pembahasan}` : ''}</div>
       </div>`;
