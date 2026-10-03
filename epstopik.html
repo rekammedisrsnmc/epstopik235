@@ -7,43 +7,78 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <style>
 :root{
-  --blue:#1e5fa8; --blue-dark:#154a82; --blue-light:#e8f0fa;
-  --bg:#f5f7fa; --border:#d0d7e2; --text:#1a1a1a;
-  --shadow:0 4px 16px rgba(0,0,0,.08);
-  --red:#d9534f; --green:#2fa36b; --yellow:#f0ad4e;
-  --card-bg:#fff; --muted:#888; --sub-bg:#f5f7fa;
+  --bg:#fafafa;
+  --card-bg:#ffffff;
+  --text:#1a1a1a;
+  --muted:#8a8a8a;
+  --border:#e5e5e5;
+  --accent:#2563eb;
+  --accent-hover:#1d4ed8;
+  --accent-light:#eff6ff;
+  --sub-bg:#f5f5f5;
+  --red:#dc2626;
+  --green:#16a34a;
+  --yellow:#d97706;
 }
 [data-theme="dark"]{
-  --blue:#5b9cff; --blue-dark:#3a7bd5; --blue-light:#1e3556;
-  --bg:#0a111f; --border:#2a3448; --text:#e8eef7;
-  --shadow:0 4px 16px rgba(0,0,0,.4);
-  --card-bg:#151d2e; --muted:#8b9bb4; --sub-bg:#0f1626;
+  --bg:#0f0f0f;
+  --card-bg:#1a1a1a;
+  --text:#ededed;
+  --muted:#888;
+  --border:#2a2a2a;
+  --accent:#5b9cff;
+  --accent-hover:#7ab0ff;
+  --accent-light:#152040;
+  --sub-bg:#141414;
+  --red:#f87171;
+  --green:#4ade80;
+  --yellow:#fbbf24;
 }
-*{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI','Malgun Gothic',-apple-system,sans-serif;}
-body{background:var(--bg);min-height:100vh;color:var(--text);transition:background .3s,color .3s;}
-.exam-paper{max-width:800px;margin:30px auto;background:var(--card-bg);box-shadow:var(--shadow);border-radius:4px;padding:50px 60px;transition:background .3s;}
-.exam-title{text-align:center;font-size:15px;color:var(--muted);margin-bottom:30px;}
-.question{margin-bottom:32px;}
+*{margin:0;padding:0;box-sizing:border-box;
+  font-family:-apple-system,'Segoe UI',Roboto,'Malgun Gothic',sans-serif;}
+body{
+  background:var(--bg);
+  min-height:100vh;
+  color:var(--text);
+  font-size:15px;
+  line-height:1.6;
+  transition:background .2s,color .2s;
+}
 
-/* ⚡ NOMOR SOAL — sekarang di dalam body */
+/* ===== KERTAS UJIAN ===== */
+.exam-paper{
+  max-width:800px;
+  margin:24px auto;
+  background:var(--card-bg);
+  border:1px solid var(--border);
+  border-radius:10px;
+  padding:40px 48px;
+}
+.exam-title{
+  text-align:center;
+  font-size:14px;
+  color:var(--muted);
+  margin-bottom:28px;
+  letter-spacing:.5px;
+}
+.question{margin-bottom:28px;}
+
 .question-num{
   font-size:15px;
-  font-weight:700;
-  color:var(--text);
+  font-weight:600;
+  color:var(--accent);
   flex-shrink:0;
   min-width:32px;
   padding-top:2px;
 }
 .question-num::after{content:'.';}
 
-/* ⚡ INSTRUKSI — kotak petunjuk di atas soal */
 .question-instruction{
   font-size:13px;
   color:var(--muted);
-  font-style:italic;
   padding:10px 14px;
   background:var(--sub-bg);
-  border-left:3px solid var(--blue);
+  border-left:3px solid var(--accent);
   border-radius:6px;
   margin-bottom:12px;
   line-height:1.6;
@@ -54,17 +89,13 @@ body{background:var(--bg);min-height:100vh;color:var(--text);transition:backgrou
 .question-instruction::before{
   content:'📌';
   flex-shrink:0;
-  font-style:normal;
 }
 
-/* ⚡ BODY — nomor + media + content */
 .question-body{
   display:flex;
   gap:16px;
   align-items:flex-start;
-  padding-left:0;
 }
-
 .question-media{
   flex-shrink:0;
   width:200px;
@@ -76,106 +107,465 @@ body{background:var(--bg);min-height:100vh;color:var(--text);transition:backgrou
 .question-media img{
   max-width:100%;
   max-height:180px;
-  border-radius:4px;
+  border-radius:6px;
   object-fit:contain;
   border:1px solid var(--border);
   padding:4px;
-  background:#fff;
+  background:var(--card-bg);
 }
-
-.question-text{font-size:15px;line-height:1.8;color:var(--text);margin-bottom:10px;}
-.question-content{flex:1;min-width:0;}
 .question-media audio{width:100%;margin-top:8px;}
 
-.options{list-style:none;display:grid;grid-template-columns:1fr 1fr;gap:8px 20px;margin-top:12px;}
+.question-text{
+  font-size:15px;
+  line-height:1.8;
+  color:var(--text);
+  margin-bottom:10px;
+}
+.question-content{flex:1;min-width:0;}
+
+.options{
+  list-style:none;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:8px 20px;
+  margin-top:12px;
+}
 .options.vertical{grid-template-columns:1fr;}
-.options li{font-size:15px;line-height:1.6;color:var(--text);padding:6px 10px;border-radius:6px;cursor:pointer;transition:0.15s;display:flex;align-items:center;gap:8px;border:2px solid transparent;user-select:none;}
-.options li:hover{background:var(--blue-light);}
-.options li.selected{background:var(--blue-light);border-color:var(--blue);font-weight:600;}
-.options li .circle{font-size:15px;color:var(--text);flex-shrink:0;}
-.options li.selected .circle{color:var(--blue);}
-.options li img{max-height: 80px;border-radius: 6px;object-fit: contain;}
-.options li:has(img){padding: 10px;align-items: center;}
-.fill-input{width:100%;padding:10px 14px;border:2px solid var(--border);border-radius:6px;font-size:15px;margin-top:10px;font-family:inherit;background:var(--card-bg);color:var(--text);}
-.fill-input:focus{outline:none;border-color:var(--blue);}
-.nav-bar{max-width:800px;margin:0 auto 30px;padding:0 60px;display:flex;gap:12px;justify-content:space-between;flex-wrap:wrap;}
-.btn{padding:11px 24px;border:none;border-radius:6px;font-weight:600;font-size:14px;cursor:pointer;transition:0.2s;display:inline-flex;align-items:center;gap:8px;font-family:inherit;text-decoration:none;}
-.btn:disabled{opacity:0.4;cursor:not-allowed;}
-.btn-primary{background:var(--blue);color:#fff;}
-.btn-primary:hover:not(:disabled){filter:brightness(1.15);}
-.btn-secondary{background:var(--sub-bg);color:var(--text);border:1px solid var(--border);}
-.btn-secondary:hover:not(:disabled){background:var(--border);}
+.options li{
+  font-size:15px;
+  line-height:1.6;
+  color:var(--text);
+  padding:8px 12px;
+  border-radius:8px;
+  cursor:pointer;
+  transition:.15s;
+  display:flex;
+  align-items:center;
+  gap:8px;
+  border:1.5px solid var(--border);
+  user-select:none;
+  background:var(--card-bg);
+}
+.options li:hover{border-color:var(--accent);}
+.options li.selected{
+  border-color:var(--accent);
+  background:var(--accent-light);
+  font-weight:500;
+}
+.options li .circle{
+  font-size:15px;
+  color:var(--muted);
+  flex-shrink:0;
+}
+.options li.selected .circle{color:var(--accent);}
+.options li img{
+  max-height:80px;
+  border-radius:6px;
+  object-fit:contain;
+}
+.options li:has(img){padding:10px;align-items:center;}
+
+.fill-input{
+  width:100%;
+  padding:10px 14px;
+  border:1.5px solid var(--border);
+  border-radius:8px;
+  font-size:15px;
+  margin-top:10px;
+  font-family:inherit;
+  background:var(--card-bg);
+  color:var(--text);
+  transition:.15s;
+}
+.fill-input:focus{
+  outline:none;
+  border-color:var(--accent);
+}
+
+.nav-bar{
+  max-width:800px;
+  margin:0 auto 24px;
+  padding:0 48px;
+  display:flex;
+  gap:12px;
+  justify-content:space-between;
+  flex-wrap:wrap;
+}
+
+.btn{
+  padding:10px 20px;
+  border:none;
+  border-radius:8px;
+  font-weight:500;
+  font-size:14px;
+  cursor:pointer;
+  transition:.15s;
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  font-family:inherit;
+  text-decoration:none;
+}
+.btn:disabled{opacity:.4;cursor:not-allowed;}
+.btn-primary{background:var(--accent);color:#fff;}
+.btn-primary:hover:not(:disabled){background:var(--accent-hover);}
+.btn-secondary{
+  background:transparent;
+  color:var(--text);
+  border:1px solid var(--border);
+}
+.btn-secondary:hover:not(:disabled){background:var(--sub-bg);border-color:var(--muted);}
 .btn-success{background:var(--green);color:#fff;}
-.btn-success:hover{filter:brightness(1.1);}
+.btn-success:hover:not(:disabled){filter:brightness(1.1);}
 .btn-warning{background:var(--yellow);color:#fff;}
-.exam-info{max-width:800px;margin:20px auto 0;padding:16px 24px;background:var(--card-bg);border-radius:8px;box-shadow:var(--shadow);display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;}
-.exam-info .item{font-size:14px;color:var(--muted);}
-.exam-info .item strong{color:var(--blue);font-size:16px;}
-.exam-info .btn-icon{background:transparent;border:1.5px solid var(--border);color:var(--text);width:38px;height:38px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:14px;transition:.2s;}
-.exam-info .btn-icon:hover{background:var(--sub-bg);border-color:var(--blue);color:var(--blue);}
-.timer{background:var(--blue);color:#fff;padding:8px 18px;border-radius:30px;font-weight:700;font-size:16px;display:flex;align-items:center;gap:8px;}
+.btn-warning:hover:not(:disabled){filter:brightness(1.1);}
+.btn-danger{background:var(--red);color:#fff;}
+.btn-danger:hover:not(:disabled){filter:brightness(1.1);}
+
+/* ===== EXAM INFO ===== */
+.exam-info{
+  max-width:800px;
+  margin:16px auto 0;
+  padding:12px 20px;
+  background:var(--card-bg);
+  border:1px solid var(--border);
+  border-radius:10px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:12px;
+  flex-wrap:wrap;
+}
+.exam-info .item{font-size:13px;color:var(--muted);}
+.exam-info .item strong{color:var(--text);font-size:15px;font-weight:600;}
+.exam-info .btn-icon{
+  background:transparent;
+  border:1px solid var(--border);
+  color:var(--muted);
+  width:36px;height:36px;border-radius:50%;
+  cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  font-size:13px;transition:.15s;
+}
+.exam-info .btn-icon:hover{color:var(--text);border-color:var(--text);}
+
+/* Tombol keluar */
+.btn-exit{
+  background:transparent;
+  border:1px solid var(--border);
+  color:var(--muted);
+  padding:7px 14px;
+  border-radius:8px;
+  cursor:pointer;
+  font-family:inherit;
+  font-size:13px;
+  font-weight:500;
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  transition:.15s;
+}
+.btn-exit:hover{color:var(--red);border-color:var(--red);background:transparent;}
+
+/* ===== TIMER ===== */
+.timer{
+  background:var(--accent);
+  color:#fff;
+  padding:6px 16px;
+  border-radius:20px;
+  font-weight:600;
+  font-size:14px;
+  display:flex;
+  align-items:center;
+  gap:6px;
+}
 .timer.warning{background:var(--yellow);}
-.timer.danger{background:var(--red);animation:pulse 1s infinite;}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.75}}
-.progress-wrap{max-width:800px;margin:12px auto 0;height:6px;background:var(--sub-bg);border-radius:6px;overflow:hidden;}
-.progress-fill{height:100%;background:var(--blue);width:0%;transition:width 0.3s;}
+.timer.danger{background:var(--red);}
+
+.progress-wrap{
+  max-width:800px;
+  margin:10px auto 0;
+  height:3px;
+  background:var(--sub-bg);
+  border-radius:3px;
+  overflow:hidden;
+}
+.progress-fill{
+  height:100%;
+  background:var(--accent);
+  width:0%;
+  transition:width .3s;
+}
+
 .spinner-container{text-align:center;padding:100px 20px;}
-.spinner{display:inline-block;width:44px;height:44px;border:4px solid var(--sub-bg);border-top-color:var(--blue);border-radius:50%;animation:spin 0.8s linear infinite;}
+.spinner{
+  display:inline-block;
+  width:36px;height:36px;
+  border:2px solid var(--border);
+  border-top-color:var(--accent);
+  border-radius:50%;
+  animation:spin .8s linear infinite;
+}
 @keyframes spin{100%{transform:rotate(360deg)}}
-.spinner-container p{margin-top:14px;color:var(--muted);}
-.result-wrap{max-width:800px;margin:30px auto;padding:40px;background:var(--card-bg);border-radius:12px;box-shadow:var(--shadow);text-align:center;}
-.result-wrap h1{color:var(--blue);margin-bottom:8px;}
-.result-wrap .sub{color:var(--muted);margin-bottom:24px;}
-.score-big{width:160px;height:160px;border-radius:50%;background:var(--blue);color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;margin:0 auto 24px;box-shadow:0 8px 30px rgba(30,95,168,0.35);}
-.score-big .num{font-size:52px;font-weight:800;line-height:1;}
-.score-big .lbl{font-size:13px;opacity:0.9;margin-top:4px;letter-spacing:2px;}
-.stat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:24px 0;}
-.stat{padding:18px;background:var(--sub-bg);border-radius:10px;}
-.stat .n{font-size:26px;font-weight:800;}
-.stat .l{font-size:12px;color:var(--muted);margin-top:4px;}
+.spinner-container p{margin-top:14px;color:var(--muted);font-size:13px;}
+
+.result-wrap{
+  max-width:800px;
+  margin:24px auto;
+  padding:36px;
+  background:var(--card-bg);
+  border:1px solid var(--border);
+  border-radius:12px;
+  text-align:center;
+}
+.result-wrap h1{
+  color:var(--text);
+  margin-bottom:6px;
+  font-size:22px;
+  font-weight:600;
+  letter-spacing:-0.3px;
+}
+.result-wrap .sub{
+  color:var(--muted);
+  margin-bottom:24px;
+  font-size:13px;
+}
+
+.score-big{
+  width:140px;
+  height:140px;
+  border-radius:16px;
+  background:var(--card-bg);
+  border:2px solid currentColor;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  margin:0 auto 20px;
+}
+.score-big .num{
+  font-size:44px;
+  font-weight:700;
+  line-height:1;
+  letter-spacing:-1px;
+}
+.score-big .lbl{
+  font-size:11px;
+  opacity:.7;
+  margin-top:6px;
+  letter-spacing:1.5px;
+  font-weight:600;
+}
+
+.stat-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:10px;
+  margin:20px 0;
+}
+.stat{
+  padding:16px;
+  background:var(--sub-bg);
+  border-radius:10px;
+}
+.stat .n{font-size:22px;font-weight:700;letter-spacing:-0.5px;}
+.stat .l{font-size:11px;color:var(--muted);margin-top:4px;}
 .stat.green .n{color:var(--green);}
 .stat.red .n{color:var(--red);}
 .stat.gray .n{color:var(--muted);}
-.review-item{text-align:left;background:var(--card-bg);border:1.5px solid var(--border);border-radius:10px;padding:18px;margin-bottom:12px;}
-.review-item.correct{border-left:5px solid var(--green);}
-.review-item.wrong{border-left:5px solid var(--red);}
-.review-item .rhead{display:flex;justify-content:space-between;font-size:13px;font-weight:700;margin-bottom:8px;}
+
+.review-item{
+  text-align:left;
+  background:var(--card-bg);
+  border:1px solid var(--border);
+  border-radius:10px;
+  padding:16px;
+  margin-bottom:10px;
+}
+.review-item.correct{border-left:3px solid var(--green);}
+.review-item.wrong{border-left:3px solid var(--red);}
+.review-item .rhead{
+  display:flex;
+  justify-content:space-between;
+  font-size:13px;
+  font-weight:600;
+  margin-bottom:8px;
+}
 .review-item .rhead .ok{color:var(--green);}
 .review-item .rhead .no{color:var(--red);}
 .review-item .rq{font-size:14px;margin-bottom:10px;color:var(--text);}
-.review-item .ra{font-size:13px;color:var(--muted);background:var(--sub-bg);padding:8px 12px;border-radius:6px;}
-.review-item .rinstruksi{font-size:12px;color:var(--muted);font-style:italic;padding:8px 12px;background:var(--sub-bg);border-left:3px solid var(--blue);border-radius:4px;margin-bottom:8px;}
-.cert-hint{margin-top:20px;padding:14px 18px;background:linear-gradient(135deg,#fff8e1,#fffbf0);border:2px dashed #f0ad4e;border-radius:10px;font-size:13px;color:#8a6a1a;display:flex;align-items:center;gap:10px;}
-.cert-hint i{font-size:20px;color:#f0ad4e;}
-.saved-badge{display:inline-flex;align-items:center;gap:6px;font-size:12px;color:#2fa36b;background:#e8f5ee;padding:4px 12px;border-radius:20px;margin-top:8px;}
-footer{text-align:center;padding:24px 20px;color:var(--muted);font-size:13px;}
-@keyframes fadeUp{from{opacity:0;transform:translateY(15px)}to{opacity:1}}
-.fade{animation:fadeUp .4s ease;}
+.review-item .ra{
+  font-size:13px;
+  color:var(--text);
+  background:var(--sub-bg);
+  padding:10px 14px;
+  border-radius:8px;
+  line-height:1.7;
+}
+.review-item .rinstruksi{
+  font-size:12px;
+  color:var(--muted);
+  padding:8px 12px;
+  background:var(--sub-bg);
+  border-left:3px solid var(--accent);
+  border-radius:6px;
+  margin-bottom:8px;
+  line-height:1.6;
+}
 
-/* Blocked screen */
-.blocked-wrap{max-width:600px;margin:60px auto;padding:40px;background:var(--card-bg);border-radius:16px;box-shadow:var(--shadow);text-align:center;}
-.blocked-wrap .icon-big{font-size:64px;margin-bottom:16px;}
-.blocked-wrap h1{color:var(--red);margin-bottom:12px;font-size:22px;}
-.blocked-wrap p{color:var(--muted);font-size:14px;line-height:1.6;margin-bottom:24px;}
+.cert-hint{
+  margin-top:16px;
+  padding:14px 18px;
+  background:var(--sub-bg);
+  border:1px dashed var(--yellow);
+  border-radius:10px;
+  font-size:13px;
+  color:var(--text);
+  display:flex;
+  align-items:center;
+  gap:10px;
+  text-align:left;
+}
+.cert-hint i{font-size:18px;color:var(--yellow);flex-shrink:0;}
+
+.saved-badge{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  font-size:12px;
+  color:var(--green);
+  background:var(--sub-bg);
+  border:1px solid var(--border);
+  padding:4px 12px;
+  border-radius:20px;
+  margin-top:8px;
+}
+
+footer{
+  text-align:center;
+  padding:24px 20px;
+  color:var(--muted);
+  font-size:12px;
+}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.fade{animation:fadeUp .3s ease;}
+
+.blocked-wrap{
+  max-width:520px;
+  margin:60px auto;
+  padding:36px;
+  background:var(--card-bg);
+  border:1px solid var(--border);
+  border-radius:12px;
+  text-align:center;
+}
+.blocked-wrap .icon-big{
+  font-size:48px;
+  margin-bottom:14px;
+}
+.blocked-wrap h1{
+  color:var(--text);
+  margin-bottom:10px;
+  font-size:18px;
+  font-weight:600;
+}
+.blocked-wrap p{
+  color:var(--muted);
+  font-size:13px;
+  line-height:1.7;
+  margin-bottom:22px;
+}
+
+/* ===== MODAL EXIT ===== */
+.modal-back{
+  display:none;
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.5);
+  z-index:200;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+  animation:fadeIn .15s ease;
+}
+.modal-back.show{display:flex;}
+@keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
+
+.modal-box{
+  background:var(--card-bg);
+  border:1px solid var(--border);
+  border-radius:12px;
+  padding:28px;
+  max-width:400px;
+  width:100%;
+  box-shadow:0 20px 60px rgba(0,0,0,.25);
+  text-align:center;
+  animation:popIn .2s cubic-bezier(.34,1.56,.64,1);
+}
+@keyframes popIn{
+  from{opacity:0;transform:scale(.92);}
+  to{opacity:1;transform:scale(1);}
+}
+.modal-box .icon-warn{
+  width:56px;height:56px;border-radius:50%;
+  background:var(--sub-bg);
+  color:var(--red);
+  border:1px solid var(--border);
+  display:flex;align-items:center;justify-content:center;
+  font-size:22px;margin:0 auto 16px;
+}
+.modal-box h2{
+  color:var(--text);
+  font-size:17px;
+  font-weight:600;
+  margin-bottom:8px;
+}
+.modal-box p.desc{
+  color:var(--muted);
+  font-size:13px;
+  line-height:1.6;
+  margin-bottom:22px;
+}
+.modal-box .modal-buttons{
+  display:flex;
+  gap:10px;
+}
+.modal-box .modal-buttons .btn{
+  flex:1;
+  justify-content:center;
+  padding:11px;
+}
 
 @media(max-width:700px){
-  .exam-paper{padding:30px 20px;margin:15px;}
-  .nav-bar{padding:0 20px;}
-  .question-body{flex-direction:column;padding-left:0;}
+  .exam-paper{padding:24px 18px;margin:12px;border-radius:8px;}
+  .nav-bar{padding:0 16px;}
+  .question-body{flex-direction:column;}
   .question-media{width:100%;}
   .options{grid-template-columns:1fr;}
   .stat-grid{grid-template-columns:1fr;}
   .question-instruction{font-size:12px;padding:8px 12px;}
-  .question-num{min-width:auto;padding-top:0;margin-bottom:8px;}
+  .question-num{min-width:auto;padding-top:0;margin-bottom:6px;}
+  .score-big{width:120px;height:120px;}
+  .score-big .num{font-size:36px;}
+  .result-wrap{padding:24px 18px;margin:12px;}
+  .exam-info{gap:8px;padding:10px 14px;}
+  .exam-info .item{font-size:12px;}
+  .btn-exit{padding:6px 10px;font-size:12px;}
 }
 </style>
 </head>
 <body>
 
 <div class="exam-info" id="examInfo" style="display:none;">
-  <div class="item">📝 Soal <strong id="curNum">1</strong> / <strong id="totNum">-</strong></div>
-  <div class="item">✅ Terjawab: <strong id="answeredNum">0</strong></div>
-  <button class="btn-icon" onclick="toggleTheme()" title="Toggle dark mode"><i class="fas fa-moon" id="themeIcon"></i></button>
+  <div class="item">Soal <strong id="curNum">1</strong> / <strong id="totNum">-</strong></div>
+  <div class="item">Terjawab: <strong id="answeredNum">0</strong></div>
+  <button class="btn-icon" onclick="toggleTheme()" title="Ganti tema">
+    <i class="fas fa-moon" id="themeIcon"></i>
+  </button>
+  <button class="btn-exit" onclick="confirmExit()" title="Keluar dari ujian">
+    <i class="fas fa-sign-out-alt"></i> Keluar
+  </button>
   <div class="timer" id="timerBox"><i class="fas fa-clock"></i> <span id="timerText">--:--</span></div>
 </div>
 <div class="progress-wrap" id="progressWrap" style="display:none;">
@@ -191,6 +581,25 @@ footer{text-align:center;padding:24px 20px;color:var(--muted);font-size:13px;}
 
 <footer>한국어능력시험 (EPS-TOPIK) — 쓰기</footer>
 
+<!-- ===== MODAL KONFIRMASI KELUAR ===== -->
+<div id="exitModal" class="modal-back">
+  <div class="modal-box">
+    <div class="icon-warn"><i class="fas fa-sign-out-alt"></i></div>
+    <h2 id="exitModalTitle">Yakin mau keluar?</h2>
+    <p class="desc" id="exitModalDesc">
+      Kalau keluar sekarang, jawaban yang belum disubmit akan hilang.
+    </p>
+    <div class="modal-buttons">
+      <button class="btn btn-secondary" onclick="closeExitModal()">
+        <i class="fas fa-times"></i> Batal
+      </button>
+      <button class="btn btn-danger" onclick="doExit()">
+        <i class="fas fa-sign-out-alt"></i> Ya, Keluar
+      </button>
+    </div>
+  </div>
+</div>
+
 <script>
 function applyTheme(t){
   document.documentElement.setAttribute('data-theme', t);
@@ -205,7 +614,7 @@ function toggleTheme(){
 }
 applyTheme(localStorage.getItem('theme') || 'light');
 
-const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwGsUnn93GQGnCGYITxYas-ig5BGa0O1191cxp_wNjeESRYsCJZgsYXClQNKGSyDAjQ/exec';
+const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyKZQU0IFhCrTBD1Jk7imOEuOLSBjGE962ZgSThd52ltWL_4mMvwOxNgUe3EuZA3k7e/exec';
 
 const _user = JSON.parse(localStorage.getItem('user') || 'null');
 if (!_user) location.href = 'login.html';
@@ -224,14 +633,70 @@ let resultSaved = false;
 
 const CIRCLES = { '1':'①', '2':'②', '3':'③', '4':'④' };
 
-// ===== ESCAPE HTML =====
 function escapeHtml(str) {
   const div = document.createElement('div');
   div.textContent = String(str == null ? '' : str);
   return div.innerHTML;
 }
 
-// ===== CHECK QUOTA =====
+// ===== EXIT CONFIRM =====
+function confirmExit() {
+  const titleEl = document.getElementById('exitModalTitle');
+  const descEl = document.getElementById('exitModalDesc');
+
+  // Kalau ujian udah selesai atau belum mulai, kasih pesan simple
+  if (isFinished || !startTime) {
+    if (titleEl) titleEl.textContent = 'Keluar ke dashboard?';
+    if (descEl) descEl.textContent = 'Kamu akan kembali ke halaman dashboard.';
+  } else {
+    // Cek ada jawaban atau nggak
+    const answeredCount = Object.keys(answers).filter(k => answers[k] !== '' && answers[k] !== undefined).length;
+    if (titleEl) titleEl.textContent = 'Yakin mau keluar?';
+    if (descEl) {
+      if (answeredCount > 0) {
+        descEl.innerHTML = `Kamu sudah menjawab <strong>${answeredCount} soal</strong>.<br>Kalau keluar sekarang, semua jawaban & progress akan <strong>hilang</strong>.`;
+      } else {
+        descEl.textContent = 'Kalau keluar sekarang, progress ujian akan hilang.';
+      }
+    }
+  }
+
+  document.getElementById('exitModal').classList.add('show');
+}
+
+function closeExitModal() {
+  document.getElementById('exitModal').classList.remove('show');
+}
+
+function doExit() {
+  // Stop timer biar nggak leak
+  if (timerInterval) {
+    clearInterval(timerInterval);
+    timerInterval = null;
+  }
+  isFinished = true;
+
+  // Redirect ke dashboard
+  location.href = 'dashboard.html';
+}
+
+// Klik backdrop untuk tutup
+document.addEventListener('click', function(e) {
+  const m = document.getElementById('exitModal');
+  if (m && m.classList.contains('show') && e.target === m) {
+    closeExitModal();
+  }
+});
+
+// ESC juga bisa tutup
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') {
+    const m = document.getElementById('exitModal');
+    if (m && m.classList.contains('show')) closeExitModal();
+  }
+});
+
+// ===== QUOTA CHECK =====
 async function checkQuota() {
   if (_user.role === 'admin') return true;
 
@@ -265,7 +730,6 @@ function showBlockedScreen() {
     </div>`;
 }
 
-// ===== LOAD =====
 async function loadQuestions() {
   const app = document.getElementById('app');
   app.innerHTML = `<div class="spinner-container"><div class="spinner"></div><p>Memeriksa kuota...</p></div>`;
@@ -287,7 +751,7 @@ async function loadQuestions() {
       } else {
         app.innerHTML = `
           <div class="result-wrap">
-            <h1>📭 Belum Ada Soal</h1>
+            <h1>Belum Ada Soal</h1>
             <p class="sub">Kategori "${kategori}" belum punya soal.</p>
             <a href="dashboard.html" class="btn btn-secondary"><i class="fas fa-arrow-left"></i> Kembali</a>
           </div>`;
@@ -296,7 +760,7 @@ async function loadQuestions() {
     .catch(() => {
       app.innerHTML = `
         <div class="result-wrap">
-          <h1>⚠️ Gagal Memuat Soal</h1>
+          <h1>Gagal Memuat Soal</h1>
           <p class="sub">Periksa koneksi internet Anda</p>
           <button class="btn btn-primary" onclick="loadQuestions()"><i class="fas fa-redo"></i> Coba Lagi</button>
         </div>`;
@@ -345,7 +809,6 @@ function renderQuestion() {
   document.getElementById('answeredNum').textContent = answeredCount;
   document.getElementById('progressFill').style.width = ((currentIndex + 1) / total) * 100 + '%';
 
-  // ⚡ Instruksi (dari admin)
   const instruksiHtml = q.instruksi
     ? `<div class="question-instruction">${escapeHtml(q.instruksi)}</div>`
     : '';
@@ -384,7 +847,6 @@ function renderQuestion() {
     optionsHtml += '</ul>';
   }
 
-  // ⚡ Nomor soal dipindah KE DALAM question-body
   const hasMedia = mediaHtml !== '';
   const numHtml = `<div class="question-num">${currentIndex + 1}</div>`;
 
@@ -472,35 +934,35 @@ function finishExam(timeUp) {
   document.getElementById('examInfo').style.display = 'none';
   document.getElementById('progressWrap').style.display = 'none';
 
-  let grade = 'A', color = '#2fa36b';
-  if (score < 90) { grade = 'B'; color = '#2fa36b'; }
-  if (score < 80) { grade = 'C'; color = '#f0ad4e'; }
-  if (score < 70) { grade = 'D'; color = '#f0ad4e'; }
-  if (score < 60) { grade = 'E'; color = '#d9534f'; }
+  let grade = 'A', color = 'var(--green)';
+  if (score < 90) { grade = 'B'; color = 'var(--green)'; }
+  if (score < 80) { grade = 'C'; color = 'var(--yellow)'; }
+  if (score < 70) { grade = 'D'; color = 'var(--yellow)'; }
+  if (score < 60) { grade = 'E'; color = 'var(--red)'; }
 
   const canCert = score >= 70;
   const katLabel = formatKategori(kategori);
 
   let breakdownHtml = '';
   if (totalL > 0 || totalR > 0) {
-    breakdownHtml = `<div class="stat-grid" style="grid-template-columns:1fr 1fr;margin-top:8px;">
-      <div class="stat" style="background:linear-gradient(135deg,#7c4dff,#5e35b1);color:#fff;">
-        <div class="n" style="color:#fff;">${skorL !== null ? skorL : '-'}</div>
-        <div class="l" style="color:rgba(255,255,255,.85);">🎧 LISTENING</div>
+    breakdownHtml = `<div class="stat-grid" style="grid-template-columns:1fr 1fr;">
+      <div class="stat">
+        <div class="n" style="color:var(--accent);">${skorL !== null ? skorL : '-'}</div>
+        <div class="l">LISTENING</div>
       </div>
-      <div class="stat" style="background:linear-gradient(135deg,#26a69a,#00796b);color:#fff;">
-        <div class="n" style="color:#fff;">${skorR !== null ? skorR : '-'}</div>
-        <div class="l" style="color:rgba(255,255,255,.85);">📖 READING</div>
+      <div class="stat">
+        <div class="n" style="color:var(--accent);">${skorR !== null ? skorR : '-'}</div>
+        <div class="l">READING</div>
       </div>
     </div>`;
   }
 
   document.getElementById('app').innerHTML = `
     <div class="result-wrap fade">
-      <h1>Ujian Selesai 🎉</h1>
-      <p class="sub">${timeUp ? '⏰ Waktu habis' : 'Terima kasih telah mengerjakan'} — ${katLabel}</p>
-      <div class="score-big" style="background:${color}"><div class="num">${score}</div><div class="lbl">SKOR AKHIR</div></div>
-      <p style="font-size:18px;font-weight:700;color:${color};margin-bottom:20px;">Grade ${grade}</p>
+      <h1>Ujian Selesai</h1>
+      <p class="sub">${timeUp ? 'Waktu habis' : 'Terima kasih telah mengerjakan'} — ${katLabel}</p>
+      <div class="score-big" style="color:${color};"><div class="num">${score}</div><div class="lbl">SKOR AKHIR</div></div>
+      <p style="font-size:16px;font-weight:600;color:${color};margin-bottom:20px;">Grade ${grade}</p>
 
       ${breakdownHtml}
 
@@ -511,7 +973,7 @@ function finishExam(timeUp) {
       </div>
 
       <div id="saveStatus" style="text-align:center;"></div>
-      ${canCert ? `<div class="cert-hint"><i class="fas fa-award"></i><div style="text-align:left;"><strong>Selamat! 🎉</strong><br>Kamu bisa cetak sertifikat di halaman Riwayat.</div></div>` : ''}
+      ${canCert ? `<div class="cert-hint"><i class="fas fa-award"></i><div><strong>Selamat!</strong><br>Kamu bisa cetak sertifikat di halaman Riwayat.</div></div>` : ''}
 
       <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:20px;">
         <a href="dashboard.html" class="btn btn-secondary"><i class="fas fa-home"></i> Dashboard</a>
@@ -559,15 +1021,15 @@ function saveResultToServer(skor, benar, salah, kosong, total, benarL, totalL, b
         const remain = res.remaining;
         const remainText = remain > 0
           ? ` · Sisa kuota: ${remain}`
-          : ' · ⚠️ Kuota habis';
+          : ' · Kuota habis';
         statusBox.innerHTML = `<span class="saved-badge"><i class="fas fa-check"></i> Hasil tersimpan${remainText}</span>`;
       } else {
-        statusBox.innerHTML = '<span class="saved-badge" style="background:#fde8e8;color:#a33;"><i class="fas fa-times"></i> ' + (res.msg || 'Gagal simpan hasil') + '</span>';
+        statusBox.innerHTML = '<span class="saved-badge" style="background:var(--sub-bg);color:var(--red);border-color:var(--red);"><i class="fas fa-times"></i> ' + (res.msg || 'Gagal simpan hasil') + '</span>';
       }
     }
   })
   .catch(() => {
-    if (statusBox) statusBox.innerHTML = '<span class="saved-badge" style="background:#fde8e8;color:#a33;"><i class="fas fa-times"></i> Gagal simpan hasil</span>';
+    if (statusBox) statusBox.innerHTML = '<span class="saved-badge" style="background:var(--sub-bg);color:var(--red);border-color:var(--red);"><i class="fas fa-times"></i> Gagal simpan hasil</span>';
   });
 }
 
@@ -590,7 +1052,7 @@ function showReview() {
       <div class="review-item ${ok ? 'correct' : 'wrong'}">
         <div class="rhead">
           <span>Soal ${i + 1} ${q.kategori ? `· ${escapeHtml(q.kategori)}` : ''}</span>
-          <span class="${ok ? 'ok' : 'no'}">${ok ? '✓ Benar' : '✗ Salah'}</span>
+          <span class="${ok ? 'ok' : 'no'}">${ok ? 'Benar' : 'Salah'}</span>
         </div>
         ${instruksiHtml}
         <div class="rq">${q.soal ? escapeHtml(q.soal) : '(gambar/audio)'}</div>
