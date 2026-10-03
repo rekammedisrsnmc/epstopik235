@@ -3,92 +3,230 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Login — EPS-TOPIK</title>
+<title>Masuk — EPS-TOPIK</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <style>
 :root{
-  --bg-grad-1:#1e5fa8; --bg-grad-2:#154a82;
-  --card-bg:#fff; --card-text:#333;
-  --input-bg:#fff; --input-border:#d0d7e2; --input-text:#333;
-  --tab-bg:#f0f3f7; --tab-text:#666; --tab-active-bg:#fff; --tab-active-text:#1e5fa8;
-  --muted:#888; --title-color:#154a82;
+  --bg:#fafafa;
+  --card-bg:#ffffff;
+  --text:#1a1a1a;
+  --muted:#8a8a8a;
+  --border:#e5e5e5;
+  --accent:#2563eb;
+  --accent-hover:#1d4ed8;
+  --input-bg:#ffffff;
+  --input-border:#e0e0e0;
 }
 [data-theme="dark"]{
-  --bg-grad-1:#0a1428; --bg-grad-2:#050b18;
-  --card-bg:#1a2233; --card-text:#e8eef7;
-  --input-bg:#131b2c; --input-border:#2a3448; --input-text:#e8eef7;
-  --tab-bg:#131b2c; --tab-text:#8b9bb4; --tab-active-bg:#25324a; --tab-active-text:#5b9cff;
-  --muted:#8b9bb4; --title-color:#5b9cff;
+  --bg:#0f0f0f;
+  --card-bg:#1a1a1a;
+  --text:#ededed;
+  --muted:#888;
+  --border:#2a2a2a;
+  --accent:#5b9cff;
+  --accent-hover:#7ab0ff;
+  --input-bg:#141414;
+  --input-border:#2e2e2e;
 }
-*{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI','Malgun Gothic',-apple-system,sans-serif;}
-body{background:linear-gradient(135deg,var(--bg-grad-1),var(--bg-grad-2));min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;transition:background .3s;}
-.theme-toggle{position:fixed;top:20px;right:20px;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);color:#fff;width:44px;height:44px;border-radius:50%;cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center;transition:.2s;}
-.theme-toggle:hover{background:rgba(255,255,255,.25);transform:scale(1.05);}
-.box{background:var(--card-bg);border-radius:16px;box-shadow:0 20px 60px rgba(0,0,0,.3);padding:40px;width:100%;max-width:420px;animation:fadeUp .4s ease;transition:background .3s;}
-@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
-.box .logo{text-align:center;font-size:42px;margin-bottom:8px;}
-.box h1{text-align:center;color:var(--title-color);margin-bottom:6px;font-size:22px;letter-spacing:1px;}
-.box .sub{text-align:center;color:var(--muted);font-size:13px;margin-bottom:26px;}
-.tab{display:flex;background:var(--tab-bg);border-radius:10px;padding:4px;margin-bottom:22px;}
-.tab button{flex:1;padding:11px;border:none;background:transparent;border-radius:8px;font-weight:600;cursor:pointer;color:var(--tab-text);font-size:14px;transition:.2s;font-family:inherit;}
-.tab button.active{background:var(--tab-active-bg);color:var(--tab-active-text);box-shadow:0 2px 8px rgba(0,0,0,.08);}
-.field{margin-bottom:14px;}
-.field label{font-size:13px;font-weight:600;color:var(--card-text);display:block;margin-bottom:6px;}
-.field label .req{color:#d9534f;margin-left:2px;}
-.input-wrap{position:relative;}
-.input-wrap input{width:100%;padding:12px 44px 12px 14px;border:1.5px solid var(--input-border);border-radius:8px;font-size:14px;font-family:inherit;transition:.2s;background:var(--input-bg);color:var(--input-text);}
-.input-wrap input:focus{outline:none;border-color:var(--bg-grad-1);box-shadow:0 0 0 3px rgba(30,95,168,.15);}
-.input-wrap input:invalid:not(:placeholder-shown){border-color:#d9534f;}
-.input-wrap input.valid:not(:placeholder-shown){border-color:#2fa36b;}
-.input-wrap .eye-btn{
-  position:absolute;right:8px;top:50%;transform:translateY(-50%);
-  background:transparent;border:none;cursor:pointer;color:var(--muted);
-  font-size:16px;padding:8px;transition:.2s;border-radius:6px;
+*{margin:0;padding:0;box-sizing:border-box;
+  font-family:-apple-system,'Segoe UI',Roboto,'Malgun Gothic',sans-serif;}
+body{
+  background:var(--bg);
+  color:var(--text);
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:24px;
+  transition:background .2s;
+  font-size:15px;
+  line-height:1.6;
+}
+.theme-toggle{
+  position:fixed;top:20px;right:20px;
+  background:transparent;
+  border:1px solid var(--border);
+  color:var(--muted);
+  width:40px;height:40px;border-radius:50%;
+  cursor:pointer;font-size:14px;
   display:flex;align-items:center;justify-content:center;
-  user-select:none;-webkit-tap-highlight-color:transparent;
+  transition:.2s;
 }
-.input-wrap .eye-btn:hover{color:var(--bg-grad-1);background:var(--tab-bg);}
-.input-wrap .eye-btn:active{transform:translateY(-50%) scale(0.92);}
-.btn{width:100%;padding:13px;border:none;border-radius:8px;background:var(--bg-grad-1);color:#fff;font-weight:700;font-size:15px;cursor:pointer;margin-top:8px;font-family:inherit;transition:.2s;display:flex;align-items:center;justify-content:center;gap:8px;}
-.btn:hover:not(:disabled){filter:brightness(1.15);}
+.theme-toggle:hover{color:var(--text);border-color:var(--text);}
+
+.box{
+  background:var(--card-bg);
+  border:1px solid var(--border);
+  border-radius:12px;
+  padding:44px 36px;
+  width:100%;
+  max-width:400px;
+}
+.box .logo{
+  text-align:center;
+  font-size:32px;
+  margin-bottom:16px;
+  line-height:1;
+}
+.box h1{
+  text-align:center;
+  color:var(--text);
+  margin-bottom:6px;
+  font-size:20px;
+  font-weight:600;
+  letter-spacing:-0.2px;
+}
+.box .sub{
+  text-align:center;
+  color:var(--muted);
+  font-size:13px;
+  margin-bottom:32px;
+}
+
+.field{margin-bottom:16px;}
+.field label{
+  font-size:13px;
+  font-weight:500;
+  color:var(--text);
+  display:block;
+  margin-bottom:6px;
+}
+.field label .req{color:#dc2626;margin-left:2px;}
+.input-wrap{position:relative;}
+.input-wrap input{
+  width:100%;
+  padding:11px 44px 11px 14px;
+  border:1px solid var(--input-border);
+  border-radius:8px;
+  font-size:14px;
+  font-family:inherit;
+  background:var(--input-bg);
+  color:var(--text);
+  transition:border-color .15s;
+}
+.input-wrap input:focus{
+  outline:none;
+  border-color:var(--accent);
+}
+.input-wrap input::placeholder{color:var(--muted);opacity:.7;}
+.input-wrap input.valid:not(:placeholder-shown){border-color:#16a34a;}
+.input-wrap input:invalid:not(:placeholder-shown):not(:focus){border-color:#dc2626;}
+
+.input-wrap .eye-btn{
+  position:absolute;right:6px;top:50%;transform:translateY(-50%);
+  background:transparent;border:none;cursor:pointer;
+  color:var(--muted);font-size:14px;padding:8px;
+  border-radius:6px;transition:color .15s;
+  display:flex;align-items:center;justify-content:center;
+  -webkit-tap-highlight-color:transparent;
+}
+.input-wrap .eye-btn:hover{color:var(--text);}
+
+.btn{
+  width:100%;
+  padding:12px;
+  border:none;
+  border-radius:8px;
+  background:var(--accent);
+  color:#fff;
+  font-weight:500;
+  font-size:14px;
+  cursor:pointer;
+  margin-top:8px;
+  font-family:inherit;
+  transition:background .15s;
+}
+.btn:hover:not(:disabled){background:var(--accent-hover);}
 .btn:disabled{opacity:.6;cursor:not-allowed;}
-.msg{padding:10px 14px;border-radius:8px;font-size:13px;margin-bottom:16px;display:none;}
-.msg.err{background:#fde8e8;color:#a33;display:block;}
-.msg.ok{background:#e8f5ee;color:#1f7f53;display:block;}
-.msg.warn{background:#fff5e0;color:#8a6a1a;display:block;}
-.spinner{display:inline-block;width:16px;height:16px;border:3px solid rgba(255,255,255,.4);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;}
+
+.msg{
+  padding:10px 14px;
+  border-radius:8px;
+  font-size:13px;
+  margin-bottom:20px;
+  display:none;
+  border:1px solid transparent;
+}
+.msg.err{background:#fef2f2;color:#b91c1c;border-color:#fecaca;display:block;}
+.msg.ok{background:#f0fdf4;color:#15803d;border-color:#bbf7d0;display:block;}
+.msg.warn{background:#fffbeb;color:#a16207;border-color:#fde68a;display:block;}
+[data-theme="dark"] .msg.err{background:#2a1515;color:#f87171;border-color:#4a2020;}
+[data-theme="dark"] .msg.ok{background:#0f2418;color:#4ade80;border-color:#1e4030;}
+[data-theme="dark"] .msg.warn{background:#2a2210;color:#fbbf24;border-color:#4a3a15;}
+
+.spinner{
+  display:inline-block;width:14px;height:14px;
+  border:2px solid rgba(255,255,255,.4);
+  border-top-color:#fff;
+  border-radius:50%;
+  animation:spin .7s linear infinite;
+  vertical-align:middle;
+}
 @keyframes spin{100%{transform:rotate(360deg)}}
-.footer-txt{text-align:center;font-size:12px;color:var(--muted);margin-top:20px;}
-.field-hint{font-size:11px;color:var(--muted);margin-top:4px;display:flex;align-items:center;gap:4px;}
-.field-hint.ok{color:#2fa36b;}
-.field-hint.err{color:#d9534f;}
+
+.signup-row{
+  text-align:center;
+  font-size:13px;
+  color:var(--muted);
+  margin-top:20px;
+}
+.signup-row a{
+  color:var(--accent);
+  text-decoration:none;
+  font-weight:500;
+  cursor:pointer;
+}
+.signup-row a:hover{text-decoration:underline;}
+
+.forgot{
+  text-align:center;
+  font-size:12px;
+  color:var(--muted);
+  margin-top:14px;
+}
+
+.field-hint{
+  font-size:11px;
+  color:var(--muted);
+  margin-top:4px;
+}
+.field-hint.ok{color:#16a34a;}
+.field-hint.err{color:#dc2626;}
+
+.footer-txt{
+  text-align:center;
+  font-size:12px;
+  color:var(--muted);
+  margin-top:28px;
+  padding-top:20px;
+  border-top:1px solid var(--border);
+}
 </style>
 </head>
 <body>
-<button class="theme-toggle" onclick="toggleTheme()" title="Toggle dark mode"><i class="fas fa-moon" id="themeIcon"></i></button>
+
+<button class="theme-toggle" onclick="toggleTheme()" title="Ganti tema">
+  <i class="fas fa-moon" id="themeIcon"></i>
+</button>
 
 <div class="box">
   <div class="logo">🇰🇷</div>
   <h1>EPS-TOPIK</h1>
-  <p class="sub">Masuk untuk mulai latihan bahasa Korea</p>
-
-  <div class="tab">
-    <button id="tabLogin" class="active" type="button" onclick="switchTab('login')">Masuk</button>
-    <button id="tabReg" type="button" onclick="switchTab('reg')">Daftar</button>
-  </div>
+  <p class="sub" id="subtitle">Masuk untuk mulai latihan</p>
 
   <div class="msg" id="msg"></div>
 
-  <!-- FORM LOGIN -->
+  <!-- ============ FORM LOGIN ============ -->
   <form id="formLogin" onsubmit="doLogin(event)" autocomplete="on">
     <div class="field">
-      <label>Username <span class="req">*</span></label>
+      <label>Username</label>
       <div class="input-wrap">
         <input type="text" id="loginUser" required autocomplete="username" placeholder="username kamu">
       </div>
     </div>
+
     <div class="field">
-      <label>Password <span class="req">*</span></label>
+      <label>Password</label>
       <div class="input-wrap">
         <input type="password" id="loginPass" required autocomplete="current-password" placeholder="••••••••">
         <button type="button" class="eye-btn" data-target="loginPass" onclick="togglePassword(event, this)" title="Lihat password">
@@ -96,14 +234,15 @@ body{background:linear-gradient(135deg,var(--bg-grad-1),var(--bg-grad-2));min-he
         </button>
       </div>
     </div>
-    <button class="btn" id="btnLogin" type="submit"><i class="fas fa-sign-in-alt"></i> Masuk</button>
-    <p style="text-align:center;font-size:12px;color:var(--muted);margin-top:14px;">
-      Lupa password? Hubungi admin untuk reset.
-    </p>
+
+    <button class="btn" id="btnLogin" type="submit">Masuk</button>
+
+    <p class="signup-row">Belum punya akun? <a onclick="switchMode('register')">Daftar</a></p>
+    <p class="forgot">Lupa password? Hubungi admin.</p>
   </form>
 
-  <!-- FORM REGISTER -->
-  <form id="formReg" onsubmit="doRegister(event)" style="display:none;" autocomplete="on">
+  <!-- ============ FORM REGISTER ============ -->
+  <form id="formRegister" onsubmit="doRegister(event)" style="display:none;" autocomplete="on">
     <div class="field">
       <label>Nama Lengkap <span class="req">*</span></label>
       <div class="input-wrap">
@@ -116,16 +255,13 @@ body{background:linear-gradient(135deg,var(--bg-grad-1),var(--bg-grad-2));min-he
       <div class="input-wrap">
         <input type="email" id="regEmail" required placeholder="email@example.com" autocomplete="email" oninput="validateEmail(this)">
       </div>
-      <div class="field-hint" id="emailHint">
-      </div>
+      <div class="field-hint" id="emailHint"></div>
     </div>
 
     <div class="field">
       <label>Username <span class="req">*</span></label>
       <div class="input-wrap">
         <input type="text" id="regUser" required minlength="3" placeholder="minimal 3 karakter" autocomplete="username" pattern="[a-zA-Z0-9_.]+" title="Hanya huruf, angka, titik, underscore">
-      </div>
-      <div class="field-hint">
       </div>
     </div>
 
@@ -137,11 +273,12 @@ body{background:linear-gradient(135deg,var(--bg-grad-1),var(--bg-grad-2));min-he
           <i class="fas fa-eye"></i>
         </button>
       </div>
-      <div class="field-hint" id="passHint">
-      </div>
+      <div class="field-hint" id="passHint"></div>
     </div>
 
-    <button class="btn" id="btnReg" type="submit"><i class="fas fa-user-plus"></i> Daftar</button>
+    <button class="btn" id="btnReg" type="submit">Daftar</button>
+
+    <p class="signup-row">Sudah punya akun? <a onclick="switchMode('login')">Masuk</a></p>
   </form>
 
   <p class="footer-txt">© EPS-TOPIK Practice</p>
@@ -162,28 +299,33 @@ function toggleTheme(){
 }
 applyTheme(localStorage.getItem('theme') || 'light');
 
-// ⚡ FIX: togglePassword — pakai event.stopPropagation() biar nggak double-fire
-function togglePassword(event, btn) {
-  if (event) {
-    event.preventDefault();
-    event.stopPropagation();
-  }
-  const inputId = btn.dataset.target;
-  const input = document.getElementById(inputId);
-  if (!input) return;
+// ===== SWITCH LOGIN <-> REGISTER =====
+function switchMode(mode) {
+  const isLogin = mode === 'login';
+  document.getElementById('formLogin').style.display = isLogin ? 'block' : 'none';
+  document.getElementById('formRegister').style.display = isLogin ? 'none' : 'block';
+  document.getElementById('subtitle').textContent = isLogin
+    ? 'Masuk untuk mulai latihan'
+    : 'Buat akun baru untuk mulai latihan';
+  showMsg('', '');
+  window.scrollTo({top:0, behavior:'smooth'});
+  setTimeout(() => {
+    if (isLogin) document.getElementById('loginUser').focus();
+    else document.getElementById('regNama').focus();
+  }, 100);
+}
 
+// ===== SHOW/HIDE PASSWORD =====
+function togglePassword(event, btn) {
+  if (event) { event.preventDefault(); event.stopPropagation(); }
+  const input = document.getElementById(btn.dataset.target);
+  if (!input) return;
   const isPassword = input.type === 'password';
   input.type = isPassword ? 'text' : 'password';
-
   const icon = btn.querySelector('i');
-  if (icon) {
-    icon.className = isPassword ? 'fas fa-eye-slash' : 'fas fa-eye';
-  }
+  if (icon) icon.className = isPassword ? 'fas fa-eye-slash' : 'fas fa-eye';
   btn.title = isPassword ? 'Sembunyikan password' : 'Lihat password';
-
-  // ⚡ Fokus balik ke input biar user bisa lanjut ngetik
   input.focus();
-  // ⚡ Taruh cursor di akhir
   const val = input.value;
   input.setSelectionRange(val.length, val.length);
 }
@@ -195,18 +337,18 @@ function validateEmail(el) {
   if (!v) {
     el.classList.remove('valid');
     hint.className = 'field-hint';
-    hint.innerHTML = '<i class="fas fa-info-circle"></i> Email wajib diisi & aktif';
+    hint.textContent = '';
     return;
   }
   const ok = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
   if (ok) {
     el.classList.add('valid');
     hint.className = 'field-hint ok';
-    hint.innerHTML = '<i class="fas fa-check-circle"></i> Format email valid';
+    hint.textContent = 'Format email valid';
   } else {
     el.classList.remove('valid');
     hint.className = 'field-hint err';
-    hint.innerHTML = '<i class="fas fa-times-circle"></i> Format email tidak valid';
+    hint.textContent = 'Format email tidak valid';
   }
 }
 
@@ -216,52 +358,28 @@ function validatePassword(el) {
   if (v.length >= 4) {
     el.classList.add('valid');
     hint.className = 'field-hint ok';
-    hint.innerHTML = '<i class="fas fa-check-circle"></i> Password OK';
+    hint.textContent = 'Password OK';
   } else {
     el.classList.remove('valid');
     hint.className = 'field-hint';
-    hint.innerHTML = '<i class="fas fa-info-circle"></i> Minimal 4 karakter (' + v.length + '/4)';
+    hint.textContent = v.length ? `Minimal 4 karakter (${v.length}/4)` : '';
   }
 }
 
-const API = 'https://script.google.com/macros/s/AKfycbwGsUnn93GQGnCGYITxYas-ig5BGa0O1191cxp_wNjeESRYsCJZgsYXClQNKGSyDAjQ/exec';
+const API = 'https://script.google.com/macros/s/AKfycbyKZQU0IFhCrTBD1Jk7imOEuOLSBjGE962ZgSThd52ltWL_4mMvwOxNgUe3EuZA3k7e/exec';
 
-// ============================================================
-//  ⚡ RESET WELCOME POPUP FLAG
-//  Dipanggil sebelum redirect ke dashboard — biar popup muncul
-// ============================================================
 function resetWelcomeFlag() {
   try {
     sessionStorage.removeItem('welcome_shown');
     sessionStorage.removeItem('welcome_shown_at');
     sessionStorage.removeItem('welcome_shown_session');
-    // Set login session ID baru
     sessionStorage.setItem('login_session_id', Date.now().toString());
-    console.log('✅ Welcome flag reset, login_session_id:', sessionStorage.getItem('login_session_id'));
-  } catch(e) {
-    console.warn('Reset welcome flag gagal:', e);
-  }
+  } catch(e) {}
 }
 
-// ⚡ Kalau udah login, langsung redirect ke dashboard
 if (localStorage.getItem('user')) {
   resetWelcomeFlag();
   location.href = 'dashboard.html';
-}
-
-function switchTab(t) {
-  const isLogin = t === 'login';
-  document.getElementById('tabLogin').classList.toggle('active', isLogin);
-  document.getElementById('tabReg').classList.toggle('active', !isLogin);
-  document.getElementById('formLogin').style.display = isLogin ? 'block' : 'none';
-  document.getElementById('formReg').style.display = isLogin ? 'none' : 'block';
-  showMsg('', '');
-
-  // ⚡ Fokus otomatis ke field pertama
-  setTimeout(() => {
-    if (isLogin) document.getElementById('loginUser').focus();
-    else document.getElementById('regNama').focus();
-  }, 100);
 }
 
 function showMsg(text, type) {
@@ -285,32 +403,36 @@ function detectMsgType(msg) {
   return 'err';
 }
 
+// ===== LOGIN =====
 async function doLogin(e) {
   e.preventDefault();
   const username = document.getElementById('loginUser').value.trim();
   const password = document.getElementById('loginPass').value;
   const btn = document.getElementById('btnLogin');
   const original = btn.innerHTML;
-  btn.disabled = true; btn.innerHTML = '<span class="spinner"></span> Memproses...';
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner"></span> Memproses...';
   showMsg('', '');
   try {
     const res = await post({ action:'login', username, password });
     if (res.success) {
       localStorage.setItem('user', JSON.stringify(res.user));
-
-      // ⚡ RESET welcome popup flag — biar muncul di dashboard
       resetWelcomeFlag();
-
       const roleLabel = res.user.role === 'admin' ? 'Admin' : 'Pelajar';
-      showMsg(`✅ Login berhasil sebagai ${roleLabel}! Mengalihkan...`, 'ok');
+      showMsg(`Login berhasil sebagai ${roleLabel}. Mengalihkan...`, 'ok');
       setTimeout(() => location.href = 'dashboard.html', 700);
     } else {
-      showMsg('❌ ' + (res.msg || 'Login gagal'), detectMsgType(res.msg));
+      showMsg(res.msg || 'Login gagal', detectMsgType(res.msg));
     }
-  } catch(err) { showMsg('❌ ' + err.message, 'err'); }
-  finally { btn.disabled = false; btn.innerHTML = original; }
+  } catch(err) {
+    showMsg(err.message, 'err');
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = original;
+  }
 }
 
+// ===== REGISTER =====
 async function doRegister(e) {
   e.preventDefault();
   const nama = document.getElementById('regNama').value.trim();
@@ -320,59 +442,41 @@ async function doRegister(e) {
   const btn = document.getElementById('btnReg');
   const original = btn.innerHTML;
 
-  // ⚡ VALIDASI FRONTEND
-  if (!nama || nama.length < 2) {
-    showMsg('❌ Nama minimal 2 karakter', 'err'); return;
-  }
-  if (!email) {
-    showMsg('❌ Email wajib diisi', 'err'); return;
-  }
-  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-    showMsg('❌ Format email tidak valid', 'err'); return;
-  }
-  if (!username || username.length < 3) {
-    showMsg('❌ Username minimal 3 karakter', 'err'); return;
-  }
-  if (!/^[a-zA-Z0-9_.]+$/.test(username)) {
-    showMsg('❌ Username hanya boleh huruf, angka, titik, underscore', 'err'); return;
-  }
-  if (!password || password.length < 4) {
-    showMsg('❌ Password minimal 4 karakter', 'err'); return;
-  }
+  if (!nama || nama.length < 2) { showMsg('Nama minimal 2 karakter', 'err'); return; }
+  if (!email) { showMsg('Email wajib diisi', 'err'); return; }
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { showMsg('Format email tidak valid', 'err'); return; }
+  if (!username || username.length < 3) { showMsg('Username minimal 3 karakter', 'err'); return; }
+  if (!/^[a-zA-Z0-9_.]+$/.test(username)) { showMsg('Username hanya boleh huruf, angka, titik, underscore', 'err'); return; }
+  if (!password || password.length < 4) { showMsg('Password minimal 4 karakter', 'err'); return; }
 
-  btn.disabled = true; btn.innerHTML = '<span class="spinner"></span> Memproses...';
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner"></span> Memproses...';
   showMsg('', '');
   try {
     const res = await post({ action:'register', username, password, nama, email });
     if (res.success) {
-      showMsg('✅ Pendaftaran berhasil! Silakan login.', 'ok');
-      document.getElementById('formReg').reset();
-
-      // Reset validasi visual
+      showMsg('Pendaftaran berhasil! Silakan masuk.', 'ok');
+      document.getElementById('formRegister').reset();
       document.getElementById('regEmail').classList.remove('valid');
       document.getElementById('regPass').classList.remove('valid');
-      document.getElementById('emailHint').className = 'field-hint';
-      document.getElementById('emailHint').innerHTML = '<i class="fas fa-info-circle"></i> Email wajib diisi & aktif';
-      document.getElementById('passHint').className = 'field-hint';
-      document.getElementById('passHint').innerHTML = '<i class="fas fa-info-circle"></i> Minimal 4 karakter';
-
-      switchTab('login');
+      document.getElementById('emailHint').textContent = '';
+      document.getElementById('passHint').textContent = '';
+      switchMode('login');
       document.getElementById('loginUser').value = username;
       document.getElementById('loginPass').focus();
     } else {
-      showMsg('❌ ' + (res.msg || 'Gagal daftar'), detectMsgType(res.msg));
+      showMsg(res.msg || 'Gagal daftar', detectMsgType(res.msg));
     }
-  } catch(err) { showMsg('❌ ' + err.message, 'err'); }
-  finally { btn.disabled = false; btn.innerHTML = original; }
+  } catch(err) {
+    showMsg(err.message, 'err');
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = original;
+  }
 }
 
-// ⚡ Enter key di tab login/register — biar nggak "submit dobel"
-document.addEventListener('keydown', function(e) {
-  if (e.key === 'Enter') {
-    const activeForm = document.querySelector('form[style*="block"], form:not([style*="none"])');
-    // Biarin form submit normal
-  }
-});
+// autofocus
+setTimeout(() => document.getElementById('loginUser').focus(), 100);
 </script>
 </body>
 </html>
