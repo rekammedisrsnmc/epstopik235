@@ -7,67 +7,275 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <style>
 :root{
-  --bg:#f5f7fa; --card-bg:#fff; --card-shadow:0 4px 16px rgba(0,0,0,.06);
-  --text:#333; --text-muted:#888; --title-color:#154a82; --link-color:#1e5fa8;
-  --border:#d0d7e2; --topbar-bg:#fff; --topbar-shadow:0 4px 16px rgba(0,0,0,.08);
-  --sub-bg:#f5f7fa; --stat-bg:#fff;
+  --bg:#fafafa;
+  --card-bg:#ffffff;
+  --text:#1a1a1a;
+  --muted:#8a8a8a;
+  --border:#e5e5e5;
+  --accent:#2563eb;
+  --accent-hover:#1d4ed8;
+  --sub-bg:#f5f5f5;
+  --red:#dc2626;
+  --green:#16a34a;
+  --yellow:#d97706;
+  --purple:#7c3aed;
 }
 [data-theme="dark"]{
-  --bg:#0a111f; --card-bg:#151d2e; --card-shadow:0 4px 16px rgba(0,0,0,.4);
-  --text:#e8eef7; --text-muted:#8b9bb4; --title-color:#5b9cff; --link-color:#5b9cff;
-  --border:#2a3448; --topbar-bg:#151d2e; --topbar-shadow:0 4px 16px rgba(0,0,0,.4);
-  --sub-bg:#0f1626; --stat-bg:#1a2233;
+  --bg:#0f0f0f;
+  --card-bg:#1a1a1a;
+  --text:#ededed;
+  --muted:#888;
+  --border:#2a2a2a;
+  --accent:#5b9cff;
+  --accent-hover:#7ab0ff;
+  --sub-bg:#141414;
+  --red:#f87171;
+  --green:#4ade80;
+  --yellow:#fbbf24;
+  --purple:#a78bfa;
 }
-*{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI','Malgun Gothic',-apple-system,sans-serif;}
-body{background:var(--bg);min-height:100vh;color:var(--text);transition:background .3s,color .3s;}
-.topbar{background:var(--topbar-bg);padding:16px 24px;box-shadow:var(--topbar-shadow);display:flex;align-items:center;gap:12px;position:sticky;top:0;z-index:10;flex-wrap:wrap;}
-.topbar h1{font-size:18px;color:var(--title-color);display:flex;align-items:center;gap:10px;}
-.topbar h1 i{color:var(--link-color);}
+*{margin:0;padding:0;box-sizing:border-box;
+  font-family:-apple-system,'Segoe UI',Roboto,'Malgun Gothic',sans-serif;}
+body{
+  background:var(--bg);
+  min-height:100vh;
+  color:var(--text);
+  font-size:15px;
+  line-height:1.6;
+  transition:background .2s,color .2s;
+}
+
+/* ===== TOPBAR ===== */
+.topbar{
+  background:var(--card-bg);
+  padding:14px 24px;
+  border-bottom:1px solid var(--border);
+  display:flex;
+  align-items:center;
+  gap:12px;
+  position:sticky;
+  top:0;
+  z-index:10;
+  flex-wrap:wrap;
+}
+.topbar h1{
+  font-size:16px;
+  color:var(--text);
+  font-weight:600;
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+.topbar h1 i{color:var(--muted);font-size:14px;}
 .topbar .spacer{flex:1;}
-.topbar .user{font-size:13px;color:var(--text-muted);}
-.topbar .user strong{color:var(--link-color);}
-.btn{padding:10px 20px;border:none;border-radius:8px;font-weight:600;font-size:14px;cursor:pointer;transition:0.2s;display:inline-flex;align-items:center;gap:8px;font-family:inherit;text-decoration:none;}
-.btn-primary{background:var(--link-color);color:#fff;}
-.btn-primary:hover{filter:brightness(1.15);}
-.btn-secondary{background:var(--sub-bg);color:var(--text);border:1px solid var(--border);}
-.btn-secondary:hover{background:var(--border);}
-.btn-warning{background:#f0ad4e;color:#fff;}
-.btn-warning:hover{filter:brightness(1.1);}
-.btn-sm{padding:6px 12px;font-size:12px;}
-.btn-icon{background:transparent;border:1.5px solid var(--border);color:var(--text);width:38px;height:38px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:14px;transition:.2s;}
-.btn-icon:hover{background:var(--sub-bg);border-color:var(--link-color);color:var(--link-color);}
-.wrap{max-width:1000px;margin:30px auto;padding:0 20px;}
-.title{font-size:24px;color:var(--text);margin-bottom:6px;}
-.title strong{color:var(--link-color);}
-.sub{color:var(--text-muted);font-size:14px;margin-bottom:26px;}
-.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:30px;}
-.stat{background:var(--stat-bg);border-radius:12px;padding:20px;box-shadow:var(--card-shadow);text-align:center;}
-.stat .n{font-size:28px;font-weight:800;color:var(--link-color);}
-.stat .l{font-size:12px;color:var(--text-muted);margin-top:6px;}
-.stat.green .n{color:#2fa36b;}
-.stat.orange .n{color:#f0ad4e;}
-.stat.purple .n{color:#7c4dff;}
-.card{background:var(--card-bg);border-radius:12px;padding:24px;box-shadow:var(--card-shadow);margin-bottom:24px;}
-.card h2{font-size:16px;color:var(--title-color);margin-bottom:18px;display:flex;align-items:center;gap:10px;padding-bottom:12px;border-bottom:2px solid var(--sub-bg);}
-.hist-item{display:flex;align-items:center;gap:16px;padding:16px;border:1.5px solid var(--border);border-radius:10px;margin-bottom:10px;transition:.2s;background:var(--card-bg);}
-.hist-item:hover{border-color:var(--link-color);}
-.hist-score{width:64px;height:64px;border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#fff;font-weight:800;flex-shrink:0;}
-.hist-score .n{font-size:20px;line-height:1;}
-.hist-score .l{font-size:9px;letter-spacing:1px;opacity:.9;margin-top:2px;}
+.topbar .user{font-size:13px;color:var(--muted);}
+.topbar .user strong{color:var(--text);font-weight:500;}
+
+/* ===== BUTTONS ===== */
+.btn{
+  padding:9px 16px;
+  border:none;
+  border-radius:8px;
+  font-weight:500;
+  font-size:13px;
+  cursor:pointer;
+  transition:.15s;
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  font-family:inherit;
+  text-decoration:none;
+}
+.btn:disabled{opacity:.6;cursor:not-allowed;}
+.btn-primary{background:var(--accent);color:#fff;}
+.btn-primary:hover:not(:disabled){background:var(--accent-hover);}
+.btn-secondary{
+  background:transparent;
+  color:var(--text);
+  border:1px solid var(--border);
+}
+.btn-secondary:hover:not(:disabled){background:var(--sub-bg);border-color:var(--muted);}
+.btn-warning{background:var(--yellow);color:#fff;}
+.btn-warning:hover:not(:disabled){filter:brightness(1.1);}
+.btn-sm{padding:7px 12px;font-size:12px;}
+
+.btn-icon{
+  background:transparent;
+  border:1px solid var(--border);
+  color:var(--muted);
+  width:36px;height:36px;border-radius:50%;
+  cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  font-size:13px;transition:.15s;
+}
+.btn-icon:hover{color:var(--text);border-color:var(--text);}
+
+/* ===== LAYOUT ===== */
+.wrap{
+  max-width:1000px;
+  margin:32px auto;
+  padding:0 20px;
+}
+.title{
+  font-size:20px;
+  color:var(--text);
+  margin-bottom:4px;
+  font-weight:600;
+  letter-spacing:-0.2px;
+}
+.title strong{color:var(--accent);font-weight:600;}
+.sub{color:var(--muted);font-size:13px;margin-bottom:24px;}
+
+/* ===== STATS ===== */
+.stats{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:12px;
+  margin-bottom:24px;
+}
+.stat{
+  background:var(--card-bg);
+  border:1px solid var(--border);
+  border-radius:10px;
+  padding:18px;
+  text-align:center;
+}
+.stat .n{
+  font-size:24px;
+  font-weight:700;
+  color:var(--accent);
+  letter-spacing:-0.5px;
+}
+.stat .l{
+  font-size:11px;
+  color:var(--muted);
+  margin-top:4px;
+  text-transform:uppercase;
+  letter-spacing:.5px;
+}
+.stat.green .n{color:var(--green);}
+.stat.orange .n{color:var(--yellow);}
+.stat.purple .n{color:var(--purple);}
+
+/* ===== CARD ===== */
+.card{
+  background:var(--card-bg);
+  border:1px solid var(--border);
+  border-radius:10px;
+  padding:22px;
+  margin-bottom:20px;
+}
+.card h2{
+  font-size:15px;
+  color:var(--text);
+  margin-bottom:18px;
+  font-weight:600;
+  display:flex;
+  align-items:center;
+  gap:8px;
+  padding-bottom:12px;
+  border-bottom:1px solid var(--border);
+}
+.card h2 i{color:var(--muted);font-size:14px;}
+
+/* ===== HISTORY ITEM ===== */
+.hist-item{
+  display:flex;
+  align-items:center;
+  gap:14px;
+  padding:14px;
+  border:1px solid var(--border);
+  border-radius:10px;
+  margin-bottom:8px;
+  transition:.15s;
+  background:var(--card-bg);
+}
+.hist-item:hover{border-color:var(--muted);}
+.hist-item:last-child{margin-bottom:0;}
+
+.hist-score{
+  width:56px;height:56px;
+  border-radius:50%;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  color:#fff;
+  flex-shrink:0;
+  background:var(--sub-bg);
+}
+.hist-score .n{font-size:18px;line-height:1;font-weight:700;}
+.hist-score .l{font-size:8px;letter-spacing:.8px;opacity:.9;margin-top:2px;font-weight:500;}
+
 .hist-info{flex:1;min-width:0;}
-.hist-info h3{font-size:15px;color:var(--text);margin-bottom:4px;text-transform:capitalize;}
-.hist-info .meta{font-size:12px;color:var(--text-muted);display:flex;gap:12px;flex-wrap:wrap;}
-.hist-info .meta span{display:flex;align-items:center;gap:4px;}
+.hist-info h3{
+  font-size:14px;
+  color:var(--text);
+  margin-bottom:4px;
+  font-weight:600;
+}
+.hist-info .meta{
+  font-size:12px;
+  color:var(--muted);
+  display:flex;
+  gap:12px;
+  flex-wrap:wrap;
+}
+.hist-info .meta span{
+  display:flex;
+  align-items:center;
+  gap:4px;
+}
 .hist-actions{display:flex;gap:8px;flex-shrink:0;}
-.empty{text-align:center;padding:60px 20px;color:var(--text-muted);}
-.empty i{font-size:56px;opacity:.3;display:block;margin-bottom:16px;}
-.empty h3{color:var(--text);margin-bottom:8px;}
+
+/* ===== EMPTY ===== */
+.empty{
+  text-align:center;
+  padding:60px 20px;
+  color:var(--muted);
+}
+.empty i{
+  font-size:44px;
+  opacity:.4;
+  display:block;
+  margin-bottom:14px;
+}
+.empty h3{
+  color:var(--text);
+  margin-bottom:6px;
+  font-size:15px;
+  font-weight:600;
+}
 .empty p{font-size:13px;margin-bottom:20px;}
 
-/* Sertifikat */
-.cert-frame{background:#fff;border-radius:6px;padding:0;position:relative;box-shadow:0 12px 40px rgba(0,0,0,.15);max-width:820px;margin:0 auto;overflow:hidden;border:1px solid #d0d7e2;color:#333;}
-.cert-kop{display:flex;align-items:center;gap:16px;padding:20px 36px;background:linear-gradient(135deg,#154a82,#1e5fa8);color:#fff;}
-.cert-kop .logo{width:56px;height:56px;border-radius:50%;background:rgba(255,255,255,.15);display:flex;align-items:center;justify-content:center;font-size:26px;flex-shrink:0;border:2px solid rgba(255,255,255,.3);}
+/* =================================================== */
+/*  SERTIFIKAT                                        */
+/* =================================================== */
+.cert-frame{
+  background:#fff;
+  border-radius:6px;
+  padding:0;
+  position:relative;
+  box-shadow:0 12px 40px rgba(0,0,0,.15);
+  max-width:820px;
+  margin:0 auto;
+  overflow:hidden;
+  border:1px solid #d0d7e2;
+  color:#333;
+}
+.cert-kop{
+  display:flex;align-items:center;gap:16px;
+  padding:20px 36px;
+  background:linear-gradient(135deg,#154a82,#1e5fa8);
+  color:#fff;
+}
+.cert-kop .logo{
+  width:56px;height:56px;border-radius:50%;
+  background:rgba(255,255,255,.15);
+  display:flex;align-items:center;justify-content:center;
+  font-size:26px;flex-shrink:0;
+  border:2px solid rgba(255,255,255,.3);
+}
 .cert-kop .kop-text{flex:1;}
 .cert-kop .kop-text h1{font-size:15px;letter-spacing:2px;font-weight:800;line-height:1.2;}
 .cert-kop .kop-text h2{font-size:13px;font-weight:600;opacity:.9;line-height:1.2;margin-top:2px;}
@@ -77,26 +285,57 @@ body{background:var(--bg);min-height:100vh;color:var(--text);transition:backgrou
 .cert-title-block{text-align:center;margin-bottom:24px;}
 .cert-title-block .en{font-size:13px;letter-spacing:4px;color:#888;text-transform:uppercase;font-weight:600;}
 .cert-title-block .id{font-size:26px;letter-spacing:3px;color:#154a82;font-weight:800;margin-top:4px;}
-.cert-title-block .kategori{display:inline-block;margin-top:8px;background:#e8f0fa;color:#1e5fa8;padding:4px 16px;border-radius:20px;font-size:12px;font-weight:700;letter-spacing:1px;}
-.cert-status{display:inline-flex;align-items:center;gap:6px;margin-top:10px;padding:5px 18px;border-radius:20px;font-size:12px;font-weight:800;letter-spacing:1.5px;}
+.cert-title-block .kategori{
+  display:inline-block;margin-top:8px;
+  background:#e8f0fa;color:#1e5fa8;
+  padding:4px 16px;border-radius:20px;
+  font-size:12px;font-weight:700;letter-spacing:1px;
+}
+.cert-status{
+  display:inline-flex;align-items:center;gap:6px;
+  margin-top:10px;padding:5px 18px;border-radius:20px;
+  font-size:12px;font-weight:800;letter-spacing:1.5px;
+}
 .cert-status.lulus{background:#e8f5ee;color:#1f7f53;border:2px solid #2fa36b;}
 .cert-status.belum{background:#fde8e8;color:#a33;border:2px solid #d9534f;}
 .cert-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px 30px;margin-bottom:22px;}
-.cert-field .lbl{font-size:10px;letter-spacing:1px;color:#888;text-transform:uppercase;font-weight:600;margin-bottom:4px;}
-.cert-field .val{font-size:14px;color:#222;font-weight:700;padding-bottom:4px;border-bottom:1px solid #e4e8ee;}
+.cert-field .lbl{
+  font-size:10px;letter-spacing:1px;color:#888;
+  text-transform:uppercase;font-weight:600;margin-bottom:4px;
+}
+.cert-field .val{
+  font-size:14px;color:#222;font-weight:700;
+  padding-bottom:4px;border-bottom:1px solid #e4e8ee;
+}
 .cert-field.full{grid-column:span 2;}
-.cert-photo{width:100px;height:130px;border:2px solid #d0d7e2;border-radius:4px;background:linear-gradient(135deg,#f5f7fa,#e8f0fa);display:flex;flex-direction:column;align-items:center;justify-content:center;color:#aaa;font-size:10px;text-align:center;gap:4px;position:absolute;top:30px;right:46px;overflow:hidden;}
+.cert-photo{
+  width:100px;height:130px;
+  border:2px solid #d0d7e2;border-radius:4px;
+  background:linear-gradient(135deg,#f5f7fa,#e8f0fa);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  color:#aaa;font-size:10px;text-align:center;gap:4px;
+  position:absolute;top:30px;right:46px;overflow:hidden;
+}
 .cert-photo img{width:100%;height:100%;object-fit:cover;}
 .cert-photo i{font-size:28px;color:#c0c8d4;}
-.cert-nilai-title{text-align:center;font-size:11px;letter-spacing:3px;color:#888;text-transform:uppercase;font-weight:700;margin:24px 0 12px;position:relative;}
-.cert-nilai-title::before,.cert-nilai-title::after{content:'';position:absolute;top:50%;width:30%;height:1px;background:#e4e8ee;}
+.cert-nilai-title{
+  text-align:center;font-size:11px;letter-spacing:3px;
+  color:#888;text-transform:uppercase;font-weight:700;
+  margin:24px 0 12px;position:relative;
+}
+.cert-nilai-title::before,.cert-nilai-title::after{
+  content:'';position:absolute;top:50%;width:30%;height:1px;background:#e4e8ee;
+}
 .cert-nilai-title::before{left:0;}
 .cert-nilai-title::after{right:0;}
 .cert-nilai-grid{display:grid;gap:12px;margin-bottom:24px;}
 .cert-nilai-grid.g3{grid-template-columns:repeat(3,1fr);}
 .cert-nilai-grid.g4{grid-template-columns:repeat(4,1fr);}
 .cert-nilai-grid.g2{grid-template-columns:repeat(2,1fr);}
-.cert-nilai{text-align:center;padding:14px 8px;background:#f5f7fa;border-radius:8px;border:1px solid #e4e8ee;}
+.cert-nilai{
+  text-align:center;padding:14px 8px;
+  background:#f5f7fa;border-radius:8px;border:1px solid #e4e8ee;
+}
 .cert-nilai .n{font-size:22px;font-weight:800;color:#1e5fa8;line-height:1;}
 .cert-nilai .l{font-size:10px;color:#888;margin-top:6px;letter-spacing:1px;text-transform:uppercase;}
 .cert-nilai.highlight{background:linear-gradient(135deg,#2fa36b,#1f7f53);border:none;}
@@ -107,23 +346,60 @@ body{background:var(--bg);min-height:100vh;color:var(--text);transition:backgrou
 .cert-nilai.listening .n,.cert-nilai.listening .l{color:#fff;}
 .cert-nilai.reading{background:linear-gradient(135deg,#26a69a,#00796b);border:none;}
 .cert-nilai.reading .n,.cert-nilai.reading .l{color:#fff;}
-.cert-ket{background:linear-gradient(135deg,#fffbf0,#fff8e1);border-left:4px solid #f0ad4e;padding:14px 18px;border-radius:6px;font-size:13px;color:#5a4a1a;line-height:1.6;margin-bottom:24px;}
-.cert-ket.fail{background:linear-gradient(135deg,#fde8e8,#fbdada);border-left-color:#d9534f;color:#7a2020;}
+.cert-ket{
+  background:linear-gradient(135deg,#fffbf0,#fff8e1);
+  border-left:4px solid #f0ad4e;
+  padding:14px 18px;border-radius:6px;
+  font-size:13px;color:#5a4a1a;line-height:1.6;margin-bottom:24px;
+}
+.cert-ket.fail{
+  background:linear-gradient(135deg,#fde8e8,#fbdada);
+  border-left-color:#d9534f;color:#7a2020;
+}
 .cert-ket strong{color:#8a6a1a;}
 .cert-ket.fail strong{color:#a33;}
-.cert-footer{display:flex;justify-content:space-between;align-items:flex-end;gap:20px;padding-top:20px;border-top:1px dashed #d0d7e2;font-size:12px;color:#555;}
+.cert-footer{
+  display:flex;justify-content:space-between;align-items:flex-end;gap:20px;
+  padding-top:20px;border-top:1px dashed #d0d7e2;
+  font-size:12px;color:#555;
+}
 .cert-footer .ttd-block{text-align:center;flex-shrink:0;}
-.cert-footer .ttd-line{width:180px;height:50px;border-bottom:2px solid #333;margin-bottom:6px;position:relative;}
-.cert-footer .ttd-line::after{content:'✍';position:absolute;bottom:6px;left:50%;transform:translateX(-50%);font-size:22px;color:#1e5fa8;opacity:.6;}
+.cert-footer .ttd-line{
+  width:180px;height:50px;border-bottom:2px solid #333;
+  margin-bottom:6px;position:relative;
+}
+.cert-footer .ttd-line::after{
+  content:'✍';position:absolute;bottom:6px;left:50%;
+  transform:translateX(-50%);font-size:22px;color:#1e5fa8;opacity:.6;
+}
 .cert-footer .ttd-name{font-weight:700;color:#222;font-size:13px;}
 .cert-footer .ttd-role{font-size:11px;color:#888;margin-top:2px;}
-.cert-footer .info-block{text-align:left;font-size:11px;color:#888;line-height:1.7;flex-shrink:0;}
+.cert-footer .info-block{
+  text-align:left;font-size:11px;color:#888;
+  line-height:1.7;flex-shrink:0;
+}
 .cert-footer .info-block strong{color:#333;font-size:13px;}
-.cert-seal{display:flex;flex-direction:column;align-items:center;justify-content:center;width:82px;height:82px;border-radius:50%;border:3px solid #1e5fa8;color:#1e5fa8;font-size:9px;font-weight:800;letter-spacing:.5px;background:#fff;flex-shrink:0;transform:rotate(-12deg);box-shadow:0 4px 12px rgba(30,95,168,.15);margin-bottom:8px;}
+.cert-seal{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  width:82px;height:82px;border-radius:50%;
+  border:3px solid #1e5fa8;color:#1e5fa8;
+  font-size:9px;font-weight:800;letter-spacing:.5px;
+  background:#fff;flex-shrink:0;transform:rotate(-12deg);
+  box-shadow:0 4px 12px rgba(30,95,168,.15);margin-bottom:8px;
+}
 .cert-seal i{font-size:22px;margin-bottom:2px;color:#f0ad4e;}
-.cert-watermark{position:absolute;inset:0;pointer-events:none;display:flex;align-items:center;justify-content:center;font-size:200px;color:#1e5fa8;opacity:.03;font-weight:900;letter-spacing:8px;}
-.cert-actions{display:flex;gap:10px;justify-content:center;margin-top:24px;flex-wrap:wrap;}
+.cert-watermark{
+  position:absolute;inset:0;pointer-events:none;
+  display:flex;align-items:center;justify-content:center;
+  font-size:200px;color:#1e5fa8;opacity:.03;
+  font-weight:900;letter-spacing:8px;
+}
+.cert-actions{
+  display:flex;gap:10px;justify-content:center;
+  margin-top:24px;flex-wrap:wrap;
+}
 
+/* ===== PRINT ===== */
 @media print {
   body * { visibility: hidden; }
   #certificate, #certificate * { visibility: visible; }
@@ -133,9 +409,16 @@ body{background:var(--bg);min-height:100vh;color:var(--text);transition:backgrou
   .cert-frame { box-shadow: none !important; border: 1px solid #ccc !important; margin: 0 auto !important; }
   @page { size: A4 portrait; margin: 0.5cm; }
 }
+
+/* ===== RESPONSIVE ===== */
 @media(max-width:700px){
+  .topbar{padding:12px 16px;}
+  .topbar .user{display:none;}
+  .wrap{margin:20px auto;}
   .stats{grid-template-columns:repeat(2,1fr);}
   .hist-item{flex-wrap:wrap;}
+  .hist-actions{width:100%;}
+  .hist-actions .btn{flex:1;justify-content:center;}
   .cert-body{padding:20px;}
   .cert-kop{padding:14px 20px;}
   .cert-grid{grid-template-columns:1fr;}
@@ -154,15 +437,19 @@ body{background:var(--bg);min-height:100vh;color:var(--text);transition:backgrou
   <h1><i class="fas fa-history"></i> Riwayat & Sertifikat</h1>
   <div class="spacer"></div>
   <span class="user">👤 <strong id="userName">-</strong></span>
-  <button class="btn-icon" onclick="toggleTheme()" title="Toggle dark mode"><i class="fas fa-moon" id="themeIcon"></i></button>
-  <a href="dashboard.html" class="btn btn-secondary btn-sm"><i class="fas fa-home"></i> Dashboard</a>
+  <button class="btn-icon" onclick="toggleTheme()" title="Ganti tema">
+    <i class="fas fa-moon" id="themeIcon"></i>
+  </button>
+  <a href="dashboard.html" class="btn btn-secondary btn-sm">
+    <i class="fas fa-home"></i> Dashboard
+  </a>
 </div>
 
 <div class="wrap">
   <div id="app">
-    <div style="text-align:center;padding:80px 20px;color:var(--text-muted);">
-      <div style="display:inline-block;width:40px;height:40px;border:4px solid var(--sub-bg);border-top-color:var(--link-color);border-radius:50%;animation:spin .8s linear infinite;"></div>
-      <p style="margin-top:14px;">Memuat riwayat...</p>
+    <div style="text-align:center;padding:80px 20px;color:var(--muted);">
+      <div style="display:inline-block;width:32px;height:32px;border:2px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin .8s linear infinite;"></div>
+      <p style="margin-top:14px;font-size:13px;">Memuat riwayat...</p>
     </div>
   </div>
 </div>
@@ -170,7 +457,7 @@ body{background:var(--bg);min-height:100vh;color:var(--text);transition:backgrou
 <style>@keyframes spin{100%{transform:rotate(360deg)}}</style>
 
 <script>
-// ===== DARK MODE =====
+// ===== THEME =====
 function applyTheme(t){
   document.documentElement.setAttribute('data-theme', t);
   const icon = document.getElementById('themeIcon');
@@ -185,7 +472,7 @@ function toggleTheme(){
 applyTheme(localStorage.getItem('theme') || 'light');
 
 // ===== KONFIG =====
-const API = 'https://script.google.com/macros/s/AKfycbwGsUnn93GQGnCGYITxYas-ig5BGa0O1191cxp_wNjeESRYsCJZgsYXClQNKGSyDAjQ/exec';
+const API = 'https://script.google.com/macros/s/AKfycbyKZQU0IFhCrTBD1Jk7imOEuOLSBjGE962ZgSThd52ltWL_4mMvwOxNgUe3EuZA3k7e/exec';
 
 // ===== STATE =====
 let user = JSON.parse(localStorage.getItem('user') || 'null');
@@ -208,7 +495,7 @@ function refreshUser() {
     .catch(() => {});
 }
 
-// ===== UPDATE KUOTA (di dalam function, aman) =====
+// ===== REFRESH QUOTA =====
 function refreshQuota() {
   return fetch(API + '?action=getQuota&username=' + encodeURIComponent(user.username) + '&t=' + Date.now())
     .then(r => r.json())
@@ -244,7 +531,7 @@ function renderPage() {
   const app = document.getElementById('app');
   if (historyData.length === 0) {
     app.innerHTML = `
-      <div class="title">Halo, <strong>${user.nama || user.username}</strong> 👋</div>
+      <div class="title">Halo, <strong>${user.nama || user.username}</strong></div>
       <p class="sub">Belum ada riwayat ujian. Ayo mulai latihan!</p>
       <div class="empty">
         <i class="fas fa-clipboard-list"></i>
@@ -261,7 +548,7 @@ function renderPage() {
   const certCount = historyData.filter(h => h.skor >= 70).length;
 
   let html = `
-    <div class="title">Halo, <strong>${user.nama || user.username}</strong> 👋</div>
+    <div class="title">Halo, <strong>${user.nama || user.username}</strong></div>
     <p class="sub">Ini riwayat ujian & sertifikat kamu</p>
     <div class="stats">
       <div class="stat"><div class="n">${total}</div><div class="l">Total Ujian</div></div>
@@ -274,25 +561,28 @@ function renderPage() {
 
   historyData.forEach((h, i) => {
     const isLulus = h.skor >= 70;
-    const color = h.skor >= 90 ? '#2fa36b' : h.skor >= 80 ? '#2fa36b' : h.skor >= 70 ? '#f0ad4e' : '#d9534f';
+    const color = h.skor >= 80 ? 'var(--green)' : h.skor >= 70 ? 'var(--yellow)' : 'var(--red)';
     const katLabel = formatKategori(h.kategori);
     const skorL = h.skorListening !== null && h.skorListening !== undefined ? h.skorListening : '-';
     const skorR = h.skorReading !== null && h.skorReading !== undefined ? h.skorReading : '-';
 
     html += `
       <div class="hist-item">
-        <div class="hist-score" style="background:${color}"><div class="n">${h.skor}</div><div class="l">SKOR</div></div>
+        <div class="hist-score" style="background:${color}">
+          <div class="n">${h.skor}</div>
+          <div class="l">SKOR</div>
+        </div>
         <div class="hist-info">
           <h3>${katLabel}</h3>
           <div class="meta">
             <span><i class="fas fa-calendar"></i> ${h.tanggal}</span>
-            <span><i class="fas fa-check" style="color:#2fa36b;"></i> ${h.benar}</span>
-            <span><i class="fas fa-times" style="color:#d9534f;"></i> ${h.salah}</span>
-            <span><i class="fas fa-minus" style="color:#888;"></i> ${h.kosong}</span>
-            ${h.totalListening > 0 ? `<span><i class="fas fa-headphones" style="color:#7c4dff;"></i> L:${skorL}</span>` : ''}
-            ${h.totalReading > 0 ? `<span><i class="fas fa-book-reader" style="color:#26a69a;"></i> R:${skorR}</span>` : ''}
-            <span style="font-weight:700;color:${isLulus ? '#2fa36b' : '#d9534f'};">
-              ${isLulus ? '✓ LULUS' : '✗ BELUM LULUS'}
+            <span><i class="fas fa-check" style="color:var(--green);"></i> ${h.benar}</span>
+            <span><i class="fas fa-times" style="color:var(--red);"></i> ${h.salah}</span>
+            <span><i class="fas fa-minus" style="color:var(--muted);"></i> ${h.kosong}</span>
+            ${h.totalListening > 0 ? `<span><i class="fas fa-headphones" style="color:var(--purple);"></i> L:${skorL}</span>` : ''}
+            ${h.totalReading > 0 ? `<span><i class="fas fa-book-reader" style="color:var(--accent);"></i> R:${skorR}</span>` : ''}
+            <span style="font-weight:600;color:${isLulus ? 'var(--green)' : 'var(--red)'};">
+              ${isLulus ? 'LULUS' : 'BELUM LULUS'}
             </span>
           </div>
         </div>
@@ -307,20 +597,67 @@ function renderPage() {
   app.innerHTML = html;
 }
 
-// ===== FORMAT KATEGORI =====
+// ============================================================
+//  ⚡ FORMAT KATEGORI (dinamis, handle kosakata_<tema>)
+// ============================================================
 function formatKategori(k) {
-  const map = { 'eps':'Soal EPS-TOPIK','kosakata':'Kosakata','tata_bahasa':'Tata Bahasa','listening':'Listening','reading':'Reading','umum':'Umum' };
-  return map[k] || k || 'Umum';
+  if (!k) return 'Umum';
+  const key = String(k).toLowerCase();
+
+  // Handle kosakata_<tema> (contoh: kosakata_transportasi)
+  if (key.startsWith('kosakata_')) {
+    const tema = key.replace('kosakata_', '');
+    const temaMap = {
+      'transportasi':   'Transportasi',
+      'makanan':        'Makanan & Minuman',
+      'tempat_wisata':  'Tempat Wisata',
+      'keluarga':       'Keluarga',
+      'sekolah':        'Sekolah',
+      'tubuh':          'Anggota Tubuh',
+      'pakaian':        'Pakaian',
+      'alam':           'Alam & Cuaca',
+      'pekerjaan':      'Pekerjaan',
+      'hobi':           'Hobi & Olahraga',
+      'umum':           'Kosakata Umum'
+    };
+    const temaLabel = temaMap[tema] || tema.charAt(0).toUpperCase() + tema.slice(1);
+    return 'Kosakata: ' + temaLabel;
+  }
+
+  const map = {
+    'eps':         'Soal EPS-TOPIK',
+    'kosakata':    'Kosakata (Semua Tema)',
+    'tata_bahasa': 'Tata Bahasa',
+    'listening':   'Listening',
+    'reading':     'Reading',
+    'umum':        'Umum'
+  };
+  return map[key] || k;
 }
 
-// ===== SHOW CERTIFICATE =====
+// ============================================================
+//  ⚡ SHOW CERTIFICATE (dinamis per kategori)
+// ============================================================
 function showCertificate(index) {
   const h = historyData[index];
   if (!h) return;
   const app = document.getElementById('app');
   const katLabel = formatKategori(h.kategori);
-  const certId = 'EPST-' + String(h.id).padStart(4, '0');
   const isLulus = h.skor >= 70;
+
+  // ⚡ Prefix ID sertifikat dinamis sesuai kategori
+  const prefixMap = {
+    'eps': 'EPS',
+    'kosakata': 'KOS',
+    'tata_bahasa': 'TBH',
+    'listening': 'LIS',
+    'reading': 'REA',
+    'umum': 'UMN'
+  };
+  const keyKat = String(h.kategori || 'umum').toLowerCase();
+  const prefixKey = keyKat.startsWith('kosakata') ? 'kosakata' : keyKat;
+  const prefix = prefixMap[prefixKey] || 'EPS';
+  const certId = prefix + '-' + String(h.id).padStart(4, '0');
 
   let grade, predikat;
   if (h.skor >= 90) { grade = 'Sangat Baik'; predikat = 'A'; }
@@ -335,6 +672,7 @@ function showCertificate(index) {
     ? (h.skor >= 90 ? 'highlight' : 'highlight warn')
     : 'highlight fail';
 
+  // ⚡ Kalimat pakai katLabel dinamis (Soal EPS-TOPIK / Kosakata: Transportasi / dll)
   const ketText = isLulus
     ? `Berdasarkan hasil ujian <strong>${katLabel}</strong> yang dilaksanakan pada <strong>${h.tanggal}</strong>, peserta dinyatakan <strong>LULUS</strong> dengan predikat <strong>${grade} (${predikat})</strong> dan skor akhir <strong>${h.skor}</strong> dari total <strong>${h.total}</strong> soal.`
     : `Berdasarkan hasil ujian <strong>${katLabel}</strong> yang dilaksanakan pada <strong>${h.tanggal}</strong>, peserta dinyatakan <strong>BELUM LULUS</strong> dengan predikat <strong>${grade} (${predikat})</strong> dan skor akhir <strong>${h.skor}</strong> dari total <strong>${h.total}</strong> soal. Peserta disarankan untuk mengulang latihan.`;
@@ -356,14 +694,14 @@ function showCertificate(index) {
       nilaiHtml += `
         <div class="cert-nilai listening">
           <div class="n">${skorL !== null ? skorL : '-'}</div>
-          <div class="l">🎧 Nilai Listening</div>
+          <div class="l">Nilai Listening</div>
         </div>`;
     }
     if (hasR) {
       nilaiHtml += `
         <div class="cert-nilai reading">
           <div class="n">${skorR !== null ? skorR : '-'}</div>
-          <div class="l">📖 Nilai Reading</div>
+          <div class="l">Nilai Reading</div>
         </div>`;
     }
     nilaiHtml += `
@@ -393,19 +731,19 @@ function showCertificate(index) {
       detailHtml += `
         <div class="cert-nilai">
           <div class="n" style="font-size:16px;">${h.benarListening}/${h.totalListening}</div>
-          <div class="l">🎧 L Benar</div>
+          <div class="l">L Benar</div>
         </div>`;
     } else {
-      detailHtml += `<div class="cert-nilai" style="opacity:.4;"><div class="n" style="font-size:16px;">-</div><div class="l">🎧 L Benar</div></div>`;
+      detailHtml += `<div class="cert-nilai" style="opacity:.4;"><div class="n" style="font-size:16px;">-</div><div class="l">L Benar</div></div>`;
     }
     if (hasR) {
       detailHtml += `
         <div class="cert-nilai">
           <div class="n" style="font-size:16px;">${h.benarReading}/${h.totalReading}</div>
-          <div class="l">📖 R Benar</div>
+          <div class="l">R Benar</div>
         </div>`;
     } else {
-      detailHtml += `<div class="cert-nilai" style="opacity:.4;"><div class="n" style="font-size:16px;">-</div><div class="l">📖 R Benar</div></div>`;
+      detailHtml += `<div class="cert-nilai" style="opacity:.4;"><div class="n" style="font-size:16px;">-</div><div class="l">R Benar</div></div>`;
     }
     detailHtml += `
         <div class="cert-nilai"><div class="n" style="font-size:16px;">${h.benar}</div><div class="l">Total Benar</div></div>
@@ -415,7 +753,9 @@ function showCertificate(index) {
 
   app.innerHTML = `
     <div style="margin-bottom:20px;text-align:center;" class="no-print">
-      <button class="btn btn-secondary" onclick="renderPage()"><i class="fas fa-arrow-left"></i> Kembali ke Riwayat</button>
+      <button class="btn btn-secondary" onclick="renderPage()">
+        <i class="fas fa-arrow-left"></i> Kembali ke Riwayat
+      </button>
     </div>
 
     <div id="certificate">
@@ -424,7 +764,7 @@ function showCertificate(index) {
           <div class="logo">🇰🇷</div>
           <div class="kop-text">
             <h1>CERTIFICATE OF ACHIEVEMENT</h1>
-            <h2>Sertifikat Hasil Ujian — EPS-TOPIK Practice</h2>
+            <h2>Sertifikat ${katLabel}</h2>
             <p>PROGRAM LATIHAN BAHASA KOREA</p>
           </div>
         </div>
@@ -498,10 +838,10 @@ function showCertificate(index) {
       <button class="btn btn-secondary" onclick="window.print()"><i class="fas fa-print"></i> Print</button>
     </div>
 
-    <p style="text-align:center;font-size:12px;color:var(--text-muted);margin-top:20px;" class="no-print">
+    <p style="text-align:center;font-size:12px;color:var(--muted);margin-top:20px;" class="no-print">
       ID Sertifikat: <strong>${certId}</strong>
     </p>`;
-  window.scrollTo({top: 0, behavior: 'smooth'});
+  window.scrollTo({top:0, behavior:'smooth'});
 }
 
 // ===== DOWNLOAD =====
@@ -537,7 +877,6 @@ function doDownload(target, certId) {
 }
 
 // ===== INIT =====
-// Urutan yang bener: deklarasi → fetch → render
 refreshQuota();
 refreshUser().then(() => loadHistory());
 </script>
