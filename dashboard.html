@@ -7,432 +7,714 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <style>
 :root{
-  --bg:#f5f7fa; --card-bg:#fff; --card-shadow:0 4px 16px rgba(0,0,0,.06);
-  --text:#333; --text-muted:#888; --title-color:#154a82; --link-color:#1e5fa8;
-  --border:#d0d7e2; --topbar-bg:#fff; --topbar-shadow:0 4px 16px rgba(0,0,0,.08);
-  --sub-bg:#f5f7fa; --stat-bg:#fff; --section-title:#555;
-  --menu-hover-shadow:0 12px 30px rgba(30,95,168,.18);
-  --tag-bg:#e8f0fa; --tag-text:#1e5fa8;
-  --dropdown-bg:#fff; --dropdown-shadow:0 8px 24px rgba(0,0,0,.15);
-  --skeleton-bg:#e0e6ed; --skeleton-shine:#f0f4f8;
-  --gold:#ffb800; --gold-dark:#cc9400; --gold-light:#fff8e0;
+  --bg:#fafafa;
+  --card-bg:#ffffff;
+  --text:#1a1a1a;
+  --muted:#8a8a8a;
+  --border:#e5e5e5;
+  --accent:#2563eb;
+  --accent-hover:#1d4ed8;
+  --sub-bg:#f5f5f5;
+  --dropdown-shadow:0 8px 24px rgba(0,0,0,.08);
+
+  --gold:#d97706;
+  --gold-dark:#b45309;
+  --gold-light:#fef3c7;
+
+  --c-blue:#2563eb;
+  --c-green:#16a34a;
+  --c-orange:#d97706;
+  --c-purple:#7c3aed;
+  --c-red:#dc2626;
+  --c-teal:#0d9488;
+  --c-pink:#db2777;
+  --c-cyan:#0891b2;
+  --c-gray:#6b7280;
+  --c-gray-dark:#4b5563;
 }
 [data-theme="dark"]{
-  --bg:#0a111f; --card-bg:#151d2e; --card-shadow:0 4px 16px rgba(0,0,0,.4);
-  --text:#e8eef7; --text-muted:#8b9bb4; --title-color:#5b9cff; --link-color:#5b9cff;
-  --border:#2a3448; --topbar-bg:#151d2e; --topbar-shadow:0 4px 16px rgba(0,0,0,.4);
-  --sub-bg:#0f1626; --stat-bg:#1a2233; --section-title:#8b9bb4;
-  --menu-hover-shadow:0 12px 30px rgba(91,156,255,.25);
-  --tag-bg:#1e3556; --tag-text:#5b9cff;
-  --dropdown-bg:#1a2233; --dropdown-shadow:0 8px 24px rgba(0,0,0,.5);
-  --skeleton-bg:#1e2a3f; --skeleton-shine:#2a3854;
-  --gold:#ffd700; --gold-dark:#ffb800; --gold-light:#3a2e10;
-}
-*{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI','Malgun Gothic',-apple-system,sans-serif;}
-body{background:var(--bg);min-height:100vh;color:var(--text);transition:background .3s,color .3s;}
-.topbar{background:var(--topbar-bg);padding:16px 24px;box-shadow:var(--topbar-shadow);display:flex;align-items:center;gap:12px;position:sticky;top:0;z-index:50;transition:background .3s;}
-.topbar h1{font-size:18px;color:var(--title-color);display:flex;align-items:center;gap:10px;}
-.topbar h1 i{color:var(--link-color);}
-.topbar .spacer{flex:1;}
-.topbar .user{font-size:13px;color:var(--text-muted);display:flex;align-items:center;gap:8px;}
-.topbar .user strong{color:var(--link-color);}
-.topbar .avatar-mini{width:28px;height:28px;border-radius:50%;object-fit:cover;border:2px solid var(--link-color);}
-.topbar .avatar-init{width:28px;height:28px;border-radius:50%;background:var(--link-color);color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;}
-.topbar .user .badge{font-size:10px;padding:2px 8px;border-radius:10px;font-weight:700;}
-.topbar .user .badge.admin{background:#fde8e8;color:#a33;}
-.topbar .user .badge.user{background:var(--tag-bg);color:var(--tag-text);}
-.topbar .user .badge.premium{
-  background:linear-gradient(135deg,var(--gold),var(--gold-dark));
-  color:#7a4a00;
-  box-shadow:0 0 10px rgba(255,184,0,.5);
-  animation:shine-premium 2s infinite;
-}
-@keyframes shine-premium{
-  0%,100%{box-shadow:0 0 10px rgba(255,184,0,.5);}
-  50%{box-shadow:0 0 20px rgba(255,184,0,.9);}
-}
-.topbar .btn-icon{background:transparent;border:1.5px solid var(--border);color:var(--text);width:38px;height:38px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:14px;transition:.2s;position:relative;text-decoration:none;}
-.topbar .btn-icon:hover{background:var(--sub-bg);border-color:var(--link-color);color:var(--link-color);}
-.topbar .btn-icon .notif-badge{
-  position:absolute;top:-2px;right:-2px;
-  background:#d9534f;color:#fff;font-size:10px;font-weight:800;
-  min-width:18px;height:18px;padding:0 5px;border-radius:10px;
-  display:flex;align-items:center;justify-content:center;
-  border:2px solid var(--topbar-bg);
-  animation:pulse-badge 1.5s infinite;
-}
-@keyframes pulse-badge{0%,100%{transform:scale(1);}50%{transform:scale(1.1);}}
-.topbar .logout{color:#d9534f;text-decoration:none;font-weight:600;font-size:13px;display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:8px;transition:.2s;}
-.topbar .logout:hover{background:#fde8e8;}
+  --bg:#0f0f0f;
+  --card-bg:#1a1a1a;
+  --text:#ededed;
+  --muted:#888;
+  --border:#2a2a2a;
+  --accent:#5b9cff;
+  --accent-hover:#7ab0ff;
+  --sub-bg:#141414;
+  --dropdown-shadow:0 8px 24px rgba(0,0,0,.5);
 
+  --gold:#fbbf24;
+  --gold-dark:#f59e0b;
+  --gold-light:#3a2e10;
+
+  --c-blue:#5b9cff;
+  --c-green:#4ade80;
+  --c-orange:#fbbf24;
+  --c-purple:#a78bfa;
+  --c-red:#f87171;
+  --c-teal:#2dd4bf;
+  --c-pink:#f472b6;
+  --c-cyan:#22d3ee;
+  --c-gray:#9ca3af;
+  --c-gray-dark:#9ca3af;
+}
+*{margin:0;padding:0;box-sizing:border-box;
+  font-family:-apple-system,'Segoe UI',Roboto,'Malgun Gothic',sans-serif;}
+body{
+  background:var(--bg);
+  min-height:100vh;
+  color:var(--text);
+  font-size:15px;
+  line-height:1.6;
+  transition:background .2s,color .2s;
+}
+
+/* ===== TOPBAR ===== */
+.topbar{
+  background:var(--card-bg);
+  padding:14px 24px;
+  border-bottom:1px solid var(--border);
+  display:flex;
+  align-items:center;
+  gap:12px;
+  position:sticky;
+  top:0;
+  z-index:50;
+}
+.topbar h1{
+  font-size:16px;
+  color:var(--text);
+  font-weight:600;
+  display:flex;align-items:center;gap:8px;
+}
+.topbar h1 i{color:var(--muted);font-size:14px;}
+.topbar .spacer{flex:1;}
+.topbar .user{
+  font-size:13px;color:var(--muted);
+  display:flex;align-items:center;gap:8px;
+}
+.topbar .user strong{color:var(--text);font-weight:500;}
+.topbar .avatar-mini{
+  width:28px;height:28px;border-radius:50%;object-fit:cover;
+  border:1px solid var(--border);
+}
+.topbar .avatar-init{
+  width:28px;height:28px;border-radius:50%;
+  background:var(--sub-bg);color:var(--text);
+  border:1px solid var(--border);
+  display:flex;align-items:center;justify-content:center;
+  font-size:12px;font-weight:600;
+}
+.topbar .user .badge{
+  font-size:10px;padding:2px 8px;border-radius:10px;font-weight:600;
+  border:1px solid transparent;
+}
+.topbar .user .badge.admin{background:transparent;color:var(--c-red);border-color:var(--c-red);}
+.topbar .user .badge.user{background:transparent;color:var(--muted);border-color:var(--border);}
+.topbar .user .badge.premium{
+  background:transparent;color:var(--gold);border-color:var(--gold);
+  font-weight:700;
+}
+.topbar .btn-icon{
+  background:transparent;border:1px solid var(--border);color:var(--muted);
+  width:36px;height:36px;border-radius:50%;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  font-size:13px;transition:.15s;position:relative;text-decoration:none;
+}
+.topbar .btn-icon:hover{color:var(--text);border-color:var(--text);}
+.topbar .btn-icon .notif-badge{
+  position:absolute;top:-3px;right:-3px;
+  background:var(--c-red);color:#fff;font-size:10px;font-weight:700;
+  min-width:18px;height:18px;padding:0 4px;border-radius:10px;
+  display:flex;align-items:center;justify-content:center;
+  border:2px solid var(--card-bg);
+}
+.topbar .logout{
+  color:var(--c-red);text-decoration:none;font-weight:500;font-size:13px;
+  display:inline-flex;align-items:center;gap:6px;padding:8px 12px;border-radius:8px;
+  transition:.15s;
+}
+.topbar .logout:hover{background:var(--sub-bg);}
+
+body.is-admin #menuPremium,
+body.is-admin #premiumBanner,
+body.is-admin #premiumBadge{display:none !important;}
+
+/* ===== NOTIF DROPDOWN ===== */
 .notif-wrapper{position:relative;}
 .notif-dropdown{
-  display:none;
-  position:absolute;
-  top:calc(100% + 12px);
-  right:0;
-  width:360px;
-  max-width:calc(100vw - 40px);
-  background:var(--dropdown-bg);
-  border-radius:14px;
+  display:none;position:absolute;top:calc(100% + 12px);right:0;
+  width:360px;max-width:calc(100vw - 40px);
+  background:var(--card-bg);
+  border:1px solid var(--border);
+  border-radius:10px;
   box-shadow:var(--dropdown-shadow);
-  border:1.5px solid var(--border);
-  z-index:100;
-  overflow:hidden;
-  animation:dropDown .2s ease;
+  z-index:100;overflow:hidden;
 }
 .notif-wrapper.open .notif-dropdown{display:block;}
-@keyframes dropDown{from{opacity:0;transform:translateY(-8px);}to{opacity:1;transform:translateY(0);}}
-.notif-head{padding:14px 18px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;}
-.notif-head h3{font-size:14px;font-weight:800;color:var(--title-color);letter-spacing:.5px;}
-.notif-head .btn-mark{background:transparent;border:none;color:var(--link-color);font-size:11px;font-weight:700;cursor:pointer;font-family:inherit;padding:4px 8px;border-radius:6px;transition:.2s;}
+.notif-head{
+  padding:14px 18px;border-bottom:1px solid var(--border);
+  display:flex;justify-content:space-between;align-items:center;
+}
+.notif-head h3{font-size:13px;font-weight:600;color:var(--text);}
+.notif-head .btn-mark{
+  background:transparent;border:none;color:var(--accent);
+  font-size:11px;font-weight:500;cursor:pointer;font-family:inherit;
+  padding:4px 8px;border-radius:6px;transition:.15s;
+}
 .notif-head .btn-mark:hover{background:var(--sub-bg);}
 .notif-body{max-height:400px;overflow-y:auto;}
-.notif-item-drop{display:flex;gap:12px;padding:12px 18px;border-bottom:1px solid var(--border);cursor:pointer;transition:.15s;text-decoration:none;color:inherit;position:relative;}
+.notif-item-drop{
+  display:flex;gap:12px;padding:12px 18px;
+  border-bottom:1px solid var(--border);
+  cursor:pointer;transition:.15s;text-decoration:none;color:inherit;
+  position:relative;
+}
+.notif-item-drop:last-child{border-bottom:none;}
 .notif-item-drop:hover{background:var(--sub-bg);}
-.notif-item-drop.unread{background:linear-gradient(90deg,rgba(30,95,168,.06),transparent);}
-.notif-item-drop.unread::before{content:'';position:absolute;left:6px;top:50%;transform:translateY(-50%);width:6px;height:6px;border-radius:50%;background:var(--link-color);}
-.notif-item-drop .ic{width:36px;height:36px;border-radius:10px;flex-shrink:0;display:flex;align-items:center;justify-content:center;color:#fff;font-size:15px;}
-.notif-item-drop.tipe-bantuan .ic{background:linear-gradient(135deg,#f0ad4e,#ec971f);}
-.notif-item-drop.tipe-balasan .ic{background:linear-gradient(135deg,#2fa36b,#1f7f53);}
-.notif-item-drop.tipe-kuota .ic{background:linear-gradient(135deg,#7c4dff,#5e35b1);}
-.notif-item-drop.tipe-sistem .ic{background:linear-gradient(135deg,#1e5fa8,#154a82);}
-.notif-item-drop.tipe-request .ic{background:linear-gradient(135deg,#d9534f,#c9302c);}
-.notif-item-drop.tipe-chat .ic{background:linear-gradient(135deg,#26a69a,#00796b);}
+.notif-item-drop.unread{background:var(--sub-bg);}
+.notif-item-drop .ic{
+  width:34px;height:34px;border-radius:8px;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+  color:var(--muted);font-size:14px;
+  background:var(--sub-bg);border:1px solid var(--border);
+}
+.notif-item-drop.tipe-bantuan .ic{color:var(--c-orange);}
+.notif-item-drop.tipe-balasan .ic{color:var(--c-green);}
+.notif-item-drop.tipe-kuota .ic{color:var(--c-purple);}
+.notif-item-drop.tipe-sistem .ic{color:var(--c-blue);}
+.notif-item-drop.tipe-request .ic{color:var(--c-red);}
+.notif-item-drop.tipe-chat .ic{color:var(--c-teal);}
 .notif-item-drop .tx{flex:1;min-width:0;}
-.notif-item-drop .tx .ttl{font-size:13px;font-weight:700;color:var(--text);margin-bottom:2px;line-height:1.3;}
-.notif-item-drop .tx .msg{font-size:12px;color:var(--text-muted);line-height:1.4;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
-.notif-item-drop .tx .tm{font-size:10px;color:var(--text-muted);margin-top:4px;}
-.notif-empty{padding:40px 20px;text-align:center;color:var(--text-muted);font-size:13px;}
-.notif-empty i{font-size:36px;opacity:.3;display:block;margin-bottom:10px;}
+.notif-item-drop .tx .ttl{
+  font-size:13px;font-weight:600;color:var(--text);margin-bottom:2px;line-height:1.3;
+}
+.notif-item-drop .tx .msg{
+  font-size:12px;color:var(--muted);line-height:1.4;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
+}
+.notif-item-drop .tx .tm{font-size:10px;color:var(--muted);margin-top:4px;}
+.notif-empty{padding:40px 20px;text-align:center;color:var(--muted);font-size:13px;}
+.notif-empty i{font-size:32px;opacity:.3;display:block;margin-bottom:10px;}
 .notif-foot{padding:12px 18px;border-top:1px solid var(--border);text-align:center;}
-.notif-foot a{color:var(--link-color);font-weight:700;font-size:13px;text-decoration:none;display:inline-flex;align-items:center;gap:6px;transition:.2s;}
-.notif-foot a:hover{gap:10px;}
+.notif-foot a{
+  color:var(--accent);font-weight:500;font-size:13px;text-decoration:none;
+  display:inline-flex;align-items:center;gap:6px;transition:.15s;
+}
+.notif-foot a:hover{gap:9px;}
 
+/* ===== CHAT FAB ===== */
 .chat-fab{
   position:fixed;bottom:24px;right:24px;
-  width:60px;height:60px;border-radius:50%;
-  background:linear-gradient(135deg,#26a69a,#00796b);
-  color:#fff;border:none;cursor:pointer;
+  width:56px;height:56px;border-radius:50%;
+  background:var(--c-teal);color:#fff;border:none;cursor:pointer;
   display:flex;align-items:center;justify-content:center;
-  font-size:24px;box-shadow:0 8px 24px rgba(38,166,154,.4);
-  z-index:150;transition:.25s;
+  font-size:22px;box-shadow:0 6px 20px rgba(0,0,0,.15);
+  z-index:150;transition:.2s;
 }
-.chat-fab:hover{transform:scale(1.08);box-shadow:0 12px 32px rgba(38,166,154,.5);}
+.chat-fab:hover{transform:translateY(-2px);}
 .chat-fab .chat-badge{
-  position:absolute;top:-2px;right:-2px;
-  background:#d9534f;color:#fff;font-size:11px;font-weight:800;
+  position:absolute;top:-3px;right:-3px;
+  background:var(--c-red);color:#fff;font-size:11px;font-weight:700;
   min-width:20px;height:20px;padding:0 5px;border-radius:10px;
   display:flex;align-items:center;justify-content:center;
   border:2px solid var(--bg);
 }
 
+/* ===== CHAT POPUP ===== */
 .chat-popup{
-  display:none;position:fixed;bottom:100px;right:24px;
+  display:none;position:fixed;bottom:92px;right:24px;
   width:380px;max-width:calc(100vw - 40px);
   height:560px;max-height:calc(100vh - 140px);
-  background:var(--card-bg);border-radius:16px;
-  box-shadow:0 20px 60px rgba(0,0,0,.3);
-  border:1.5px solid var(--border);z-index:160;
+  background:var(--card-bg);
+  border:1px solid var(--border);
+  border-radius:12px;
+  box-shadow:var(--dropdown-shadow);
+  z-index:160;
   flex-direction:column;overflow:hidden;
-  animation:popIn .25s cubic-bezier(.34,1.56,.64,1);
 }
 .chat-popup.open{display:flex;}
-@keyframes popIn{from{opacity:0;transform:scale(.9) translateY(20px);}to{opacity:1;transform:scale(1) translateY(0);}}
-.chat-head{padding:14px 18px;background:linear-gradient(135deg,#26a69a,#00796b);color:#fff;display:flex;align-items:center;gap:10px;}
-.chat-head .avatar{width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;flex-shrink:0;overflow:hidden;}
+.chat-head{
+  padding:14px 18px;
+  border-bottom:1px solid var(--border);
+  background:var(--card-bg);
+  color:var(--text);
+  display:flex;align-items:center;gap:10px;
+}
+.chat-head .avatar{
+  width:34px;height:34px;border-radius:50%;
+  background:var(--sub-bg);border:1px solid var(--border);
+  display:flex;align-items:center;justify-content:center;
+  font-weight:600;font-size:14px;flex-shrink:0;overflow:hidden;
+  color:var(--c-teal);
+}
 .chat-head .info{flex:1;min-width:0;}
-.chat-head .info h3{font-size:14px;font-weight:700;margin-bottom:2px;}
-.chat-head .info p{font-size:11px;opacity:.85;}
-.chat-head .back-btn{background:rgba(255,255,255,.15);border:none;color:#fff;width:30px;height:30px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:12px;transition:.2s;margin-right:4px;}
-.chat-head .back-btn:hover{background:rgba(255,255,255,.3);}
-.chat-head .close-chat{background:rgba(255,255,255,.15);border:none;color:#fff;width:30px;height:30px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:12px;transition:.2s;}
-.chat-head .close-chat:hover{background:rgba(255,255,255,.3);}
-.chat-body{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:10px;background:var(--sub-bg);}
-.chat-msg{max-width:75%;padding:10px 14px;border-radius:14px;font-size:13px;line-height:1.5;word-wrap:break-word;}
-.chat-msg.mine{align-self:flex-end;background:linear-gradient(135deg,#26a69a,#00796b);color:#fff;border-bottom-right-radius:4px;}
-.chat-msg.theirs{align-self:flex-start;background:var(--card-bg);color:var(--text);border:1px solid var(--border);border-bottom-left-radius:4px;}
+.chat-head .info h3{font-size:14px;font-weight:600;margin-bottom:2px;}
+.chat-head .info p{font-size:11px;color:var(--muted);}
+.chat-head .back-btn,
+.chat-head .close-chat{
+  background:transparent;border:1px solid var(--border);
+  color:var(--muted);width:30px;height:30px;border-radius:50%;
+  cursor:pointer;display:flex;align-items:center;justify-content:center;
+  font-size:12px;transition:.15s;
+}
+.chat-head .back-btn:hover,
+.chat-head .close-chat:hover{color:var(--text);border-color:var(--text);}
+.chat-head .back-btn{margin-right:4px;}
+.chat-body{
+  flex:1;overflow-y:auto;padding:16px;
+  display:flex;flex-direction:column;gap:10px;
+  background:var(--bg);
+}
+.chat-msg{
+  max-width:75%;padding:9px 13px;border-radius:12px;
+  font-size:13px;line-height:1.5;word-wrap:break-word;
+}
+.chat-msg.mine{
+  align-self:flex-end;
+  background:var(--c-teal);color:#fff;
+  border-bottom-right-radius:4px;
+}
+.chat-msg.theirs{
+  align-self:flex-start;
+  background:var(--card-bg);color:var(--text);
+  border:1px solid var(--border);
+  border-bottom-left-radius:4px;
+}
 .chat-msg .time{font-size:10px;opacity:.7;margin-top:4px;display:block;}
-.chat-empty{text-align:center;padding:40px 20px;color:var(--text-muted);font-size:13px;margin:auto;}
-.chat-empty i{font-size:44px;opacity:.3;display:block;margin-bottom:12px;}
-.chat-foot{padding:12px;border-top:1px solid var(--border);display:flex;gap:8px;align-items:center;background:var(--card-bg);}
-.chat-foot input{flex:1;padding:10px 14px;border:1.5px solid var(--border);border-radius:24px;font-size:13px;font-family:inherit;background:var(--sub-bg);color:var(--text);}
-.chat-foot input:focus{outline:none;border-color:#26a69a;}
-.chat-foot button{background:linear-gradient(135deg,#26a69a,#00796b);color:#fff;border:none;width:40px;height:40px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:14px;transition:.2s;flex-shrink:0;}
-.chat-foot button:hover{filter:brightness(1.1);}
+.chat-empty{
+  text-align:center;padding:40px 20px;color:var(--muted);
+  font-size:13px;margin:auto;
+}
+.chat-empty i{font-size:40px;opacity:.3;display:block;margin-bottom:12px;}
+.chat-foot{
+  padding:10px;border-top:1px solid var(--border);
+  display:flex;gap:8px;align-items:center;background:var(--card-bg);
+}
+.chat-foot input{
+  flex:1;padding:9px 14px;
+  border:1px solid var(--border);border-radius:20px;
+  font-size:13px;font-family:inherit;background:var(--bg);color:var(--text);
+}
+.chat-foot input:focus{outline:none;border-color:var(--c-teal);}
+.chat-foot button{
+  background:var(--c-teal);color:#fff;border:none;
+  width:38px;height:38px;border-radius:50%;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  font-size:13px;transition:.15s;flex-shrink:0;
+}
+.chat-foot button:hover:not(:disabled){background:#0f766e;}
 .chat-foot button:disabled{opacity:.5;cursor:not-allowed;}
 
-.chat-room-list{display:flex;flex-direction:column;gap:6px;padding:0;}
+.chat-room-list{display:flex;flex-direction:column;gap:6px;}
 .chat-room-item{
   display:flex;align-items:center;gap:12px;padding:12px;
-  border-radius:10px;cursor:pointer;transition:.15s;
-  background:var(--card-bg);border:1.5px solid var(--border);
+  border-radius:8px;cursor:pointer;transition:.15s;
+  background:var(--card-bg);border:1px solid var(--border);
 }
-.chat-room-item:hover{background:var(--sub-bg);border-color:#26a69a;}
+.chat-room-item:hover{background:var(--sub-bg);border-color:var(--muted);}
 .chat-room-item .rm-avatar{
-  width:42px;height:42px;border-radius:50%;flex-shrink:0;
-  background:linear-gradient(135deg,#26a69a,#00796b);color:#fff;
+  width:40px;height:40px;border-radius:50%;flex-shrink:0;
+  background:var(--c-teal);color:#fff;
   display:flex;align-items:center;justify-content:center;
-  font-weight:700;font-size:16px;overflow:hidden;
+  font-weight:600;font-size:15px;overflow:hidden;
 }
 .chat-room-item .rm-avatar img{width:100%;height:100%;object-fit:cover;}
 .chat-room-item .rm-info{flex:1;min-width:0;}
 .chat-room-item .rm-info .rm-name{
-  font-size:14px;font-weight:700;color:var(--text);margin-bottom:2px;
+  font-size:14px;font-weight:600;color:var(--text);margin-bottom:2px;
   display:flex;align-items:center;gap:6px;
 }
 .chat-room-item .rm-info .rm-name .unread-pill{
-  background:#d9534f;color:#fff;font-size:10px;font-weight:800;
+  background:var(--c-red);color:#fff;font-size:10px;font-weight:700;
   padding:1px 7px;border-radius:10px;margin-left:auto;
 }
 .chat-room-item .rm-info .rm-last{
-  font-size:12px;color:var(--text-muted);
+  font-size:12px;color:var(--muted);
   white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
 }
 .chat-room-item .rm-info .rm-time{
-  font-size:10px;color:var(--text-muted);margin-top:2px;
+  font-size:10px;color:var(--muted);margin-top:2px;
 }
 .chat-room-item .rm-arrow{color:var(--border);font-size:14px;flex-shrink:0;}
-.chat-room-item:hover .rm-arrow{color:#26a69a;}
+.chat-room-item:hover .rm-arrow{color:var(--c-teal);}
 
+/* ===== SKELETON ===== */
 .skeleton{
-  display:inline-block;background:linear-gradient(90deg,var(--skeleton-bg) 0%,var(--skeleton-shine) 50%,var(--skeleton-bg) 100%);
-  background-size:200% 100%;animation:shine 1.5s infinite;
+  display:inline-block;
+  background:linear-gradient(90deg,var(--sub-bg) 0%,var(--border) 50%,var(--sub-bg) 100%);
+  background-size:200% 100%;
+  animation:shine 1.5s infinite;
   border-radius:6px;height:22px;width:60px;
 }
 @keyframes shine{0%{background-position:200% 0;}100%{background-position:-200% 0;}}
 
-.wrap{max-width:1000px;margin:30px auto;padding:0 20px;}
-.hello{font-size:24px;color:var(--text);margin-bottom:6px;}
-.hello strong{color:var(--link-color);}
-.sub{color:var(--text-muted);font-size:14px;margin-bottom:30px;}
-
-.quota-banner{background:linear-gradient(135deg,#1e5fa8,#154a82);color:#fff;border-radius:14px;padding:20px 24px;margin-bottom:24px;display:flex;align-items:center;gap:18px;flex-wrap:wrap;box-shadow:0 8px 24px rgba(30,95,168,.25);}
-.quota-banner.empty{background:linear-gradient(135deg,#d9534f,#c9302c);box-shadow:0 8px 24px rgba(217,83,79,.3);}
-.quota-banner.loading{background:linear-gradient(135deg,#888,#666);box-shadow:0 8px 24px rgba(0,0,0,.15);}
-.quota-banner .ico-big{width:56px;height:56px;border-radius:50%;background:rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0;}
-.quota-banner .txt{flex:1;min-width:200px;}
-.quota-banner .txt h3{font-size:16px;font-weight:700;margin-bottom:4px;}
-.quota-banner .txt p{font-size:13px;opacity:.9;line-height:1.5;}
-.quota-banner .quota-badge{background:rgba(255,255,255,.2);border:2px solid rgba(255,255,255,.4);padding:8px 20px;border-radius:30px;font-weight:800;font-size:18px;letter-spacing:1px;}
-.quota-banner .btn-request{background:#fff;color:#d9534f;border:none;padding:10px 20px;border-radius:10px;font-weight:700;font-size:13px;cursor:pointer;font-family:inherit;display:inline-flex;align-items:center;gap:8px;transition:.2s;}
-.quota-banner .btn-request:hover{transform:translateY(-2px);box-shadow:0 4px 12px rgba(0,0,0,.2);}
-
-/* Premium banner */
-.premium-banner{
-  background:linear-gradient(135deg,var(--gold),var(--gold-dark));
-  color:#7a4a00;border-radius:14px;padding:20px 24px;margin-bottom:24px;
-  display:flex;align-items:center;gap:18px;flex-wrap:wrap;
-  box-shadow:0 8px 24px rgba(255,165,0,.35);
-  position:relative;overflow:hidden;
+/* ===== LAYOUT ===== */
+.wrap{max-width:1000px;margin:32px auto;padding:0 20px;}
+.hello{
+  font-size:22px;font-weight:600;color:var(--text);
+  margin-bottom:4px;letter-spacing:-0.2px;
 }
-.premium-banner::before{
-  content:'👑';
-  position:absolute;right:20px;top:50%;transform:translateY(-50%);
-  font-size:80px;opacity:.15;
+.hello strong{color:var(--accent);font-weight:600;}
+.sub{color:var(--muted);font-size:13px;margin-bottom:28px;}
+
+/* ===== QUOTA BANNER ===== */
+.quota-banner{
+  background:var(--card-bg);
+  border:1px solid var(--border);
+  border-left:3px solid var(--accent);
+  border-radius:10px;
+  padding:18px 22px;
+  margin-bottom:20px;
+  display:flex;align-items:center;gap:18px;flex-wrap:wrap;
+}
+.quota-banner.empty{
+  border-left-color:var(--c-red);
+}
+.quota-banner.loading{
+  border-left-color:var(--muted);
+}
+.quota-banner .ico-big{
+  width:44px;height:44px;border-radius:50%;
+  background:var(--sub-bg);color:var(--accent);
+  display:flex;align-items:center;justify-content:center;
+  font-size:18px;flex-shrink:0;
+}
+.quota-banner.empty .ico-big{color:var(--c-red);}
+.quota-banner.loading .ico-big{color:var(--muted);}
+.quota-banner .txt{flex:1;min-width:200px;}
+.quota-banner .txt h3{font-size:15px;font-weight:600;margin-bottom:2px;}
+.quota-banner .txt p{font-size:13px;color:var(--muted);line-height:1.5;}
+.quota-banner .quota-badge{
+  background:var(--sub-bg);
+  border:1px solid var(--border);
+  padding:6px 16px;border-radius:20px;
+  font-weight:600;font-size:15px;letter-spacing:.5px;
+}
+.quota-banner .btn-request{
+  background:var(--gold);color:#fff;border:none;
+  padding:9px 16px;border-radius:8px;
+  font-weight:500;font-size:13px;cursor:pointer;font-family:inherit;
+  display:inline-flex;align-items:center;gap:6px;transition:.15s;
+}
+.quota-banner .btn-request:hover{background:var(--gold-dark);}
+
+/* ===== PREMIUM BANNER ===== */
+.premium-banner{
+  background:var(--gold-light);
+  border:1px solid var(--gold);
+  border-radius:10px;
+  padding:18px 22px;
+  margin-bottom:20px;
+  display:flex;align-items:center;gap:18px;flex-wrap:wrap;
 }
 .premium-banner .ico-big{
-  width:56px;height:56px;border-radius:50%;background:rgba(255,255,255,.4);
-  display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0;color:#7a4a00;
+  width:44px;height:44px;border-radius:50%;
+  background:var(--gold);color:#fff;
+  display:flex;align-items:center;justify-content:center;
+  font-size:18px;flex-shrink:0;
 }
-.premium-banner .txt{flex:1;min-width:200px;position:relative;z-index:1;}
-.premium-banner .txt h3{font-size:16px;font-weight:800;margin-bottom:4px;}
-.premium-banner .txt p{font-size:13px;opacity:.9;line-height:1.5;}
+.premium-banner .txt{flex:1;min-width:200px;}
+.premium-banner .txt h3{font-size:15px;font-weight:600;margin-bottom:2px;color:var(--gold-dark);}
+.premium-banner .txt p{font-size:13px;color:var(--gold-dark);opacity:.85;line-height:1.5;}
 .premium-banner .days-badge{
-  background:rgba(255,255,255,.5);border:2px solid rgba(255,255,255,.7);
-  padding:8px 20px;border-radius:30px;font-weight:800;font-size:16px;
-  position:relative;z-index:1;
+  background:var(--card-bg);
+  border:1px solid var(--gold);
+  padding:6px 16px;border-radius:20px;
+  font-weight:600;font-size:14px;
+  color:var(--gold-dark);
 }
 
-.quick-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:26px;}
-.qs{background:var(--stat-bg);border-radius:12px;padding:18px 20px;box-shadow:var(--card-shadow);display:flex;align-items:center;gap:14px;transition:.3s;}
-.qs .icon{width:44px;height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;color:#fff;flex-shrink:0;}
-.qs .icon.blue{background:linear-gradient(135deg,#1e5fa8,#154a82);}
-.qs .icon.green{background:linear-gradient(135deg,#2fa36b,#1f7f53);}
-.qs .icon.orange{background:linear-gradient(135deg,#f0ad4e,#ec971f);}
-.qs .val{font-size:22px;font-weight:800;color:var(--link-color);line-height:1;min-height:24px;display:flex;align-items:center;}
-.qs .lbl{font-size:12px;color:var(--text-muted);margin-top:4px;}
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:18px;}
-.menu{background:var(--card-bg);border-radius:14px;padding:26px;box-shadow:var(--card-shadow);transition:.25s;text-decoration:none;color:inherit;display:block;border:2px solid transparent;position:relative;overflow:visible;cursor:pointer;}
-.menu:hover{transform:translateY(-4px);box-shadow:var(--menu-hover-shadow);border-color:var(--link-color);}
-.menu.admin-card{border-color:#d9534f;}
-.menu.profile-card{border-color:#7c4dff;}
-.menu.history-card{border-color:#f0ad4e;}
-.menu.help-card{border-color:#26a69a;}
-.menu.help-card:hover{border-color:#00796b;box-shadow:0 12px 30px rgba(38,166,154,.25);}
+/* ===== QUICK STATS ===== */
+.quick-stats{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  gap:12px;margin-bottom:24px;
+}
+.qs{
+  background:var(--card-bg);
+  border:1px solid var(--border);
+  border-radius:10px;
+  padding:16px 18px;
+  display:flex;align-items:center;gap:14px;
+  transition:.15s;
+}
+.qs:hover{border-color:var(--muted);}
+.qs .icon{
+  width:40px;height:40px;border-radius:8px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:16px;flex-shrink:0;
+  background:var(--sub-bg);
+}
+.qs .icon.blue{color:var(--c-blue);}
+.qs .icon.green{color:var(--c-green);}
+.qs .icon.orange{color:var(--c-orange);}
+.qs .val{
+  font-size:20px;font-weight:700;color:var(--text);
+  line-height:1.1;min-height:22px;display:flex;align-items:center;
+  letter-spacing:-0.3px;
+}
+.qs .lbl{font-size:12px;color:var(--muted);margin-top:2px;}
+
+/* ===== MENU GRID ===== */
+.grid{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));
+  gap:14px;
+}
+.menu{
+  background:var(--card-bg);
+  border:1px solid var(--border);
+  border-radius:10px;
+  padding:22px;
+  transition:.15s;
+  text-decoration:none;color:inherit;display:block;
+  position:relative;cursor:pointer;
+}
+.menu:hover{border-color:var(--muted);}
+.menu .ico{
+  width:44px;height:44px;border-radius:10px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:18px;margin-bottom:14px;
+  background:var(--sub-bg);
+}
+.menu h3{font-size:15px;color:var(--text);margin-bottom:4px;font-weight:600;}
+.menu p{font-size:13px;color:var(--muted);line-height:1.5;}
+.menu .arrow{
+  position:absolute;right:18px;top:50%;transform:translateY(-50%);
+  color:var(--border);font-size:16px;transition:.15s;
+}
+.menu:hover .arrow{color:var(--muted);transform:translateY(-50%) translateX(3px);}
+
+/* warna ikon menu */
+.ico-blue{color:var(--c-blue);}
+.ico-green{color:var(--c-green);}
+.ico-orange{color:var(--c-orange);}
+.ico-red{color:var(--c-red);}
+.ico-purple{color:var(--c-purple);}
+.ico-teal{color:var(--c-teal);}
+
+.menu.admin-card{border-left:3px solid var(--c-red);}
+.menu.profile-card{border-left:3px solid var(--c-purple);}
+.menu.history-card{border-left:3px solid var(--c-orange);}
+.menu.help-card{border-left:3px solid var(--c-teal);}
 .menu.premium-card{
-  background:linear-gradient(135deg,var(--gold-light),var(--card-bg));
+  background:var(--gold-light);
   border-color:var(--gold);
+  border-left:3px solid var(--gold);
 }
-.menu.premium-card:hover{
-  box-shadow:0 12px 30px rgba(255,184,0,.4);
-  border-color:var(--gold-dark);
-}
-.menu.premium-card .ico{
-  background:linear-gradient(135deg,var(--gold),var(--gold-dark));
-}
+.menu.premium-card .ico{color:var(--gold-dark);background:transparent;}
 .menu.premium-card h3{color:var(--gold-dark);}
 [data-theme="dark"] .menu.premium-card h3{color:var(--gold);}
-.menu .ico{width:52px;height:52px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;color:#fff;margin-bottom:16px;}
-.menu h3{font-size:16px;color:var(--title-color);margin-bottom:6px;}
-.menu p{font-size:13px;color:var(--text-muted);line-height:1.5;}
-.menu .arrow{position:absolute;right:20px;top:50%;transform:translateY(-50%);color:var(--border);font-size:20px;transition:.25s;}
-.menu:hover .arrow{color:var(--link-color);transform:translateY(-50%) translateX(4px);}
-.ico-blue{background:linear-gradient(135deg,#1e5fa8,#154a82);}
-.ico-green{background:linear-gradient(135deg,#2fa36b,#1f7f53);}
-.ico-orange{background:linear-gradient(135deg,#f0ad4e,#ec971f);}
-.ico-red{background:linear-gradient(135deg,#d9534f,#c9302c);}
-.ico-purple{background:linear-gradient(135deg,#7c4dff,#5e35b1);}
-.ico-teal{background:linear-gradient(135deg,#26a69a,#00796b);}
-.footer{text-align:center;padding:30px 20px;color:var(--text-muted);font-size:12px;}
-.section-title{font-size:14px;font-weight:700;color:var(--section-title);margin:26px 0 14px;letter-spacing:1px;text-transform:uppercase;}
 
+/* ===== DROPDOWN MENU (KOSAKATA) ===== */
 .menu-dropdown-wrapper{position:relative;}
 .menu-dropdown-wrapper.open{z-index:60;}
 .menu-with-chevron{cursor:pointer;}
-.menu-with-chevron .chevron{position:absolute;right:20px;top:50%;transform:translateY(-50%);color:var(--border);font-size:16px;transition:.3s;}
-.menu-dropdown-wrapper.open .chevron{color:var(--link-color);transform:translateY(-50%) rotate(180deg);}
-.menu-dropdown-wrapper.open .menu{border-color:var(--link-color);box-shadow:var(--menu-hover-shadow);transform:translateY(-2px);}
+.menu-with-chevron .chevron{
+  position:absolute;right:18px;top:50%;transform:translateY(-50%);
+  color:var(--border);font-size:14px;transition:.2s;
+}
+.menu-dropdown-wrapper.open .chevron{
+  color:var(--accent);transform:translateY(-50%) rotate(180deg);
+}
+.menu-dropdown-wrapper.open .menu{
+  border-color:var(--accent);
+}
 
-.dropdown-panel{display:none;position:absolute;top:calc(100% + 12px);left:0;right:0;background:var(--dropdown-bg);border-radius:14px;box-shadow:var(--dropdown-shadow);padding:12px;z-index:100;border:1.5px solid var(--border);animation:dropDown .25s ease;max-height:420px;overflow-y:auto;}
+.dropdown-panel{
+  display:none;position:absolute;top:calc(100% + 10px);left:0;right:0;
+  background:var(--card-bg);
+  border:1px solid var(--border);
+  border-radius:10px;
+  box-shadow:var(--dropdown-shadow);
+  padding:10px;z-index:100;
+  max-height:420px;overflow-y:auto;
+}
 .menu-dropdown-wrapper.open .dropdown-panel{display:block;}
 
-.dropdown-header{padding:8px 12px 12px;font-size:11px;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;font-weight:700;border-bottom:1px solid var(--border);margin-bottom:8px;display:flex;justify-content:space-between;align-items:center;}
-.dropdown-header .close-btn{background:transparent;border:none;color:var(--text-muted);cursor:pointer;font-size:14px;padding:4px 8px;border-radius:6px;transition:.2s;}
-.dropdown-header .close-btn:hover{background:var(--sub-bg);}
-.dropdown-item{display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:10px;cursor:pointer;transition:.15s;text-decoration:none;color:var(--text);border:1.5px solid transparent;}
-.dropdown-item:hover{background:var(--tag-bg);border-color:var(--link-color);}
-.dropdown-item .item-ico{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:16px;flex-shrink:0;}
+.dropdown-header{
+  padding:6px 10px 10px;
+  font-size:11px;color:var(--muted);
+  text-transform:uppercase;letter-spacing:1px;font-weight:600;
+  border-bottom:1px solid var(--border);margin-bottom:6px;
+  display:flex;justify-content:space-between;align-items:center;
+}
+.dropdown-header .close-btn{
+  background:transparent;border:none;color:var(--muted);cursor:pointer;
+  font-size:14px;padding:4px 8px;border-radius:6px;transition:.15s;
+}
+.dropdown-header .close-btn:hover{background:var(--sub-bg);color:var(--text);}
+.dropdown-item{
+  display:flex;align-items:center;gap:12px;
+  padding:10px 12px;border-radius:8px;cursor:pointer;transition:.15s;
+  text-decoration:none;color:var(--text);
+}
+.dropdown-item:hover{background:var(--sub-bg);}
+.dropdown-item .item-ico{
+  width:34px;height:34px;border-radius:8px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:14px;flex-shrink:0;
+  background:var(--sub-bg);
+}
 .dropdown-item .item-text{flex:1;min-width:0;}
-.dropdown-item .item-text .title{font-size:14px;font-weight:700;color:var(--text);margin-bottom:2px;}
-.dropdown-item .item-text .desc{font-size:11px;color:var(--text-muted);}
-.dropdown-item .item-arrow{color:var(--border);font-size:14px;transition:.2s;}
-.dropdown-item:hover .item-arrow{color:var(--link-color);transform:translateX(3px);}
-.dropdown-footer{padding:12px 14px 8px;border-top:1px solid var(--border);margin-top:8px;}
-.btn-show-all{width:100%;padding:11px;border-radius:10px;background:linear-gradient(135deg,#1e5fa8,#154a82);color:#fff;border:none;font-weight:700;font-size:13px;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:8px;transition:.2s;text-decoration:none;}
-.btn-show-all:hover{filter:brightness(1.15);transform:translateY(-1px);}
+.dropdown-item .item-text .title{
+  font-size:14px;font-weight:600;color:var(--text);margin-bottom:2px;
+}
+.dropdown-item .item-text .desc{font-size:11px;color:var(--muted);}
+.dropdown-item .item-arrow{color:var(--border);font-size:13px;transition:.15s;}
+.dropdown-item:hover .item-arrow{color:var(--muted);transform:translateX(2px);}
+.dropdown-footer{
+  padding:10px 4px 4px;border-top:1px solid var(--border);margin-top:6px;
+}
+.btn-show-all{
+  width:100%;padding:10px;border-radius:8px;
+  background:var(--accent);color:#fff;border:none;
+  font-weight:500;font-size:13px;cursor:pointer;font-family:inherit;
+  display:flex;align-items:center;justify-content:center;gap:8px;
+  transition:.15s;text-decoration:none;
+}
+.btn-show-all:hover{background:var(--accent-hover);}
 
-.ico-transportasi{background:linear-gradient(135deg,#1e5fa8,#154a82);}
-.ico-makanan{background:linear-gradient(135deg,#d9534f,#c9302c);}
-.ico-wisata{background:linear-gradient(135deg,#2fa36b,#1f7f53);}
-.ico-keluarga{background:linear-gradient(135deg,#7c4dff,#5e35b1);}
-.ico-sekolah{background:linear-gradient(135deg,#f0ad4e,#ec971f);}
-.ico-tubuh{background:linear-gradient(135deg,#26a69a,#00796b);}
-.ico-pakaian{background:linear-gradient(135deg,#e91e63,#c2185b);}
-.ico-alam{background:linear-gradient(135deg,#00bcd4,#0097a7);}
-.ico-pekerjaan{background:linear-gradient(135deg,#607d8b,#455a64);}
-.ico-hobi{background:linear-gradient(135deg,#ff9800,#f57c00);}
-.ico-umum{background:linear-gradient(135deg,#9e9e9e,#616161);}
+/* warna ikon tema kosakata */
+.ico-transportasi{color:var(--c-blue);}
+.ico-makanan{color:var(--c-red);}
+.ico-wisata{color:var(--c-green);}
+.ico-keluarga{color:var(--c-purple);}
+.ico-sekolah{color:var(--c-orange);}
+.ico-tubuh{color:var(--c-teal);}
+.ico-pakaian{color:var(--c-pink);}
+.ico-alam{color:var(--c-cyan);}
+.ico-pekerjaan{color:var(--c-gray-dark);}
+.ico-hobi{color:var(--c-orange);}
+.ico-umum{color:var(--c-gray);}
 
-.modal-back{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:200;align-items:center;justify-content:center;padding:20px;animation:fadeIn .2s ease;}
+/* ===== MODAL ===== */
+.modal-back{
+  display:none;position:fixed;inset:0;
+  background:rgba(0,0,0,.5);
+  z-index:200;align-items:center;justify-content:center;
+  padding:20px;
+}
 .modal-back.show{display:flex;}
-@keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
-.modal-box{background:var(--card-bg);border-radius:16px;padding:28px;max-width:440px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,.4);max-height:90vh;overflow-y:auto;animation:popIn .3s cubic-bezier(.34,1.56,.64,1);}
-.modal-box h2{color:var(--title-color);margin-bottom:8px;font-size:18px;display:flex;align-items:center;gap:10px;}
-.modal-box p.desc{color:var(--text-muted);font-size:13px;margin-bottom:18px;line-height:1.5;}
-.modal-box label{font-size:13px;font-weight:600;color:var(--text);display:block;margin-bottom:6px;}
-.modal-box input, .modal-box textarea{width:100%;padding:10px 14px;border:1.5px solid var(--border);border-radius:8px;font-size:14px;font-family:inherit;background:var(--sub-bg);color:var(--text);margin-bottom:14px;}
+.modal-box{
+  background:var(--card-bg);
+  border:1px solid var(--border);
+  border-radius:12px;
+  padding:28px;
+  max-width:440px;width:100%;
+  box-shadow:0 20px 60px rgba(0,0,0,.25);
+  max-height:90vh;overflow-y:auto;
+}
+.modal-box h2{
+  color:var(--text);margin-bottom:8px;font-size:17px;font-weight:600;
+  display:flex;align-items:center;gap:10px;
+}
+.modal-box p.desc{color:var(--muted);font-size:13px;margin-bottom:18px;line-height:1.5;}
+.modal-box label{
+  font-size:13px;font-weight:500;color:var(--text);
+  display:block;margin-bottom:6px;
+}
+.modal-box input,
+.modal-box textarea{
+  width:100%;padding:10px 14px;
+  border:1px solid var(--border);border-radius:8px;
+  font-size:14px;font-family:inherit;
+  background:var(--bg);color:var(--text);margin-bottom:14px;
+}
 .modal-box textarea{min-height:100px;resize:vertical;}
-.modal-box input:focus, .modal-box textarea:focus{outline:none;border-color:var(--link-color);box-shadow:0 0 0 3px rgba(30,95,168,.15);}
+.modal-box input:focus,
+.modal-box textarea:focus{
+  outline:none;border-color:var(--accent);
+}
 
-.kuota-popup-icon{width:80px;height:80px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:36px;margin:0 auto 18px;color:#fff;box-shadow:0 8px 24px rgba(0,0,0,.15);}
-.kuota-popup-icon.ok{background:linear-gradient(135deg,#2fa36b,#1f7f53);}
-.kuota-popup-icon.empty{background:linear-gradient(135deg,#d9534f,#c9302c);}
-.kuota-popup-icon.admin{background:linear-gradient(135deg,#7c4dff,#5e35b1);}
-.kuota-popup-icon.premium{background:linear-gradient(135deg,var(--gold),var(--gold-dark));}
-.kuota-popup-title{text-align:center;font-size:20px;font-weight:800;color:var(--title-color);margin-bottom:6px;}
-.kuota-popup-subtitle{text-align:center;font-size:13px;color:var(--text-muted);margin-bottom:24px;line-height:1.5;}
-.kuota-info-box{background:var(--sub-bg);border-radius:12px;padding:20px;text-align:center;margin-bottom:20px;border:2px dashed var(--border);}
-.kuota-info-box.ok{border-color:#2fa36b;background:linear-gradient(135deg,rgba(47,163,107,.08),rgba(47,163,107,.02));}
-.kuota-info-box.empty{border-color:#d9534f;background:linear-gradient(135deg,rgba(217,83,79,.08),rgba(217,83,79,.02));}
-.kuota-info-box.admin{border-color:#7c4dff;background:linear-gradient(135deg,rgba(124,77,255,.08),rgba(124,77,255,.02));}
-.kuota-info-box.premium{border-color:var(--gold);background:linear-gradient(135deg,rgba(255,184,0,.1),rgba(255,184,0,.02));}
-.kuota-big-num{font-size:48px;font-weight:900;line-height:1;margin-bottom:6px;}
-.kuota-big-num.ok{color:#2fa36b;}
-.kuota-big-num.empty{color:#d9534f;}
-.kuota-big-num.admin{color:#7c4dff;}
-.kuota-big-num.premium{color:var(--gold-dark);}
-[data-theme="dark"] .kuota-big-num.premium{color:var(--gold);}
-.kuota-info-label{font-size:12px;color:var(--text-muted);text-transform:uppercase;letter-spacing:1.5px;font-weight:700;margin-bottom:4px;}
-.kuota-info-detail{font-size:13px;color:var(--text);font-weight:600;margin-top:10px;}
-.kuota-popup-catatan{padding:12px 16px;border-radius:10px;font-size:12px;line-height:1.5;margin-bottom:18px;}
-.kuota-popup-catatan.ok{background:#e8f5ee;color:#1f7f53;border-left:3px solid #2fa36b;}
-.kuota-popup-catatan.empty{background:#fde8e8;color:#a33;border-left:3px solid #d9534f;}
-.kuota-popup-catatan.admin{background:#f0e8ff;color:#5e35b1;border-left:3px solid #7c4dff;}
-.kuota-popup-catatan.premium{background:var(--gold-light);color:#7a4a00;border-left:3px solid var(--gold);}
+/* ===== KUOTA POPUP ===== */
+.kuota-popup-icon{
+  width:64px;height:64px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:26px;margin:0 auto 16px;
+  background:var(--sub-bg);
+}
+.kuota-popup-icon.ok{color:var(--c-green);}
+.kuota-popup-icon.empty{color:var(--c-red);}
+.kuota-popup-icon.admin{color:var(--c-purple);}
+.kuota-popup-icon.premium{color:var(--gold);}
+.kuota-popup-title{
+  text-align:center;font-size:18px;font-weight:600;
+  color:var(--text);margin-bottom:4px;
+}
+.kuota-popup-subtitle{
+  text-align:center;font-size:13px;color:var(--muted);
+  margin-bottom:20px;line-height:1.5;
+}
+.kuota-info-box{
+  background:var(--sub-bg);
+  border:1px dashed var(--border);
+  border-radius:10px;
+  padding:18px;text-align:center;margin-bottom:18px;
+}
+.kuota-info-box.ok{border-color:var(--c-green);}
+.kuota-info-box.empty{border-color:var(--c-red);}
+.kuota-info-box.admin{border-color:var(--c-purple);}
+.kuota-info-box.premium{border-color:var(--gold);}
+.kuota-big-num{
+  font-size:40px;font-weight:700;line-height:1;
+  margin-bottom:4px;letter-spacing:-1px;
+}
+.kuota-big-num.ok{color:var(--c-green);}
+.kuota-big-num.empty{color:var(--c-red);}
+.kuota-big-num.admin{color:var(--c-purple);}
+.kuota-big-num.premium{color:var(--gold);}
+.kuota-info-label{
+  font-size:11px;color:var(--muted);
+  text-transform:uppercase;letter-spacing:1.5px;font-weight:600;
+  margin-bottom:4px;
+}
+.kuota-info-detail{
+  font-size:13px;color:var(--text);font-weight:500;margin-top:8px;
+}
+.kuota-popup-catatan{
+  padding:12px 14px;border-radius:8px;font-size:12px;
+  line-height:1.5;margin-bottom:18px;
+  background:var(--sub-bg);border-left:3px solid var(--border);
+  color:var(--muted);
+}
+.kuota-popup-catatan.ok{border-left-color:var(--c-green);color:var(--text);}
+.kuota-popup-catatan.empty{border-left-color:var(--c-red);color:var(--text);}
+.kuota-popup-catatan.admin{border-left-color:var(--c-purple);color:var(--text);}
+.kuota-popup-catatan.premium{border-left-color:var(--gold);color:var(--text);}
 .kuota-popup-buttons{display:flex;gap:10px;flex-wrap:wrap;}
-.kuota-popup-buttons .btn{flex:1;justify-content:center;padding:14px;font-size:15px;}
+.kuota-popup-buttons .btn{flex:1;justify-content:center;padding:12px;font-size:14px;}
 
-.btn{padding:10px 20px;border:none;border-radius:8px;font-weight:600;font-size:14px;cursor:pointer;transition:0.2s;display:inline-flex;align-items:center;gap:8px;font-family:inherit;text-decoration:none;}
-.btn-primary{background:#1e5fa8;color:#fff;}
-.btn-primary:hover:not(:disabled){filter:brightness(1.15);}
-.btn-warning{background:#f0ad4e;color:#fff;}
+/* ===== BUTTONS ===== */
+.btn{
+  padding:10px 18px;border:none;border-radius:8px;
+  font-weight:500;font-size:13px;cursor:pointer;transition:.15s;
+  display:inline-flex;align-items:center;gap:6px;
+  font-family:inherit;text-decoration:none;
+}
+.btn-primary{background:var(--accent);color:#fff;}
+.btn-primary:hover:not(:disabled){background:var(--accent-hover);}
+.btn-warning{background:var(--c-orange);color:#fff;}
 .btn-warning:hover:not(:disabled){filter:brightness(1.1);}
-.btn-secondary{background:var(--sub-bg);color:var(--text);border:1px solid var(--border);}
-.btn-secondary:hover:not(:disabled){background:var(--border);}
-.btn-gold{background:linear-gradient(135deg,var(--gold),var(--gold-dark));color:#7a4a00;font-weight:800;}
-.btn-gold:hover:not(:disabled){filter:brightness(1.1);transform:translateY(-2px);box-shadow:0 6px 16px rgba(255,184,0,.35);}
+.btn-secondary{
+  background:transparent;color:var(--text);
+  border:1px solid var(--border);
+}
+.btn-secondary:hover:not(:disabled){background:var(--sub-bg);border-color:var(--muted);}
+.btn-gold{background:var(--gold);color:#fff;font-weight:600;}
+.btn-gold:hover:not(:disabled){background:var(--gold-dark);}
 
-/* ⚡ WELCOME POPUP */
-.welcome-popup .modal-box{max-width:460px;text-align:center;}
-.welcome-popup .kuota-popup-icon{background:linear-gradient(135deg,#1e5fa8,#154a82);}
+/* ===== WELCOME POPUP ===== */
+.welcome-popup .modal-box{text-align:center;}
+.welcome-popup .kuota-popup-icon{color:var(--accent);}
 .welcome-popup .kuota-popup-catatan{text-align:left;}
 
-/* ⚡ LINK BELI KUOTA */
-.buy-quota-link{
-  color:#c9302c;
-  font-weight:800;
-  text-decoration:underline;
-  transition:.2s;
-}
-.buy-quota-link:hover{
-  color:#a32522;
-  text-decoration:none;
-}
-[data-theme="dark"] .buy-quota-link{
-  color:#ff6b6b;
-}
-[data-theme="dark"] .buy-quota-link:hover{
-  color:#ff8787;
-}
-
-/* ===== PAKET PREMIUM GRID ===== */
-.paket-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin:20px 0;}
-.paket{
-  border:2px solid var(--border);border-radius:14px;padding:16px 12px;text-align:center;
-  cursor:pointer;transition:.2s;position:relative;background:var(--card-bg);
-}
-.paket:hover{border-color:var(--gold);transform:translateY(-3px);box-shadow:0 8px 20px rgba(255,184,0,.2);}
-.paket.selected{border-color:var(--gold);background:linear-gradient(180deg,var(--gold-light),var(--card-bg));box-shadow:0 8px 20px rgba(255,184,0,.25);}
-.paket.selected::before{
-  content:'✓';position:absolute;top:-10px;right:-10px;
-  width:26px;height:26px;border-radius:50%;
-  background:linear-gradient(135deg,var(--gold),var(--gold-dark));
-  color:#fff;display:flex;align-items:center;justify-content:center;
-  font-weight:800;font-size:12px;box-shadow:0 2px 8px rgba(255,184,0,.4);
-}
-.paket .nama{font-size:13px;font-weight:700;color:var(--text);margin-bottom:8px;}
-.paket .harga{font-size:18px;font-weight:800;color:var(--gold-dark);line-height:1;}
-[data-theme="dark"] .paket .harga{color:var(--gold);}
-.paket .harga small{font-size:10px;font-weight:600;color:var(--text-muted);display:block;margin-top:2px;}
-.paket .durasi{font-size:11px;color:var(--text-muted);margin-top:6px;}
-.paket .hemat{
-  display:inline-block;background:#e8f5ee;color:#1f7f53;font-size:10px;font-weight:700;
-  padding:2px 8px;border-radius:10px;margin-top:8px;
-}
-.paket .populer-tag{
-  position:absolute;top:-10px;left:50%;transform:translateX(-50%);
-  background:linear-gradient(135deg,var(--gold),var(--gold-dark));
-  color:#fff;font-size:10px;font-weight:800;padding:3px 12px;border-radius:10px;
-  letter-spacing:1px;white-space:nowrap;
-}
-
-/* Benefit list */
+/* ===== BENEFIT LIST ===== */
 .benefit-list{
-  background:var(--sub-bg);border-radius:12px;padding:16px 18px;margin-bottom:18px;
+  background:var(--sub-bg);border-radius:10px;
+  padding:16px 18px;margin-bottom:18px;
 }
 .benefit-list .label{
-  font-size:12px;font-weight:700;color:var(--text-muted);
+  font-size:11px;font-weight:600;color:var(--muted);
   text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;
 }
 .benefit-list .item{
@@ -440,23 +722,36 @@ body{background:var(--bg);min-height:100vh;color:var(--text);transition:backgrou
   font-size:13px;color:var(--text);line-height:1.5;margin-bottom:8px;
 }
 .benefit-list .item:last-child{margin-bottom:0;}
-.benefit-list .item i{color:#2fa36b;margin-top:3px;flex-shrink:0;}
+.benefit-list .item i{color:var(--c-green);margin-top:3px;flex-shrink:0;}
 
+/* ===== SECTION TITLE & FOOTER ===== */
+.section-title{
+  font-size:12px;font-weight:600;color:var(--muted);
+  margin:26px 0 14px;letter-spacing:1px;text-transform:uppercase;
+}
+.footer{
+  text-align:center;padding:30px 20px;
+  color:var(--muted);font-size:12px;
+}
+
+/* ===== RESPONSIVE ===== */
 @media(max-width:600px){
   .wrap{margin:20px auto;padding-bottom:90px;}
-  .hello{font-size:20px;}
+  .hello{font-size:19px;}
+  .topbar{padding:12px 16px;}
   .topbar .user{display:none;}
   .quick-stats{grid-template-columns:1fr;}
-  .quota-banner{padding:16px;}
-  .premium-banner{padding:16px;}
-  .dropdown-panel{position:fixed;top:auto;bottom:0;left:0;right:0;border-radius:20px 20px 0 0;max-height:70vh;animation:slideUp .3s ease;}
-  @keyframes slideUp{from{transform:translateY(100%);}to{transform:translateY(0);}}
-  .kuota-popup-icon{width:64px;height:64px;font-size:28px;}
-  .kuota-big-num{font-size:36px;}
+  .quota-banner{padding:14px;}
+  .premium-banner{padding:14px;}
+  .dropdown-panel{
+    position:fixed;top:auto;bottom:0;left:0;right:0;
+    border-radius:16px 16px 0 0;max-height:70vh;
+  }
+  .kuota-popup-icon{width:56px;height:56px;font-size:22px;}
+  .kuota-big-num{font-size:32px;}
   .notif-dropdown{position:fixed;top:70px;right:12px;left:12px;width:auto;}
-  .chat-popup{bottom:90px;right:12px;left:12px;width:auto;}
-  .chat-fab{bottom:20px;right:20px;width:56px;height:56px;font-size:22px;}
-  .paket-grid{grid-template-columns:1fr 1fr;}
+  .chat-popup{bottom:88px;right:12px;left:12px;width:auto;}
+  .chat-fab{bottom:20px;right:20px;width:52px;height:52px;font-size:20px;}
 }
 </style>
 </head>
@@ -467,13 +762,15 @@ body{background:var(--bg);min-height:100vh;color:var(--text);transition:backgrou
   <span class="user">
     <span id="avatarBox"></span>
     <div style="display:flex;flex-direction:column;line-height:1.2;">
-      <strong id="userName">-</strong>
-      <span id="userEmail" style="font-size:11px;color:var(--text-muted);">-</span>
+      <div style="display:flex;align-items:center;gap:6px;">
+        <strong id="userName">-</strong>
+        <span class="badge premium" id="premiumBadge" style="display:none;">
+          <i class="fas fa-crown"></i> PREMIUM
+        </span>
+      </div>
+      <span id="userEmail" style="font-size:11px;color:var(--muted);">-</span>
     </div>
     <span class="badge" id="userRole">-</span>
-    <span class="badge premium" id="premiumBadge" style="display:none;">
-      <i class="fas fa-crown"></i> PREMIUM
-    </span>
   </span>
 
   <div class="notif-wrapper" id="notifWrapper">
@@ -483,7 +780,7 @@ body{background:var(--bg);min-height:100vh;color:var(--text);transition:backgrou
     </button>
     <div class="notif-dropdown" id="notifDropdown">
       <div class="notif-head">
-        <h3>🔔 Notifikasi</h3>
+        <h3>Notifikasi</h3>
         <button class="btn-mark" onclick="markAllNotifRead(event)">Tandai semua dibaca</button>
       </div>
       <div class="notif-body" id="notifBody">
@@ -500,7 +797,7 @@ body{background:var(--bg);min-height:100vh;color:var(--text);transition:backgrou
 </div>
 
 <div class="wrap">
-  <div class="hello">Halo, <strong id="greetName">User</strong> 👋</div>
+  <div class="hello">Halo, <strong id="greetName">User</strong></div>
   <p class="sub">Pilih kategori latihan yang mau kamu kerjakan</p>
 
   <div id="quotaBanner" class="quota-banner loading" style="display:none;">
@@ -510,15 +807,15 @@ body{background:var(--bg);min-height:100vh;color:var(--text);transition:backgrou
       <p id="quotaDesc">Sebentar ya</p>
     </div>
     <div class="quota-badge" id="quotaBadge">...</div>
-    <button class="btn-request" id="btnRequest" onclick="bukaBeliKuota()" style="display:none;">
-      <i class="fas fa-shopping-cart"></i> Beli Kuota
+    <button class="btn-request" id="btnRequest" onclick="openPremiumModal()" style="display:none;">
+      <i class="fas fa-crown"></i> Langganan Premium
     </button>
   </div>
 
   <div id="premiumBanner" class="premium-banner" style="display:none;">
     <div class="ico-big"><i class="fas fa-crown"></i></div>
     <div class="txt">
-      <h3>💎 Kamu Premium!</h3>
+      <h3>Kamu Premium</h3>
       <p id="premiumBannerDesc">Akses unlimited ke semua ujian</p>
     </div>
     <div class="days-badge" id="premiumDaysBadge">-- hari</div>
@@ -548,12 +845,12 @@ body{background:var(--bg);min-height:100vh;color:var(--text);transition:backgrou
     </div>
   </div>
 
-  <div class="section-title">👤 Akun Saya</div>
+  <div class="section-title">Akun Saya</div>
   <div class="grid" style="margin-bottom:20px;">
-    <div class="menu premium-card" onclick="openPremiumModal()">
+    <div class="menu premium-card" id="menuPremium" onclick="openPremiumModal()">
       <div class="ico"><i class="fas fa-crown"></i></div>
-      <h3 id="premiumMenuTitle">💎 Premium</h3>
-      <p id="premiumMenuDesc">Unlimited ujian Rp 20.000/bulan</p>
+      <h3 id="premiumMenuTitle">Premium</h3>
+      <p id="premiumMenuDesc">Unlimited ujian Rp 25.000/bulan</p>
       <i class="fas fa-chevron-right arrow"></i>
     </div>
     <a class="menu profile-card" href="profil.html">
@@ -576,7 +873,7 @@ body{background:var(--bg);min-height:100vh;color:var(--text);transition:backgrou
     </div>
   </div>
 
-  <div class="section-title">📚 Latihan</div>
+  <div class="section-title">Latihan</div>
   <div class="grid" id="menuGrid">
     <a class="menu admin-card" id="menuAdmin" href="admin.html" style="display:none;">
       <div class="ico ico-red"><i class="fas fa-user-cog"></i></div>
@@ -601,7 +898,7 @@ body{background:var(--bg);min-height:100vh;color:var(--text);transition:backgrou
       </div>
       <div class="dropdown-panel" id="kosakataDropdown">
         <div class="dropdown-header">
-          <span>📚 Pilih Tema Kosakata</span>
+          <span>Pilih Tema Kosakata</span>
           <button class="close-btn" onclick="closeKosakataDropdown(event)"><i class="fas fa-times"></i></button>
         </div>
         <div id="temaListBox"></div>
@@ -659,7 +956,7 @@ body{background:var(--bg);min-height:100vh;color:var(--text);transition:backgrou
     <div class="chat-empty"><i class="fas fa-comments"></i> Memuat chat...</div>
   </div>
   <div class="chat-foot" id="chatFoot">
-    <button id="chatImgBtn" onclick="pickChatImageUser()" title="Kirim gambar" style="background:transparent;border:1.5px solid var(--border);color:#26a69a;width:40px;height:40px;border-radius:50%;cursor:pointer;font-size:15px;flex-shrink:0;"><i class="fas fa-image"></i></button>
+    <button id="chatImgBtn" onclick="pickChatImageUser()" title="Kirim gambar" style="background:transparent;border:1px solid var(--border);color:var(--c-teal);width:38px;height:38px;border-radius:50%;cursor:pointer;font-size:14px;flex-shrink:0;"><i class="fas fa-image"></i></button>
     <input type="text" id="chatInput" placeholder="Tulis pesan..." onkeydown="if(event.key==='Enter') sendChat()">
     <button id="chatSendBtn" onclick="sendChat()"><i class="fas fa-paper-plane"></i></button>
   </div>
@@ -671,12 +968,12 @@ body{background:var(--bg);min-height:100vh;color:var(--text);transition:backgrou
     <div class="kuota-popup-icon" id="welcomeIcon">
       <i class="fas fa-star"></i>
     </div>
-    <div class="kuota-popup-title" id="welcomeTitle">Selamat Datang! 👋</div>
+    <div class="kuota-popup-title" id="welcomeTitle">Selamat Datang</div>
     <div class="kuota-popup-subtitle" id="welcomeSubtitle">Semangat belajar bahasa Korea hari ini!</div>
 
     <div id="welcomeContent" style="margin-bottom:0;"></div>
 
-    <p style="text-align:center;font-size:12px;color:var(--text-muted);margin-top:20px;">
+    <p style="text-align:center;font-size:12px;color:var(--muted);margin-top:20px;">
       Klik di mana saja untuk menutup
     </p>
   </div>
@@ -695,7 +992,7 @@ body{background:var(--bg);min-height:100vh;color:var(--text);transition:backgrou
       <div class="kuota-info-detail" id="kuotaInfoDetail">memuat...</div>
     </div>
     <div class="kuota-popup-catatan ok" id="kuotaPopupCatatan">
-      💡 Setiap kali kamu menyelesaikan ujian, kuota akan berkurang 1.
+      Setiap kali kamu menyelesaikan ujian, kuota akan berkurang 1.
     </div>
     <div class="kuota-popup-buttons">
       <button class="btn btn-secondary" onclick="closeModal('kuotaPopup')"><i class="fas fa-times"></i> Batal</button>
@@ -706,19 +1003,27 @@ body{background:var(--bg);min-height:100vh;color:var(--text);transition:backgrou
 
 <!-- MODAL PREMIUM -->
 <div id="premiumModal" class="modal-back">
-  <div class="modal-box" style="max-width:520px;">
+  <div class="modal-box" style="max-width:460px;">
     <div style="text-align:center;margin-bottom:20px;">
-      <div style="width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--gold-dark));display:flex;align-items:center;justify-content:center;font-size:36px;color:#fff;margin:0 auto 12px;box-shadow:0 8px 24px rgba(255,184,0,.4);">
+      <div style="width:64px;height:64px;border-radius:50%;background:var(--gold-light);border:1px solid var(--gold);display:flex;align-items:center;justify-content:center;font-size:26px;color:var(--gold-dark);margin:0 auto 12px;">
         <i class="fas fa-crown"></i>
       </div>
-      <div style="font-size:22px;font-weight:800;color:var(--title-color);">Langganan Premium</div>
-      <div style="font-size:13px;color:var(--text-muted);margin-top:6px;">Unlimited ujian, tanpa batas kuota</div>
+      <div style="font-size:20px;font-weight:600;color:var(--text);">Langganan Premium</div>
+      <div style="font-size:13px;color:var(--muted);margin-top:4px;">Unlimited ujian, tanpa batas kuota</div>
     </div>
 
-    <div class="paket-grid" id="paketGrid"></div>
+    <div style="background:var(--gold-light);border:1px solid var(--gold);border-radius:10px;padding:22px 20px;text-align:center;margin-bottom:18px;">
+      <div style="font-size:13px;font-weight:500;color:var(--gold-dark);margin-bottom:8px;">Premium Bulanan</div>
+      <div style="font-size:32px;font-weight:700;color:var(--gold-dark);line-height:1;letter-spacing:-1px;">
+        Rp 25.000
+      </div>
+      <div style="font-size:12px;color:var(--gold-dark);margin-top:6px;font-weight:500;opacity:.85;">
+        Berlaku 30 hari · Unlimited ujian
+      </div>
+    </div>
 
     <div class="benefit-list">
-      <div class="label">✨ Benefit Premium</div>
+      <div class="label">Benefit Premium</div>
       <div class="item"><i class="fas fa-check-circle"></i> <div>Unlimited ujian (tanpa batas kuota)</div></div>
       <div class="item"><i class="fas fa-check-circle"></i> <div>Semua kategori soal terbuka</div></div>
       <div class="item"><i class="fas fa-check-circle"></i> <div>Sertifikat otomatis setelah lulus</div></div>
@@ -726,29 +1031,63 @@ body{background:var(--bg);min-height:100vh;color:var(--text);transition:backgrou
     </div>
 
     <div style="display:flex;gap:10px;">
-      <button class="btn btn-secondary" onclick="closeModal('premiumModal')" style="flex:1;justify-content:center;padding:13px;">
-        <i class="fas fa-times"></i> Nanti Aja
+      <button class="btn btn-secondary" onclick="closeModal('premiumModal')" style="flex:1;justify-content:center;padding:12px;">
+        Nanti
       </button>
-      <button class="btn btn-gold" onclick="langgananSekarang()" style="flex:2;justify-content:center;padding:13px;">
+      <button class="btn btn-gold" id="btnLangganan" onclick="langgananSekarang()" style="flex:2;justify-content:center;padding:12px;">
         <i class="fas fa-crown"></i> Langganan Sekarang
       </button>
     </div>
 
-    <p style="text-align:center;font-size:11px;color:var(--text-muted);margin-top:14px;">
-      Setelah klik, kamu akan diarahkan ke WhatsApp admin untuk konfirmasi pembayaran.
+    <p style="text-align:center;font-size:11px;color:var(--muted);margin-top:14px;">
+      Request akan dikirim ke admin. Setelah itu kamu bisa chat admin via WhatsApp untuk pembayaran.
+    </p>
+  </div>
+</div>
+
+<!-- MODAL SUKSES REQUEST PREMIUM -->
+<div id="premiumSuccessModal" class="modal-back">
+  <div class="modal-box" style="max-width:440px;text-align:center;">
+    <div style="width:64px;height:64px;border-radius:50%;background:var(--sub-bg);border:1px solid var(--c-green);display:flex;align-items:center;justify-content:center;font-size:26px;color:var(--c-green);margin:0 auto 16px;">
+      <i class="fas fa-check"></i>
+    </div>
+    <div style="font-size:18px;font-weight:600;color:var(--text);margin-bottom:6px;">
+      Request Terkirim
+    </div>
+    <div style="font-size:13px;color:var(--muted);margin-bottom:20px;line-height:1.6;">
+      Admin sudah menerima request langgananmu.<br>
+      Untuk proses <strong>pembayaran Rp 25.000</strong>, silakan chat admin via WhatsApp di bawah ini.
+    </div>
+
+    <div style="background:var(--sub-bg);border-radius:10px;padding:14px 16px;margin-bottom:18px;text-align:left;font-size:13px;color:var(--text);line-height:1.7;">
+      <div>Username: <strong id="premSuccessUser">-</strong></div>
+      <div>Paket: <strong>Premium Bulanan (30 hari)</strong></div>
+      <div>Harga: <strong>Rp 25.000</strong></div>
+    </div>
+
+    <a id="waChatBtn" href="#" target="_blank" class="btn" style="width:100%;justify-content:center;padding:14px;background:#25D366;color:#fff;font-weight:600;font-size:14px;text-decoration:none;margin-bottom:10px;display:flex;align-items:center;gap:8px;">
+      <i class="fab fa-whatsapp" style="font-size:18px;"></i> Chat Admin via WhatsApp
+    </a>
+
+    <button class="btn btn-secondary" onclick="closeModal('premiumSuccessModal')" style="width:100%;justify-content:center;padding:12px;">
+      Tutup
+    </button>
+
+    <p style="font-size:11px;color:var(--muted);margin-top:14px;">
+      Setelah pembayaran dikonfirmasi, admin akan mengaktifkan premium akunmu.
     </p>
   </div>
 </div>
 
 <div id="requestModal" class="modal-back">
   <div class="modal-box">
-    <h2>📩 Minta Tambah Kuota</h2>
+    <h2><i class="fas fa-paper-plane"></i> Minta Tambah Kuota</h2>
     <p class="desc">Request kamu akan dikirim ke admin. Admin akan review dan menambahkan kuota ujian.</p>
     <label>Pesan untuk admin (opsional)</label>
     <textarea id="requestPesan" placeholder="Contoh: Pak, saya mau latihan lagi buat persiapan ujian..."></textarea>
     <div style="display:flex;gap:10px;">
-      <button onclick="closeModal('requestModal')" style="flex:1;padding:12px;border:1px solid var(--border);background:var(--sub-bg);color:var(--text);border-radius:8px;font-weight:600;cursor:pointer;font-family:inherit;">Batal</button>
-      <button onclick="submitRequest()" id="btnSubmitReq" style="flex:1;padding:12px;border:none;background:var(--link-color);color:#fff;border-radius:8px;font-weight:700;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:6px;"><i class="fas fa-paper-plane"></i> Kirim</button>
+      <button class="btn btn-secondary" onclick="closeModal('requestModal')" style="flex:1;justify-content:center;padding:12px;">Batal</button>
+      <button class="btn btn-primary" onclick="submitRequest()" id="btnSubmitReq" style="flex:1;justify-content:center;padding:12px;"><i class="fas fa-paper-plane"></i> Kirim</button>
     </div>
   </div>
 </div>
@@ -768,24 +1107,12 @@ function toggleTheme(){
 }
 applyTheme(localStorage.getItem('theme') || 'light');
 
-const API = 'https://script.google.com/macros/s/AKfycbwGsUnn93GQGnCGYITxYas-ig5BGa0O1191cxp_wNjeESRYsCJZgsYXClQNKGSyDAjQ/exec';
+const API = 'https://script.google.com/macros/s/AKfycbyKZQU0IFhCrTBD1Jk7imOEuOLSBjGE962ZgSThd52ltWL_4mMvwOxNgUe3EuZA3k7e/exec';
 
-// ============================================================
-//  ⚡ KONFIGURASI PREMIUM
-// ============================================================
-// Ganti nomor WA admin (format 62xxx tanpa +)
-const WHATSAPP_ADMIN = '6281234567890';
-
-// Link beli kuota alternatif (kalau user gak mau premium, bisa topup kuota biasa)
-// Bisa dikosongkan kalau gak ada
-const BELI_KUOTA_URL = 'https://wa.me/6281234567890?text=Halo%20Admin%2C%20saya%20mau%20beli%20kuota%20ujian%20EPS-TOPIK';
-
+const WHATSAPP_ADMIN = '6287852456680';
 const PREMIUM_PAKET = [
-  { id: 'bulanan', label: 'Bulanan', harga: 20000, days: 30, populer: true },
-  { id: '3bulan', label: '3 Bulan', harga: 50000, days: 90, hemat: '17%' },
-  { id: '1tahun', label: '1 Tahun', harga: 180000, days: 365, hemat: '25%' }
+  { id: 'bulanan', label: 'Premium Bulanan', harga: 25000, days: 30 }
 ];
-
 let selectedPaket = 'bulanan';
 
 function isPremiumUser() {
@@ -817,65 +1144,35 @@ function renderPremiumBadge() {
     if (bannerDesc) bannerDesc.textContent = `Akses unlimited ke semua ujian · Berakhir dalam ${days} hari`;
     if (daysBadge) daysBadge.textContent = `${days} hari`;
     if (menuDesc) menuDesc.textContent = `Premium aktif · ${days} hari lagi`;
-    if (menuTitle) menuTitle.textContent = `💎 Premium Aktif`;
+    if (menuTitle) menuTitle.textContent = `Premium Aktif`;
   } else {
     if (badge) badge.style.display = 'none';
     if (banner) banner.style.display = 'none';
-    if (menuDesc) menuDesc.textContent = 'Unlimited ujian Rp 20.000/bulan';
-    if (menuTitle) menuTitle.textContent = `💎 Premium`;
+    if (menuDesc) menuDesc.textContent = 'Unlimited ujian Rp 25.000/bulan';
+    if (menuTitle) menuTitle.textContent = `Premium`;
   }
-}
-
-function renderPaketGrid() {
-  const grid = document.getElementById('paketGrid');
-  if (!grid) return;
-  let html = '';
-  PREMIUM_PAKET.forEach(p => {
-    const selected = selectedPaket === p.id ? 'selected' : '';
-    html += `
-      <div class="paket ${selected}" onclick="pilihPaket('${p.id}', event)" data-paket="${p.id}">
-        ${p.populer ? '<div class="populer-tag">POPULER</div>' : ''}
-        <div class="nama">${p.label}</div>
-        <div class="harga">Rp ${p.harga.toLocaleString('id-ID')}<small>${p.days} hari</small></div>
-        ${p.hemat ? `<div class="hemat">Hemat ${p.hemat}</div>` : ''}
-      </div>`;
-  });
-  grid.innerHTML = html;
-}
-
-function pilihPaket(id, event) {
-  if (event) event.stopPropagation();
-  selectedPaket = id;
-  document.querySelectorAll('.paket').forEach(el => {
-    el.classList.toggle('selected', el.dataset.paket === id);
-  });
 }
 
 function openPremiumModal() {
   if (isPremiumUser()) {
     const days = getDaysLeft();
-    alert(`💎 Kamu udah Premium!\n\nSisa: ${days} hari\nBerakhir: ${user.premiumUntil}\n\nNikmati akses unlimited ke semua ujian.`);
+    alert(`Kamu sudah Premium!\n\nSisa: ${days} hari\nBerakhir: ${user.premiumUntil}\n\nNikmati akses unlimited ke semua ujian.`);
     return;
   }
-  renderPaketGrid();
   openModal('premiumModal');
 }
 
 async function langgananSekarang() {
-  const paket = PREMIUM_PAKET.find(p => p.id === selectedPaket) || PREMIUM_PAKET[0];
-  const pesan = encodeURIComponent(
-    `Halo Admin, saya mau langganan PREMIUM EPS-TOPIK.\n\n` +
-    `👤 Username: ${user.username}\n` +
-    `📛 Nama: ${user.nama || user.username}\n` +
-    `💎 Paket: ${paket.label}\n` +
-    `💰 Harga: Rp ${paket.harga.toLocaleString('id-ID')}\n` +
-    `⏱️ Durasi: ${paket.days} hari\n\n` +
-    `Mohon info cara pembayarannya. Terima kasih!`
-  );
+  const paket = PREMIUM_PAKET[0];
+  const btn = document.getElementById('btnLangganan');
+  const original = btn ? btn.innerHTML : '';
+  if (btn) {
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Mengirim...';
+  }
 
-  // Kirim notif ke backend (biar admin lihat di tab Langganan)
   try {
-    await fetch(API, {
+    const r = await fetch(API, {
       method: 'POST',
       headers: {'Content-Type':'text/plain;charset=utf-8'},
       body: JSON.stringify({
@@ -883,19 +1180,49 @@ async function langgananSekarang() {
         username: user.username,
         paket: paket.id,
         harga: paket.harga,
-        catatan: `Paket ${paket.label} - ${paket.days} hari`
+        catatan: `Langganan Bulanan - Rp ${paket.harga.toLocaleString('id-ID')}`
       })
     });
+    const res = await r.json();
+
+    if (res.success) {
+      closeModal('premiumModal');
+      showPremiumSuccessModal(paket);
+    } else {
+      alert('Gagal: ' + (res.msg || 'Gagal kirim request'));
+      if (btn) {
+        btn.disabled = false;
+        btn.innerHTML = original;
+      }
+    }
   } catch(e) {
-    console.warn('Gagal kirim notif premium:', e);
+    alert('Gagal kirim request. Cek koneksi internet & coba lagi.');
+    console.error(e);
+    if (btn) {
+      btn.disabled = false;
+      btn.innerHTML = original;
+    }
   }
+}
 
-  // Buka WhatsApp
+function showPremiumSuccessModal(paket) {
+  const pesan = encodeURIComponent(
+    `Halo Admin, saya sudah request langganan PREMIUM EPS-TOPIK di aplikasi.\n\n` +
+    `Username: ${user.username}\n` +
+    `Nama: ${user.nama || user.username}\n` +
+    `Paket: ${paket.label} (${paket.days} hari)\n` +
+    `Harga: Rp ${paket.harga.toLocaleString('id-ID')}\n\n` +
+    `Mohon info cara pembayarannya. Terima kasih!`
+  );
   const waUrl = `https://wa.me/${WHATSAPP_ADMIN}?text=${pesan}`;
-  window.open(waUrl, '_blank');
 
-  // Close modal
-  closeModal('premiumModal');
+  const userEl = document.getElementById('premSuccessUser');
+  if (userEl) userEl.textContent = user.username;
+
+  const waBtn = document.getElementById('waChatBtn');
+  if (waBtn) waBtn.href = waUrl;
+
+  openModal('premiumSuccessModal');
 }
 
 async function refreshPremiumStatus() {
@@ -911,10 +1238,6 @@ async function refreshPremiumStatus() {
   } catch(e) {
     console.warn('Gagal refresh premium:', e);
   }
-}
-
-function bukaBeliKuota() {
-  window.open(BELI_KUOTA_URL, '_blank');
 }
 
 const TEMA_KOSAKATA = [
@@ -955,6 +1278,7 @@ renderAvatar();
 
 const badge = document.getElementById('userRole');
 if (IS_ADMIN) {
+  document.body.classList.add('is-admin');
   badge.textContent = 'ADMIN';
   badge.className = 'badge admin';
   const menuAdmin = document.getElementById('menuAdmin');
@@ -1163,7 +1487,7 @@ function showChatRoomHeader(nama, foto) {
   if (sub) sub.textContent = 'Balas chat';
   if (avatar) {
     if (foto) avatar.innerHTML = `<img src="${foto}" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">`;
-    else avatar.innerHTML = `<span style="font-weight:700;font-size:14px;">${(nama||'U').charAt(0).toUpperCase()}</span>`;
+    else avatar.innerHTML = `<span style="font-weight:600;font-size:14px;">${(nama||'U').charAt(0).toUpperCase()}</span>`;
   }
   if (backBtn) backBtn.style.display = 'flex';
   if (foot) foot.style.display = 'flex';
@@ -1227,8 +1551,8 @@ function renderChatRooms() {
   chatRooms.forEach(r => {
     const init = (r.nama || r.userId || 'U').charAt(0).toUpperCase();
     const avatar = r.foto
-      ? `<img src="${r.foto}" onerror="this.outerHTML='<span style=&quot;font-weight:700;&quot;>${init}</span>'">`
-      : `<span style="font-weight:700;">${init}</span>`;
+      ? `<img src="${r.foto}" onerror="this.outerHTML='<span style=&quot;font-weight:600;&quot;>${init}</span>'">`
+      : `<span style="font-weight:600;">${init}</span>`;
 
     const unreadPill = (Number(r.unread) > 0) ? `<span class="unread-pill">${r.unread}</span>` : '';
 
@@ -1369,7 +1693,7 @@ function renderUserChatMessages(msgs) {
   const body = document.getElementById('chatBody');
   if (!body) return;
   if (msgs.length === 0) {
-    body.innerHTML = `<div class="chat-empty"><i class="fas fa-comments"></i> Belum ada chat. Mulai percakapan dengan admin! 👋</div>`;
+    body.innerHTML = `<div class="chat-empty"><i class="fas fa-comments"></i> Belum ada chat. Mulai percakapan dengan admin!</div>`;
     return;
   }
   let html = '';
@@ -1419,7 +1743,7 @@ async function sendChat() {
   tempDiv.className = 'chat-msg mine';
   const now = new Date();
   const timeStr = String(now.getHours()).padStart(2,'0') + ':' + String(now.getMinutes()).padStart(2,'0');
-  tempDiv.innerHTML = `${escapeHtml(pesan)}<span class="time">${timeStr} ⏳</span>`;
+  tempDiv.innerHTML = `${escapeHtml(pesan)}<span class="time">${timeStr} ...</span>`;
   body.appendChild(tempDiv);
   body.scrollTop = body.scrollHeight;
   input.value = '';
@@ -1439,12 +1763,12 @@ async function sendChat() {
     } else {
       tempDiv.remove();
       input.value = pesan;
-      alert('❌ ' + (res.msg || 'Gagal kirim'));
+      alert('Gagal: ' + (res.msg || 'Gagal kirim'));
     }
   } catch(err) {
     tempDiv.remove();
     input.value = pesan;
-    alert('❌ ' + err.message);
+    alert('Gagal: ' + err.message);
   } finally {
     btn.disabled = false;
     input.disabled = false;
@@ -1459,7 +1783,7 @@ function pickChatImageUser() {
   inp.onchange = async (e) => {
     const file = e.target.files[0];
     if (!file) return;
-    if (file.size > 5 * 1024 * 1024) { alert('⚠️ Gambar max 5MB'); return; }
+    if (file.size > 5 * 1024 * 1024) { alert('Gambar max 5MB'); return; }
     await uploadAndSendImageUser(file);
   };
   inp.click();
@@ -1482,7 +1806,7 @@ async function uploadAndSendImageUser(file) {
       <div style="margin-bottom:6px;">
         <img src="${e.target.result}" style="max-width:100%;max-height:240px;border-radius:8px;opacity:.6;">
       </div>
-      <span class="time">${timeStr} ⏳ Upload...</span>
+      <span class="time">${timeStr} Upload...</span>
     `;
     body.appendChild(tempDiv);
     body.scrollTop = body.scrollHeight;
@@ -1525,7 +1849,7 @@ async function uploadAndSendImageUser(file) {
   } catch(err) {
     const t = document.getElementById(tempId);
     if (t) t.remove();
-    alert('❌ ' + err.message);
+    alert('Gagal: ' + err.message);
   } finally {
     if (btn) btn.disabled = false;
   }
@@ -1583,7 +1907,7 @@ setInterval(() => {
       if (res.success && Number(res.count) > lastChatCount) {
         const popup = document.getElementById('chatPopup');
         if (!popup || !popup.classList.contains('open')) {
-          showPushNotif('💬 Pesan baru' + (IS_ADMIN ? ' dari user' : ' dari admin'), 'Buka chat untuk lihat', 'chat-notif');
+          showPushNotif('Pesan baru' + (IS_ADMIN ? ' dari user' : ' dari admin'), 'Buka chat untuk lihat', 'chat-notif');
         }
       }
       lastChatCount = Number(res.count) || 0;
@@ -1598,7 +1922,7 @@ setTimeout(() => {
       const hint = document.createElement('button');
       hint.id = 'notifHintFab';
       hint.title = 'Aktifkan notifikasi chat';
-      hint.style.cssText = 'position:fixed;bottom:100px;right:30px;width:36px;height:36px;border-radius:50%;background:#f0ad4e;color:#fff;border:none;cursor:pointer;font-size:14px;box-shadow:0 4px 12px rgba(0,0,0,.2);z-index:149;animation:pulse-badge 2s infinite;';
+      hint.style.cssText = 'position:fixed;bottom:92px;right:24px;width:36px;height:36px;border-radius:50%;background:var(--c-orange);color:#fff;border:none;cursor:pointer;font-size:14px;box-shadow:0 4px 12px rgba(0,0,0,.2);z-index:149;';
       hint.innerHTML = '<i class="fas fa-bell"></i>';
       hint.onclick = enableNotifUser;
       document.body.appendChild(hint);
@@ -1609,11 +1933,11 @@ setTimeout(() => {
 async function enableNotifUser() {
   const ok = await requestNotifPermission();
   if (ok) {
-    showPushNotif('✅ Notifikasi Aktif!', 'Kamu akan dapat notif saat ada chat baru', 'welcome');
+    showPushNotif('Notifikasi Aktif', 'Kamu akan dapat notif saat ada chat baru', 'welcome');
     const h = document.getElementById('notifHintFab');
     if (h) h.remove();
   } else {
-    alert('⚠️ Izin notifikasi ditolak. Buka pengaturan browser untuk mengaktifkan.');
+    alert('Izin notifikasi ditolak. Buka pengaturan browser untuk mengaktifkan.');
   }
 }
 
@@ -1695,25 +2019,25 @@ function tampilkanPopupKuota(label, desc, icon) {
     if (infoBox) infoBox.className = 'kuota-info-box admin';
     if (bigNum) { bigNum.className = 'kuota-big-num admin'; bigNum.textContent = '∞'; }
     if (infoDetail) infoDetail.textContent = 'Admin bebas akses semua ujian';
-    if (catatan) { catatan.className = 'kuota-popup-catatan admin'; catatan.innerHTML = '👑 Sebagai admin, kamu bisa mengerjakan ujian tanpa batas kuota.'; }
+    if (catatan) { catatan.className = 'kuota-popup-catatan admin'; catatan.innerHTML = 'Sebagai admin, kamu bisa mengerjakan ujian tanpa batas kuota.'; }
   } else if (isPrem) {
     const days = getDaysLeft();
     if (infoBox) infoBox.className = 'kuota-info-box premium';
     if (bigNum) { bigNum.className = 'kuota-big-num premium'; bigNum.textContent = '∞'; }
     if (infoDetail) infoDetail.textContent = `Premium aktif · ${days} hari lagi`;
-    if (catatan) { catatan.className = 'kuota-popup-catatan premium'; catatan.innerHTML = '👑 Kamu Premium! Nikmati akses unlimited ke semua ujian.'; }
+    if (catatan) { catatan.className = 'kuota-popup-catatan premium'; catatan.innerHTML = 'Kamu Premium! Nikmati akses unlimited ke semua ujian.'; }
   } else if (canExam) {
     if (infoBox) infoBox.className = 'kuota-info-box ok';
     if (bigNum) { bigNum.className = 'kuota-big-num ok'; bigNum.textContent = remain; }
     if (infoDetail) infoDetail.textContent = `dari ${max} kuota ujian`;
-    if (catatan) { catatan.className = 'kuota-popup-catatan ok'; catatan.innerHTML = '💡 Setiap kali kamu menyelesaikan ujian, kuota akan berkurang <strong>1</strong>. Mau unlimited? <a href="#" onclick="event.preventDefault();closeModal(\'kuotaPopup\');openPremiumModal();" style="color:var(--gold-dark);font-weight:800;text-decoration:underline;">Upgrade Premium</a>'; }
+    if (catatan) { catatan.className = 'kuota-popup-catatan ok'; catatan.innerHTML = 'Setiap kali kamu menyelesaikan ujian, kuota akan berkurang <strong>1</strong>.'; }
   } else {
     if (infoBox) infoBox.className = 'kuota-info-box empty';
     if (bigNum) { bigNum.className = 'kuota-big-num empty'; bigNum.textContent = '0'; }
     if (infoDetail) infoDetail.textContent = `dari ${max} kuota ujian`;
     if (catatan) {
       catatan.className = 'kuota-popup-catatan empty';
-      catatan.innerHTML = `🔒 Kuota kamu sudah habis. <a href="#" onclick="event.preventDefault();closeModal('kuotaPopup');openPremiumModal();" style="color:var(--gold-dark);font-weight:800;text-decoration:underline;">Upgrade Premium Rp 20.000/bulan</a> untuk unlimited, atau <a href="${BELI_KUOTA_URL}" target="_blank" style="color:#c9302c;font-weight:800;text-decoration:underline;">beli kuota satuan</a>.`;
+      catatan.innerHTML = `Kuota kamu sudah habis. Langganan Premium <strong>Rp 25.000/bulan</strong> untuk ujian unlimited!`;
     }
   }
 
@@ -1726,7 +2050,7 @@ function tampilkanPopupKuota(label, desc, icon) {
   } else {
     btnMulai.disabled = false;
     btnMulai.className = 'btn btn-gold';
-    btnMulai.innerHTML = '<i class="fas fa-crown"></i> Upgrade Premium';
+    btnMulai.innerHTML = '<i class="fas fa-crown"></i> Langganan Premium';
     btnMulai.onclick = () => { closeModal('kuotaPopup'); openPremiumModal(); };
   }
 
@@ -1766,7 +2090,6 @@ function updateQuotaUI() {
   if (!banner) return;
   if (user.role === 'admin') { banner.style.display = 'none'; return; }
 
-  // Kalau premium, sembunyikan banner kuota
   if (isPremiumUser()) {
     banner.style.display = 'none';
     return;
@@ -1805,7 +2128,7 @@ function updateQuotaUI() {
   } else {
     banner.className = 'quota-banner empty';
     if (title) title.textContent = `Kuota Ujian Habis`;
-    if (desc) desc.textContent = `Kamu sudah pakai ${used} dari ${max} kuota. Upgrade premium untuk unlimited!`;
+    if (desc) desc.textContent = `Langganan Premium Rp 25.000/bulan untuk ujian unlimited!`;
     if (btnReq) btnReq.style.display = 'inline-flex';
   }
 }
@@ -1859,11 +2182,11 @@ async function submitRequest() {
     });
     const res = await r.json();
     if (res.success) {
-      alert('✅ Request terkirim! Admin akan review segera.');
+      alert('Request terkirim! Admin akan review segera.');
       closeModal('requestModal');
       if (pesanEl) pesanEl.value = '';
-    } else alert('❌ ' + (res.msg || 'Gagal'));
-  } catch(err) { alert('❌ ' + err.message); }
+    } else alert('Gagal: ' + (res.msg || 'Gagal'));
+  } catch(err) { alert('Gagal: ' + err.message); }
   finally { btn.disabled = false; btn.innerHTML = original; }
 }
 
@@ -1900,13 +2223,13 @@ function buildWelcomeContent() {
 
   const titleEl = document.getElementById('welcomeTitle');
   const subEl = document.getElementById('welcomeSubtitle');
-  if (titleEl) titleEl.textContent = `${greeting}, ${user.nama || user.username}! 👋`;
+  if (titleEl) titleEl.textContent = `${greeting}, ${user.nama || user.username}!`;
 
   if (isAdmin) {
     if (subEl) subEl.textContent = 'Panel admin siap. Kelola soal & user hari ini!';
     return `
       <div class="kuota-popup-catatan admin" style="margin-bottom:0;">
-        👑 <strong>Kamu login sebagai Admin</strong><br>
+        <strong>Kamu login sebagai Admin</strong><br>
         Akses semua fitur tanpa batas kuota.
       </div>`;
   }
@@ -1916,7 +2239,7 @@ function buildWelcomeContent() {
     if (subEl) subEl.textContent = 'Premium aktif, selamat belajar tanpa batas!';
     return `
       <div class="kuota-popup-catatan premium" style="margin-bottom:0;">
-        👑 <strong>Kamu Premium!</strong><br>
+        <strong>Kamu Premium!</strong><br>
         Akses unlimited · Sisa ${days} hari lagi.
       </div>`;
   }
@@ -1925,16 +2248,16 @@ function buildWelcomeContent() {
     if (subEl) subEl.textContent = 'Semangat belajar bahasa Korea hari ini!';
     return `
       <div class="kuota-popup-catatan ok" style="margin-bottom:0;">
-        🎯 <strong>Kuota Ujian:</strong> ${remain} / ${max}<br>
+        <strong>Kuota Ujian:</strong> ${remain} / ${max}<br>
         Kamu bisa mengerjakan ${remain} ujian lagi hari ini.
       </div>`;
   }
 
-  if (subEl) subEl.textContent = 'Yuk, upgrade premium biar bisa unlimited!';
+  if (subEl) subEl.textContent = 'Yuk, langganan premium biar bisa unlimited!';
   return `
     <div class="kuota-popup-catatan empty" style="margin-bottom:0;">
-      🔒 <strong>Kuota Ujian Habis</strong><br>
-      <a href="#" onclick="event.preventDefault();closeWelcomePopup();openPremiumModal();" style="color:var(--gold-dark);font-weight:800;text-decoration:underline;">Upgrade Premium Rp 20.000/bulan</a> untuk unlimited ujian.
+      <strong>Kuota Ujian Habis</strong><br>
+      <a href="#" onclick="event.preventDefault();closeWelcomePopup();openPremiumModal();" style="color:var(--gold-dark);font-weight:600;text-decoration:underline;">Langganan Premium Rp 25.000/bulan</a> untuk unlimited ujian.
     </div>`;
 }
 
