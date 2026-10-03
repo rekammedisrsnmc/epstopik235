@@ -6,278 +6,540 @@
 <title>Admin EPS-TOPIK</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <style>
+/* ============================================================
+   MINIMALIST THEME — 1 accent color (biru), no gradients
+   ============================================================ */
 :root{
-  --blue:#1e5fa8;--blue-dark:#154a82;--blue-light:#e8f0fa;
-  --bg:#f5f7fa;--card-bg:#fff;--border:#d0d7e2;
-  --red:#d9534f;--green:#2fa36b;--yellow:#f0ad4e;--purple:#7c4dff;--teal:#26a69a;
-  --shadow:0 4px 16px rgba(0,0,0,.08);
-  --text:#333;--text-muted:#888;--title-color:#154a82;
-  --sub-bg:#f5f7fa;--input-bg:#fff;--input-text:#333;
-  --topbar-bg:#fff;--topbar-shadow:0 4px 16px rgba(0,0,0,.08);
-  --gold:#ffb800;--gold-dark:#cc9400;
+  --accent:#2563eb;
+  --accent-hover:#1d4ed8;
+  --accent-soft:#eff6ff;
+
+  --bg:#f7f8fa;
+  --card-bg:#ffffff;
+  --border:#e5e7eb;
+  --border-strong:#d1d5db;
+
+  --text:#111827;
+  --text-muted:#6b7280;
+  --text-faint:#9ca3af;
+
+  --danger:#dc2626;
+  --danger-soft:#fef2f2;
+  --success:#16a34a;
+  --success-soft:#f0fdf4;
+  --warning:#d97706;
+  --warning-soft:#fffbeb;
+
+  --gold:#b45309;
+  --gold-soft:#fffbeb;
+
+  --input-bg:#ffffff;
+  --sub-bg:#f3f4f6;
+
+  --shadow:0 1px 3px rgba(0,0,0,.06);
+  --shadow-md:0 4px 12px rgba(0,0,0,.08);
+
+  --radius:10px;
+  --radius-sm:6px;
 }
 [data-theme="dark"]{
-  --blue:#5b9cff;--blue-dark:#3a7bd5;--blue-light:#1e3556;
-  --bg:#0a111f;--card-bg:#151d2e;--border:#2a3448;
-  --red:#ef5350;--green:#4caf7d;--yellow:#ffb74d;--purple:#b39ddb;--teal:#4db6ac;
-  --shadow:0 4px 16px rgba(0,0,0,.4);
-  --text:#e8eef7;--text-muted:#8b9bb4;--title-color:#5b9cff;
-  --sub-bg:#0f1626;--input-bg:#0f1626;--input-text:#e8eef7;
-  --topbar-bg:#151d2e;--topbar-shadow:0 4px 16px rgba(0,0,0,.4);
-  --gold:#ffd700;--gold-dark:#ffb800;
+  --accent:#60a5fa;
+  --accent-hover:#93c5fd;
+  --accent-soft:#1e293b;
+
+  --bg:#0a0a0a;
+  --card-bg:#141414;
+  --border:#262626;
+  --border-strong:#3f3f46;
+
+  --text:#f4f4f5;
+  --text-muted:#a1a1aa;
+  --text-faint:#71717a;
+
+  --danger:#f87171;
+  --danger-soft:#2a1515;
+  --success:#4ade80;
+  --success-soft:#0f2417;
+  --warning:#fbbf24;
+  --warning-soft:#2a1f0a;
+
+  --gold:#fbbf24;
+  --gold-soft:#2a1f0a;
+
+  --input-bg:#0a0a0a;
+  --sub-bg:#1f1f1f;
+
+  --shadow:0 1px 3px rgba(0,0,0,.5);
+  --shadow-md:0 4px 12px rgba(0,0,0,.6);
 }
-*{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI','Malgun Gothic',-apple-system,sans-serif;}
-body{background:var(--bg);min-height:100vh;color:var(--text);transition:background .3s,color .3s;}
-.topbar{background:var(--topbar-bg);padding:16px 24px;box-shadow:var(--topbar-shadow);display:flex;align-items:center;gap:12px;position:sticky;top:0;z-index:10;flex-wrap:wrap;transition:background .3s;}
-.topbar h1{font-size:18px;color:var(--title-color);display:flex;align-items:center;gap:10px;}
-.topbar h1 i{color:var(--blue);}
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Inter','Segoe UI',-apple-system,sans-serif;}
+body{background:var(--bg);min-height:100vh;color:var(--text);transition:background .2s,color .2s;font-size:14px;}
+
+/* TOPBAR */
+.topbar{
+  background:var(--card-bg);
+  padding:14px 24px;
+  border-bottom:1px solid var(--border);
+  display:flex;align-items:center;gap:12px;
+  position:sticky;top:0;z-index:10;flex-wrap:wrap;
+}
+.topbar h1{font-size:15px;color:var(--text);display:flex;align-items:center;gap:8px;font-weight:700;letter-spacing:.3px;}
+.topbar h1 i{color:var(--text-muted);}
 .topbar .spacer{flex:1;}
-.topbar .user{font-size:13px;color:var(--text-muted);display:flex;align-items:center;gap:6px;padding:6px 12px;background:var(--sub-bg);border-radius:20px;}
-.topbar .user strong{color:var(--blue);}
-.topbar .user .badge{background:#fde8e8;color:#a33;font-size:10px;padding:2px 8px;border-radius:10px;font-weight:700;}
-.topbar .btn-icon{background:transparent;border:1.5px solid var(--border);color:var(--text);width:38px;height:38px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:14px;transition:.2s;position:relative;text-decoration:none;}
-.topbar .btn-icon:hover{background:var(--sub-bg);border-color:var(--blue);color:var(--blue);}
+.topbar .user{
+  font-size:12px;color:var(--text-muted);
+  display:flex;align-items:center;gap:6px;
+  padding:6px 12px;background:var(--sub-bg);border-radius:20px;
+  border:1px solid var(--border);
+}
+.topbar .user strong{color:var(--text);font-weight:600;}
+.topbar .user .badge{
+  background:var(--accent-soft);color:var(--accent);
+  font-size:10px;padding:2px 8px;border-radius:10px;font-weight:700;
+  border:1px solid var(--accent);
+}
+.topbar .btn-icon{
+  background:transparent;border:1px solid var(--border);
+  color:var(--text-muted);width:36px;height:36px;border-radius:8px;
+  cursor:pointer;display:flex;align-items:center;justify-content:center;
+  font-size:14px;transition:.15s;position:relative;text-decoration:none;
+}
+.topbar .btn-icon:hover{background:var(--sub-bg);color:var(--text);border-color:var(--border-strong);}
 .topbar .btn-icon .notif-badge{
-  position:absolute;top:-2px;right:-2px;
-  background:#d9534f;color:#fff;font-size:10px;font-weight:800;
+  position:absolute;top:-4px;right:-4px;
+  background:var(--danger);color:#fff;font-size:10px;font-weight:700;
   min-width:18px;height:18px;padding:0 5px;border-radius:10px;
   display:flex;align-items:center;justify-content:center;
-  border:2px solid var(--topbar-bg);
-  animation:pulse-badge 1.5s infinite;
+  border:2px solid var(--card-bg);
 }
-@keyframes pulse-badge{0%,100%{transform:scale(1);}50%{transform:scale(1.1);}}
+
+/* LAYOUT */
 .wrap{max-width:1100px;margin:24px auto;padding:0 20px;}
-.tabs{display:flex;gap:8px;background:var(--card-bg);padding:8px;border-radius:12px;box-shadow:var(--shadow);margin-bottom:20px;flex-wrap:wrap;}
-.tab-btn{flex:1;min-width:130px;padding:14px 20px;border:none;background:transparent;color:var(--text-muted);font-weight:700;font-size:14px;cursor:pointer;border-radius:8px;font-family:inherit;transition:.2s;display:flex;align-items:center;justify-content:center;gap:8px;position:relative;}
+
+/* TABS */
+.tabs{
+  display:flex;gap:4px;background:var(--card-bg);
+  padding:6px;border-radius:var(--radius);border:1px solid var(--border);
+  margin-bottom:20px;flex-wrap:wrap;
+}
+.tab-btn{
+  flex:1;min-width:130px;padding:10px 16px;
+  border:none;background:transparent;color:var(--text-muted);
+  font-weight:600;font-size:13px;cursor:pointer;border-radius:var(--radius-sm);
+  font-family:inherit;transition:.15s;
+  display:flex;align-items:center;justify-content:center;gap:8px;position:relative;
+}
 .tab-btn:hover{background:var(--sub-bg);color:var(--text);}
-.tab-btn.active{background:linear-gradient(135deg,var(--blue),var(--blue-dark));color:#fff;box-shadow:0 4px 12px rgba(30,95,168,.3);}
-.tab-btn .badge-pill{background:#d9534f;color:#fff;font-size:10px;font-weight:800;padding:2px 8px;border-radius:20px;letter-spacing:.5px;}
+.tab-btn.active{background:var(--accent);color:#fff;}
+.tab-btn .badge-pill{
+  background:var(--danger);color:#fff;font-size:10px;font-weight:700;
+  padding:1px 6px;border-radius:20px;letter-spacing:.3px;
+}
+.tab-btn.active .badge-pill{background:rgba(255,255,255,.25);}
 .tab-content{display:none;}
 .tab-content.active{display:block;}
 
-.card{background:var(--card-bg);border-radius:12px;padding:28px;box-shadow:var(--shadow);margin-bottom:20px;}
-.card h2{font-size:18px;color:var(--title-color);margin-bottom:20px;display:flex;align-items:center;gap:10px;padding-bottom:12px;border-bottom:2px solid var(--sub-bg);}
-.form-group{margin-bottom:16px;}
-.form-group label{font-size:13px;font-weight:600;color:var(--text);display:block;margin-bottom:6px;}
-.form-group label .req{color:var(--red);}
-.form-group input, .form-group select, .form-group textarea{width:100%;padding:10px 14px;border:1.5px solid var(--border);border-radius:8px;font-size:14px;font-family:inherit;transition:0.2s;background:var(--input-bg);color:var(--input-text);}
+/* CARD */
+.card{
+  background:var(--card-bg);border-radius:var(--radius);
+  padding:24px;border:1px solid var(--border);
+  box-shadow:var(--shadow);margin-bottom:20px;
+}
+.card h2{
+  font-size:15px;color:var(--text);margin-bottom:18px;
+  display:flex;align-items:center;gap:10px;font-weight:700;
+  padding-bottom:14px;border-bottom:1px solid var(--border);
+}
+.card h2 i{color:var(--text-muted);}
+
+/* FORM */
+.form-group{margin-bottom:14px;}
+.form-group label{font-size:12px;font-weight:600;color:var(--text);display:block;margin-bottom:6px;}
+.form-group label .req{color:var(--danger);}
+.form-group input, .form-group select, .form-group textarea{
+  width:100%;padding:9px 12px;border:1px solid var(--border);
+  border-radius:var(--radius-sm);font-size:13px;font-family:inherit;
+  transition:.15s;background:var(--input-bg);color:var(--text);
+}
 .form-group textarea{min-height:70px;resize:vertical;}
-.form-group input:focus, .form-group select:focus, .form-group textarea:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 3px rgba(30,95,168,0.15);}
-.form-group .hint{font-size:11px;color:var(--text-muted);margin-top:4px;}
+.form-group input:focus, .form-group select:focus, .form-group textarea:focus{
+  outline:none;border-color:var(--accent);
+  box-shadow:0 0 0 3px var(--accent-soft);
+}
+.form-group .hint{font-size:11px;color:var(--text-faint);margin-top:4px;}
 .row-2{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
 .row-4{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;}
-.upload-box{border:2px dashed var(--border);border-radius:8px;padding:16px;text-align:center;transition:0.2s;cursor:pointer;background:var(--card-bg);}
-.upload-box:hover{border-color:var(--blue);background:var(--blue-light);}
-.upload-box i{font-size:24px;color:var(--blue);display:block;margin-bottom:6px;}
-.upload-box .txt{font-size:13px;color:var(--text-muted);}
+
+/* UPLOAD */
+.upload-box{
+  border:1px dashed var(--border-strong);border-radius:var(--radius-sm);
+  padding:16px;text-align:center;transition:.15s;cursor:pointer;
+  background:var(--card-bg);
+}
+.upload-box:hover{border-color:var(--accent);background:var(--accent-soft);}
+.upload-box i{font-size:20px;color:var(--text-muted);display:block;margin-bottom:6px;}
+.upload-box:hover i{color:var(--accent);}
+.upload-box .txt{font-size:12px;color:var(--text-muted);}
 .upload-box input[type=file]{display:none;}
 .preview{margin-top:10px;position:relative;}
-.preview img{max-width:100%;max-height:150px;border-radius:6px;display:block;margin:auto;}
+.preview img{max-width:100%;max-height:150px;border-radius:var(--radius-sm);display:block;margin:auto;}
 .preview audio{width:100%;}
-.preview .rm{position:absolute;top:-8px;right:-8px;background:var(--red);color:#fff;border:none;width:26px;height:26px;border-radius:50%;cursor:pointer;font-size:12px;}
-.upload-status{font-size:12px;margin-top:6px;padding:4px 10px;border-radius:6px;display:inline-block;}
-.upload-status.ok{background:#e8f5ee;color:#1f7f53;}
-.upload-status.loading{background:#fff5e0;color:#8a6a1a;}
-.upload-status.err{background:#fde8e8;color:#a33;}
-.btn{padding:10px 20px;border:none;border-radius:8px;font-weight:600;font-size:14px;cursor:pointer;transition:0.2s;display:inline-flex;align-items:center;gap:8px;font-family:inherit;text-decoration:none;}
-.btn:disabled{opacity:0.5;cursor:not-allowed;}
-.btn-primary{background:var(--blue);color:#fff;}
-.btn-primary:hover:not(:disabled){filter:brightness(1.15);}
-.btn-success{background:var(--green);color:#fff;}
-.btn-success:hover{filter:brightness(1.1);}
-.btn-danger{background:var(--red);color:#fff;}
-.btn-danger:hover{filter:brightness(1.1);}
-.btn-warning{background:var(--yellow);color:#fff;}
-.btn-warning:hover{filter:brightness(1.1);}
-.btn-secondary{background:var(--sub-bg);color:var(--text);border:1px solid var(--border);}
-.btn-secondary:hover{background:var(--border);}
-.btn-purple{background:var(--purple);color:#fff;}
-.btn-purple:hover{filter:brightness(1.1);}
-.btn-teal{background:var(--teal);color:#fff;}
-.btn-teal:hover{filter:brightness(1.1);}
-.btn-gold{background:linear-gradient(135deg,var(--gold),var(--gold-dark));color:#fff;font-weight:800;}
-.btn-gold:hover{filter:brightness(1.1);}
+.preview .rm{
+  position:absolute;top:-8px;right:-8px;background:var(--danger);
+  color:#fff;border:none;width:24px;height:24px;border-radius:50%;
+  cursor:pointer;font-size:11px;
+}
+.upload-status{font-size:11px;margin-top:6px;padding:4px 10px;border-radius:var(--radius-sm);display:inline-block;border:1px solid transparent;}
+.upload-status.ok{background:var(--success-soft);color:var(--success);border-color:var(--success);}
+.upload-status.loading{background:var(--warning-soft);color:var(--warning);border-color:var(--warning);}
+.upload-status.err{background:var(--danger-soft);color:var(--danger);border-color:var(--danger);}
+
+/* BUTTONS */
+.btn{
+  padding:9px 16px;border:1px solid transparent;border-radius:var(--radius-sm);
+  font-weight:600;font-size:13px;cursor:pointer;transition:.15s;
+  display:inline-flex;align-items:center;gap:6px;font-family:inherit;
+  text-decoration:none;
+}
+.btn:disabled{opacity:.5;cursor:not-allowed;}
+.btn-primary{background:var(--accent);color:#fff;}
+.btn-primary:hover:not(:disabled){background:var(--accent-hover);}
+.btn-success{background:var(--success);color:#fff;}
+.btn-success:hover{opacity:.9;}
+.btn-danger{background:var(--danger);color:#fff;}
+.btn-danger:hover{opacity:.9;}
+.btn-warning{background:var(--warning);color:#fff;}
+.btn-warning:hover{opacity:.9;}
+.btn-secondary{background:var(--card-bg);color:var(--text);border-color:var(--border-strong);}
+.btn-secondary:hover{background:var(--sub-bg);}
+.btn-gold{background:var(--gold);color:#fff;}
+.btn-gold:hover{opacity:.9;}
+.btn-purple{background:var(--accent);color:#fff;}
+.btn-teal{background:var(--accent);color:#fff;}
 .btn-sm{padding:6px 12px;font-size:12px;}
 .btn-xs{padding:4px 10px;font-size:11px;}
-.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:6px;}
+.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px;}
+
+/* SOAL LIST */
 .q-list{margin-top:6px;}
-.q-item{border:1.5px solid var(--border);border-radius:10px;padding:14px 16px;margin-bottom:10px;display:flex;gap:14px;align-items:flex-start;transition:0.2s;background:var(--card-bg);}
-.q-item:hover{border-color:var(--blue);}
-.q-item .num{background:var(--blue);color:#fff;width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;flex-shrink:0;}
+.q-item{
+  border:1px solid var(--border);border-radius:var(--radius-sm);
+  padding:14px 16px;margin-bottom:8px;
+  display:flex;gap:14px;align-items:flex-start;transition:.15s;
+  background:var(--card-bg);
+}
+.q-item:hover{border-color:var(--border-strong);}
+.q-item .num{
+  background:var(--sub-bg);color:var(--text-muted);
+  width:30px;height:30px;border-radius:6px;
+  display:flex;align-items:center;justify-content:center;
+  font-weight:700;font-size:13px;flex-shrink:0;
+  border:1px solid var(--border);
+}
 .q-item .info{flex:1;min-width:0;}
-.q-item .info .txt{font-size:14px;color:var(--text);margin-bottom:4px;word-break:break-word;}
-.q-item .info .instruksi-txt{font-size:12px;color:var(--text-muted);font-style:italic;background:var(--sub-bg);padding:6px 10px;border-left:3px solid var(--blue);border-radius:4px;margin-bottom:6px;line-height:1.5;}
-.q-item .info .meta{font-size:12px;color:var(--text-muted);display:flex;gap:12px;flex-wrap:wrap;align-items:center;}
-.q-item .info .meta .tag{background:var(--blue-light);color:var(--blue);padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600;}
-.q-item .info .meta .tag.audio{background:#fde8e8;color:#a33;}
-.q-item .info .meta .tag.img{background:#e8f5ee;color:#1f7f53;}
-.q-item .info .meta .tag.ans{background:#fff5e0;color:#8a6a1a;}
-.q-item .info .meta .tag.kat{background:#e8e0fa;color:#5e35b1;}
-.q-item .info .meta .tag.tema{background:#e0f2f1;color:#00695c;}
-.q-item .info .meta .tag.instruksi{background:#e0f2f1;color:#00695c;}
-.q-item .thumb{width:60px;height:60px;object-fit:cover;border-radius:6px;flex-shrink:0;}
-.q-item .btns{display:flex;flex-direction:column;gap:6px;flex-shrink:0;}
-.jawaban-radios{display:flex;gap:10px;flex-wrap:wrap;}
-.jawaban-radios label{flex:1;min-width:70px;display:flex;align-items:center;justify-content:center;gap:8px;padding:12px;border:2px solid var(--border);border-radius:10px;cursor:pointer;font-weight:600;font-size:15px;transition:0.2s;background:var(--input-bg);color:var(--text);}
-.jawaban-radios label:hover{border-color:var(--blue);background:var(--blue-light);}
+.q-item .info .txt{font-size:13px;color:var(--text);margin-bottom:4px;word-break:break-word;}
+.q-item .info .instruksi-txt{
+  font-size:12px;color:var(--text-muted);font-style:italic;
+  background:var(--sub-bg);padding:6px 10px;
+  border-left:2px solid var(--border-strong);border-radius:4px;
+  margin-bottom:6px;line-height:1.5;
+}
+.q-item .info .meta{
+  font-size:11px;color:var(--text-muted);
+  display:flex;gap:6px;flex-wrap:wrap;align-items:center;
+}
+.q-item .info .meta .tag{
+  background:var(--sub-bg);color:var(--text-muted);
+  padding:2px 8px;border-radius:4px;font-size:10px;font-weight:600;
+  border:1px solid var(--border);
+}
+.q-item .info .meta .tag.audio,
+.q-item .info .meta .tag.img,
+.q-item .info .meta .tag.ans,
+.q-item .info .meta .tag.kat,
+.q-item .info .meta .tag.tema,
+.q-item .info .meta .tag.instruksi{
+  background:var(--sub-bg);color:var(--text-muted);border:1px solid var(--border);
+}
+.q-item .thumb{width:56px;height:56px;object-fit:cover;border-radius:var(--radius-sm);flex-shrink:0;border:1px solid var(--border);}
+.q-item .btns{display:flex;flex-direction:column;gap:4px;flex-shrink:0;}
+
+/* JAWABAN RADIO */
+.jawaban-radios{display:flex;gap:8px;flex-wrap:wrap;}
+.jawaban-radios label{
+  flex:1;min-width:70px;
+  display:flex;align-items:center;justify-content:center;gap:8px;
+  padding:10px;border:1px solid var(--border);border-radius:var(--radius-sm);
+  cursor:pointer;font-weight:600;font-size:13px;transition:.15s;
+  background:var(--input-bg);color:var(--text);
+}
+.jawaban-radios label:hover{border-color:var(--accent);}
 .jawaban-radios input[type=radio]{display:none;}
-.jawaban-radios label.checked{background:var(--blue);border-color:var(--blue);color:#fff;}
-.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--blue-dark);color:#fff;padding:12px 24px;border-radius:30px;font-size:14px;font-weight:500;box-shadow:0 8px 24px rgba(0,0,0,0.2);opacity:0;pointer-events:none;transition:0.3s;z-index:200;max-width:90%;text-align:center;}
+.jawaban-radios label.checked{
+  background:var(--accent);border-color:var(--accent);color:#fff;
+}
+
+/* TOAST */
+.toast{
+  position:fixed;bottom:24px;left:50%;transform:translateX(-50%);
+  background:var(--text);color:var(--card-bg);
+  padding:11px 22px;border-radius:var(--radius);
+  font-size:13px;font-weight:500;
+  box-shadow:var(--shadow-md);opacity:0;pointer-events:none;
+  transition:.25s;z-index:200;max-width:90%;text-align:center;
+}
 .toast.show{opacity:1;}
-.toast.error{background:var(--red);}
-.toast.success{background:var(--green);}
-.toast.warning{background:var(--yellow);color:#fff;}
-.spinner{display:inline-block;width:18px;height:18px;border:3px solid rgba(255,255,255,0.4);border-top-color:#fff;border-radius:50%;animation:spin 0.7s linear infinite;vertical-align:middle;}
-.spinner.dark{border-color:rgba(0,0,0,0.15);border-top-color:var(--blue);}
+.toast.error{background:var(--danger);color:#fff;}
+.toast.success{background:var(--success);color:#fff;}
+.toast.warning{background:var(--warning);color:#fff;}
+
+/* SPINNER */
+.spinner{
+  display:inline-block;width:16px;height:16px;
+  border:2px solid rgba(255,255,255,0.3);
+  border-top-color:#fff;border-radius:50%;
+  animation:spin .7s linear infinite;vertical-align:middle;
+}
+.spinner.dark{border-color:var(--border);border-top-color:var(--accent);}
 @keyframes spin{100%{transform:rotate(360deg)}}
-.loading-block{text-align:center;padding:40px;color:var(--text-muted);}
-.loading-block .spinner{width:36px;height:36px;border-width:4px;}
-.empty-block{text-align:center;padding:40px;color:var(--text-muted);}
-.empty-block i{font-size:44px;opacity:0.3;display:block;margin-bottom:12px;}
-.user-card{border:1.5px solid var(--border);border-radius:12px;padding:16px;margin-bottom:12px;background:var(--card-bg);transition:.2s;}
-.user-card:hover{border-color:var(--blue);}
-.user-card .row{display:flex;align-items:center;gap:14px;flex-wrap:wrap;}
-.user-card .avatar{width:44px;height:44px;border-radius:50%;object-fit:cover;background:linear-gradient(135deg,var(--blue),var(--blue-dark));color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:18px;flex-shrink:0;}
-.user-card .avatar.gold{background:linear-gradient(135deg,var(--gold),var(--gold-dark));color:#7a4a00;font-size:20px;}
+
+/* LOADING / EMPTY */
+.loading-block{text-align:center;padding:40px;color:var(--text-muted);font-size:13px;}
+.loading-block .spinner{width:28px;height:28px;border-width:3px;}
+.empty-block{text-align:center;padding:40px;color:var(--text-faint);font-size:13px;}
+.empty-block i{font-size:36px;opacity:0.3;display:block;margin-bottom:12px;}
+
+/* USER CARD */
+.user-card{
+  border:1px solid var(--border);border-radius:var(--radius-sm);
+  padding:14px;margin-bottom:8px;background:var(--card-bg);transition:.15s;
+}
+.user-card:hover{border-color:var(--border-strong);}
+.user-card .row{display:flex;align-items:center;gap:12px;flex-wrap:wrap;}
+.user-card .avatar{
+  width:40px;height:40px;border-radius:50%;object-fit:cover;
+  background:var(--sub-bg);color:var(--text-muted);
+  display:flex;align-items:center;justify-content:center;
+  font-weight:700;font-size:15px;flex-shrink:0;
+  border:1px solid var(--border);
+}
+.user-card .avatar.gold{
+  background:var(--gold-soft);color:var(--gold);border-color:var(--gold);
+}
 .user-card .info{flex:1;min-width:180px;}
-.user-card .info .name{font-size:15px;font-weight:700;color:var(--text);margin-bottom:2px;display:flex;align-items:center;gap:8px;}
+.user-card .info .name{
+  font-size:14px;font-weight:700;color:var(--text);
+  margin-bottom:2px;display:flex;align-items:center;gap:8px;
+}
 .user-card .info .uname{font-size:12px;color:var(--text-muted);}
-.user-card .info .meta{font-size:11px;color:var(--text-muted);margin-top:4px;display:flex;gap:10px;flex-wrap:wrap;align-items:center;}
-.user-card .info .meta .badge-role{padding:2px 8px;border-radius:10px;font-weight:700;font-size:10px;}
-.user-card .info .meta .badge-role.admin{background:#fde8e8;color:#a33;}
-.user-card .info .meta .badge-role.user{background:var(--blue-light);color:var(--blue);}
-.user-card .info .meta .badge-role.premium{background:linear-gradient(135deg,var(--gold),var(--gold-dark));color:#7a4a00;}
-.user-card .info .meta .badge-quota{padding:2px 8px;border-radius:10px;font-weight:700;font-size:10px;background:#fff5e0;color:#8a6a1a;}
-.user-card .info .meta .badge-quota.empty{background:#fde8e8;color:#a33;}
-.user-card .info .meta .badge-email{background:#e8f5ee;color:#1f7f53;font-weight:700;padding:2px 8px;border-radius:10px;font-size:10px;display:inline-flex;align-items:center;gap:4px;word-break:break-all;}
+.user-card .info .meta{
+  font-size:11px;color:var(--text-muted);margin-top:4px;
+  display:flex;gap:6px;flex-wrap:wrap;align-items:center;
+}
+.user-card .info .meta .badge-role{
+  padding:2px 8px;border-radius:10px;font-weight:600;font-size:10px;
+  border:1px solid var(--border);background:var(--sub-bg);color:var(--text-muted);
+}
+.user-card .info .meta .badge-role.admin{
+  background:var(--danger-soft);color:var(--danger);border-color:var(--danger);
+}
+.user-card .info .meta .badge-role.user{
+  background:var(--sub-bg);color:var(--text-muted);
+}
+.user-card .info .meta .badge-role.premium{
+  background:var(--gold-soft);color:var(--gold);border-color:var(--gold);
+}
+.user-card .info .meta .badge-quota{
+  padding:2px 8px;border-radius:10px;font-weight:600;font-size:10px;
+  background:var(--sub-bg);color:var(--text-muted);border:1px solid var(--border);
+}
+.user-card .info .meta .badge-quota.empty{
+  background:var(--danger-soft);color:var(--danger);border-color:var(--danger);
+}
+.user-card .info .meta .badge-email{
+  background:var(--sub-bg);color:var(--text-muted);
+  font-weight:600;padding:2px 8px;border-radius:10px;font-size:10px;
+  display:inline-flex;align-items:center;gap:4px;word-break:break-all;
+  border:1px solid var(--border);
+}
 .user-card .actions-right{display:flex;gap:6px;flex-wrap:wrap;}
-.modal-back{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:100;align-items:center;justify-content:center;padding:20px;}
+
+/* MODAL */
+.modal-back{
+  display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);
+  z-index:100;align-items:center;justify-content:center;padding:20px;
+}
 .modal-back.show{display:flex;}
-.modal-box{background:var(--card-bg);border-radius:14px;padding:28px;max-width:520px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,.5);max-height:90vh;overflow-y:auto;}
-.modal-box h2{color:var(--title-color);margin-bottom:16px;font-size:18px;display:flex;align-items:center;gap:10px;}
-.modal-box p.desc{color:var(--text-muted);font-size:13px;margin-bottom:18px;line-height:1.5;}
-.modal-box .pw-display{background:var(--sub-bg);border:2px dashed var(--green);border-radius:10px;padding:16px;text-align:center;margin:16px 0;}
-.modal-box .pw-display .pw-val{font-family:'Courier New',monospace;font-size:22px;font-weight:800;color:var(--green);letter-spacing:2px;word-break:break-all;user-select:all;}
-.modal-box .pw-warning{background:#fff5e0;color:#8a6a1a;padding:10px 14px;border-radius:8px;font-size:12px;line-height:1.5;margin-bottom:16px;border-left:3px solid #f0ad4e;}
-.switch{position:relative;display:inline-block;width:50px;height:26px;}
+.modal-box{
+  background:var(--card-bg);border-radius:var(--radius);
+  padding:24px;max-width:520px;width:100%;
+  box-shadow:var(--shadow-md);max-height:90vh;overflow-y:auto;
+  border:1px solid var(--border);
+}
+.modal-box h2{
+  color:var(--text);margin-bottom:14px;font-size:16px;
+  display:flex;align-items:center;gap:10px;font-weight:700;
+}
+.modal-box p.desc{color:var(--text-muted);font-size:13px;margin-bottom:16px;line-height:1.5;}
+.modal-box .pw-display{
+  background:var(--sub-bg);border:1px solid var(--border-strong);
+  border-radius:var(--radius-sm);padding:16px;text-align:center;margin:16px 0;
+}
+.modal-box .pw-display .pw-val{
+  font-family:'Courier New',monospace;font-size:20px;
+  font-weight:700;color:var(--text);letter-spacing:2px;
+  word-break:break-all;user-select:all;
+}
+.modal-box .pw-warning{
+  background:var(--warning-soft);color:var(--warning);
+  padding:10px 14px;border-radius:var(--radius-sm);
+  font-size:12px;line-height:1.5;margin-bottom:16px;
+  border-left:3px solid var(--warning);
+}
+
+/* SWITCH */
+.switch{position:relative;display:inline-block;width:44px;height:24px;}
 .switch input{opacity:0;width:0;height:0;}
-.slider{position:absolute;cursor:pointer;top:0;left:0;right:0;bottom:0;background:#ccc;transition:.3s;border-radius:26px;}
-.slider:before{position:absolute;content:"";height:20px;width:20px;left:3px;bottom:3px;background:#fff;transition:.3s;border-radius:50%;}
-input:checked + .slider{background:var(--green);}
-input:checked + .slider:before{transform:translateX(24px);}
-.config-row{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:16px 0;border-bottom:1px solid var(--sub-bg);flex-wrap:wrap;}
+.slider{
+  position:absolute;cursor:pointer;top:0;left:0;right:0;bottom:0;
+  background:var(--border-strong);transition:.2s;border-radius:24px;
+}
+.slider:before{
+  position:absolute;content:"";height:18px;width:18px;
+  left:3px;bottom:3px;background:#fff;transition:.2s;border-radius:50%;
+}
+input:checked + .slider{background:var(--accent);}
+input:checked + .slider:before{transform:translateX(20px);}
+
+/* CONFIG ROW */
+.config-row{
+  display:flex;align-items:center;justify-content:space-between;
+  gap:16px;padding:14px 0;border-bottom:1px solid var(--border);flex-wrap:wrap;
+}
 .config-row:last-child{border-bottom:none;}
 .config-row .info{flex:1;min-width:200px;}
-.config-row .info .title{font-size:14px;font-weight:700;color:var(--text);margin-bottom:2px;}
+.config-row .info .title{font-size:13px;font-weight:700;color:var(--text);margin-bottom:2px;}
 .config-row .info .desc{font-size:12px;color:var(--text-muted);}
-.ticket-box{border:1.5px solid var(--border);border-radius:12px;padding:18px;margin-bottom:14px;background:var(--card-bg);transition:.2s;}
-.ticket-box:hover{border-color:var(--blue);}
-.ticket-box.status-open{border-left:5px solid var(--red);}
-.ticket-box.status-diproses{border-left:5px solid var(--yellow);}
-.ticket-box.status-selesai{border-left:5px solid var(--green);}
+
+/* TICKET */
+.ticket-box{
+  border:1px solid var(--border);border-radius:var(--radius-sm);
+  padding:16px;margin-bottom:12px;background:var(--card-bg);transition:.15s;
+}
+.ticket-box:hover{border-color:var(--border-strong);}
+.ticket-box.status-open{border-left:3px solid var(--danger);}
+.ticket-box.status-diproses{border-left:3px solid var(--warning);}
+.ticket-box.status-selesai{border-left:3px solid var(--success);}
 .ticket-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:12px;flex-wrap:wrap;}
-.ticket-head h3{font-size:16px;color:var(--title-color);font-weight:700;margin-bottom:4px;}
-.ticket-head .from{font-size:12px;color:var(--text-muted);}
-.ticket-msg{background:var(--sub-bg);padding:12px 14px;border-radius:8px;font-size:13px;line-height:1.6;color:var(--text);margin-bottom:10px;}
-.ticket-reply{background:linear-gradient(135deg,#e8f5ee,#f0faf5);padding:12px 14px;border-radius:8px;font-size:13px;line-height:1.6;color:var(--text);margin-bottom:10px;border-left:3px solid var(--green);}
-[data-theme="dark"] .ticket-reply{background:linear-gradient(135deg,#1a3a28,#1e4530);}
+.ticket-head h3{font-size:14px;color:var(--text);font-weight:700;margin-bottom:4px;}
+.ticket-head .from{font-size:11px;color:var(--text-muted);}
+.ticket-msg{
+  background:var(--sub-bg);padding:12px 14px;border-radius:var(--radius-sm);
+  font-size:13px;line-height:1.6;color:var(--text);margin-bottom:10px;
+  border:1px solid var(--border);
+}
+.ticket-reply{
+  background:var(--success-soft);padding:12px 14px;border-radius:var(--radius-sm);
+  font-size:13px;line-height:1.6;color:var(--text);margin-bottom:10px;
+  border-left:3px solid var(--success);
+}
 .ticket-reply .meta{font-size:11px;color:var(--text-muted);margin-top:6px;}
 .ticket-actions{display:flex;gap:8px;flex-wrap:wrap;}
+
+/* NOTIF DROPDOWN */
 .notif-wrapper{position:relative;}
 .notif-dropdown{
-  display:none;position:absolute;top:calc(100% + 12px);right:0;
+  display:none;position:absolute;top:calc(100% + 10px);right:0;
   width:360px;max-width:calc(100vw - 40px);
-  background:var(--card-bg);border-radius:14px;
-  box-shadow:0 8px 24px rgba(0,0,0,.15);border:1.5px solid var(--border);
-  z-index:100;overflow:hidden;animation:dropDown .2s ease;
+  background:var(--card-bg);border-radius:var(--radius);
+  box-shadow:var(--shadow-md);border:1px solid var(--border);
+  z-index:100;overflow:hidden;
 }
 .notif-wrapper.open .notif-dropdown{display:block;}
-@keyframes dropDown{from{opacity:0;transform:translateY(-8px);}to{opacity:1;transform:translateY(0);}}
-.notif-head{padding:14px 18px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;}
-.notif-head h3{font-size:14px;font-weight:800;color:var(--title-color);}
-.notif-head .btn-mark{background:transparent;border:none;color:var(--blue);font-size:11px;font-weight:700;cursor:pointer;font-family:inherit;padding:4px 8px;border-radius:6px;}
+.notif-head{
+  padding:12px 16px;border-bottom:1px solid var(--border);
+  display:flex;justify-content:space-between;align-items:center;
+}
+.notif-head h3{font-size:13px;font-weight:700;color:var(--text);}
+.notif-head .btn-mark{
+  background:transparent;border:none;color:var(--accent);
+  font-size:11px;font-weight:600;cursor:pointer;
+  font-family:inherit;padding:4px 8px;border-radius:var(--radius-sm);
+}
 .notif-head .btn-mark:hover{background:var(--sub-bg);}
 .notif-body{max-height:400px;overflow-y:auto;}
-.notif-item-drop{display:flex;gap:12px;padding:12px 18px;border-bottom:1px solid var(--border);cursor:pointer;position:relative;}
+.notif-item-drop{
+  display:flex;gap:12px;padding:12px 16px;
+  border-bottom:1px solid var(--border);cursor:pointer;position:relative;
+}
 .notif-item-drop:hover{background:var(--sub-bg);}
-.notif-item-drop.unread{background:linear-gradient(90deg,rgba(30,95,168,.06),transparent);}
-.notif-item-drop.unread::before{content:'';position:absolute;left:6px;top:50%;transform:translateY(-50%);width:6px;height:6px;border-radius:50%;background:var(--blue);}
-.notif-item-drop .ic{width:36px;height:36px;border-radius:10px;flex-shrink:0;display:flex;align-items:center;justify-content:center;color:#fff;font-size:15px;}
-.notif-item-drop.tipe-bantuan .ic{background:linear-gradient(135deg,#f0ad4e,#ec971f);}
-.notif-item-drop.tipe-balasan .ic{background:linear-gradient(135deg,#2fa36b,#1f7f53);}
-.notif-item-drop.tipe-kuota .ic{background:linear-gradient(135deg,#7c4dff,#5e35b1);}
-.notif-item-drop.tipe-sistem .ic{background:linear-gradient(135deg,#1e5fa8,#154a82);}
-.notif-item-drop.tipe-request .ic{background:linear-gradient(135deg,#d9534f,#c9302c);}
-.notif-item-drop.tipe-chat .ic{background:linear-gradient(135deg,#26a69a,#00796b);}
+.notif-item-drop.unread{background:var(--accent-soft);}
+.notif-item-drop .ic{
+  width:34px;height:34px;border-radius:8px;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+  background:var(--sub-bg);color:var(--text-muted);font-size:14px;
+  border:1px solid var(--border);
+}
 .notif-item-drop .tx{flex:1;min-width:0;}
-.notif-item-drop .tx .ttl{font-size:13px;font-weight:700;color:var(--text);margin-bottom:2px;line-height:1.3;}
-.notif-item-drop .tx .msg{font-size:12px;color:var(--text-muted);line-height:1.4;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
-.notif-item-drop .tx .tm{font-size:10px;color:var(--text-muted);margin-top:4px;}
-.notif-empty{padding:40px 20px;text-align:center;color:var(--text-muted);font-size:13px;}
-.notif-empty i{font-size:36px;opacity:.3;display:block;margin-bottom:10px;}
-.notif-foot{padding:12px 18px;border-top:1px solid var(--border);text-align:center;}
-.notif-foot a{color:var(--blue);font-weight:700;font-size:13px;text-decoration:none;display:inline-flex;align-items:center;gap:6px;}
-.notif-foot a:hover{gap:10px;}
-.chat-msg{max-width:75%;padding:10px 14px;border-radius:14px;font-size:13px;line-height:1.5;word-wrap:break-word;}
-.chat-msg.mine{align-self:flex-end;background:linear-gradient(135deg,#26a69a,#00796b);color:#fff;border-bottom-right-radius:4px;}
-.chat-msg.theirs{align-self:flex-start;background:var(--card-bg);color:var(--text);border:1px solid var(--border);border-bottom-left-radius:4px;}
+.notif-item-drop .tx .ttl{font-size:12px;font-weight:700;color:var(--text);margin-bottom:2px;line-height:1.3;}
+.notif-item-drop .tx .msg{
+  font-size:12px;color:var(--text-muted);line-height:1.4;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
+}
+.notif-item-drop .tx .tm{font-size:10px;color:var(--text-faint);margin-top:4px;}
+.notif-empty{padding:40px 20px;text-align:center;color:var(--text-faint);font-size:13px;}
+.notif-empty i{font-size:32px;opacity:.3;display:block;margin-bottom:10px;}
+.notif-foot{padding:12px 16px;border-top:1px solid var(--border);text-align:center;}
+.notif-foot a{
+  color:var(--accent);font-weight:600;font-size:12px;
+  text-decoration:none;display:inline-flex;align-items:center;gap:6px;
+}
+
+/* CHAT */
+.chat-msg{
+  max-width:75%;padding:9px 13px;border-radius:12px;
+  font-size:13px;line-height:1.5;word-wrap:break-word;
+}
+.chat-msg.mine{
+  align-self:flex-end;background:var(--accent);color:#fff;
+  border-bottom-right-radius:3px;
+}
+.chat-msg.theirs{
+  align-self:flex-start;background:var(--card-bg);color:var(--text);
+  border:1px solid var(--border);border-bottom-left-radius:3px;
+}
 #chatModalBody{display:flex;flex-direction:column;gap:10px;}
 
-/* Premium card */
+/* PREMIUM CARD (aksen emas tipis) */
 .premium-card-box{
-  background:linear-gradient(135deg,#fff8e0,#fffbf0);
-  border:2px solid var(--gold);
-  border-radius:12px;
-  padding:18px;
-  margin-bottom:14px;
-  position:relative;
-  overflow:hidden;
-}
-[data-theme="dark"] .premium-card-box{
-  background:linear-gradient(135deg,#3a2e10,#4a3a15);
-}
-.premium-card-box::before{
-  content:'💎';
-  position:absolute;
-  right:14px;
-  top:50%;
-  transform:translateY(-50%);
-  font-size:60px;
-  opacity:.15;
+  background:var(--card-bg);
+  border:1px solid var(--gold);
+  border-left:3px solid var(--gold);
+  border-radius:var(--radius-sm);
+  padding:16px;
+  margin-bottom:12px;
 }
 .premium-card-box .prem-name{
-  font-size:15px;
-  font-weight:800;
-  color:var(--text);
-  margin-bottom:4px;
-  display:flex;
-  align-items:center;
-  gap:8px;
+  font-size:14px;font-weight:700;color:var(--text);
+  margin-bottom:6px;display:flex;align-items:center;gap:8px;
 }
-.premium-card-box .prem-name .crown{color:var(--gold);font-size:16px;}
+.premium-card-box .prem-name .crown{color:var(--gold);font-size:14px;}
 .premium-card-box .prem-detail{
-  font-size:13px;
-  color:var(--text);
-  line-height:1.6;
-  position:relative;
-  z-index:1;
+  font-size:12px;color:var(--text-muted);line-height:1.6;
 }
-.premium-card-box .prem-detail strong{color:var(--gold-dark);}
-[data-theme="dark"] .premium-card-box .prem-detail strong{color:var(--gold);}
+.premium-card-box .prem-detail strong{color:var(--text);font-weight:600;}
 .premium-card-box .prem-actions{
-  margin-top:12px;
-  display:flex;
-  gap:8px;
-  flex-wrap:wrap;
-  position:relative;
-  z-index:1;
+  margin-top:12px;display:flex;gap:8px;flex-wrap:wrap;
 }
+
+/* RESPONSIVE */
 @media(max-width:700px){
   .row-2,.row-4{grid-template-columns:1fr;}
-  .card{padding:20px;}
-  .tab-btn{font-size:12px;padding:10px 12px;min-width:auto;}
+  .card{padding:18px;}
+  .tab-btn{font-size:12px;padding:9px 10px;min-width:auto;}
   .topbar .user{display:none;}
   .notif-dropdown{position:fixed;top:70px;right:12px;left:12px;width:auto;}
+  .wrap{padding:0 14px;}
 }
 </style>
 </head>
@@ -294,7 +556,7 @@ input:checked + .slider:before{transform:translateX(24px);}
     </button>
     <div class="notif-dropdown">
       <div class="notif-head">
-        <h3>🔔 Notifikasi</h3>
+        <h3>Notifikasi</h3>
         <button class="btn-mark" onclick="markAllNotifRead(event)">Tandai semua dibaca</button>
       </div>
       <div class="notif-body" id="notifBody">
@@ -371,25 +633,25 @@ input:checked + .slider:before{transform:translateX(24px);}
       <div class="form-group" id="temaGroup" style="display:none;">
         <label>Tema Kosakata <span class="req">*</span></label>
         <select id="temaKategori">
-          <option value="transportasi">🚌 Transportasi</option>
-          <option value="makanan">🍜 Makanan & Minuman</option>
-          <option value="tempat_wisata">🏛️ Tempat Wisata</option>
-          <option value="keluarga">👨‍👩‍👧 Keluarga</option>
-          <option value="sekolah">🎓 Sekolah</option>
-          <option value="tubuh">💪 Anggota Tubuh</option>
-          <option value="pakaian">👕 Pakaian</option>
-          <option value="alam">🌤️ Alam & Cuaca</option>
-          <option value="pekerjaan">💼 Pekerjaan</option>
-          <option value="hobi">⚽ Hobi & Olahraga</option>
-          <option value="umum">📚 Kosakata Umum</option>
+          <option value="transportasi">Transportasi</option>
+          <option value="makanan">Makanan & Minuman</option>
+          <option value="tempat_wisata">Tempat Wisata</option>
+          <option value="keluarga">Keluarga</option>
+          <option value="sekolah">Sekolah</option>
+          <option value="tubuh">Anggota Tubuh</option>
+          <option value="pakaian">Pakaian</option>
+          <option value="alam">Alam & Cuaca</option>
+          <option value="pekerjaan">Pekerjaan</option>
+          <option value="hobi">Hobi & Olahraga</option>
+          <option value="umum">Kosakata Umum</option>
         </select>
         <div class="hint">Tema ini menentukan dropdown di dashboard user</div>
       </div>
 
       <div class="form-group">
-        <label><i class="fas fa-info-circle" style="color:var(--blue);"></i> Instruksi / Petunjuk Soal (opsional)</label>
-        <textarea id="instruksi" placeholder="Contoh: 다음을 듣고 알맞은 답을 고르십시오. (Dengarkan dan pilih jawaban yang tepat)" style="min-height:60px;"></textarea>
-        <div class="hint">Muncul di atas soal sebagai petunjuk. Kosongkan kalau soal tidak butuh instruksi.</div>
+        <label><i class="fas fa-info-circle"></i> Instruksi / Petunjuk Soal (opsional)</label>
+        <textarea id="instruksi" placeholder="Contoh: 다음을 듣고 알맞은 답을 고르십시오." style="min-height:60px;"></textarea>
+        <div class="hint">Muncul di atas soal sebagai petunjuk.</div>
       </div>
 
       <div class="form-group">
@@ -429,7 +691,7 @@ input:checked + .slider:before{transform:translateX(24px);}
           <div class="form-group"><label>③ Opsi 3 (teks)</label><input type="text" id="opsiC"></div>
           <div class="form-group"><label>④ Opsi 4 (teks)</label><input type="text" id="opsiD"></div>
         </div>
-        <div id="opsiImgBox" style="display:none;background:var(--sub-bg);padding:14px;border-radius:8px;margin-top:6px;">
+        <div id="opsiImgBox" style="display:none;background:var(--sub-bg);padding:14px;border-radius:8px;margin-top:6px;border:1px solid var(--border);">
           <label style="font-size:12px;color:var(--text-muted);display:block;margin-bottom:10px;">
             <i class="fas fa-image"></i> Gambar Opsi Jawaban (opsional, untuk EPS-TOPIK)
           </label>
@@ -518,17 +780,17 @@ input:checked + .slider:before{transform:translateX(24px);}
             <option value="umum">Umum</option>
           </optgroup>
           <optgroup label="Kosakata — Per Tema">
-            <option value="kosakata_transportasi">🚌 Transportasi</option>
-            <option value="kosakata_makanan">🍜 Makanan</option>
-            <option value="kosakata_tempat_wisata">🏛️ Tempat Wisata</option>
-            <option value="kosakata_keluarga">👨‍👩‍👧 Keluarga</option>
-            <option value="kosakata_sekolah">🎓 Sekolah</option>
-            <option value="kosakata_tubuh">💪 Anggota Tubuh</option>
-            <option value="kosakata_pakaian">👕 Pakaian</option>
-            <option value="kosakata_alam">🌤️ Alam & Cuaca</option>
-            <option value="kosakata_pekerjaan">💼 Pekerjaan</option>
-            <option value="kosakata_hobi">⚽ Hobi & Olahraga</option>
-            <option value="kosakata_umum">📚 Kosakata Umum</option>
+            <option value="kosakata_transportasi">Transportasi</option>
+            <option value="kosakata_makanan">Makanan</option>
+            <option value="kosakata_tempat_wisata">Tempat Wisata</option>
+            <option value="kosakata_keluarga">Keluarga</option>
+            <option value="kosakata_sekolah">Sekolah</option>
+            <option value="kosakata_tubuh">Anggota Tubuh</option>
+            <option value="kosakata_pakaian">Pakaian</option>
+            <option value="kosakata_alam">Alam & Cuaca</option>
+            <option value="kosakata_pekerjaan">Pekerjaan</option>
+            <option value="kosakata_hobi">Hobi & Olahraga</option>
+            <option value="kosakata_umum">Kosakata Umum</option>
           </optgroup>
         </select>
       </div>
@@ -543,7 +805,7 @@ input:checked + .slider:before{transform:translateX(24px);}
     <div class="card">
       <h2><i class="fas fa-users"></i> Kelola User (<span id="totalUsers">0</span>)</h2>
       <div class="form-group">
-        <input type="text" id="searchUser" placeholder="🔍 Cari username, nama, atau email..." oninput="renderUsers()">
+        <input type="text" id="searchUser" placeholder="Cari username, nama, atau email..." oninput="renderUsers()">
       </div>
       <div id="usersList">
         <div class="loading-block"><div class="spinner dark"></div><p style="margin-top:10px;">Memuat user...</p></div>
@@ -551,10 +813,10 @@ input:checked + .slider:before{transform:translateX(24px);}
     </div>
   </div>
 
-  <!-- TAB LANGGANAN (BARU) -->
+  <!-- TAB LANGGANAN -->
   <div id="tab-langganan" class="tab-content">
     <div class="card">
-      <h2><i class="fas fa-crown" style="color:var(--gold);"></i> Kelola Langganan Premium</h2>
+      <h2><i class="fas fa-crown"></i> Kelola Langganan Premium</h2>
       <p style="font-size:13px;color:var(--text-muted);margin-bottom:18px;line-height:1.6;">
         Approve request premium user. Setelah di-approve, user langsung dapat akses unlimited sesuai paket.
       </p>
@@ -627,8 +889,8 @@ input:checked + .slider:before{transform:translateX(24px);}
       <h2><i class="fas fa-comments"></i> Chat dari User</h2>
       <div class="form-group" style="margin-bottom:14px;">
         <div style="position:relative;">
-          <i class="fas fa-search" style="position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--text-muted);font-size:14px;"></i>
-          <input type="text" id="searchChatInput" placeholder="Cari user atau isi pesan..." oninput="onSearchChat(this.value)" style="padding-left:40px;">
+          <i class="fas fa-search" style="position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--text-faint);font-size:13px;"></i>
+          <input type="text" id="searchChatInput" placeholder="Cari user atau isi pesan..." oninput="onSearchChat(this.value)" style="padding-left:36px;">
         </div>
       </div>
       <div id="chatRoomList">
@@ -653,7 +915,7 @@ input:checked + .slider:before{transform:translateX(24px);}
 
       <div class="config-row">
         <div class="info">
-          <div class="title">📩 Notif Request Kuota</div>
+          <div class="title">Notif Request Kuota</div>
           <div class="desc">Kirim email kalau ada user yang minta tambah kuota</div>
         </div>
         <label class="switch">
@@ -664,7 +926,7 @@ input:checked + .slider:before{transform:translateX(24px);}
 
       <div class="config-row">
         <div class="info">
-          <div class="title">🆘 Notif Tiket Bantuan</div>
+          <div class="title">Notif Tiket Bantuan</div>
           <div class="desc">Kirim email kalau ada user kirim bantuan baru</div>
         </div>
         <label class="switch">
@@ -675,7 +937,7 @@ input:checked + .slider:before{transform:translateX(24px);}
 
       <div class="config-row">
         <div class="info">
-          <div class="title">🆕 Notif User Baru Daftar</div>
+          <div class="title">Notif User Baru Daftar</div>
           <div class="desc">Kirim email kalau ada user baru yang daftar</div>
         </div>
         <label class="switch">
@@ -686,7 +948,7 @@ input:checked + .slider:before{transform:translateX(24px);}
 
       <div class="config-row">
         <div class="info">
-          <div class="title">🚨 Notif Rate Limit</div>
+          <div class="title">Notif Rate Limit</div>
           <div class="desc">Kirim email kalau ada user kena rate limit (kemungkinan spam)</div>
         </div>
         <label class="switch">
@@ -700,8 +962,8 @@ input:checked + .slider:before{transform:translateX(24px);}
         <button class="btn btn-secondary" onclick="testEmail()"><i class="fas fa-paper-plane"></i> Kirim Test Email</button>
       </div>
 
-      <div style="margin-top:24px;padding:16px;background:#fff5e0;border-left:4px solid #f0ad4e;border-radius:8px;font-size:13px;color:#8a6a1a;line-height:1.6;">
-        ⚠️ <strong>Penting:</strong> Apps Script punya kuota email harian:
+      <div style="margin-top:24px;padding:14px;background:var(--warning-soft);border-left:3px solid var(--warning);border-radius:var(--radius-sm);font-size:12px;color:var(--warning);line-height:1.6;">
+        <strong>Penting:</strong> Apps Script punya kuota email harian:
         <ul style="margin:8px 0 0 20px;">
           <li>Akun Gmail biasa: <strong>100 email/hari</strong></li>
           <li>Google Workspace: <strong>1,500 email/hari</strong></li>
@@ -715,7 +977,7 @@ input:checked + .slider:before{transform:translateX(24px);}
 <!-- MODAL: VIEW PASSWORD -->
 <div class="modal-back" id="modalPw">
   <div class="modal-box">
-    <h2>🔑 Password User</h2>
+    <h2><i class="fas fa-key"></i> Password User</h2>
     <p class="desc" id="modalPwDesc">-</p>
     <div class="pw-display" id="modalPwDisplay" style="display:none;">
       <div class="pw-val" id="modalPwVal">-</div>
@@ -724,8 +986,8 @@ input:checked + .slider:before{transform:translateX(24px);}
       Password plain tidak tersedia. Silakan reset password dulu.
     </div>
     <div style="display:flex;gap:10px;">
-      <button class="btn btn-secondary" onclick="closeModal('modalPw')" style="flex:1;">Tutup</button>
-      <button class="btn btn-primary" id="btnCopyPw" onclick="copyPw()" style="flex:1;display:none;"><i class="fas fa-copy"></i> Copy</button>
+      <button class="btn btn-secondary" onclick="closeModal('modalPw')" style="flex:1;justify-content:center;">Tutup</button>
+      <button class="btn btn-primary" id="btnCopyPw" onclick="copyPw()" style="flex:1;justify-content:center;display:none;"><i class="fas fa-copy"></i> Copy</button>
     </div>
   </div>
 </div>
@@ -733,7 +995,7 @@ input:checked + .slider:before{transform:translateX(24px);}
 <!-- MODAL: RESET PASSWORD -->
 <div class="modal-back" id="modalReset">
   <div class="modal-box">
-    <h2>🔑 Reset Password</h2>
+    <h2><i class="fas fa-key"></i> Reset Password</h2>
     <p class="desc" id="modalResetDesc">-</p>
     <div class="form-group">
       <label>Password Baru</label>
@@ -743,7 +1005,7 @@ input:checked + .slider:before{transform:translateX(24px);}
       <button class="btn btn-secondary btn-sm" onclick="generateRandomPw()"><i class="fas fa-dice"></i> Random</button>
     </div>
     <div class="pw-warning">
-      ⚠️ Password baru cuma tampil SEKARANG. Catat & kasih ke user sebelum ditutup.
+      Password baru cuma tampil SEKARANG. Catat & kasih ke user sebelum ditutup.
     </div>
     <div id="resetResultBox" style="display:none;">
       <div class="pw-display">
@@ -751,8 +1013,8 @@ input:checked + .slider:before{transform:translateX(24px);}
       </div>
     </div>
     <div style="display:flex;gap:10px;">
-      <button class="btn btn-secondary" onclick="closeModal('modalReset')" style="flex:1;">Tutup</button>
-      <button class="btn btn-primary" id="btnDoReset" onclick="doResetPassword()" style="flex:1;"><i class="fas fa-check"></i> Reset</button>
+      <button class="btn btn-secondary" onclick="closeModal('modalReset')" style="flex:1;justify-content:center;">Tutup</button>
+      <button class="btn btn-primary" id="btnDoReset" onclick="doResetPassword()" style="flex:1;justify-content:center;"><i class="fas fa-check"></i> Reset</button>
     </div>
   </div>
 </div>
@@ -760,11 +1022,11 @@ input:checked + .slider:before{transform:translateX(24px);}
 <!-- MODAL: SET KUOTA -->
 <div class="modal-back" id="modalQuota">
   <div class="modal-box">
-    <h2>📊 Set Kuota Ujian</h2>
+    <h2><i class="fas fa-chart-bar"></i> Set Kuota Ujian</h2>
     <p class="desc" id="modalQuotaDesc">-</p>
     <div class="form-group">
       <label>Kuota Maksimum</label>
-      <input type="number" id="quotaInput" min="0" value="3">
+      <input type="number" id="quotaInput" min="0" value="10">
     </div>
     <div class="form-group">
       <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-weight:500;">
@@ -773,8 +1035,8 @@ input:checked + .slider:before{transform:translateX(24px);}
       </label>
     </div>
     <div style="display:flex;gap:10px;">
-      <button class="btn btn-secondary" onclick="closeModal('modalQuota')" style="flex:1;">Batal</button>
-      <button class="btn btn-primary" onclick="doSetQuota()" style="flex:1;"><i class="fas fa-save"></i> Simpan</button>
+      <button class="btn btn-secondary" onclick="closeModal('modalQuota')" style="flex:1;justify-content:center;">Batal</button>
+      <button class="btn btn-primary" onclick="doSetQuota()" style="flex:1;justify-content:center;"><i class="fas fa-save"></i> Simpan</button>
     </div>
   </div>
 </div>
@@ -782,7 +1044,7 @@ input:checked + .slider:before{transform:translateX(24px);}
 <!-- MODAL: APPROVE REQUEST -->
 <div class="modal-back" id="modalApprove">
   <div class="modal-box">
-    <h2>✅ Approve Request</h2>
+    <h2><i class="fas fa-check"></i> Approve Request</h2>
     <p class="desc" id="modalApproveDesc">-</p>
     <div class="form-group">
       <label>Jumlah Kuota yang Diberikan</label>
@@ -796,8 +1058,8 @@ input:checked + .slider:before{transform:translateX(24px);}
       <button class="btn btn-secondary btn-sm" onclick="document.getElementById('approveAmount').value=100">+100</button>
     </div>
     <div style="display:flex;gap:10px;">
-      <button class="btn btn-secondary" onclick="closeModal('modalApprove')" style="flex:1;">Batal</button>
-      <button class="btn btn-success" onclick="doApprove()" style="flex:1;"><i class="fas fa-check"></i> Approve</button>
+      <button class="btn btn-secondary" onclick="closeModal('modalApprove')" style="flex:1;justify-content:center;">Batal</button>
+      <button class="btn btn-success" onclick="doApprove()" style="flex:1;justify-content:center;"><i class="fas fa-check"></i> Approve</button>
     </div>
   </div>
 </div>
@@ -806,7 +1068,7 @@ input:checked + .slider:before{transform:translateX(24px);}
 <div class="modal-back" id="modalPremium">
   <div class="modal-box">
     <div style="text-align:center;margin-bottom:20px;">
-      <div style="width:70px;height:70px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--gold-dark));display:flex;align-items:center;justify-content:center;font-size:32px;color:#fff;margin:0 auto 12px;box-shadow:0 8px 20px rgba(255,184,0,.4);">
+      <div style="width:60px;height:60px;border-radius:50%;background:var(--gold-soft);border:2px solid var(--gold);display:flex;align-items:center;justify-content:center;font-size:26px;color:var(--gold);margin:0 auto 12px;">
         <i class="fas fa-crown"></i>
       </div>
       <h2 style="justify-content:center;margin-bottom:4px;">Aktivasi Premium</h2>
@@ -814,11 +1076,9 @@ input:checked + .slider:before{transform:translateX(24px);}
     </div>
 
     <div class="form-group">
-      <label>Paket Langganan</label>
+      <label>Durasi Premium</label>
       <select id="premiumPaketSelect" onchange="updatePremiumPreview()">
-        <option value="30">Bulanan (30 hari) — Rp 20.000</option>
-        <option value="90">3 Bulan (90 hari) — Rp 50.000</option>
-        <option value="365">1 Tahun (365 hari) — Rp 180.000</option>
+        <option value="30">30 Hari (Bulanan) — Rp 25.000</option>
         <option value="custom">Custom (isi manual)</option>
       </select>
     </div>
@@ -839,8 +1099,8 @@ input:checked + .slider:before{transform:translateX(24px);}
     </div>
 
     <div style="display:flex;gap:10px;">
-      <button class="btn btn-secondary" onclick="closeModal('modalPremium')" style="flex:1;">Batal</button>
-      <button class="btn btn-gold" onclick="doActivatePremium()" style="flex:1;">
+      <button class="btn btn-secondary" onclick="closeModal('modalPremium')" style="flex:1;justify-content:center;">Batal</button>
+      <button class="btn btn-gold" onclick="doActivatePremium()" style="flex:1;justify-content:center;">
         <i class="fas fa-crown"></i> Aktifkan Premium
       </button>
     </div>
@@ -850,7 +1110,7 @@ input:checked + .slider:before{transform:translateX(24px);}
 <!-- MODAL: REPLY TICKET -->
 <div class="modal-back" id="modalReply">
   <div class="modal-box">
-    <h2>💬 Balas Tiket Bantuan</h2>
+    <h2><i class="fas fa-reply"></i> Balas Tiket Bantuan</h2>
     <p class="desc" id="modalReplyDesc">-</p>
     <div class="form-group">
       <label>Balasan untuk User</label>
@@ -858,8 +1118,8 @@ input:checked + .slider:before{transform:translateX(24px);}
       <div class="hint">User akan dapat notifikasi setelah balasan dikirim</div>
     </div>
     <div style="display:flex;gap:10px;">
-      <button class="btn btn-secondary" onclick="closeModal('modalReply')" style="flex:1;">Batal</button>
-      <button class="btn btn-success" id="btnDoReply" onclick="doReply()" style="flex:1;"><i class="fas fa-reply"></i> Kirim Balasan</button>
+      <button class="btn btn-secondary" onclick="closeModal('modalReply')" style="flex:1;justify-content:center;">Batal</button>
+      <button class="btn btn-success" id="btnDoReply" onclick="doReply()" style="flex:1;justify-content:center;"><i class="fas fa-reply"></i> Kirim Balasan</button>
     </div>
   </div>
 </div>
@@ -867,19 +1127,19 @@ input:checked + .slider:before{transform:translateX(24px);}
 <!-- MODAL: CHAT -->
 <div class="modal-back" id="modalChat">
   <div class="modal-box" style="max-width:600px;height:600px;display:flex;flex-direction:column;padding:0;">
-    <div style="padding:16px 20px;background:linear-gradient(135deg,#26a69a,#00796b);color:#fff;border-radius:14px 14px 0 0;display:flex;align-items:center;gap:12px;">
-      <div style="width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;font-weight:700;overflow:hidden;" id="chatModalAvatar">U</div>
+    <div style="padding:14px 18px;background:var(--accent);color:#fff;border-radius:var(--radius) var(--radius) 0 0;display:flex;align-items:center;gap:12px;">
+      <div style="width:38px;height:38px;border-radius:50%;background:rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;font-weight:700;overflow:hidden;" id="chatModalAvatar">U</div>
       <div style="flex:1;">
         <div style="font-size:14px;font-weight:700;" id="chatModalName">User</div>
         <div style="font-size:11px;opacity:.85;">Balas chat</div>
       </div>
-      <button onclick="closeModal('modalChat')" style="background:rgba(255,255,255,.15);border:none;color:#fff;width:32px;height:32px;border-radius:50%;cursor:pointer;font-size:14px;"><i class="fas fa-times"></i></button>
+      <button onclick="closeModal('modalChat')" style="background:rgba(255,255,255,.15);border:none;color:#fff;width:30px;height:30px;border-radius:50%;cursor:pointer;font-size:13px;"><i class="fas fa-times"></i></button>
     </div>
     <div id="chatModalBody" style="flex:1;overflow-y:auto;padding:16px;background:var(--sub-bg);"></div>
-    <div style="padding:12px;border-top:1px solid var(--border);display:flex;gap:8px;align-items:center;background:var(--card-bg);border-radius:0 0 14px 14px;">
-      <button id="chatImgBtn" onclick="pickChatImage()" title="Kirim gambar" style="background:transparent;border:1.5px solid var(--border);color:var(--teal);width:40px;height:40px;border-radius:50%;cursor:pointer;font-size:15px;flex-shrink:0;transition:.2s;"><i class="fas fa-image"></i></button>
-      <input type="text" id="chatModalInput" placeholder="Balas..." style="flex:1;padding:10px 14px;border:1.5px solid var(--border);border-radius:24px;font-size:13px;font-family:inherit;background:var(--sub-bg);color:var(--text);" onkeydown="if(event.key==='Enter') sendAdminChat()">
-      <button onclick="sendAdminChat()" id="chatModalSend" style="background:linear-gradient(135deg,#26a69a,#00796b);color:#fff;border:none;width:44px;height:44px;border-radius:50%;cursor:pointer;font-size:15px;flex-shrink:0;"><i class="fas fa-paper-plane"></i></button>
+    <div style="padding:12px;border-top:1px solid var(--border);display:flex;gap:8px;align-items:center;background:var(--card-bg);border-radius:0 0 var(--radius) var(--radius);">
+      <button id="chatImgBtn" onclick="pickChatImage()" title="Kirim gambar" style="background:transparent;border:1px solid var(--border);color:var(--text-muted);width:38px;height:38px;border-radius:8px;cursor:pointer;font-size:14px;flex-shrink:0;"><i class="fas fa-image"></i></button>
+      <input type="text" id="chatModalInput" placeholder="Balas..." style="flex:1;padding:9px 14px;border:1px solid var(--border);border-radius:22px;font-size:13px;font-family:inherit;background:var(--sub-bg);color:var(--text);" onkeydown="if(event.key==='Enter') sendAdminChat()">
+      <button onclick="sendAdminChat()" id="chatModalSend" style="background:var(--accent);color:#fff;border:none;width:40px;height:40px;border-radius:8px;cursor:pointer;font-size:14px;flex-shrink:0;"><i class="fas fa-paper-plane"></i></button>
     </div>
   </div>
 </div>
@@ -902,7 +1162,7 @@ function toggleTheme(){
 applyTheme(localStorage.getItem('theme') || 'light');
 
 // ⚠️ GANTI URL INI
-const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwGsUnn93GQGnCGYITxYas-ig5BGa0O1191cxp_wNjeESRYsCJZgsYXClQNKGSyDAjQ/exec';
+const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyKZQU0IFhCrTBD1Jk7imOEuOLSBjGE962ZgSThd52ltWL_4mMvwOxNgUe3EuZA3k7e/exec';
 
 async function fetchWithTimeout(url, options = {}, timeoutMs = 90000) {
   const controller = new AbortController();
@@ -1074,7 +1334,7 @@ function uploadFile(input, type) {
   pendingFiles[type] = { file };
   uploadedUrls[type] = '';
   const st = document.getElementById(type + 'Status');
-  if (st) st.innerHTML = `<span class="upload-status ok">📎 ${file.name} (${(file.size/1024).toFixed(1)} KB)</span>`;
+  if (st) st.innerHTML = `<span class="upload-status ok">${file.name} (${(file.size/1024).toFixed(1)} KB)</span>`;
 }
 
 function removeFile(type) {
@@ -1094,7 +1354,7 @@ function uploadOneFile(type) {
     reader.onload = async e => {
       const base64 = e.target.result.split(',')[1] || '';
       const st = document.getElementById(type + 'Status');
-      if (st) st.innerHTML = `<span class="upload-status loading">⏳ Upload...</span>`;
+      if (st) st.innerHTML = `<span class="upload-status loading">Upload...</span>`;
       try {
         const res = await safePost({
           action: 'upload',
@@ -1105,14 +1365,14 @@ function uploadOneFile(type) {
         if (res.success && res.url) {
           uploadedUrls[type] = res.url;
           pendingFiles[type] = null;
-          if (st) st.innerHTML = `<span class="upload-status ok">✅ ${pf.file.name}</span>`;
+          if (st) st.innerHTML = `<span class="upload-status ok">${pf.file.name}</span>`;
           resolve(res.url);
         } else {
-          if (st) st.innerHTML = `<span class="upload-status err">❌ ${res.msg || 'Gagal upload'}</span>`;
+          if (st) st.innerHTML = `<span class="upload-status err">${res.msg || 'Gagal upload'}</span>`;
           reject(new Error(res.msg || 'Gagal upload'));
         }
       } catch (err) {
-        if (st) st.innerHTML = `<span class="upload-status err">❌ ${err.message}</span>`;
+        if (st) st.innerHTML = `<span class="upload-status err">${err.message}</span>`;
         reject(err);
       }
     };
@@ -1138,24 +1398,24 @@ function loadData() {
       console.error(err);
       data = [];
       renderList();
-      showToast('⚠️ Gagal memuat soal', 'error');
+      showToast('Gagal memuat soal', 'error');
     })
     .finally(() => { isLoading = false; });
 }
 
 function getTemaLabel(kategori) {
   const map = {
-    'kosakata_transportasi': '🚌 Transportasi',
-    'kosakata_makanan': '🍜 Makanan',
-    'kosakata_tempat_wisata': '🏛️ Tempat Wisata',
-    'kosakata_keluarga': '👨‍👩‍👧 Keluarga',
-    'kosakata_sekolah': '🎓 Sekolah',
-    'kosakata_tubuh': '💪 Tubuh',
-    'kosakata_pakaian': '👕 Pakaian',
-    'kosakata_alam': '🌤️ Alam',
-    'kosakata_pekerjaan': '💼 Pekerjaan',
-    'kosakata_hobi': '⚽ Hobi',
-    'kosakata_umum': '📚 Umum'
+    'kosakata_transportasi': 'Transportasi',
+    'kosakata_makanan': 'Makanan',
+    'kosakata_tempat_wisata': 'Tempat Wisata',
+    'kosakata_keluarga': 'Keluarga',
+    'kosakata_sekolah': 'Sekolah',
+    'kosakata_tubuh': 'Tubuh',
+    'kosakata_pakaian': 'Pakaian',
+    'kosakata_alam': 'Alam',
+    'kosakata_pekerjaan': 'Pekerjaan',
+    'kosakata_hobi': 'Hobi',
+    'kosakata_umum': 'Umum'
   };
   return map[kategori] || kategori;
 }
@@ -1175,23 +1435,22 @@ function renderList() {
   filtered.forEach(q => {
     const realIndex = data.indexOf(q);
     const tags = [];
-    if (q.gambar) tags.push('<span class="tag img"><i class="fas fa-image"></i> Gambar</span>');
+    if (q.gambar) tags.push('<span class="tag img">Gambar</span>');
     const hasOpsiImg = q.opsiAImg || q.opsiBImg || q.opsiCImg || q.opsiDImg;
-    if (hasOpsiImg) tags.push('<span class="tag img"><i class="fas fa-images"></i> Opsi Gambar</span>');
-    if (q.audio)  tags.push('<span class="tag audio"><i class="fas fa-volume-up"></i> Audio</span>');
+    if (hasOpsiImg) tags.push('<span class="tag img">Opsi Gambar</span>');
+    if (q.audio)  tags.push('<span class="tag audio">Audio</span>');
     tags.push(`<span class="tag">${q.section === 'isian' ? 'Isian' : 'Pilihan'}</span>`);
     if (q.kategori) {
-      const isKosakata = String(q.kategori).toLowerCase().startsWith('kosakata_');
-      tags.push(`<span class="tag ${isKosakata ? 'tema' : 'kat'}"><i class="fas fa-folder"></i> ${getTemaLabel(q.kategori)}</span>`);
+      tags.push(`<span class="tag kat">${getTemaLabel(q.kategori)}</span>`);
     }
     if (q.instruksi) {
-      tags.push('<span class="tag instruksi"><i class="fas fa-info-circle"></i> Instruksi</span>');
+      tags.push('<span class="tag instruksi">Instruksi</span>');
     }
     const jawabDisplay = (q.section === 'isian') ? q.jawaban : (CIRCLES[q.jawaban] || q.jawaban);
     tags.push(`<span class="tag ans">Jawaban: ${jawabDisplay}</span>`);
     const thumb = q.gambar ? `<img src="${q.gambar}" class="thumb" onerror="this.style.display='none'">` : '';
     const instruksiHtml = q.instruksi
-      ? `<div class="instruksi-txt">📌 ${escapeHtml(q.instruksi)}</div>`
+      ? `<div class="instruksi-txt">${escapeHtml(q.instruksi)}</div>`
       : '';
     html += `
       <div class="q-item">
@@ -1242,21 +1501,21 @@ async function saveSoal() {
   if (section === 'isian') {
     const isianEl = document.getElementById('jawabanIsian');
     jawaban = isianEl ? isianEl.value.trim() : '';
-    if (!jawaban) { showToast('⚠️ Jawaban isian wajib diisi', 'error'); return; }
+    if (!jawaban) { showToast('Jawaban isian wajib diisi', 'error'); return; }
   } else {
-    if (!currentJawaban) { showToast('⚠️ Pilih jawaban benar', 'error'); return; }
+    if (!currentJawaban) { showToast('Pilih jawaban benar', 'error'); return; }
     jawaban = currentJawaban;
-    if (!opsiA || !opsiB || !opsiC || !opsiD) { showToast('⚠️ Semua opsi wajib diisi', 'error'); return; }
+    if (!opsiA || !opsiB || !opsiC || !opsiD) { showToast('Semua opsi wajib diisi', 'error'); return; }
   }
 
   const editIdEl = document.getElementById('editId');
   const editId = editIdEl ? editIdEl.value : '';
   const hasGambar = uploadedUrls.gambar || pendingFiles.gambar;
   const hasAudio = uploadedUrls.audio || pendingFiles.audio;
-  if (!soal && !hasGambar && !hasAudio) { showToast('⚠️ Minimal isi soal/gambar/audio', 'error'); return; }
+  if (!soal && !hasGambar && !hasAudio) { showToast('Minimal isi soal/gambar/audio', 'error'); return; }
 
   const btn = document.getElementById('saveBtn');
-  if (!btn) { showToast('❌ Error: tombol simpan tidak ditemukan', 'error'); return; }
+  if (!btn) { showToast('Error: tombol simpan tidak ditemukan', 'error'); return; }
   const originalHTML = btn.innerHTML;
   btn.disabled = true; btn.innerHTML = '<span class="spinner"></span> Proses...';
 
@@ -1320,7 +1579,7 @@ async function saveSoal() {
           (q.kategori || '').toLowerCase() === kategori
         );
         if (found) {
-          showToast('✅ Soal tersimpan! (response lambat, tapi data masuk)', 'success');
+          showToast('Soal tersimpan! (response lambat, tapi data masuk)', 'success');
           resetForm();
           data = list;
           renderList();
@@ -1330,28 +1589,28 @@ async function saveSoal() {
 
       const errMsg = lastError ? lastError.message : (res ? res.msg : 'Timeout / response lambat');
       if (lastError && lastError.name === 'AbortError') {
-        showToast('⏱️ Server terlalu lambat. Coba refresh & cek daftar soal.', 'error');
+        showToast('Server terlalu lambat. Coba refresh & cek daftar soal.', 'error');
         setTimeout(loadData, 1500);
       } else {
-        showToast('❌ ' + errMsg, 'error');
+        showToast(errMsg, 'error');
       }
       return;
     }
 
     if (res.success) {
-      showToast('✅ Soal ' + (editId ? 'diupdate' : 'ditambahkan'), 'success');
+      showToast('Soal ' + (editId ? 'diupdate' : 'ditambahkan'), 'success');
       resetForm();
       setTimeout(loadData, 800);
     } else {
-      showToast('❌ ' + (res.msg || 'Gagal'), 'error');
+      showToast(res.msg || 'Gagal', 'error');
     }
   } catch (err) {
     console.error(err);
     if (err.name === 'AbortError') {
-      showToast('⏱️ Server lambat. Cek sheet — data mungkin sudah masuk.', 'error');
+      showToast('Server lambat. Cek sheet — data mungkin sudah masuk.', 'error');
       setTimeout(loadData, 1500);
     } else {
-      showToast('❌ ' + err.message, 'error');
+      showToast(err.message, 'error');
     }
   } finally {
     if (btn) {
@@ -1403,9 +1662,9 @@ function editSoal(i) {
   const ap = document.getElementById('audioPreview');
   if (ap) ap.innerHTML = q.audio ? `<audio controls src="${q.audio}"></audio><button class="rm" onclick="removeFile('audio')">×</button>` : '';
   const gs = document.getElementById('gambarStatus');
-  if (gs) gs.innerHTML = q.gambar ? '<span class="upload-status ok">✅ Ada</span>' : '';
+  if (gs) gs.innerHTML = q.gambar ? '<span class="upload-status ok">Ada</span>' : '';
   const as = document.getElementById('audioStatus');
-  if (as) as.innerHTML = q.audio ? '<span class="upload-status ok">✅ Ada</span>' : '';
+  if (as) as.innerHTML = q.audio ? '<span class="upload-status ok">Ada</span>' : '';
 
   ['opsiAImg', 'opsiBImg', 'opsiCImg', 'opsiDImg'].forEach(k => {
     const p = document.getElementById(k + 'Preview');
@@ -1436,20 +1695,20 @@ function hapusSoal(i) {
   if (!confirm('Hapus soal ini?')) return;
   safePost({ action: 'delete', username: _user.username, id: data[i].id }, 60000)
     .then(res => {
-      if (res.success) { showToast('🗑️ Dihapus', 'success'); setTimeout(loadData, 800); }
-      else showToast('❌ ' + (res.msg || 'Gagal'), 'error');
+      if (res.success) { showToast('Dihapus', 'success'); setTimeout(loadData, 800); }
+      else showToast(res.msg || 'Gagal', 'error');
     })
-    .catch(err => showToast('❌ ' + err.message, 'error'));
+    .catch(err => showToast(err.message, 'error'));
 }
 
 function clearAll() {
-  if (!confirm('⚠️ Hapus SEMUA soal?')) return;
+  if (!confirm('Hapus SEMUA soal?')) return;
   safePost({ action: 'clearAll', username: _user.username }, 60000)
     .then(res => {
-      if (res.success) { showToast('🗑️ Semua dihapus', 'success'); setTimeout(loadData, 800); }
-      else showToast('❌ ' + (res.msg || 'Gagal'), 'error');
+      if (res.success) { showToast('Semua dihapus', 'success'); setTimeout(loadData, 800); }
+      else showToast(res.msg || 'Gagal', 'error');
     })
-    .catch(err => showToast('❌ ' + err.message, 'error'));
+    .catch(err => showToast(err.message, 'error'));
 }
 
 function resetForm() {
@@ -1537,7 +1796,7 @@ function renderUsers() {
 
     let roleBadge = `<span class="badge-role user">PELAJAR</span>`;
     if (isAdmin) roleBadge = `<span class="badge-role admin">ADMIN</span>`;
-    else if (isPrem) roleBadge = `<span class="badge-role premium">👑 PREMIUM</span>`;
+    else if (isPrem) roleBadge = `<span class="badge-role premium">PREMIUM</span>`;
 
     html += `
       <div class="user-card">
@@ -1548,14 +1807,14 @@ function renderUsers() {
             <div class="uname">@${u.username}</div>
             <div class="meta">
               ${roleBadge}
-              <span class="badge-quota ${quotaEmpty ? 'empty' : ''}">📊 ${remain}/${u.quotaMax}</span>
-              <span>📅 ${u.createdAt}</span>
-              ${u.premiumUntil ? `<span style="background:linear-gradient(135deg,var(--gold),var(--gold-dark));color:#fff;font-weight:700;padding:2px 8px;border-radius:10px;font-size:10px;">👑 s/d ${u.premiumUntil}</span>` : ''}
-              ${u.email ? `<span class="badge-email">📧 ${u.email}</span>` : ''}
+              <span class="badge-quota ${quotaEmpty ? 'empty' : ''}">Kuota: ${remain}/${u.quotaMax}</span>
+              <span>${u.createdAt}</span>
+              ${u.premiumUntil ? `<span style="color:var(--gold);font-weight:700;font-size:10px;">s/d ${u.premiumUntil}</span>` : ''}
+              ${u.email ? `<span class="badge-email">${u.email}</span>` : ''}
             </div>
           </div>
           <div class="actions-right">
-            ${u.hasPlain ? `<button class="btn btn-purple btn-xs" onclick="openViewPw('${u.username}')"><i class="fas fa-eye"></i> Lihat Pass</button>` : ''}
+            ${u.hasPlain ? `<button class="btn btn-purple btn-xs" onclick="openViewPw('${u.username}')"><i class="fas fa-eye"></i> Pass</button>` : ''}
             <button class="btn btn-warning btn-xs" onclick="openResetPw('${u.username}')"><i class="fas fa-key"></i> Reset</button>
             <button class="btn btn-primary btn-xs" onclick="openSetQuota('${u.username}', ${u.quotaMax})"><i class="fas fa-edit"></i> Kuota</button>
             ${!isAdmin ? `<button class="btn btn-gold btn-xs" onclick="openPremiumActivate('${u.username}')" title="Aktifkan/kelola premium"><i class="fas fa-crown"></i> Premium</button>` : ''}
@@ -1595,7 +1854,7 @@ function openViewPw(username) {
 function copyPw() {
   const el = document.getElementById('modalPwVal');
   if (!el) return;
-  navigator.clipboard.writeText(el.textContent).then(() => showToast('📋 Password dicopy', 'success'));
+  navigator.clipboard.writeText(el.textContent).then(() => showToast('Password dicopy', 'success'));
 }
 
 function openResetPw(username) {
@@ -1634,10 +1893,10 @@ async function doResetPassword() {
       setText('resetResultVal', newPw);
       const rb = document.getElementById('resetResultBox'); if (rb) rb.style.display = 'block';
       btn.style.display = 'none';
-      showToast('✅ Password direset', 'success');
+      showToast('Password direset', 'success');
       setTimeout(loadUsers, 800);
-    } else alert('❌ ' + (res.msg || 'Gagal reset'));
-  } catch(err) { alert('❌ ' + err.message); }
+    } else alert(res.msg || 'Gagal reset');
+  } catch(err) { alert(err.message); }
   finally { btn.disabled = false; btn.innerHTML = '<i class="fas fa-check"></i> Reset'; }
 }
 
@@ -1665,10 +1924,10 @@ async function doSetQuota() {
     });
     if (res.success) {
       closeModal('modalQuota');
-      showToast('✅ Kuota diset: ' + quotaMax, 'success');
+      showToast('Kuota diset: ' + quotaMax, 'success');
       setTimeout(loadUsers, 500);
-    } else alert('❌ ' + (res.msg || 'Gagal'));
-  } catch(err) { alert('❌ ' + err.message); }
+    } else alert(res.msg || 'Gagal');
+  } catch(err) { alert(err.message); }
 }
 
 async function deleteUser(username) {
@@ -1679,14 +1938,20 @@ async function deleteUser(username) {
       username: _user.username,
       targetUsername: username
     });
-    if (res.success) { showToast('🗑️ User dihapus', 'success'); setTimeout(loadUsers, 500); }
-    else alert('❌ ' + (res.msg || 'Gagal'));
-  } catch(err) { alert('❌ ' + err.message); }
+    if (res.success) { showToast('User dihapus', 'success'); setTimeout(loadUsers, 500); }
+    else alert(res.msg || 'Gagal');
+  } catch(err) { alert(err.message); }
 }
 
 // ===== PREMIUM =====
-function openPremiumActivate(username) {
-  currentPremiumTarget = username;
+function openPremiumActivate(username, requestId) {
+  // 🔧 FIX: sanitasi requestId
+  const cleanReqId = (requestId && requestId !== 'null' && requestId !== 'undefined') ? requestId : null;
+  currentPremiumTarget = {
+    username: username,
+    requestId: cleanReqId
+  };
+
   const targetUser = usersData.find(u => u.username === username);
   const isPrem = targetUser && targetUser.plan === 'premium';
 
@@ -1697,6 +1962,14 @@ function openPremiumActivate(username) {
   if (sel) sel.value = '30';
   const custBox = document.getElementById('customDaysBox');
   if (custBox) custBox.style.display = 'none';
+
+  if (isPrem) {
+    const daysLeft = targetUser.premiumUntil ?
+      Math.max(0, Math.ceil((new Date(targetUser.premiumUntil) - new Date()) / (24 * 60 * 60 * 1000))) : 0;
+    if (!confirm(`User ${username} SUDAH PREMIUM.\n\nSisa: ${daysLeft} hari\nBerakhir: ${targetUser.premiumUntil || '-'}\n\nKalau lanjut, sisa hari akan DITAMBAH (extend).\n\nLanjut?`)) {
+      return;
+    }
+  }
 
   updatePremiumPreview();
   openModal('modalPremium');
@@ -1735,22 +2008,51 @@ async function doActivatePremium() {
     else days = parseInt(sel.value, 10) || 30;
   }
 
+  const username = currentPremiumTarget.username;
+  const requestId = currentPremiumTarget.requestId;
+
+  const btn = event?.target?.closest('button');
+  const originalHTML = btn ? btn.innerHTML : '';
+  if (btn) {
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Memproses...';
+  }
+
   try {
-    const res = await safePost({
+    // 🔧 FIX: kirim requestId HANYA kalau valid
+    const payload = {
       action: 'adminActivatePremium',
       username: _user.username,
-      targetUsername: currentPremiumTarget,
+      targetUsername: username,
       days: days
-    });
+    };
+    if (requestId && requestId !== 'null' && requestId !== 'undefined') {
+      payload.requestId = requestId;
+    }
+
+    const res = await safePost(payload);
     if (res.success) {
       closeModal('modalPremium');
-      showToast('👑 Premium aktif ' + days + ' hari untuk ' + currentPremiumTarget, 'success');
-      setTimeout(loadUsers, 500);
+      showToast('Premium aktif ' + days + ' hari untuk ' + username, 'success');
+
+      // 🔧 FIX: pindah filter ke "all" biar keliatan statusnya
+      const filterSel = document.getElementById('filterPremiumStatus');
+      if (filterSel) filterSel.value = 'all';
+
+      setTimeout(() => {
+        loadPremiumRequests();
+        loadUsers();
+      }, 500);
     } else {
-      alert('❌ ' + (res.msg || 'Gagal aktivasi'));
+      alert(res.msg || 'Gagal aktivasi');
     }
   } catch(err) {
-    alert('❌ ' + err.message);
+    alert(err.message);
+  } finally {
+    if (btn) {
+      btn.disabled = false;
+      btn.innerHTML = originalHTML;
+    }
   }
 }
 
@@ -1778,7 +2080,6 @@ function loadPremiumRequests() {
       box.innerHTML = `<div class="empty-block"><i class="fas fa-exclamation-triangle"></i><p>Error</p></div>`;
     });
 
-  // Load premium users
   loadPremiumUsers();
 }
 
@@ -1814,9 +2115,9 @@ function renderPremiumRequests(list) {
     const isApproved = r.status === 'approved';
 
     let statusBadge = '';
-    if (isPending) statusBadge = `<span style="background:#fff5e0;color:#8a6a1a;padding:2px 10px;border-radius:10px;font-weight:700;font-size:10px;">⏳ PENDING</span>`;
-    else if (isApproved) statusBadge = `<span style="background:#e8f5ee;color:#1f7f53;padding:2px 10px;border-radius:10px;font-weight:700;font-size:10px;">✅ APPROVED</span>`;
-    else statusBadge = `<span style="background:#fde8e8;color:#a33;padding:2px 10px;border-radius:10px;font-weight:700;font-size:10px;">❌ REJECTED</span>`;
+    if (isPending) statusBadge = `<span style="background:var(--warning-soft);color:var(--warning);padding:2px 8px;border-radius:10px;font-weight:700;font-size:10px;border:1px solid var(--warning);">PENDING</span>`;
+    else if (isApproved) statusBadge = `<span style="background:var(--success-soft);color:var(--success);padding:2px 8px;border-radius:10px;font-weight:700;font-size:10px;border:1px solid var(--success);">APPROVED</span>`;
+    else statusBadge = `<span style="background:var(--danger-soft);color:var(--danger);padding:2px 8px;border-radius:10px;font-weight:700;font-size:10px;border:1px solid var(--danger);">REJECTED</span>`;
 
     html += `
       <div class="premium-card-box">
@@ -1827,7 +2128,7 @@ function renderPremiumRequests(list) {
         </div>
         <div class="prem-detail">
           <strong>${escapeHtml(pesanClean)}</strong><br>
-          <span style="font-size:12px;color:var(--text-muted);">📅 Request: ${r.tanggal || '-'}</span>
+          <span style="font-size:12px;">Request: ${r.tanggal || '-'}</span>
         </div>
         ${isPending ? `
           <div class="prem-actions">
@@ -1845,8 +2146,7 @@ function renderPremiumRequests(list) {
 }
 
 function approvePremium(username, reqId) {
-  // Buka modal premium dengan user tersebut
-  openPremiumActivate(username);
+  openPremiumActivate(username, reqId);
 }
 
 async function rejectPremium(reqId) {
@@ -1858,13 +2158,13 @@ async function rejectPremium(reqId) {
       requestId: reqId
     });
     if (res.success) {
-      showToast('❌ Request premium ditolak', 'success');
+      showToast('Request premium ditolak', 'success');
       setTimeout(loadPremiumRequests, 500);
     } else {
-      alert('❌ ' + (res.msg || 'Gagal'));
+      alert(res.msg || 'Gagal');
     }
   } catch(err) {
-    alert('❌ ' + err.message);
+    alert(err.message);
   }
 }
 
@@ -1873,7 +2173,6 @@ function loadPremiumUsers() {
   if (!box) return;
 
   if (usersData.length === 0) {
-    // Load users dulu
     safeGet('action=getUsers&adminUsername=' + encodeURIComponent(_user.username), 60000)
       .then(res => {
         if (res.success) {
@@ -1922,9 +2221,9 @@ function renderPremiumUsers() {
             <div class="name">${u.nama || u.username}</div>
             <div class="uname">@${u.username}</div>
             <div class="meta">
-              <span class="badge-role premium">👑 PREMIUM</span>
-              <span style="background:#fff5e0;color:#8a6a1a;font-weight:700;padding:2px 8px;border-radius:10px;font-size:10px;">
-                ⏱️ Sisa: ${daysLeft} hari
+              <span class="badge-role premium">PREMIUM</span>
+              <span style="background:var(--gold-soft);color:var(--gold);font-weight:700;padding:2px 8px;border-radius:10px;font-size:10px;border:1px solid var(--gold);">
+                Sisa: ${daysLeft} hari
               </span>
               <span style="font-size:11px;">Berakhir: ${untilStr}</span>
             </div>
@@ -1948,13 +2247,13 @@ async function deactivatePremiumUser(username) {
       targetUsername: username
     });
     if (res.success) {
-      showToast('✅ Premium dinonaktifkan', 'success');
+      showToast('Premium dinonaktifkan', 'success');
       setTimeout(() => { loadPremiumUsers(); loadUsers(); }, 500);
     } else {
-      alert('❌ ' + (res.msg || 'Gagal'));
+      alert(res.msg || 'Gagal');
     }
   } catch(err) {
-    alert('❌ ' + err.message);
+    alert(err.message);
   }
 }
 
@@ -1991,9 +2290,9 @@ function renderRequests(reqs) {
   let html = '';
   reqs.forEach(r => {
     const statusColors = {
-      pending: { bg: '#fff5e0', color: '#8a6a1a', text: '⏳ PENDING' },
-      approved: { bg: '#e8f5ee', color: '#1f7f53', text: '✅ APPROVED' },
-      rejected: { bg: '#fde8e8', color: '#a33', text: '❌ REJECTED' }
+      pending: { bg: 'var(--warning-soft)', color: 'var(--warning)', text: 'PENDING' },
+      approved: { bg: 'var(--success-soft)', color: 'var(--success)', text: 'APPROVED' },
+      rejected: { bg: 'var(--danger-soft)', color: 'var(--danger)', text: 'REJECTED' }
     };
     const st = statusColors[r.status] || statusColors.pending;
     html += `
@@ -2004,10 +2303,10 @@ function renderRequests(reqs) {
             <div class="name">${r.nama || r.username}</div>
             <div class="uname">@${r.username} · ${r.tanggal}</div>
             <div class="meta">
-              <span style="background:${st.bg};color:${st.color};padding:2px 8px;border-radius:10px;font-weight:700;font-size:10px;">${st.text}</span>
+              <span style="background:${st.bg};color:${st.color};padding:2px 8px;border-radius:10px;font-weight:700;font-size:10px;border:1px solid ${st.color};">${st.text}</span>
               ${r.quotaGiven > 0 ? `<span>+${r.quotaGiven} kuota</span>` : ''}
             </div>
-            ${r.pesan ? `<div style="margin-top:8px;font-size:13px;color:var(--text-muted);background:var(--sub-bg);padding:8px 12px;border-radius:6px;font-style:italic;">"${r.pesan}"</div>` : ''}
+            ${r.pesan ? `<div style="margin-top:8px;font-size:12px;color:var(--text-muted);background:var(--sub-bg);padding:8px 12px;border-radius:6px;font-style:italic;border:1px solid var(--border);">"${r.pesan}"</div>` : ''}
           </div>
           <div class="actions-right">
             ${r.status === 'pending' ? `
@@ -2043,10 +2342,10 @@ async function doApprove() {
     });
     if (res.success) {
       closeModal('modalApprove');
-      showToast('✅ Approved +' + amount + ' untuk ' + currentTargetReq.username, 'success');
+      showToast('Approved +' + amount + ' untuk ' + currentTargetReq.username, 'success');
       setTimeout(loadRequests, 500);
-    } else alert('❌ ' + (res.msg || 'Gagal'));
-  } catch(err) { alert('❌ ' + err.message); }
+    } else alert(res.msg || 'Gagal');
+  } catch(err) { alert(err.message); }
 }
 
 async function rejectReq(reqId) {
@@ -2057,9 +2356,9 @@ async function rejectReq(reqId) {
       username: _user.username,
       requestId: reqId
     });
-    if (res.success) { showToast('❌ Request di-reject', 'success'); setTimeout(loadRequests, 500); }
-    else alert('❌ ' + (res.msg || 'Gagal'));
-  } catch(err) { alert('❌ ' + err.message); }
+    if (res.success) { showToast('Request di-reject', 'success'); setTimeout(loadRequests, 500); }
+    else alert(res.msg || 'Gagal');
+  } catch(err) { alert(err.message); }
 }
 
 // ===== TICKETS =====
@@ -2096,9 +2395,9 @@ function renderTickets() {
   }
 
   const statusMap = {
-    'open': { text: '🔴 OPEN — Belum dibalas', cls: 'status-open' },
-    'diproses': { text: '🟡 DIPROSES', cls: 'status-diproses' },
-    'selesai': { text: '✅ SELESAI', cls: 'status-selesai' }
+    'open': { text: 'OPEN — Belum dibalas', cls: 'status-open' },
+    'diproses': { text: 'DIPROSES', cls: 'status-diproses' },
+    'selesai': { text: 'SELESAI', cls: 'status-selesai' }
   };
 
   let html = '';
@@ -2112,14 +2411,14 @@ function renderTickets() {
             <div class="from">
               <i class="fas fa-user"></i> ${t.nama} (@${t.username})
               <span style="margin-left:10px;"><i class="fas fa-clock"></i> ${t.tanggal}</span>
-              <span style="margin-left:10px;background:var(--sub-bg);padding:2px 8px;border-radius:10px;font-weight:700;">${st.text}</span>
+              <span style="margin-left:10px;background:var(--sub-bg);padding:2px 8px;border-radius:10px;font-weight:700;border:1px solid var(--border);">${st.text}</span>
             </div>
           </div>
         </div>
-        <div class="ticket-msg"><strong>📩 Pesan user:</strong><br>${t.pesan}</div>
+        <div class="ticket-msg"><strong>Pesan user:</strong><br>${t.pesan}</div>
         ${t.balasanAdmin ? `
           <div class="ticket-reply">
-            <strong>✅ Balasan admin:</strong><br>${t.balasanAdmin}
+            <strong>Balasan admin:</strong><br>${t.balasanAdmin}
             <div class="meta">Dibalas: ${t.tanggalBalasan} oleh @${t.adminUsername}</div>
           </div>
         ` : ''}
@@ -2168,10 +2467,10 @@ async function doReply() {
     });
     if (res.success) {
       closeModal('modalReply');
-      showToast('✅ Balasan terkirim. User akan dapat notif.', 'success');
+      showToast('Balasan terkirim. User akan dapat notif.', 'success');
       setTimeout(loadTickets, 500);
-    } else alert('❌ ' + (res.msg || 'Gagal'));
-  } catch(err) { alert('❌ ' + err.message); }
+    } else alert(res.msg || 'Gagal');
+  } catch(err) { alert(err.message); }
   finally { btn.disabled = false; btn.innerHTML = original; }
 }
 
@@ -2183,9 +2482,9 @@ async function doCloseTicket(ticketId) {
       username: _user.username,
       ticketId
     });
-    if (res.success) { showToast('✅ Tiket ditutup', 'success'); setTimeout(loadTickets, 500); }
-    else alert('❌ ' + (res.msg || 'Gagal'));
-  } catch(err) { alert('❌ ' + err.message); }
+    if (res.success) { showToast('Tiket ditutup', 'success'); setTimeout(loadTickets, 500); }
+    else alert(res.msg || 'Gagal');
+  } catch(err) { alert(err.message); }
 }
 
 // ===== SETTINGS =====
@@ -2203,7 +2502,7 @@ function loadConfig() {
         setChk('cfgNotifRateLimit', String(configData.notif_on_ratelimit || '').toUpperCase() === 'TRUE');
       }
     })
-    .catch(() => showToast('⚠️ Gagal memuat config', 'error'));
+    .catch(() => showToast('Gagal memuat config', 'error'));
 }
 
 async function saveConfig() {
@@ -2222,9 +2521,9 @@ async function saveConfig() {
       username: _user.username,
       config
     });
-    if (res.success) showToast('✅ Pengaturan disimpan', 'success');
-    else alert('❌ ' + (res.msg || 'Gagal simpan'));
-  } catch(err) { alert('❌ ' + err.message); }
+    if (res.success) showToast('Pengaturan disimpan', 'success');
+    else alert(res.msg || 'Gagal simpan');
+  } catch(err) { alert(err.message); }
 }
 
 async function testEmail() {
@@ -2232,15 +2531,15 @@ async function testEmail() {
   const targetEmail = emailEl ? emailEl.value.trim().split(',')[0].trim() : '';
   if (!targetEmail) { alert('Isi email admin dulu'); return; }
   try {
-    showToast('📤 Mengirim test email...', 'success');
+    showToast('Mengirim test email...', 'success');
     const res = await safePost({
       action: 'adminTestEmail',
       username: _user.username,
       targetEmail
     });
-    if (res.success) showToast('✅ ' + res.msg, 'success');
-    else alert('❌ ' + (res.msg || 'Gagal kirim'));
-  } catch(err) { alert('❌ ' + err.message); }
+    if (res.success) showToast(res.msg, 'success');
+    else alert(res.msg || 'Gagal kirim');
+  } catch(err) { alert(err.message); }
 }
 
 // ===== NOTIF BADGE =====
@@ -2389,7 +2688,7 @@ function detectNewChats(oldRooms, newRooms) {
     const newUnread = Number(r.unread) || 0;
     if (newUnread > oldUnread) {
       showPushNotif(
-        '💬 Chat baru dari ' + (r.nama || r.userId),
+        'Chat baru dari ' + (r.nama || r.userId),
         r.lastPesan || 'Ada pesan baru',
         'chat:' + r.roomKey
       );
@@ -2440,7 +2739,7 @@ function renderChatRooms(filteredRooms) {
     box.innerHTML = `<div class="empty-block">
       <i class="fas fa-comments"></i>
       <p>Belum ada chat dari user</p>
-      <p style="font-size:12px;margin-top:8px;color:var(--text-muted);">
+      <p style="font-size:12px;margin-top:8px;color:var(--text-faint);">
         Chat akan muncul di sini setelah user mengirim pesan
       </p>
     </div>`;
@@ -2455,13 +2754,13 @@ function renderChatRooms(filteredRooms) {
       : `<div class="avatar">${init}</div>`;
 
     const unreadBadge = (Number(r.unread) > 0)
-      ? `<span style="background:#d9534f;color:#fff;font-size:10px;font-weight:800;padding:2px 8px;border-radius:10px;margin-left:6px;">${r.unread} baru</span>`
+      ? `<span style="background:var(--danger);color:#fff;font-size:10px;font-weight:800;padding:2px 8px;border-radius:10px;margin-left:6px;">${r.unread} baru</span>`
       : '';
 
     let matchedHtml = '';
     if (r.matchedMessages && r.matchedMessages.length > 0) {
-      matchedHtml = `<div style="margin-top:6px;padding:6px 10px;background:var(--sub-bg);border-radius:6px;font-size:11px;color:var(--text-muted);border-left:3px solid var(--blue);">
-        <i class="fas fa-search"></i> Cocok: "${escapeHtml(r.matchedMessages[0])}"
+      matchedHtml = `<div style="margin-top:6px;padding:6px 10px;background:var(--sub-bg);border-radius:6px;font-size:11px;color:var(--text-muted);border-left:3px solid var(--accent);">
+        Cocok: "${escapeHtml(r.matchedMessages[0])}"
       </div>`;
     }
 
@@ -2472,7 +2771,7 @@ function renderChatRooms(filteredRooms) {
           <div class="info">
             <div class="name">${escapeHtml(r.nama || r.userId)} ${unreadBadge}</div>
             <div class="uname" style="margin-top:4px;font-size:13px;color:var(--text);">${escapeHtml(r.lastPesan || '(belum ada pesan)')}</div>
-            <div class="meta"><span>📅 ${escapeHtml(r.lastTanggal || '-')}</span></div>
+            <div class="meta"><span>${escapeHtml(r.lastTanggal || '-')}</span></div>
             ${matchedHtml}
           </div>
           <div class="actions-right">
@@ -2605,9 +2904,9 @@ function loadAdminChatMessages(silent) {
       if (m.isMine && userReadAt) {
         const tglPesan = String(m.tanggal || '');
         if (tglPesan <= userReadAt) {
-          readHtml = `<span style="font-size:10px;opacity:.85;margin-left:6px;" title="Dibaca ${userReadAt}">✓✓</span>`;
+          readHtml = `<span style="font-size:10px;opacity:.85;margin-left:6px;">✓✓</span>`;
         } else {
-          readHtml = `<span style="font-size:10px;opacity:.6;margin-left:6px;" title="Terkirim">✓</span>`;
+          readHtml = `<span style="font-size:10px;opacity:.6;margin-left:6px;">✓</span>`;
         }
       }
 
@@ -2665,7 +2964,7 @@ async function sendAdminChat() {
   const tempDiv = document.createElement('div');
   tempDiv.className = 'chat-msg mine';
   tempDiv.id = tempId;
-  tempDiv.innerHTML = `${escapeHtml(pesan)}<span style="font-size:10px;opacity:.7;margin-top:4px;display:block;">${timeStr} ⏳</span>`;
+  tempDiv.innerHTML = `${escapeHtml(pesan)}<span style="font-size:10px;opacity:.7;margin-top:4px;display:block;">${timeStr} ...</span>`;
   body.appendChild(tempDiv);
   body.scrollTop = body.scrollHeight;
   input.value = '';
@@ -2685,13 +2984,13 @@ async function sendAdminChat() {
       const t = document.getElementById(tempId);
       if (t) t.remove();
       input.value = pesan;
-      alert('❌ ' + (res.msg || 'Gagal kirim'));
+      alert(res.msg || 'Gagal kirim');
     }
   } catch (err) {
     const t = document.getElementById(tempId);
     if (t) t.remove();
     input.value = pesan;
-    alert('❌ ' + err.message);
+    alert(err.message);
   } finally {
     btn.disabled = false;
     input.focus();
@@ -2706,7 +3005,7 @@ function pickChatImage() {
   inp.onchange = async (e) => {
     const file = e.target.files[0];
     if (!file) return;
-    if (file.size > 5 * 1024 * 1024) { alert('⚠️ Gambar max 5MB'); return; }
+    if (file.size > 5 * 1024 * 1024) { alert('Gambar max 5MB'); return; }
     await uploadAndSendImage(file);
   };
   inp.click();
@@ -2730,7 +3029,7 @@ async function uploadAndSendImage(file) {
       <div style="margin-bottom:6px;">
         <img src="${e.target.result}" style="max-width:100%;max-height:240px;border-radius:8px;opacity:.6;">
       </div>
-      <span style="font-size:10px;opacity:.7;margin-top:4px;display:block;">${timeStr} ⏳ Upload...</span>
+      <span style="font-size:10px;opacity:.7;margin-top:4px;display:block;">${timeStr} Upload...</span>
     `;
     body.appendChild(tempDiv);
     body.scrollTop = body.scrollHeight;
@@ -2763,7 +3062,7 @@ async function uploadAndSendImage(file) {
   } catch(err) {
     const t = document.getElementById(tempId);
     if (t) t.remove();
-    alert('❌ ' + err.message);
+    alert(err.message);
   } finally {
     if (btn) btn.disabled = false;
   }
@@ -2797,40 +3096,6 @@ function updateChatTabBadge() {
 }
 setInterval(updateChatTabBadge, 30000);
 
-setTimeout(() => {
-  if ('Notification' in window && Notification.permission === 'default') {
-    const tabChat = document.getElementById('tab-chat');
-    if (tabChat && !document.getElementById('notifPermBanner')) {
-      const banner = document.createElement('div');
-      banner.id = 'notifPermBanner';
-      banner.style.cssText = 'background:linear-gradient(135deg,#26a69a,#00796b);color:#fff;padding:14px 18px;border-radius:12px;margin-bottom:16px;display:flex;align-items:center;gap:12px;flex-wrap:wrap;';
-      banner.innerHTML = `
-        <i class="fas fa-bell" style="font-size:20px;"></i>
-        <div style="flex:1;min-width:200px;">
-          <div style="font-weight:700;font-size:14px;">Aktifkan Notifikasi Browser</div>
-          <div style="font-size:12px;opacity:.9;margin-top:2px;">Biar kamu dapat notif saat ada chat baru dari user</div>
-        </div>
-        <button onclick="enableNotif()" style="background:#fff;color:#26a69a;border:none;padding:8px 16px;border-radius:8px;font-weight:700;font-size:13px;cursor:pointer;font-family:inherit;">
-          <i class="fas fa-bell"></i> Aktifkan
-        </button>
-      `;
-      const firstCard = tabChat.querySelector('.card');
-      if (firstCard) firstCard.parentNode.insertBefore(banner, firstCard);
-    }
-  }
-}, 1500);
-
-async function enableNotif() {
-  const ok = await requestNotifPermission();
-  if (ok) {
-    showPushNotif('✅ Notifikasi Aktif!', 'Kamu akan dapat notif saat ada chat baru', 'welcome');
-    const b = document.getElementById('notifPermBanner');
-    if (b) b.remove();
-  } else {
-    alert('⚠️ Izin notifikasi ditolak. Buka pengaturan browser untuk mengaktifkan.');
-  }
-}
-
 // ===== INIT =====
 onSectionChange();
 onKategoriChange();
@@ -2838,7 +3103,6 @@ loadData();
 updateNotifBadge();
 updateChatTabBadge();
 
-// Load badge premium & request & tickets
 safeGet('action=getRequests&status=pending&adminUsername=' + encodeURIComponent(_user.username), 30000)
   .then(res => {
     if (res.success && res.requests && res.requests.length > 0) {
