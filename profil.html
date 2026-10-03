@@ -7,83 +7,271 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <style>
 :root{
-  --bg:#f5f7fa; --card-bg:#fff; --card-shadow:0 4px 16px rgba(0,0,0,.06);
-  --text:#333; --text-muted:#888; --title-color:#154a82; --link-color:#1e5fa8;
-  --border:#d0d7e2; --topbar-bg:#fff; --topbar-shadow:0 4px 16px rgba(0,0,0,.08);
-  --sub-bg:#f5f7fa; --input-bg:#fff; --input-text:#333;
+  --bg:#fafafa;
+  --card-bg:#ffffff;
+  --text:#1a1a1a;
+  --muted:#8a8a8a;
+  --border:#e5e5e5;
+  --accent:#2563eb;
+  --accent-hover:#1d4ed8;
+  --sub-bg:#f5f5f5;
+  --input-bg:#ffffff;
+  --red:#dc2626;
+  --green:#16a34a;
+  --yellow:#d97706;
 }
 [data-theme="dark"]{
-  --bg:#0a111f; --card-bg:#151d2e; --card-shadow:0 4px 16px rgba(0,0,0,.4);
-  --text:#e8eef7; --text-muted:#8b9bb4; --title-color:#5b9cff; --link-color:#5b9cff;
-  --border:#2a3448; --topbar-bg:#151d2e; --topbar-shadow:0 4px 16px rgba(0,0,0,.4);
-  --sub-bg:#0f1626; --input-bg:#0f1626; --input-text:#e8eef7;
+  --bg:#0f0f0f;
+  --card-bg:#1a1a1a;
+  --text:#ededed;
+  --muted:#888;
+  --border:#2a2a2a;
+  --accent:#5b9cff;
+  --accent-hover:#7ab0ff;
+  --sub-bg:#141414;
+  --input-bg:#141414;
+  --red:#f87171;
+  --green:#4ade80;
+  --yellow:#fbbf24;
 }
-*{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI','Malgun Gothic',-apple-system,sans-serif;}
-body{background:var(--bg);min-height:100vh;color:var(--text);transition:background .3s,color .3s;}
-.topbar{background:var(--topbar-bg);padding:16px 24px;box-shadow:var(--topbar-shadow);display:flex;align-items:center;gap:12px;position:sticky;top:0;z-index:10;}
-.topbar h1{font-size:18px;color:var(--title-color);display:flex;align-items:center;gap:10px;}
-.topbar h1 i{color:var(--link-color);}
-.topbar .spacer{flex:1;}
-.btn{padding:10px 20px;border:none;border-radius:8px;font-weight:600;font-size:14px;cursor:pointer;transition:0.2s;display:inline-flex;align-items:center;gap:8px;font-family:inherit;text-decoration:none;}
-.btn:disabled{opacity:.6;cursor:not-allowed;}
-.btn-primary{background:var(--link-color);color:#fff;}
-.btn-primary:hover:not(:disabled){filter:brightness(1.15);}
-.btn-secondary{background:var(--sub-bg);color:var(--text);border:1px solid var(--border);}
-.btn-secondary:hover{background:var(--border);}
-.btn-success{background:#2fa36b;color:#fff;}
-.btn-success:hover:not(:disabled){filter:brightness(1.1);}
-.btn-warning{background:#f0ad4e;color:#fff;}
-.btn-sm{padding:6px 12px;font-size:12px;}
-.btn-icon{background:transparent;border:1.5px solid var(--border);color:var(--text);width:38px;height:38px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:14px;transition:.2s;}
-.btn-icon:hover{background:var(--sub-bg);border-color:var(--link-color);color:var(--link-color);}
-.wrap{max-width:720px;margin:30px auto;padding:0 20px;}
-.card{background:var(--card-bg);border-radius:12px;padding:28px;box-shadow:var(--card-shadow);margin-bottom:20px;transition:background .3s;}
-.card h2{font-size:16px;color:var(--title-color);margin-bottom:20px;display:flex;align-items:center;gap:10px;padding-bottom:12px;border-bottom:2px solid var(--sub-bg);}
-.field{margin-bottom:16px;}
-.field label{font-size:13px;font-weight:600;color:var(--text);display:block;margin-bottom:6px;}
-.field input{width:100%;padding:11px 14px;border:1.5px solid var(--border);border-radius:8px;font-size:14px;font-family:inherit;transition:.2s;background:var(--input-bg);color:var(--input-text);}
-.field input:focus{outline:none;border-color:var(--link-color);box-shadow:0 0 0 3px rgba(30,95,168,.15);}
-.field input:disabled{background:var(--sub-bg);color:var(--text-muted);cursor:not-allowed;opacity:.9;}
-.field .hint{font-size:11px;color:var(--text-muted);margin-top:4px;}
+*{margin:0;padding:0;box-sizing:border-box;
+  font-family:-apple-system,'Segoe UI',Roboto,'Malgun Gothic',sans-serif;}
+body{
+  background:var(--bg);
+  min-height:100vh;
+  color:var(--text);
+  font-size:15px;
+  line-height:1.6;
+  transition:background .2s,color .2s;
+}
 
-/* ⚡ EMAIL VERIFIED BADGE */
-.email-badge{
-  display:inline-flex;align-items:center;gap:6px;
-  background:#e8f5ee;color:#1f7f53;
-  padding:3px 10px;border-radius:20px;
-  font-size:11px;font-weight:700;
-  margin-left:8px;vertical-align:middle;
+/* ===== TOPBAR ===== */
+.topbar{
+  background:var(--card-bg);
+  padding:14px 24px;
+  border-bottom:1px solid var(--border);
+  display:flex;
+  align-items:center;
+  gap:12px;
+  position:sticky;
+  top:0;
+  z-index:10;
 }
-.email-badge i{font-size:10px;}
-[data-theme="dark"] .email-badge{background:#1a3a28;color:#4caf7d;}
+.topbar h1{
+  font-size:16px;
+  color:var(--text);
+  font-weight:600;
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+.topbar h1 i{color:var(--muted);font-size:14px;}
+.topbar .spacer{flex:1;}
+
+/* ===== BUTTONS ===== */
+.btn{
+  padding:9px 16px;
+  border:none;
+  border-radius:8px;
+  font-weight:500;
+  font-size:13px;
+  cursor:pointer;
+  transition:.15s;
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  font-family:inherit;
+  text-decoration:none;
+}
+.btn:disabled{opacity:.6;cursor:not-allowed;}
+.btn-primary{background:var(--accent);color:#fff;}
+.btn-primary:hover:not(:disabled){background:var(--accent-hover);}
+.btn-secondary{
+  background:transparent;
+  color:var(--text);
+  border:1px solid var(--border);
+}
+.btn-secondary:hover:not(:disabled){background:var(--sub-bg);border-color:var(--muted);}
+.btn-success{background:var(--green);color:#fff;}
+.btn-success:hover:not(:disabled){filter:brightness(1.1);}
+.btn-warning{background:var(--yellow);color:#fff;}
+.btn-warning:hover:not(:disabled){filter:brightness(1.1);}
+.btn-sm{padding:7px 12px;font-size:12px;}
+
+.btn-icon{
+  background:transparent;
+  border:1px solid var(--border);
+  color:var(--muted);
+  width:36px;height:36px;border-radius:50%;
+  cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  font-size:13px;transition:.15s;
+}
+.btn-icon:hover{color:var(--text);border-color:var(--text);}
+
+/* ===== LAYOUT ===== */
+.wrap{
+  max-width:720px;
+  margin:32px auto;
+  padding:0 20px;
+}
+.card{
+  background:var(--card-bg);
+  border:1px solid var(--border);
+  border-radius:10px;
+  padding:24px;
+  margin-bottom:16px;
+}
+.card h2{
+  font-size:15px;
+  color:var(--text);
+  font-weight:600;
+  margin-bottom:20px;
+  display:flex;
+  align-items:center;
+  gap:8px;
+  padding-bottom:12px;
+  border-bottom:1px solid var(--border);
+}
+.card h2 i{color:var(--muted);font-size:14px;}
+
+/* ===== FIELDS ===== */
+.field{margin-bottom:16px;}
+.field label{
+  font-size:13px;
+  font-weight:500;
+  color:var(--text);
+  display:block;
+  margin-bottom:6px;
+}
+.field input{
+  width:100%;
+  padding:10px 14px;
+  border:1px solid var(--border);
+  border-radius:8px;
+  font-size:14px;
+  font-family:inherit;
+  transition:.15s;
+  background:var(--input-bg);
+  color:var(--text);
+}
+.field input:focus{
+  outline:none;
+  border-color:var(--accent);
+}
+.field input:disabled{
+  background:var(--sub-bg);
+  color:var(--muted);
+  cursor:not-allowed;
+}
+.field .hint{
+  font-size:11px;
+  color:var(--muted);
+  margin-top:4px;
+}
+
+/* ===== EMAIL VERIFIED BADGE ===== */
+.email-badge{
+  display:inline-flex;
+  align-items:center;
+  gap:5px;
+  background:var(--sub-bg);
+  color:var(--green);
+  border:1px solid var(--border);
+  padding:2px 9px;
+  border-radius:20px;
+  font-size:10px;
+  font-weight:600;
+  margin-left:6px;
+  vertical-align:middle;
+}
+.email-badge i{font-size:9px;}
 
 .email-wrapper{position:relative;}
 .email-wrapper .verified-icon{
-  position:absolute;right:14px;top:50%;transform:translateY(-50%);
-  color:#2fa36b;font-size:16px;pointer-events:none;
+  position:absolute;
+  right:14px;top:50%;transform:translateY(-50%);
+  color:var(--green);
+  font-size:14px;
+  pointer-events:none;
 }
 
-/* Photo upload */
-.avatar-section{display:flex;gap:24px;align-items:center;margin-bottom:20px;flex-wrap:wrap;}
+/* ===== AVATAR ===== */
+.avatar-section{
+  display:flex;
+  gap:24px;
+  align-items:center;
+  margin-bottom:20px;
+  flex-wrap:wrap;
+}
 .avatar-preview{
-  width:120px;height:120px;border-radius:50%;object-fit:cover;
-  border:4px solid var(--link-color);
-  box-shadow:0 8px 24px rgba(30,95,168,.2);
+  width:110px;height:110px;border-radius:50%;
+  object-fit:cover;
+  border:1px solid var(--border);
   background:var(--sub-bg);
   display:flex;align-items:center;justify-content:center;
-  font-size:42px;color:var(--link-color);font-weight:800;
+  font-size:38px;
+  color:var(--muted);
+  font-weight:600;
   flex-shrink:0;
 }
 .avatar-controls{flex:1;min-width:200px;}
-.avatar-controls .btn{margin-right:8px;margin-bottom:8px;}
-.upload-hint{font-size:12px;color:var(--text-muted);margin-top:8px;line-height:1.5;}
+.avatar-controls .btn{margin-right:6px;margin-bottom:6px;}
+.upload-hint{
+  font-size:12px;
+  color:var(--muted);
+  margin-top:8px;
+  line-height:1.5;
+}
 
-.msg{padding:10px 14px;border-radius:8px;font-size:13px;margin-bottom:16px;display:none;}
-.msg.err{background:#fde8e8;color:#a33;display:block;}
-.msg.ok{background:#e8f5ee;color:#1f7f53;display:block;}
-.msg.warn{background:#fff5e0;color:#8a6a1a;display:block;}
-.spinner{display:inline-block;width:16px;height:16px;border:3px solid rgba(255,255,255,.4);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;}
+/* ===== MESSAGES ===== */
+.msg{
+  padding:10px 14px;
+  border-radius:8px;
+  font-size:13px;
+  margin-bottom:16px;
+  display:none;
+  border:1px solid transparent;
+}
+.msg.err{
+  background:var(--sub-bg);
+  color:var(--red);
+  border-color:var(--red);
+  display:block;
+}
+.msg.ok{
+  background:var(--sub-bg);
+  color:var(--green);
+  border-color:var(--green);
+  display:block;
+}
+.msg.warn{
+  background:var(--sub-bg);
+  color:var(--yellow);
+  border-color:var(--yellow);
+  display:block;
+}
+
+/* ===== SPINNER ===== */
+.spinner{
+  display:inline-block;
+  width:14px;height:14px;
+  border:2px solid rgba(255,255,255,.4);
+  border-top-color:#fff;
+  border-radius:50%;
+  animation:spin .7s linear infinite;
+  vertical-align:middle;
+}
 @keyframes spin{100%{transform:rotate(360deg)}}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:600px){
+  .topbar{padding:12px 16px;}
+  .wrap{margin:20px auto;}
+  .card{padding:18px;}
+  .avatar-section{gap:16px;}
+  .avatar-preview{width:88px;height:88px;font-size:30px;}
+}
 </style>
 </head>
 <body>
@@ -91,13 +279,18 @@ body{background:var(--bg);min-height:100vh;color:var(--text);transition:backgrou
 <div class="topbar">
   <h1><i class="fas fa-user-edit"></i> Edit Profil</h1>
   <div class="spacer"></div>
-  <button class="btn-icon" onclick="toggleTheme()" title="Toggle dark mode"><i class="fas fa-moon" id="themeIcon"></i></button>
-  <a href="dashboard.html" class="btn btn-secondary btn-sm"><i class="fas fa-home"></i> Dashboard</a>
+  <button class="btn-icon" onclick="toggleTheme()" title="Ganti tema">
+    <i class="fas fa-moon" id="themeIcon"></i>
+  </button>
+  <a href="dashboard.html" class="btn btn-secondary btn-sm">
+    <i class="fas fa-home"></i> Dashboard
+  </a>
 </div>
 
 <div class="wrap">
   <div class="msg" id="msg"></div>
 
+  <!-- FOTO PROFIL -->
   <div class="card">
     <h2><i class="fas fa-camera"></i> Foto Profil</h2>
     <div class="avatar-section">
@@ -120,6 +313,7 @@ body{background:var(--bg);min-height:100vh;color:var(--text);transition:backgrou
     </div>
   </div>
 
+  <!-- DATA DIRI -->
   <div class="card">
     <h2><i class="fas fa-user"></i> Data Diri</h2>
     <div class="field">
@@ -127,7 +321,6 @@ body{background:var(--bg);min-height:100vh;color:var(--text);transition:backgrou
       <input type="text" id="profUsername" disabled>
     </div>
 
-    <!-- ⚡ EMAIL YANG SUDAH DIDAFTARKAN -->
     <div class="field">
       <label>
         Email Terdaftar
@@ -154,6 +347,7 @@ body{background:var(--bg);min-height:100vh;color:var(--text);transition:backgrou
     </button>
   </div>
 
+  <!-- GANTI PASSWORD -->
   <div class="card">
     <h2><i class="fas fa-lock"></i> Ganti Password</h2>
     <div class="field">
@@ -175,7 +369,7 @@ body{background:var(--bg);min-height:100vh;color:var(--text);transition:backgrou
 </div>
 
 <script>
-// ===== DARK MODE =====
+// ===== THEME =====
 function applyTheme(t){
   document.documentElement.setAttribute('data-theme', t);
   const icon = document.getElementById('themeIcon');
@@ -189,7 +383,7 @@ function toggleTheme(){
 }
 applyTheme(localStorage.getItem('theme') || 'light');
 
-const API = 'https://script.google.com/macros/s/AKfycbwGsUnn93GQGnCGYITxYas-ig5BGa0O1191cxp_wNjeESRYsCJZgsYXClQNKGSyDAjQ/exec';
+const API = 'https://script.google.com/macros/s/AKfycbyKZQU0IFhCrTBD1Jk7imOEuOLSBjGE962ZgSThd52ltWL_4mMvwOxNgUe3EuZA3k7e/exec';
 
 const user = JSON.parse(localStorage.getItem('user') || 'null');
 if (!user) location.href = 'login.html';
@@ -197,7 +391,6 @@ if (!user) location.href = 'login.html';
 let currentFoto = user.foto || '';
 let pendingFile = null;
 
-// ===== INIT =====
 function renderAvatar() {
   const box = document.getElementById('avatarBox');
   if (currentFoto) {
@@ -210,7 +403,6 @@ function renderAvatar() {
   }
 }
 
-// ⚡ INIT EMAIL
 function renderEmail(email) {
   const emailInput = document.getElementById('profEmail');
   const badge = document.getElementById('emailBadge');
@@ -233,7 +425,7 @@ document.getElementById('profNama').value = user.nama || user.username;
 renderAvatar();
 renderEmail(user.email || '');
 
-// ⚡ Kalau email belum ada di localStorage, ambil dari server
+// Auto-fetch email kalau belum ada di localStorage
 if (!user.email) {
   fetch(API + '?action=getProfile&username=' + encodeURIComponent(user.username) + '&t=' + Date.now())
     .then(r => r.json())
@@ -260,7 +452,11 @@ function showMsg(text, type) {
 }
 
 async function post(payload) {
-  const r = await fetch(API, { method: 'POST', headers: {'Content-Type':'text/plain;charset=utf-8'}, body: JSON.stringify(payload) });
+  const r = await fetch(API, {
+    method: 'POST',
+    headers: {'Content-Type':'text/plain;charset=utf-8'},
+    body: JSON.stringify(payload)
+  });
   const t = await r.text();
   try { return JSON.parse(t); } catch(e) { return { success:false, msg:'Response tidak valid' }; }
 }
@@ -270,7 +466,7 @@ function onFilePick(input) {
   const file = input.files[0];
   if (!file) return;
   if (file.size > 2 * 1024 * 1024) {
-    showMsg('❌ Ukuran foto maksimal 2 MB', 'err');
+    showMsg('Ukuran foto maksimal 2 MB', 'err');
     return;
   }
 
@@ -280,7 +476,7 @@ function onFilePick(input) {
     box.innerHTML = `<img src="${e.target.result}" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">`;
     pendingFile = file;
     document.getElementById('btnUploadFoto').style.display = 'inline-flex';
-    showMsg('📎 Foto siap. Klik "Simpan Foto" untuk mengupload.', 'ok');
+    showMsg('Foto siap. Klik "Simpan Foto" untuk mengupload.', 'ok');
   };
   reader.readAsDataURL(file);
 }
@@ -320,9 +516,9 @@ async function uploadFoto() {
     pendingFile = null;
     document.getElementById('btnUploadFoto').style.display = 'none';
     renderAvatar();
-    showMsg('✅ Foto profil berhasil disimpan!', 'ok');
+    showMsg('Foto profil berhasil disimpan!', 'ok');
   } catch(err) {
-    showMsg('❌ ' + err.message, 'err');
+    showMsg(err.message, 'err');
   } finally {
     btn.disabled = false;
     btn.innerHTML = original;
@@ -352,19 +548,19 @@ async function hapusFoto() {
       localStorage.setItem('user', JSON.stringify(user));
       currentFoto = '';
       renderAvatar();
-      showMsg('✅ Foto profil dihapus', 'ok');
+      showMsg('Foto profil dihapus', 'ok');
     } else {
-      showMsg('❌ ' + (res.msg || 'Gagal hapus'), 'err');
+      showMsg(res.msg || 'Gagal hapus', 'err');
     }
   } catch(err) {
-    showMsg('❌ ' + err.message, 'err');
+    showMsg(err.message, 'err');
   }
 }
 
 // ===== NAMA =====
 async function simpanNama() {
   const newNama = document.getElementById('profNama').value.trim();
-  if (!newNama) { showMsg('❌ Nama tidak boleh kosong', 'err'); return; }
+  if (!newNama) { showMsg('Nama tidak boleh kosong', 'err'); return; }
   try {
     const res = await post({
       action: 'updateProfile',
@@ -375,12 +571,12 @@ async function simpanNama() {
       user.nama = newNama;
       localStorage.setItem('user', JSON.stringify(user));
       renderAvatar();
-      showMsg('✅ Nama berhasil diupdate', 'ok');
+      showMsg('Nama berhasil diupdate', 'ok');
     } else {
-      showMsg('❌ ' + (res.msg || 'Gagal simpan'), 'err');
+      showMsg(res.msg || 'Gagal simpan', 'err');
     }
   } catch(err) {
-    showMsg('❌ ' + err.message, 'err');
+    showMsg(err.message, 'err');
   }
 }
 
@@ -390,9 +586,9 @@ async function gantiPassword() {
   const newPass = document.getElementById('newPass').value;
   const newPass2 = document.getElementById('newPass2').value;
 
-  if (!oldPass || !newPass || !newPass2) { showMsg('❌ Isi semua field', 'err'); return; }
-  if (newPass.length < 4) { showMsg('❌ Password baru minimal 4 karakter', 'err'); return; }
-  if (newPass !== newPass2) { showMsg('❌ Konfirmasi password tidak sama', 'err'); return; }
+  if (!oldPass || !newPass || !newPass2) { showMsg('Isi semua field', 'err'); return; }
+  if (newPass.length < 4) { showMsg('Password baru minimal 4 karakter', 'err'); return; }
+  if (newPass !== newPass2) { showMsg('Konfirmasi password tidak sama', 'err'); return; }
 
   try {
     const res = await post({
@@ -405,12 +601,12 @@ async function gantiPassword() {
       document.getElementById('oldPass').value = '';
       document.getElementById('newPass').value = '';
       document.getElementById('newPass2').value = '';
-      showMsg('✅ Password berhasil diganti', 'ok');
+      showMsg('Password berhasil diganti', 'ok');
     } else {
-      showMsg('❌ ' + (res.msg || 'Gagal ganti password'), 'err');
+      showMsg(res.msg || 'Gagal ganti password', 'err');
     }
   } catch(err) {
-    showMsg('❌ ' + err.message, 'err');
+    showMsg(err.message, 'err');
   }
 }
 </script>
