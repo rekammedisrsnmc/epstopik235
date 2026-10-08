@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Admin EPS-TOPIK</title>
+<title>Admin Dashboard — EPS-TOPIKU</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <style>
 /* ============================================================
@@ -72,46 +72,109 @@
   --shadow:0 1px 3px rgba(0,0,0,.5);
   --shadow-md:0 4px 12px rgba(0,0,0,.6);
 }
-*{margin:0;padding:0;box-sizing:border-box;font-family:'Inter','Segoe UI',-apple-system,sans-serif;}
+*{margin:0;padding:0;box-sizing:border-box;font-family:-apple-system,'Segoe UI',Roboto,'Malgun Gothic',sans-serif;}
 body{background:var(--bg);min-height:100vh;color:var(--text);transition:background .2s,color .2s;font-size:14px;}
 
-/* TOPBAR */
+/* ============================================================
+   TOPBAR — PERSIS KAYA DASHBOARD
+   ============================================================ */
 .topbar{
   background:var(--card-bg);
   padding:14px 24px;
   border-bottom:1px solid var(--border);
   display:flex;align-items:center;gap:12px;
-  position:sticky;top:0;z-index:10;flex-wrap:wrap;
+  position:sticky;top:0;z-index:50;flex-wrap:wrap;
 }
-.topbar h1{font-size:15px;color:var(--text);display:flex;align-items:center;gap:8px;font-weight:700;letter-spacing:.3px;}
-.topbar h1 i{color:var(--text-muted);}
+.topbar h1{
+  font-size:16px;
+  color:var(--text);
+  font-weight:600;
+  display:flex;align-items:center;gap:8px;
+}
+.topbar h1 i{color:var(--text-muted);font-size:14px;}
 .topbar .spacer{flex:1;}
+
+/* User — POLOS */
 .topbar .user{
-  font-size:12px;color:var(--text-muted);
+  font-size:13px;
+  color:var(--text-muted);
+  display:flex;align-items:center;gap:8px;
+}
+.topbar .user strong{color:var(--text);font-weight:500;}
+
+.topbar .user .user-meta{
+  display:flex;flex-direction:column;line-height:1.2;
+}
+.topbar .user .user-meta .name-row{
   display:flex;align-items:center;gap:6px;
-  padding:6px 12px;background:var(--sub-bg);border-radius:20px;
+}
+.topbar .user .user-meta .email{
+  font-size:11px;color:var(--text-muted);
+}
+
+.topbar .user .avatar-mini{
+  width:28px;height:28px;border-radius:50%;object-fit:cover;
   border:1px solid var(--border);
 }
-.topbar .user strong{color:var(--text);font-weight:600;}
-.topbar .user .badge{
-  background:var(--accent-soft);color:var(--accent);
-  font-size:10px;padding:2px 8px;border-radius:10px;font-weight:700;
-  border:1px solid var(--accent);
-}
-.topbar .btn-icon{
-  background:transparent;border:1px solid var(--border);
-  color:var(--text-muted);width:36px;height:36px;border-radius:8px;
-  cursor:pointer;display:flex;align-items:center;justify-content:center;
-  font-size:14px;transition:.15s;position:relative;text-decoration:none;
-}
-.topbar .btn-icon:hover{background:var(--sub-bg);color:var(--text);border-color:var(--border-strong);}
-.topbar .btn-icon .notif-badge{
-  position:absolute;top:-4px;right:-4px;
-  background:var(--danger);color:#fff;font-size:10px;font-weight:700;
-  min-width:18px;height:18px;padding:0 5px;border-radius:10px;
+.topbar .user .avatar-init{
+  width:28px;height:28px;border-radius:50%;
+  background:var(--sub-bg);color:var(--text);
+  border:1px solid var(--border);
   display:flex;align-items:center;justify-content:center;
-  border:2px solid var(--card-bg);
+  font-size:12px;font-weight:600;
 }
+
+.topbar .user .badge{
+  font-size:10px;
+  padding:2px 8px;
+  border-radius:10px;
+  font-weight:600;
+  border:1px solid transparent;
+  background:transparent;
+}
+.topbar .user .badge.admin{color:var(--danger);border-color:var(--danger);}
+.topbar .user .badge.premium{color:var(--gold);border-color:var(--gold);font-weight:700;}
+.topbar .user .badge.user{color:var(--text-muted);border-color:var(--border);}
+
+.topbar .btn-icon{
+  background:transparent;
+  border:1px solid var(--border);
+  color:var(--text-muted);
+  width:36px;height:36px;
+  border-radius:50%;
+  cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  font-size:13px;
+  transition:.15s;
+  position:relative;
+  text-decoration:none;
+}
+.topbar .btn-icon:hover{color:var(--text);border-color:var(--text);}
+
+.topbar .btn-dashboard{
+  background:transparent;
+  border:1px solid var(--border);
+  color:var(--text);
+  padding:7px 12px;
+  border-radius:8px;
+  font-weight:500;
+  font-size:12px;
+  text-decoration:none;
+  display:inline-flex;align-items:center;gap:6px;
+  transition:.15s;
+}
+.topbar .btn-dashboard:hover{background:var(--sub-bg);border-color:var(--text-muted);}
+
+.topbar .logout{
+  color:var(--danger);
+  text-decoration:none;
+  font-weight:500;
+  font-size:13px;
+  display:inline-flex;align-items:center;gap:6px;
+  padding:8px 12px;border-radius:8px;
+  transition:.15s;
+}
+.topbar .logout:hover{background:var(--sub-bg);}
 
 /* LAYOUT */
 .wrap{max-width:1100px;margin:24px auto;padding:0 20px;}
@@ -253,14 +316,6 @@ body{background:var(--bg);min-height:100vh;color:var(--text);transition:backgrou
   padding:2px 8px;border-radius:4px;font-size:10px;font-weight:600;
   border:1px solid var(--border);
 }
-.q-item .info .meta .tag.audio,
-.q-item .info .meta .tag.img,
-.q-item .info .meta .tag.ans,
-.q-item .info .meta .tag.kat,
-.q-item .info .meta .tag.tema,
-.q-item .info .meta .tag.instruksi{
-  background:var(--sub-bg);color:var(--text-muted);border:1px solid var(--border);
-}
 .q-item .thumb{width:56px;height:56px;object-fit:cover;border-radius:var(--radius-sm);flex-shrink:0;border:1px solid var(--border);}
 .q-item .btns{display:flex;flex-direction:column;gap:4px;flex-shrink:0;}
 
@@ -329,7 +384,7 @@ body{background:var(--bg);min-height:100vh;color:var(--text);transition:backgrou
 .user-card .info{flex:1;min-width:180px;}
 .user-card .info .name{
   font-size:14px;font-weight:700;color:var(--text);
-  margin-bottom:2px;display:flex;align-items:center;gap:8px;
+  margin-bottom:2px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;
 }
 .user-card .info .uname{font-size:12px;color:var(--text-muted);}
 .user-card .info .meta{
@@ -348,6 +403,9 @@ body{background:var(--bg);min-height:100vh;color:var(--text);transition:backgrou
 }
 .user-card .info .meta .badge-role.premium{
   background:var(--gold-soft);color:var(--gold);border-color:var(--gold);
+}
+.user-card .info .meta .badge-role.unverified{
+  background:var(--warning-soft);color:var(--warning);border-color:var(--warning);
 }
 .user-card .info .meta .badge-quota{
   padding:2px 8px;border-radius:10px;font-weight:600;font-size:10px;
@@ -510,7 +568,7 @@ input:checked + .slider:before{transform:translateX(20px);}
 }
 #chatModalBody{display:flex;flex-direction:column;gap:10px;}
 
-/* PREMIUM CARD (aksen emas tipis) */
+/* PREMIUM CARD */
 .premium-card-box{
   background:var(--card-bg);
   border:1px solid var(--gold);
@@ -537,7 +595,7 @@ input:checked + .slider:before{transform:translateX(20px);}
   .row-2,.row-4{grid-template-columns:1fr;}
   .card{padding:18px;}
   .tab-btn{font-size:12px;padding:9px 10px;min-width:auto;}
-  .topbar .user{display:none;}
+  .topbar .user .user-meta{display:none;}
   .notif-dropdown{position:fixed;top:70px;right:12px;left:12px;width:auto;}
   .wrap{padding:0 14px;}
 }
@@ -546,13 +604,21 @@ input:checked + .slider:before{transform:translateX(20px);}
 <body>
 
 <div class="topbar">
-  <h1><i class="fas fa-user-cog"></i> Admin Panel</h1>
+  <h1><i class="fas fa-user-cog"></i> Admin Dashboard</h1>
   <div class="spacer"></div>
-  <span class="user">👤 <strong id="userName">-</strong> <span class="badge">ADMIN</span></span>
+  <span class="user" id="topbarUser">
+    <span id="avatarBox"></span>
+    <div class="user-meta">
+      <div class="name-row">
+        <strong id="userName">-</strong>
+        <span class="badge admin" id="roleBadge">ADMIN</span>
+      </div>
+      <span class="email" id="userEmail">-</span>
+    </div>
+  </span>
   <div class="notif-wrapper" id="notifWrapper">
     <button class="btn-icon" onclick="toggleNotifDropdown(event)" title="Notifikasi">
       <i class="fas fa-bell"></i>
-      <span class="notif-badge" id="notifBadge" style="display:none;">0</span>
     </button>
     <div class="notif-dropdown">
       <div class="notif-head">
@@ -568,8 +634,8 @@ input:checked + .slider:before{transform:translateX(20px);}
     </div>
   </div>
   <button class="btn-icon" onclick="toggleTheme()" title="Toggle dark mode"><i class="fas fa-moon" id="themeIcon"></i></button>
-  <a href="dashboard.html" class="btn btn-secondary btn-sm"><i class="fas fa-home"></i> Dashboard</a>
-  <a href="#" onclick="logoutAdmin(event)" class="btn btn-danger btn-sm"><i class="fas fa-sign-out-alt"></i> Keluar</a>
+  <a href="dashboard.html" class="btn-dashboard"><i class="fas fa-home"></i> Dashboard</a>
+  <a href="#" onclick="logoutAdmin(event)" class="logout"><i class="fas fa-sign-out-alt"></i> Keluar</a>
 </div>
 
 <div class="wrap">
@@ -904,18 +970,18 @@ input:checked + .slider:before{transform:translateX(20px);}
     <div class="card">
       <h2><i class="fas fa-envelope"></i> Notifikasi Email</h2>
       <p style="font-size:13px;color:var(--text-muted);margin-bottom:18px;line-height:1.6;">
-        Setiap ada aktivitas penting, sistem akan kirim email otomatis ke admin. Pisahkan dengan koma kalau lebih dari 1 email.
+        <strong>Info:</strong> Fitur email notifikasi ke admin <strong>dimatikan default</strong> biar hemat kuota email Apps Script (buat OTP register aja). Notif admin tetep muncul <strong>in-app</strong> di dropdown bell atas.
       </p>
 
       <div class="form-group">
-        <label>Email Admin</label>
+        <label>Email Admin (opsional, buat test & fallback)</label>
         <input type="text" id="cfgNotifEmail" placeholder="admin@example.com, admin2@example.com">
-        <div class="hint">Contoh: budi@gmail.com, siti@gmail.com</div>
+        <div class="hint">Kalau lu mau aktifin notif email admin lagi, toggle di bawah</div>
       </div>
 
       <div class="config-row">
         <div class="info">
-          <div class="title">Notif Request Kuota</div>
+          <div class="title">Notif Request Kuota (Email)</div>
           <div class="desc">Kirim email kalau ada user yang minta tambah kuota</div>
         </div>
         <label class="switch">
@@ -926,7 +992,7 @@ input:checked + .slider:before{transform:translateX(20px);}
 
       <div class="config-row">
         <div class="info">
-          <div class="title">Notif Tiket Bantuan</div>
+          <div class="title">Notif Tiket Bantuan (Email)</div>
           <div class="desc">Kirim email kalau ada user kirim bantuan baru</div>
         </div>
         <label class="switch">
@@ -937,7 +1003,7 @@ input:checked + .slider:before{transform:translateX(20px);}
 
       <div class="config-row">
         <div class="info">
-          <div class="title">Notif User Baru Daftar</div>
+          <div class="title">Notif User Baru Daftar (Email)</div>
           <div class="desc">Kirim email kalau ada user baru yang daftar</div>
         </div>
         <label class="switch">
@@ -948,8 +1014,8 @@ input:checked + .slider:before{transform:translateX(20px);}
 
       <div class="config-row">
         <div class="info">
-          <div class="title">Notif Rate Limit</div>
-          <div class="desc">Kirim email kalau ada user kena rate limit (kemungkinan spam)</div>
+          <div class="title">Notif Rate Limit (Email)</div>
+          <div class="desc">Kirim email kalau ada user kena rate limit</div>
         </div>
         <label class="switch">
           <input type="checkbox" id="cfgNotifRateLimit">
@@ -963,11 +1029,12 @@ input:checked + .slider:before{transform:translateX(20px);}
       </div>
 
       <div style="margin-top:24px;padding:14px;background:var(--warning-soft);border-left:3px solid var(--warning);border-radius:var(--radius-sm);font-size:12px;color:var(--warning);line-height:1.6;">
-        <strong>Penting:</strong> Apps Script punya kuota email harian:
+        <strong>⚠️ Penting:</strong> Apps Script punya kuota email harian:
         <ul style="margin:8px 0 0 20px;">
           <li>Akun Gmail biasa: <strong>100 email/hari</strong></li>
           <li>Google Workspace: <strong>1,500 email/hari</strong></li>
         </ul>
+        <p style="margin-top:8px;">Kuota ini kepakai buat: <strong>OTP register</strong> (prioritas) + balasan guest chat. Notif admin default dimatiin.</p>
       </div>
     </div>
   </div>
@@ -1026,7 +1093,7 @@ input:checked + .slider:before{transform:translateX(20px);}
     <p class="desc" id="modalQuotaDesc">-</p>
     <div class="form-group">
       <label>Kuota Maksimum</label>
-      <input type="number" id="quotaInput" min="0" value="10">
+      <input type="number" id="quotaInput" min="0" value="5">
     </div>
     <div class="form-group">
       <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-weight:500;">
@@ -1147,7 +1214,36 @@ input:checked + .slider:before{transform:translateX(20px);}
 <div class="toast" id="toast"></div>
 
 <script>
-// ===== DARK MODE =====
+// ============================================================
+//  SESSION & THEME
+// ============================================================
+const SESSION_MAX_AGE = 8 * 60 * 60 * 1000; // 8 jam
+
+function touchSession() {
+  const u = JSON.parse(localStorage.getItem('user') || 'null');
+  if (u && u.loginAt) {
+    u.loginAt = Date.now();
+    localStorage.setItem('user', JSON.stringify(u));
+  }
+}
+
+function checkSession() {
+  const u = JSON.parse(localStorage.getItem('user') || 'null');
+  if (!u) { location.href = 'login.html'; return false; }
+  if (Date.now() - (u.loginAt || 0) > SESSION_MAX_AGE) {
+    localStorage.removeItem('user');
+    alert('Sesi kamu habis (8 jam). Silakan login ulang.');
+    location.href = 'login.html';
+    return false;
+  }
+  return true;
+}
+
+['click','keydown','mousemove','scroll','touchstart'].forEach(evt => {
+  document.addEventListener(evt, touchSession, { passive: true });
+});
+setInterval(touchSession, 60000);
+
 function applyTheme(t){
   document.documentElement.setAttribute('data-theme', t);
   const icon = document.getElementById('themeIcon');
@@ -1161,7 +1257,6 @@ function toggleTheme(){
 }
 applyTheme(localStorage.getItem('theme') || 'light');
 
-// ⚠️ GANTI URL INI
 const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyKZQU0IFhCrTBD1Jk7imOEuOLSBjGE962ZgSThd52ltWL_4mMvwOxNgUe3EuZA3k7e/exec';
 
 async function fetchWithTimeout(url, options = {}, timeoutMs = 90000) {
@@ -1208,10 +1303,28 @@ async function safeGet(queryString, timeoutMs = 60000) {
   return parseResponse(text);
 }
 
+// ===== INIT USER =====
+if (!checkSession()) throw new Error('No session');
+
 const _user = JSON.parse(localStorage.getItem('user') || 'null');
 if (!_user) location.href = 'login.html';
 else if (_user.role !== 'admin') { alert('⛔ Akses ditolak'); location.href = 'dashboard.html'; }
+
 document.getElementById('userName').textContent = _user.nama || _user.username;
+const _emailEl = document.getElementById('userEmail');
+if (_emailEl) _emailEl.textContent = _user.email || '';
+
+function renderAvatar() {
+  const avBox = document.getElementById('avatarBox');
+  if (!avBox) return;
+  if (_user.foto) {
+    avBox.innerHTML = `<img src="${_user.foto}" class="avatar-mini" onerror="this.outerHTML='<div class=&quot;avatar-init&quot;>${(_user.nama||_user.username).charAt(0).toUpperCase()}</div>'">`;
+  } else {
+    const init = (_user.nama || _user.username).charAt(0).toUpperCase();
+    avBox.innerHTML = `<div class="avatar-init">${init}</div>`;
+  }
+}
+renderAvatar();
 
 const CIRCLES = { '1':'①', '2':'②', '3':'③', '4':'④' };
 let data = [];
@@ -1226,6 +1339,10 @@ let currentTargetReq = null;
 let currentTargetTicket = null;
 let currentPremiumTarget = null;
 let configData = {};
+let chatPollTimer = null;
+let notifPollTimer = null;
+let currentChatRoom = null;
+let chatRooms = [];
 
 function showToast(msg, type='') {
   const t = document.getElementById('toast');
@@ -1789,6 +1906,7 @@ function renderUsers() {
     const quotaEmpty = remain === 0;
     const isAdmin = u.role === 'admin';
     const isPrem = (u.plan === 'premium');
+    const isVerified = u.emailVerified === true;
     const avatarInit = (u.nama || u.username).charAt(0).toUpperCase();
     const avatarImg = u.foto
       ? `<img src="${u.foto}" class="avatar" onerror="this.outerHTML='<div class=&quot;avatar&quot;>${avatarInit}</div>'">`
@@ -1797,6 +1915,10 @@ function renderUsers() {
     let roleBadge = `<span class="badge-role user">PELAJAR</span>`;
     if (isAdmin) roleBadge = `<span class="badge-role admin">ADMIN</span>`;
     else if (isPrem) roleBadge = `<span class="badge-role premium">PREMIUM</span>`;
+
+    const verifiedBadge = isVerified
+      ? ''
+      : `<span class="badge-role unverified"><i class="fas fa-exclamation-triangle"></i> BELUM VERIFIKASI</span>`;
 
     html += `
       <div class="user-card">
@@ -1807,6 +1929,7 @@ function renderUsers() {
             <div class="uname">@${u.username}</div>
             <div class="meta">
               ${roleBadge}
+              ${verifiedBadge}
               <span class="badge-quota ${quotaEmpty ? 'empty' : ''}">Kuota: ${remain}/${u.quotaMax}</span>
               <span>${u.createdAt}</span>
               ${u.premiumUntil ? `<span style="color:var(--gold);font-weight:700;font-size:10px;">s/d ${u.premiumUntil}</span>` : ''}
@@ -1814,6 +1937,7 @@ function renderUsers() {
             </div>
           </div>
           <div class="actions-right">
+            ${!isVerified ? `<button class="btn btn-success btn-xs" onclick="verifyUser('${u.username}')" title="Verifikasi manual"><i class="fas fa-check-circle"></i> Verifikasi</button>` : ''}
             ${u.hasPlain ? `<button class="btn btn-purple btn-xs" onclick="openViewPw('${u.username}')"><i class="fas fa-eye"></i> Pass</button>` : ''}
             <button class="btn btn-warning btn-xs" onclick="openResetPw('${u.username}')"><i class="fas fa-key"></i> Reset</button>
             <button class="btn btn-primary btn-xs" onclick="openSetQuota('${u.username}', ${u.quotaMax})"><i class="fas fa-edit"></i> Kuota</button>
@@ -1824,6 +1948,25 @@ function renderUsers() {
       </div>`;
   });
   box.innerHTML = html;
+}
+
+async function verifyUser(username) {
+  if (!confirm('Verifikasi manual user ' + username + '?\n\nUser akan bisa login tanpa harus verifikasi email.')) return;
+  try {
+    const res = await safePost({
+      action: 'adminVerifyUser',
+      username: _user.username,
+      targetUsername: username
+    });
+    if (res.success) {
+      showToast('User ' + username + ' berhasil diverifikasi', 'success');
+      setTimeout(loadUsers, 500);
+    } else {
+      alert(res.msg || 'Gagal verifikasi');
+    }
+  } catch(err) {
+    alert(err.message);
+  }
 }
 
 function openViewPw(username) {
@@ -1945,7 +2088,6 @@ async function deleteUser(username) {
 
 // ===== PREMIUM =====
 function openPremiumActivate(username, requestId) {
-  // 🔧 FIX: sanitasi requestId
   const cleanReqId = (requestId && requestId !== 'null' && requestId !== 'undefined') ? requestId : null;
   currentPremiumTarget = {
     username: username,
@@ -2019,7 +2161,6 @@ async function doActivatePremium() {
   }
 
   try {
-    // 🔧 FIX: kirim requestId HANYA kalau valid
     const payload = {
       action: 'adminActivatePremium',
       username: _user.username,
@@ -2035,7 +2176,6 @@ async function doActivatePremium() {
       closeModal('modalPremium');
       showToast('Premium aktif ' + days + ' hari untuk ' + username, 'success');
 
-      // 🔧 FIX: pindah filter ke "all" biar keliatan statusnya
       const filterSel = document.getElementById('filterPremiumStatus');
       if (filterSel) filterSel.value = 'all';
 
@@ -2067,9 +2207,11 @@ function loadPremiumRequests() {
   safeGet('action=getRequests&status=' + status + '&adminUsername=' + encodeURIComponent(_user.username), 60000)
     .then(res => {
       if (res.success) {
-        const list = (res.requests || []).filter(r =>
-          r.status === 'pending_premium' || (r.pesan || '').includes('[PREMIUM')
-        );
+        let list = res.requests || [];
+        list = list.filter(r => String(r.pesan || '').includes('[PREMIUM'));
+        if (status === 'pending_premium') {
+          list = list.filter(r => r.status === 'pending_premium');
+        }
         renderPremiumRequests(list);
         updatePremiumBadge(list);
       } else {
@@ -2542,32 +2684,6 @@ async function testEmail() {
   } catch(err) { alert(err.message); }
 }
 
-// ===== NOTIF BADGE =====
-function updateNotifBadge() {
-  safeGet('action=getUnreadCount&username=' + encodeURIComponent(_user.username), 30000)
-    .then(res => {
-      if (res.success) {
-        const badge = document.getElementById('notifBadge');
-        if (!badge) return;
-        if (res.count > 0) {
-          badge.textContent = res.count > 99 ? '99+' : res.count;
-          badge.style.display = 'flex';
-        } else {
-          badge.style.display = 'none';
-        }
-      }
-    })
-    .catch(() => {});
-}
-setInterval(updateNotifBadge, 30000);
-
-function logoutAdmin(e) {
-  e.preventDefault();
-  if (!confirm('Yakin mau keluar?')) return;
-  localStorage.removeItem('user');
-  location.href = 'login.html';
-}
-
 // ===== NOTIF DROPDOWN =====
 function toggleNotifDropdown(e) {
   e.preventDefault();
@@ -2575,20 +2691,49 @@ function toggleNotifDropdown(e) {
   const wrapper = document.getElementById('notifWrapper');
   const isOpen = wrapper.classList.contains('open');
   document.querySelectorAll('.notif-wrapper.open').forEach(w => w.classList.remove('open'));
-  if (!isOpen) { wrapper.classList.add('open'); loadNotifDropdown(); }
+  if (!isOpen) {
+    wrapper.classList.add('open');
+    loadNotifDropdown();
+    startNotifPoll();
+  } else {
+    stopNotifPoll();
+  }
 }
+
+function startNotifPoll() {
+  stopNotifPoll();
+  notifPollTimer = setInterval(() => {
+    const wrapper = document.getElementById('notifWrapper');
+    if (wrapper && wrapper.classList.contains('open')) {
+      loadNotifDropdown(true);
+    } else {
+      stopNotifPoll();
+    }
+  }, 15000);
+}
+
+function stopNotifPoll() {
+  if (notifPollTimer) {
+    clearInterval(notifPollTimer);
+    notifPollTimer = null;
+  }
+}
+
 document.addEventListener('click', function(e) {
   const wrapper = document.getElementById('notifWrapper');
-  if (wrapper && !wrapper.contains(e.target)) wrapper.classList.remove('open');
+  if (wrapper && !wrapper.contains(e.target)) {
+    wrapper.classList.remove('open');
+    stopNotifPoll();
+  }
 });
 
-function loadNotifDropdown() {
+function loadNotifDropdown(silent) {
   const body = document.getElementById('notifBody');
-  body.innerHTML = `<div class="notif-empty"><i class="fas fa-spinner fa-spin"></i> Memuat...</div>`;
+  if (!silent) body.innerHTML = `<div class="notif-empty"><i class="fas fa-spinner fa-spin"></i> Memuat...</div>`;
   safeGet('action=getNotifications&username=' + encodeURIComponent(_user.username), 30000)
     .then(res => {
       if (!res.success || !res.notifications) {
-        body.innerHTML = `<div class="notif-empty"><i class="fas fa-bell-slash"></i> Gagal memuat</div>`;
+        if (!silent) body.innerHTML = `<div class="notif-empty"><i class="fas fa-bell-slash"></i> Gagal memuat</div>`;
         return;
       }
       const list = res.notifications.slice(0, 10);
@@ -2618,15 +2763,16 @@ function loadNotifDropdown() {
       body.innerHTML = html;
     })
     .catch(() => {
-      body.innerHTML = `<div class="notif-empty"><i class="fas fa-exclamation-triangle"></i> Gagal memuat</div>`;
+      if (!silent) body.innerHTML = `<div class="notif-empty"><i class="fas fa-exclamation-triangle"></i> Gagal memuat</div>`;
     });
 }
 
 function handleNotifClick(e, notifId, url) {
   e.stopPropagation();
   safePost({ action: 'markNotifRead', username: _user.username, notifId })
-    .then(() => updateNotifBadge()).catch(() => {});
+    .then(() => loadNotifDropdown(true)).catch(() => {});
   document.getElementById('notifWrapper').classList.remove('open');
+  stopNotifPoll();
   if (url && url !== 'notifikasi.html') {
     setTimeout(() => location.href = url, 200);
   } else {
@@ -2637,84 +2783,47 @@ function handleNotifClick(e, notifId, url) {
 function markAllNotifRead(e) {
   e.stopPropagation();
   safePost({ action: 'markAllNotifRead', username: _user.username })
-    .then(() => { loadNotifDropdown(); updateNotifBadge(); })
+    .then(() => { loadNotifDropdown(); })
     .catch(() => {});
 }
 
 // ============================================================
 //  CHAT ADMIN
 // ============================================================
-let chatRooms = [];
-let currentChatRoom = null;
-let chatPollTimer = null;
-let lastNotifCount = 0;
-
-async function requestNotifPermission() {
-  if (!('Notification' in window)) return false;
-  if (Notification.permission === 'granted') return true;
-  if (Notification.permission === 'denied') return false;
-  const perm = await Notification.requestPermission();
-  return perm === 'granted';
+function escapeAttr(t) {
+  return String(t == null ? '' : t)
+    .replace(/\\/g, '\\\\')
+    .replace(/'/g, "\\'")
+    .replace(/"/g, '&quot;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;');
 }
 
-function showPushNotif(title, body, tag) {
-  if (!('Notification' in window)) return;
-  if (Notification.permission !== 'granted') return;
-  try {
-    const n = new Notification(title, {
-      body: body,
-      icon: 'https://cdn-icons-png.flaticon.com/512/2965/2965345.png',
-      tag: tag || 'chat-notif',
-      badge: 'https://cdn-icons-png.flaticon.com/512/2965/2965345.png'
-    });
-    setTimeout(() => n.close(), 8000);
-    n.onclick = function() {
-      window.focus();
-      if (tag && tag.startsWith('chat:')) {
-        const roomKey = tag.replace('chat:', '');
-        const room = chatRooms.find(r => r.roomKey === roomKey);
-        if (room) openAdminChat(room.roomKey, room.userId, room.nama, room.foto);
-      }
-      n.close();
-    };
-  } catch(e) { console.warn('Push notif gagal:', e); }
+function parseMsg(pesan) {
+  if (typeof pesan === 'string' && pesan.startsWith('IMG||')) {
+    const parts = pesan.split('||');
+    return { tipe: 'image', url: parts[1] || '', caption: parts.slice(2).join('||') || '' };
+  }
+  return { tipe: 'text', url: '', caption: pesan };
 }
 
-function detectNewChats(oldRooms, newRooms) {
-  const oldMap = {};
-  oldRooms.forEach(r => { oldMap[r.roomKey] = Number(r.unread) || 0; });
-  newRooms.forEach(r => {
-    const oldUnread = oldMap[r.roomKey] || 0;
-    const newUnread = Number(r.unread) || 0;
-    if (newUnread > oldUnread) {
-      showPushNotif(
-        'Chat baru dari ' + (r.nama || r.userId),
-        r.lastPesan || 'Ada pesan baru',
-        'chat:' + r.roomKey
-      );
-    }
-  });
-}
-
-function loadChatRooms() {
+function loadChatRooms(silent) {
   const box = document.getElementById('chatRoomList');
   if (!box) return;
-  box.innerHTML = `<div class="loading-block"><div class="spinner dark"></div><p style="margin-top:10px;">Memuat chat...</p></div>`;
+  if (!silent) box.innerHTML = `<div class="loading-block"><div class="spinner dark"></div><p style="margin-top:10px;">Memuat chat...</p></div>`;
 
   safeGet('action=getChatList&username=' + encodeURIComponent(_user.username) + '&isAdmin=true', 60000)
     .then(res => {
       if (!res.success) {
-        box.innerHTML = `<div class="empty-block"><p>${res.msg || 'Gagal memuat'}</p></div>`;
+        if (!silent) box.innerHTML = `<div class="empty-block"><p>${res.msg || 'Gagal memuat'}</p></div>`;
         return;
       }
-      const newRooms = res.rooms || [];
-      if (chatRooms.length > 0) detectNewChats(chatRooms, newRooms);
-      chatRooms = newRooms;
+      chatRooms = res.rooms || [];
       renderChatRooms();
     })
     .catch(err => {
       console.error('[chat] error:', err);
-      box.innerHTML = `<div class="empty-block"><i class="fas fa-exclamation-triangle"></i><p>Gagal memuat chat</p></div>`;
+      if (!silent) box.innerHTML = `<div class="empty-block"><i class="fas fa-exclamation-triangle"></i><p>Gagal memuat chat</p></div>`;
     });
 }
 
@@ -2783,15 +2892,6 @@ function renderChatRooms(filteredRooms) {
   box.innerHTML = html;
 }
 
-function escapeAttr(t) {
-  return String(t == null ? '' : t)
-    .replace(/\\/g, '\\\\')
-    .replace(/'/g, "\\'")
-    .replace(/"/g, '&quot;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;');
-}
-
 let searchDebounce = null;
 function onSearchChat(val) {
   clearTimeout(searchDebounce);
@@ -2849,14 +2949,6 @@ function openAdminChat(roomKey, userId, nama, foto) {
     const inp = document.getElementById('chatModalInput');
     if (inp) inp.focus();
   }, 300);
-}
-
-function parseMsg(pesan) {
-  if (typeof pesan === 'string' && pesan.startsWith('IMG||')) {
-    const parts = pesan.split('||');
-    return { tipe: 'image', url: parts[1] || '', caption: parts.slice(2).join('||') || '' };
-  }
-  return { tipe: 'text', url: '', caption: pesan };
 }
 
 function loadAdminChatMessages(silent) {
@@ -2979,7 +3071,7 @@ async function sendAdminChat() {
 
     if (res.success) {
       loadAdminChatMessages(true);
-      setTimeout(loadChatRooms, 500);
+      setTimeout(() => loadChatRooms(true), 500);
     } else {
       const t = document.getElementById(tempId);
       if (t) t.remove();
@@ -3057,7 +3149,7 @@ async function uploadAndSendImage(file) {
 
     if (sendRes.success) {
       loadAdminChatMessages(true);
-      setTimeout(loadChatRooms, 500);
+      setTimeout(() => loadChatRooms(true), 500);
     } else throw new Error(sendRes.msg || 'Gagal kirim');
   } catch(err) {
     const t = document.getElementById(tempId);
@@ -3094,13 +3186,19 @@ function updateChatTabBadge() {
     })
     .catch(() => {});
 }
-setInterval(updateChatTabBadge, 30000);
+setInterval(updateChatTabBadge, 5000);
+
+function logoutAdmin(e) {
+  e.preventDefault();
+  if (!confirm('Yakin mau keluar?')) return;
+  localStorage.removeItem('user');
+  location.href = 'login.html';
+}
 
 // ===== INIT =====
 onSectionChange();
 onKategoriChange();
 loadData();
-updateNotifBadge();
 updateChatTabBadge();
 
 safeGet('action=getRequests&status=pending&adminUsername=' + encodeURIComponent(_user.username), 30000)
