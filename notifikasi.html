@@ -16,12 +16,12 @@
   --accent-hover:#1d4ed8;
   --sub-bg:#f5f5f5;
 
-  /* warna aksen tipis per tipe notif */
   --c-bantuan:#d97706;
   --c-balasan:#16a34a;
   --c-kuota:#7c3aed;
   --c-sistem:#2563eb;
   --c-request:#dc2626;
+  --c-chat:#0d9488;
 }
 [data-theme="dark"]{
   --bg:#0f0f0f;
@@ -38,6 +38,7 @@
   --c-kuota:#a78bfa;
   --c-sistem:#5b9cff;
   --c-request:#f87171;
+  --c-chat:#2dd4bf;
 }
 *{margin:0;padding:0;box-sizing:border-box;
   font-family:-apple-system,'Segoe UI',Roboto,'Malgun Gothic',sans-serif;}
@@ -50,7 +51,7 @@ body{
   transition:background .2s,color .2s;
 }
 
-/* ===== TOPBAR ===== */
+/* ===== TOPBAR (disamain kaya dashboard) ===== */
 .topbar{
   background:var(--card-bg);
   padding:14px 24px;
@@ -64,20 +65,57 @@ body{
   flex-wrap:wrap;
 }
 .topbar h1{
-  font-size:16px;
+  font-size:15px;
   color:var(--text);
-  font-weight:600;
+  font-weight:700;
   display:flex;
   align-items:center;
   gap:8px;
+  letter-spacing:.3px;
 }
 .topbar h1 i{color:var(--muted);font-size:14px;}
 .topbar .spacer{flex:1;}
 .topbar .user{
-  font-size:13px;
+  font-size:12px;
   color:var(--muted);
+  display:flex;
+  align-items:center;
+  gap:8px;
+  padding:6px 12px;
+  background:var(--sub-bg);
+  border-radius:20px;
+  border:1px solid var(--border);
 }
-.topbar .user strong{color:var(--text);font-weight:500;}
+.topbar .user strong{color:var(--text);font-weight:600;}
+.topbar .user .user-meta{
+  display:flex;flex-direction:column;line-height:1.2;
+}
+.topbar .user .user-meta .name-row{
+  display:flex;align-items:center;gap:6px;
+}
+.topbar .user .user-meta .email{
+  font-size:10px;color:var(--muted);
+}
+.topbar .user .avatar-mini{
+  width:28px;height:28px;border-radius:50%;object-fit:cover;
+  border:1px solid var(--border);
+}
+.topbar .user .avatar-init{
+  width:28px;height:28px;border-radius:50%;
+  background:var(--sub-bg);color:var(--text);
+  border:1px solid var(--border);
+  display:flex;align-items:center;justify-content:center;
+  font-size:12px;font-weight:600;
+}
+.topbar .user .badge{
+  font-size:10px;padding:2px 8px;border-radius:10px;font-weight:700;
+  border:1px solid transparent;
+}
+.topbar .user .badge.admin{background:transparent;color:var(--c-request);border-color:var(--c-request);}
+.topbar .user .badge.user{background:transparent;color:var(--muted);border-color:var(--border);}
+.topbar .user .badge.premium{
+  background:transparent;color:#d97706;border-color:#d97706;
+}
 
 /* ===== BUTTONS ===== */
 .btn{
@@ -188,6 +226,7 @@ body{
 .notif-item.tipe-kuota{border-left-color:var(--c-kuota);}
 .notif-item.tipe-sistem{border-left-color:var(--c-sistem);}
 .notif-item.tipe-request{border-left-color:var(--c-request);}
+.notif-item.tipe-chat{border-left-color:var(--c-chat);}
 
 .notif-item .icon-box{
   width:36px;height:36px;
@@ -206,6 +245,7 @@ body{
 .notif-item.tipe-kuota .icon-box{color:var(--c-kuota);}
 .notif-item.tipe-sistem .icon-box{color:var(--c-sistem);}
 .notif-item.tipe-request .icon-box{color:var(--c-request);}
+.notif-item.tipe-chat .icon-box{color:var(--c-chat);}
 
 .notif-item .content{flex:1;min-width:0;}
 .notif-item .content h3{
@@ -247,7 +287,6 @@ body{
   border-radius:50%;
 }
 
-/* btn hapus pakai gaya secondary kecil */
 .btn-danger{
   background:transparent;
   color:var(--muted);
@@ -297,7 +336,7 @@ body{
 /* ===== RESPONSIVE ===== */
 @media(max-width:600px){
   .topbar{padding:12px 16px;}
-  .topbar .user{display:none;}
+  .topbar .user .user-meta{display:none;}
   .notif-item{flex-direction:column;gap:10px;}
   .notif-item .actions{flex-direction:row;width:100%;}
   .notif-item .actions .btn{flex:1;justify-content:center;}
@@ -310,7 +349,16 @@ body{
 <div class="topbar">
   <h1><i class="fas fa-bell"></i> Notifikasi</h1>
   <div class="spacer"></div>
-  <span class="user">👤 <strong id="userName">-</strong></span>
+  <span class="user" id="topbarUser">
+    <span id="avatarBox"></span>
+    <div class="user-meta">
+      <div class="name-row">
+        <strong id="userName">-</strong>
+        <span class="badge" id="userRole">-</span>
+      </div>
+      <span class="email" id="userEmail">-</span>
+    </div>
+  </span>
   <button class="btn-icon" onclick="toggleTheme()" title="Ganti tema">
     <i class="fas fa-moon" id="themeIcon"></i>
   </button>
@@ -341,7 +389,36 @@ body{
 </div>
 
 <script>
-// ===== THEME =====
+// ============================================================
+//  SESSION & THEME
+// ============================================================
+const SESSION_MAX_AGE = 8 * 60 * 60 * 1000; // 8 jam
+
+function touchSession() {
+  const u = JSON.parse(localStorage.getItem('user') || 'null');
+  if (u && u.loginAt) {
+    u.loginAt = Date.now();
+    localStorage.setItem('user', JSON.stringify(u));
+  }
+}
+
+function checkSession() {
+  const u = JSON.parse(localStorage.getItem('user') || 'null');
+  if (!u) { location.href = 'login.html'; return false; }
+  if (Date.now() - (u.loginAt || 0) > SESSION_MAX_AGE) {
+    localStorage.removeItem('user');
+    alert('Sesi kamu habis (8 jam). Silakan login ulang.');
+    location.href = 'login.html';
+    return false;
+  }
+  return true;
+}
+
+['click','keydown','mousemove','scroll','touchstart'].forEach(evt => {
+  document.addEventListener(evt, touchSession, { passive: true });
+});
+setInterval(touchSession, 60000);
+
 function applyTheme(t){
   document.documentElement.setAttribute('data-theme', t);
   const icon = document.getElementById('themeIcon');
@@ -355,12 +432,45 @@ function toggleTheme(){
 }
 applyTheme(localStorage.getItem('theme') || 'light');
 
-// ⚠️ GANTI URL INI
-const API = 'https://script.google.com/macros/s/AKfycbxCS8Y8fMgZpSmGNBuBwJMERbXuf4CGTQAH2GKXMnIskJKJFUoHg4l3UNrt9YLZ59il/exec';
+const API = 'https://script.google.com/macros/s/AKfycbyQ4fuG4bapGT2qDD078qMC2l6oNOjcCTqYkPqO7PDY6g9b7HNdSOk2ZGrKHL4OmJ8j/exec';
+
+if (!checkSession()) throw new Error('Session expired');
 
 let user = JSON.parse(localStorage.getItem('user') || 'null');
 if (!user) location.href = 'login.html';
+
+// ===== Render topbar (disamain kaya dashboard) =====
 document.getElementById('userName').textContent = user.nama || user.username;
+const emailEl = document.getElementById('userEmail');
+if (emailEl) emailEl.textContent = user.email || '';
+
+const roleBadge = document.getElementById('userRole');
+if (user.role === 'admin') {
+  roleBadge.textContent = 'ADMIN';
+  roleBadge.className = 'badge admin';
+} else {
+  const isPrem = (String(user.plan || '').toLowerCase() === 'premium') &&
+                 user.premiumUntil && new Date(user.premiumUntil).getTime() > Date.now();
+  if (isPrem) {
+    roleBadge.innerHTML = '<i class="fas fa-crown"></i> PREMIUM';
+    roleBadge.className = 'badge premium';
+  } else {
+    roleBadge.textContent = 'PELAJAR';
+    roleBadge.className = 'badge user';
+  }
+}
+
+function renderAvatar() {
+  const avBox = document.getElementById('avatarBox');
+  if (!avBox) return;
+  if (user.foto) {
+    avBox.innerHTML = `<img src="${user.foto}" class="avatar-mini" onerror="this.outerHTML='<div class=&quot;avatar-init&quot;>${(user.nama||user.username).charAt(0).toUpperCase()}</div>'">`;
+  } else {
+    const init = (user.nama || user.username).charAt(0).toUpperCase();
+    avBox.innerHTML = `<div class="avatar-init">${init}</div>`;
+  }
+}
+renderAvatar();
 
 let allNotifs = [];
 let currentFilter = 'all';
@@ -422,6 +532,7 @@ function renderList() {
     'kuota': 'fa-ticket-alt',
     'sistem': 'fa-info-circle',
     'request': 'fa-paper-plane',
+    'chat': 'fa-comments',
     'info': 'fa-bell'
   };
 
@@ -468,7 +579,6 @@ async function markRead(notifId, silent) {
     const idx = allNotifs.findIndex(n => n.id === notifId);
     if (idx >= 0) allNotifs[idx].isRead = true;
     if (!silent) renderList();
-    if (window.parent && window.parent.updateNotifBadge) window.parent.updateNotifBadge();
   } catch(e) {}
 }
 
@@ -485,7 +595,6 @@ async function markAllRead() {
     });
     allNotifs.forEach(n => n.isRead = true);
     renderList();
-    if (window.parent && window.parent.updateNotifBadge) window.parent.updateNotifBadge();
   } catch(e) { alert('Gagal: ' + e.message); }
 }
 
@@ -499,7 +608,6 @@ async function deleteNotif(notifId) {
     });
     allNotifs = allNotifs.filter(n => n.id !== notifId);
     renderList();
-    if (window.parent && window.parent.updateNotifBadge) window.parent.updateNotifBadge();
   } catch(e) { alert('Gagal: ' + e.message); }
 }
 
