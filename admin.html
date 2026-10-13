@@ -6,9 +6,6 @@
 <title>Admin Dashboard — EPS-TOPIKU</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <style>
-/* ============================================================
-   MINIMALIST THEME — 1 accent color (biru), no gradients
-   ============================================================ */
 :root{
   --accent:#2563eb;
   --accent-hover:#1d4ed8;
@@ -75,9 +72,7 @@
 *{margin:0;padding:0;box-sizing:border-box;font-family:-apple-system,'Segoe UI',Roboto,'Malgun Gothic',sans-serif;}
 body{background:var(--bg);min-height:100vh;color:var(--text);transition:background .2s,color .2s;font-size:14px;}
 
-/* ============================================================
-   TOPBAR — PERSIS KAYA DASHBOARD
-   ============================================================ */
+/* TOPBAR */
 .topbar{
   background:var(--card-bg);
   padding:14px 24px;
@@ -85,37 +80,15 @@ body{background:var(--bg);min-height:100vh;color:var(--text);transition:backgrou
   display:flex;align-items:center;gap:12px;
   position:sticky;top:0;z-index:50;flex-wrap:wrap;
 }
-.topbar h1{
-  font-size:16px;
-  color:var(--text);
-  font-weight:600;
-  display:flex;align-items:center;gap:8px;
-}
+.topbar h1{font-size:16px;color:var(--text);font-weight:600;display:flex;align-items:center;gap:8px;}
 .topbar h1 i{color:var(--text-muted);font-size:14px;}
 .topbar .spacer{flex:1;}
-
-/* User — POLOS */
-.topbar .user{
-  font-size:13px;
-  color:var(--text-muted);
-  display:flex;align-items:center;gap:8px;
-}
+.topbar .user{font-size:13px;color:var(--text-muted);display:flex;align-items:center;gap:8px;}
 .topbar .user strong{color:var(--text);font-weight:500;}
-
-.topbar .user .user-meta{
-  display:flex;flex-direction:column;line-height:1.2;
-}
-.topbar .user .user-meta .name-row{
-  display:flex;align-items:center;gap:6px;
-}
-.topbar .user .user-meta .email{
-  font-size:11px;color:var(--text-muted);
-}
-
-.topbar .user .avatar-mini{
-  width:28px;height:28px;border-radius:50%;object-fit:cover;
-  border:1px solid var(--border);
-}
+.topbar .user .user-meta{display:flex;flex-direction:column;line-height:1.2;}
+.topbar .user .user-meta .name-row{display:flex;align-items:center;gap:6px;}
+.topbar .user .user-meta .email{font-size:11px;color:var(--text-muted);}
+.topbar .user .avatar-mini{width:28px;height:28px;border-radius:50%;object-fit:cover;border:1px solid var(--border);}
 .topbar .user .avatar-init{
   width:28px;height:28px;border-radius:50%;
   background:var(--sub-bg);color:var(--text);
@@ -123,55 +96,30 @@ body{background:var(--bg);min-height:100vh;color:var(--text);transition:backgrou
   display:flex;align-items:center;justify-content:center;
   font-size:12px;font-weight:600;
 }
-
 .topbar .user .badge{
-  font-size:10px;
-  padding:2px 8px;
-  border-radius:10px;
-  font-weight:600;
-  border:1px solid transparent;
-  background:transparent;
+  font-size:10px;padding:2px 8px;border-radius:10px;font-weight:600;
+  border:1px solid transparent;background:transparent;
 }
 .topbar .user .badge.admin{color:var(--danger);border-color:var(--danger);}
 .topbar .user .badge.premium{color:var(--gold);border-color:var(--gold);font-weight:700;}
 .topbar .user .badge.user{color:var(--text-muted);border-color:var(--border);}
-
 .topbar .btn-icon{
-  background:transparent;
-  border:1px solid var(--border);
-  color:var(--text-muted);
-  width:36px;height:36px;
-  border-radius:50%;
-  cursor:pointer;
-  display:flex;align-items:center;justify-content:center;
-  font-size:13px;
-  transition:.15s;
-  position:relative;
-  text-decoration:none;
+  background:transparent;border:1px solid var(--border);
+  color:var(--text-muted);width:36px;height:36px;border-radius:50%;
+  cursor:pointer;display:flex;align-items:center;justify-content:center;
+  font-size:13px;transition:.15s;position:relative;text-decoration:none;
 }
 .topbar .btn-icon:hover{color:var(--text);border-color:var(--text);}
-
 .topbar .btn-dashboard{
-  background:transparent;
-  border:1px solid var(--border);
-  color:var(--text);
-  padding:7px 12px;
-  border-radius:8px;
-  font-weight:500;
-  font-size:12px;
-  text-decoration:none;
-  display:inline-flex;align-items:center;gap:6px;
+  background:transparent;border:1px solid var(--border);color:var(--text);
+  padding:7px 12px;border-radius:8px;font-weight:500;font-size:12px;
+  text-decoration:none;display:inline-flex;align-items:center;gap:6px;
   transition:.15s;
 }
 .topbar .btn-dashboard:hover{background:var(--sub-bg);border-color:var(--text-muted);}
-
 .topbar .logout{
-  color:var(--danger);
-  text-decoration:none;
-  font-weight:500;
-  font-size:13px;
-  display:inline-flex;align-items:center;gap:6px;
-  padding:8px 12px;border-radius:8px;
+  color:var(--danger);text-decoration:none;font-weight:500;font-size:13px;
+  display:inline-flex;align-items:center;gap:6px;padding:8px 12px;border-radius:8px;
   transition:.15s;
 }
 .topbar .logout:hover{background:var(--sub-bg);}
@@ -186,7 +134,7 @@ body{background:var(--bg);min-height:100vh;color:var(--text);transition:backgrou
   margin-bottom:20px;flex-wrap:wrap;
 }
 .tab-btn{
-  flex:1;min-width:130px;padding:10px 16px;
+  flex:1;min-width:120px;padding:10px 14px;
   border:none;background:transparent;color:var(--text-muted);
   font-weight:600;font-size:13px;cursor:pointer;border-radius:var(--radius-sm);
   font-family:inherit;transition:.15s;
@@ -318,6 +266,44 @@ body{background:var(--bg);min-height:100vh;color:var(--text);transition:backgrou
 }
 .q-item .thumb{width:56px;height:56px;object-fit:cover;border-radius:var(--radius-sm);flex-shrink:0;border:1px solid var(--border);}
 .q-item .btns{display:flex;flex-direction:column;gap:4px;flex-shrink:0;}
+
+/* FLASHCARD LIST */
+.fc-item{
+  border:1px solid var(--border);border-radius:var(--radius-sm);
+  padding:14px 16px;margin-bottom:8px;
+  display:flex;gap:14px;align-items:center;transition:.15s;
+  background:var(--card-bg);
+}
+.fc-item:hover{border-color:var(--border-strong);}
+.fc-item .num{
+  background:var(--sub-bg);color:var(--text-muted);
+  width:30px;height:30px;border-radius:6px;
+  display:flex;align-items:center;justify-content:center;
+  font-weight:700;font-size:13px;flex-shrink:0;
+  border:1px solid var(--border);
+}
+.fc-item .info{flex:1;min-width:0;}
+.fc-item .info .pair{
+  display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:4px;
+}
+.fc-item .info .pair .indo{
+  font-size:14px;font-weight:700;color:var(--text);
+}
+.fc-item .info .pair .arrow{color:var(--text-faint);font-size:12px;}
+.fc-item .info .pair .korea{
+  font-size:14px;font-weight:700;color:var(--accent);
+  font-family:'Malgun Gothic','Apple SD Gothic Neo',sans-serif;
+}
+.fc-item .info .meta{
+  font-size:11px;color:var(--text-muted);
+  display:flex;gap:8px;flex-wrap:wrap;align-items:center;
+}
+.fc-item .info .meta .tag{
+  background:var(--sub-bg);color:var(--text-muted);
+  padding:2px 8px;border-radius:4px;font-size:10px;font-weight:600;
+  border:1px solid var(--border);
+}
+.fc-item .btns{display:flex;gap:6px;flex-shrink:0;}
 
 /* JAWABAN RADIO */
 .jawaban-radios{display:flex;gap:8px;flex-wrap:wrap;}
@@ -590,6 +576,61 @@ input:checked + .slider:before{transform:translateX(20px);}
   margin-top:12px;display:flex;gap:8px;flex-wrap:wrap;
 }
 
+/* BADGE CARD */
+.badge-user-card{
+  border:1px solid var(--border);border-radius:var(--radius-sm);
+  padding:14px;margin-bottom:8px;background:var(--card-bg);transition:.15s;
+}
+.badge-user-card:hover{border-color:var(--border-strong);}
+.badge-user-card .row{display:flex;align-items:center;gap:12px;flex-wrap:wrap;}
+.badge-user-card .badge-emoji{
+  font-size:26px;
+  flex-shrink:0;
+  filter:drop-shadow(0 2px 4px rgba(0,0,0,.15));
+}
+.badge-user-card .info{flex:1;min-width:180px;}
+.badge-user-card .info .title{
+  font-size:14px;font-weight:700;color:var(--text);
+  margin-bottom:2px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;
+}
+.badge-user-card .info .uname{font-size:12px;color:var(--text-muted);}
+.badge-user-card .info .meta{
+  font-size:11px;color:var(--text-muted);margin-top:4px;
+  display:flex;gap:8px;flex-wrap:wrap;align-items:center;
+}
+.badge-user-card .info .meta .tag{
+  padding:2px 8px;border-radius:10px;font-weight:600;font-size:10px;
+  border:1px solid var(--border);background:var(--sub-bg);color:var(--text-muted);
+}
+.badge-user-card .info .meta .tag.permanent{
+  background:var(--accent-soft);color:var(--accent);border-color:var(--accent);
+}
+.badge-user-card .info .meta .tag.expired{
+  background:var(--danger-soft);color:var(--danger);border-color:var(--danger);
+}
+.badge-user-card .actions-right{display:flex;gap:6px;flex-wrap:wrap;}
+
+/* LEADERBOARD PREVIEW */
+.lb-preview-item{
+  display:flex;align-items:center;gap:10px;
+  padding:10px 12px;border-radius:var(--radius-sm);
+  border:1px solid var(--border);margin-bottom:6px;
+  background:var(--card-bg);
+}
+.lb-preview-item .rank-medal{
+  font-size:20px;width:28px;text-align:center;flex-shrink:0;
+}
+.lb-preview-item .rank-num{
+  font-size:12px;font-weight:700;color:var(--text-muted);
+  width:28px;text-align:center;flex-shrink:0;
+}
+.lb-preview-item .info{flex:1;min-width:0;}
+.lb-preview-item .info .name{font-size:13px;font-weight:700;}
+.lb-preview-item .info .uname{font-size:11px;color:var(--text-muted);}
+.lb-preview-item .skor{
+  font-size:16px;font-weight:800;color:var(--accent);flex-shrink:0;
+}
+
 /* RESPONSIVE */
 @media(max-width:700px){
   .row-2,.row-4{grid-template-columns:1fr;}
@@ -642,29 +683,35 @@ input:checked + .slider:before{transform:translateX(20px);}
 
   <div class="tabs">
     <button class="tab-btn active" data-tab="soal" onclick="switchTab('soal')">
-      <i class="fas fa-book"></i> Kelola Soal
+      <i class="fas fa-book"></i> Soal
+    </button>
+    <button class="tab-btn" data-tab="flashcard" onclick="switchTab('flashcard')">
+      <i class="fas fa-clone"></i> Flashcard
     </button>
     <button class="tab-btn" data-tab="users" onclick="switchTab('users')">
-      <i class="fas fa-users"></i> Kelola User
+      <i class="fas fa-users"></i> User
     </button>
     <button class="tab-btn" data-tab="langganan" onclick="switchTab('langganan')">
-      <i class="fas fa-crown"></i> Langganan
+      <i class="fas fa-crown"></i> Premium
       <span class="badge-pill" id="premiumBadge" style="display:none;">0</span>
     </button>
     <button class="tab-btn" data-tab="requests" onclick="switchTab('requests')">
-      <i class="fas fa-envelope-open-text"></i> Request Kuota
+      <i class="fas fa-envelope-open-text"></i> Request
       <span class="badge-pill" id="reqBadge" style="display:none;">0</span>
     </button>
     <button class="tab-btn" data-tab="tickets" onclick="switchTab('tickets')">
-      <i class="fas fa-headset"></i> Tiket Bantuan
+      <i class="fas fa-headset"></i> Tiket
       <span class="badge-pill" id="ticketBadge" style="display:none;">0</span>
     </button>
     <button class="tab-btn" data-tab="chat" onclick="switchTab('chat')">
       <i class="fas fa-comments"></i> Chat
       <span class="badge-pill" id="chatTabBadge" style="display:none;">0</span>
     </button>
+    <button class="tab-btn" data-tab="badges" onclick="switchTab('badges')">
+      <i class="fas fa-trophy"></i> Badges
+    </button>
     <button class="tab-btn" data-tab="settings" onclick="switchTab('settings')">
-      <i class="fas fa-cog"></i> Pengaturan
+      <i class="fas fa-cog"></i> Setelan
     </button>
   </div>
 
@@ -866,6 +913,79 @@ input:checked + .slider:before{transform:translateX(20px);}
     </div>
   </div>
 
+  <!-- TAB FLASHCARD (BARU) -->
+  <div id="tab-flashcard" class="tab-content">
+    <div class="card">
+      <h2><i class="fas fa-plus-circle"></i> <span id="fcFormTitle">Tambah Flashcard Baru</span></h2>
+      <input type="hidden" id="fcEditId" value="">
+
+      <div class="row-2">
+        <div class="form-group">
+          <label>Kata Indonesia <span class="req">*</span></label>
+          <input type="text" id="fcSoal" placeholder="Contoh: lulus, sekolah, makan">
+        </div>
+        <div class="form-group">
+          <label>Kata Korea <span class="req">*</span></label>
+          <input type="text" id="fcJawaban" placeholder="Contoh: 졸업하다, 학교, 먹다" style="font-family:'Malgun Gothic',sans-serif;">
+        </div>
+      </div>
+
+      <div class="row-2">
+        <div class="form-group">
+          <label>Kategori <span class="req">*</span></label>
+          <select id="fcKategori">
+            <option value="kosakata_transportasi">Transportasi</option>
+            <option value="kosakata_makanan">Makanan & Minuman</option>
+            <option value="kosakata_tempat_wisata">Tempat Wisata</option>
+            <option value="kosakata_keluarga">Keluarga</option>
+            <option value="kosakata_sekolah">Sekolah</option>
+            <option value="kosakata_tubuh">Anggota Tubuh</option>
+            <option value="kosakata_pakaian">Pakaian</option>
+            <option value="kosakata_alam">Alam & Cuaca</option>
+            <option value="kosakata_pekerjaan">Pekerjaan</option>
+            <option value="kosakata_hobi">Hobi & Olahraga</option>
+            <option value="kosakata_umum" selected>Kosakata Umum</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Audio URL (opsional)</label>
+          <input type="text" id="fcAudio" placeholder="https://... (opsional)">
+          <div class="hint">Kosongin kalau gak ada audio</div>
+        </div>
+      </div>
+
+      <div class="actions">
+        <button class="btn btn-primary" id="fcSaveBtn" onclick="saveFlashcard()"><i class="fas fa-save"></i> <span id="fcSaveBtnText">Simpan</span></button>
+        <button class="btn btn-secondary" onclick="resetFcForm()"><i class="fas fa-undo"></i> Reset</button>
+        <button class="btn btn-warning" onclick="loadFlashcards()"><i class="fas fa-sync"></i> Refresh</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2><i class="fas fa-list"></i> Daftar Flashcard (<span id="totalFlashcard">0</span>)</h2>
+      <div class="form-group">
+        <label>Filter Kategori</label>
+        <select id="fcFilterKategori" onchange="renderFlashcardList()">
+          <option value="">Semua Kategori</option>
+          <option value="kosakata_transportasi">Transportasi</option>
+          <option value="kosakata_makanan">Makanan & Minuman</option>
+          <option value="kosakata_tempat_wisata">Tempat Wisata</option>
+          <option value="kosakata_keluarga">Keluarga</option>
+          <option value="kosakata_sekolah">Sekolah</option>
+          <option value="kosakata_tubuh">Anggota Tubuh</option>
+          <option value="kosakata_pakaian">Pakaian</option>
+          <option value="kosakata_alam">Alam & Cuaca</option>
+          <option value="kosakata_pekerjaan">Pekerjaan</option>
+          <option value="kosakata_hobi">Hobi & Olahraga</option>
+          <option value="kosakata_umum">Kosakata Umum</option>
+        </select>
+      </div>
+      <div id="flashcardListBox">
+        <div class="loading-block"><div class="spinner dark"></div><p style="margin-top:10px;">Memuat flashcard...</p></div>
+      </div>
+    </div>
+  </div>
+
   <!-- TAB USERS -->
   <div id="tab-users" class="tab-content">
     <div class="card">
@@ -965,18 +1085,60 @@ input:checked + .slider:before{transform:translateX(20px);}
     </div>
   </div>
 
+  <!-- TAB BADGES (BARU) -->
+  <div id="tab-badges" class="tab-content">
+    <div class="card">
+      <h2><i class="fas fa-trophy"></i> Kelola Badges</h2>
+      <p style="font-size:13px;color:var(--text-muted);margin-bottom:18px;line-height:1.6;">
+        Badge diberikan otomatis tiap <strong>Senin 00:05 WIB</strong> ke juara mingguan.<br>
+        Kamu bisa trigger manual di sini atau revoke badge yang salah.
+      </p>
+
+      <div class="actions" style="margin-bottom:20px;">
+        <button class="btn btn-primary" onclick="triggerLeaderboard()">
+          <i class="fas fa-play"></i> Proses Leaderboard Mingguan
+        </button>
+        <button class="btn btn-secondary" onclick="loadBadgesList()">
+          <i class="fas fa-sync"></i> Refresh
+        </button>
+      </div>
+
+      <div style="background:var(--warning-soft);border-left:3px solid var(--warning);border-radius:var(--radius-sm);padding:12px 16px;font-size:12px;color:var(--warning);line-height:1.6;margin-bottom:20px;">
+        <strong>⚠️ Penting:</strong> Tombol "Proses Leaderboard" akan memproses <strong>minggu lalu</strong> (bukan minggu ini).
+        Kalau salah pencet, tinggal revoke manual badge yang ke-award.
+      </div>
+
+      <h2 style="font-size:14px;margin-top:20px;"><i class="fas fa-list"></i> Daftar Badge Aktif (<span id="totalBadges">0</span>)</h2>
+      <div class="form-group">
+        <input type="text" id="searchBadge" placeholder="Cari username atau nama badge..." oninput="renderBadgesList()">
+      </div>
+      <div id="badgesListBox">
+        <div class="loading-block"><div class="spinner dark"></div><p style="margin-top:10px;">Memuat badges...</p></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2><i class="fas fa-crown"></i> Leaderboard Preview (Minggu Ini)</h2>
+      <p style="font-size:13px;color:var(--text-muted);margin-bottom:14px;">
+        Preview leaderboard kategori <strong>Overall</strong> minggu ini.
+      </p>
+      <div id="lbPreviewBox">
+        <div class="loading-block"><div class="spinner dark"></div><p style="margin-top:10px;">Memuat preview...</p></div>
+      </div>
+    </div>
+  </div>
+
   <!-- TAB SETTINGS -->
   <div id="tab-settings" class="tab-content">
     <div class="card">
       <h2><i class="fas fa-envelope"></i> Notifikasi Email</h2>
       <p style="font-size:13px;color:var(--text-muted);margin-bottom:18px;line-height:1.6;">
-        <strong>Info:</strong> Fitur email notifikasi ke admin <strong>dimatikan default</strong> biar hemat kuota email Apps Script (buat OTP register aja). Notif admin tetep muncul <strong>in-app</strong> di dropdown bell atas.
+        <strong>Info:</strong> Fitur email notifikasi ke admin <strong>dimatikan default</strong> biar hemat kuota email Apps Script.
       </p>
 
       <div class="form-group">
-        <label>Email Admin (opsional, buat test & fallback)</label>
+        <label>Email Admin (opsional)</label>
         <input type="text" id="cfgNotifEmail" placeholder="admin@example.com, admin2@example.com">
-        <div class="hint">Kalau lu mau aktifin notif email admin lagi, toggle di bawah</div>
       </div>
 
       <div class="config-row">
@@ -1012,29 +1174,9 @@ input:checked + .slider:before{transform:translateX(20px);}
         </label>
       </div>
 
-      <div class="config-row">
-        <div class="info">
-          <div class="title">Notif Rate Limit (Email)</div>
-          <div class="desc">Kirim email kalau ada user kena rate limit</div>
-        </div>
-        <label class="switch">
-          <input type="checkbox" id="cfgNotifRateLimit">
-          <span class="slider"></span>
-        </label>
-      </div>
-
       <div class="actions" style="margin-top:20px;">
         <button class="btn btn-primary" onclick="saveConfig()"><i class="fas fa-save"></i> Simpan Pengaturan</button>
         <button class="btn btn-secondary" onclick="testEmail()"><i class="fas fa-paper-plane"></i> Kirim Test Email</button>
-      </div>
-
-      <div style="margin-top:24px;padding:14px;background:var(--warning-soft);border-left:3px solid var(--warning);border-radius:var(--radius-sm);font-size:12px;color:var(--warning);line-height:1.6;">
-        <strong>⚠️ Penting:</strong> Apps Script punya kuota email harian:
-        <ul style="margin:8px 0 0 20px;">
-          <li>Akun Gmail biasa: <strong>100 email/hari</strong></li>
-          <li>Google Workspace: <strong>1,500 email/hari</strong></li>
-        </ul>
-        <p style="margin-top:8px;">Kuota ini kepakai buat: <strong>OTP register</strong> (prioritas) + balasan guest chat. Notif admin default dimatiin.</p>
       </div>
     </div>
   </div>
@@ -1131,7 +1273,7 @@ input:checked + .slider:before{transform:translateX(20px);}
   </div>
 </div>
 
-<!-- MODAL: PREMIUM (APPROVE) -->
+<!-- MODAL: PREMIUM -->
 <div class="modal-back" id="modalPremium">
   <div class="modal-box">
     <div style="text-align:center;margin-bottom:20px;">
@@ -1182,7 +1324,6 @@ input:checked + .slider:before{transform:translateX(20px);}
     <div class="form-group">
       <label>Balasan untuk User</label>
       <textarea id="replyInput" placeholder="Tulis balasan yang jelas & membantu..." style="min-height:120px;"></textarea>
-      <div class="hint">User akan dapat notifikasi setelah balasan dikirim</div>
     </div>
     <div style="display:flex;gap:10px;">
       <button class="btn btn-secondary" onclick="closeModal('modalReply')" style="flex:1;justify-content:center;">Batal</button>
@@ -1217,7 +1358,7 @@ input:checked + .slider:before{transform:translateX(20px);}
 // ============================================================
 //  SESSION & THEME
 // ============================================================
-const SESSION_MAX_AGE = 8 * 60 * 60 * 1000; // 8 jam
+const SESSION_MAX_AGE = 8 * 60 * 60 * 1000;
 
 function touchSession() {
   const u = JSON.parse(localStorage.getItem('user') || 'null');
@@ -1257,7 +1398,7 @@ function toggleTheme(){
 }
 applyTheme(localStorage.getItem('theme') || 'light');
 
-const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxCS8Y8fMgZpSmGNBuBwJMERbXuf4CGTQAH2GKXMnIskJKJFUoHg4l3UNrt9YLZ59il/exec';
+const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyQ4fuG4bapGT2qDD078qMC2l6oNOjcCTqYkPqO7PDY6g9b7HNdSOk2ZGrKHL4OmJ8j/exec';
 
 async function fetchWithTimeout(url, options = {}, timeoutMs = 90000) {
   const controller = new AbortController();
@@ -1327,18 +1468,29 @@ function renderAvatar() {
 renderAvatar();
 
 const CIRCLES = { '1':'①', '2':'②', '3':'③', '4':'④' };
+
 let data = [];
 let isLoading = false;
 let currentJawaban = '';
 let pendingFiles = { gambar: null, audio: null, opsiAImg: null, opsiBImg: null, opsiCImg: null, opsiDImg: null };
 let uploadedUrls = { gambar: '', audio: '', opsiAImg: '', opsiBImg: '', opsiCImg: '', opsiDImg: '' };
+
 let usersData = [];
 let ticketsData = [];
+
+// Flashcard
+let flashcardsData = [];
+let fcEditId = null;
+
+// Badges
+let badgesData = [];
+
 let currentTargetUser = null;
 let currentTargetReq = null;
 let currentTargetTicket = null;
 let currentPremiumTarget = null;
 let configData = {};
+
 let chatPollTimer = null;
 let notifPollTimer = null;
 let currentChatRoom = null;
@@ -1356,17 +1508,18 @@ function showToast(msg, type='') {
 function setText(id, text) {
   const el = document.getElementById(id);
   if (el) el.textContent = text;
-  else console.warn('[MISSING ID]', id);
 }
 
 function switchTab(tab) {
   document.querySelectorAll('.tab-btn').forEach(b => b.classList.toggle('active', b.dataset.tab === tab));
   document.querySelectorAll('.tab-content').forEach(c => c.classList.toggle('active', c.id === 'tab-' + tab));
   if (tab === 'users') loadUsers();
+  if (tab === 'flashcard') loadFlashcards();
   if (tab === 'langganan') loadPremiumRequests();
   if (tab === 'requests') loadRequests();
   if (tab === 'tickets') loadTickets();
   if (tab === 'chat') loadChatRooms();
+  if (tab === 'badges') { loadBadgesList(); loadLeaderboardPreview(); }
   if (tab === 'settings') loadConfig();
 }
 
@@ -1384,7 +1537,9 @@ function closeModal(id) {
   }
 }
 
-// ===== KATEGORI + TEMA =====
+// ============================================================
+//  SOAL — KATEGORI + TEMA
+// ============================================================
 function onKategoriChange() {
   const sel = document.getElementById('kategoriUtama');
   const temaGroup = document.getElementById('temaGroup');
@@ -1408,7 +1563,9 @@ function getFinalKategori() {
   return utama;
 }
 
-// ===== SOAL =====
+// ============================================================
+//  SOAL — SECTION / OPSI
+// ============================================================
 function onSectionChange() {
   const sel = document.getElementById('section');
   if (!sel) return;
@@ -1434,6 +1591,9 @@ function pilihJawaban(val) {
   });
 }
 
+// ============================================================
+//  SOAL — UPLOAD
+// ============================================================
 function uploadFile(input, type) {
   const file = input.files[0];
   if (!file) return;
@@ -1497,6 +1657,9 @@ function uploadOneFile(type) {
   });
 }
 
+// ============================================================
+//  SOAL — CRUD
+// ============================================================
 function loadData() {
   if (isLoading) return;
   isLoading = true;
@@ -1552,23 +1715,17 @@ function renderList() {
   filtered.forEach(q => {
     const realIndex = data.indexOf(q);
     const tags = [];
-    if (q.gambar) tags.push('<span class="tag img">Gambar</span>');
+    if (q.gambar) tags.push('<span class="tag">Gambar</span>');
     const hasOpsiImg = q.opsiAImg || q.opsiBImg || q.opsiCImg || q.opsiDImg;
-    if (hasOpsiImg) tags.push('<span class="tag img">Opsi Gambar</span>');
-    if (q.audio)  tags.push('<span class="tag audio">Audio</span>');
+    if (hasOpsiImg) tags.push('<span class="tag">Opsi Gambar</span>');
+    if (q.audio)  tags.push('<span class="tag">Audio</span>');
     tags.push(`<span class="tag">${q.section === 'isian' ? 'Isian' : 'Pilihan'}</span>`);
-    if (q.kategori) {
-      tags.push(`<span class="tag kat">${getTemaLabel(q.kategori)}</span>`);
-    }
-    if (q.instruksi) {
-      tags.push('<span class="tag instruksi">Instruksi</span>');
-    }
+    if (q.kategori) tags.push(`<span class="tag">${getTemaLabel(q.kategori)}</span>`);
+    if (q.instruksi) tags.push('<span class="tag">Instruksi</span>');
     const jawabDisplay = (q.section === 'isian') ? q.jawaban : (CIRCLES[q.jawaban] || q.jawaban);
-    tags.push(`<span class="tag ans">Jawaban: ${jawabDisplay}</span>`);
+    tags.push(`<span class="tag">Jawaban: ${jawabDisplay}</span>`);
     const thumb = q.gambar ? `<img src="${q.gambar}" class="thumb" onerror="this.style.display='none'">` : '';
-    const instruksiHtml = q.instruksi
-      ? `<div class="instruksi-txt">${escapeHtml(q.instruksi)}</div>`
-      : '';
+    const instruksiHtml = q.instruksi ? `<div class="instruksi-txt">${escapeHtml(q.instruksi)}</div>` : '';
     html += `
       <div class="q-item">
         <div class="num">${realIndex + 1}</div>
@@ -1632,36 +1789,30 @@ async function saveSoal() {
   if (!soal && !hasGambar && !hasAudio) { showToast('Minimal isi soal/gambar/audio', 'error'); return; }
 
   const btn = document.getElementById('saveBtn');
-  if (!btn) { showToast('Error: tombol simpan tidak ditemukan', 'error'); return; }
+  if (!btn) return;
   const originalHTML = btn.innerHTML;
   btn.disabled = true; btn.innerHTML = '<span class="spinner"></span> Proses...';
 
   try {
     let gambarUrl = uploadedUrls.gambar || '';
     let audioUrl = uploadedUrls.audio || '';
-    if (pendingFiles.gambar) {
-      btn.innerHTML = '<span class="spinner"></span> Upload gambar soal...';
-      gambarUrl = await uploadOneFile('gambar');
-    }
-    if (pendingFiles.audio) {
-      btn.innerHTML = '<span class="spinner"></span> Upload audio...';
-      audioUrl  = await uploadOneFile('audio');
-    }
+    if (pendingFiles.gambar) gambarUrl = await uploadOneFile('gambar');
+    if (pendingFiles.audio)  audioUrl  = await uploadOneFile('audio');
+
     let opsiAImgUrl = uploadedUrls.opsiAImg || '';
     let opsiBImgUrl = uploadedUrls.opsiBImg || '';
     let opsiCImgUrl = uploadedUrls.opsiCImg || '';
     let opsiDImgUrl = uploadedUrls.opsiDImg || '';
-    if (pendingFiles.opsiAImg) { btn.innerHTML = '<span class="spinner"></span> Upload opsi A...'; opsiAImgUrl = await uploadOneFile('opsiAImg'); }
-    if (pendingFiles.opsiBImg) { btn.innerHTML = '<span class="spinner"></span> Upload opsi B...'; opsiBImgUrl = await uploadOneFile('opsiBImg'); }
-    if (pendingFiles.opsiCImg) { btn.innerHTML = '<span class="spinner"></span> Upload opsi C...'; opsiCImgUrl = await uploadOneFile('opsiCImg'); }
-    if (pendingFiles.opsiDImg) { btn.innerHTML = '<span class="spinner"></span> Upload opsi D...'; opsiDImgUrl = await uploadOneFile('opsiDImg'); }
+    if (pendingFiles.opsiAImg) opsiAImgUrl = await uploadOneFile('opsiAImg');
+    if (pendingFiles.opsiBImg) opsiBImgUrl = await uploadOneFile('opsiBImg');
+    if (pendingFiles.opsiCImg) opsiCImgUrl = await uploadOneFile('opsiCImg');
+    if (pendingFiles.opsiDImg) opsiDImgUrl = await uploadOneFile('opsiDImg');
 
     btn.innerHTML = '<span class="spinner"></span> Simpan ke server...';
 
     const payload = {
       username: _user.username, section, kategori, soal, jawaban,
-      instruksi,
-      gambar: gambarUrl, audio: audioUrl,
+      instruksi, gambar: gambarUrl, audio: audioUrl,
       opsiA, opsiB, opsiC, opsiD, pembahasan,
       opsiAImg: opsiAImgUrl, opsiBImg: opsiBImgUrl,
       opsiCImg: opsiCImgUrl, opsiDImg: opsiDImgUrl
@@ -1669,50 +1820,7 @@ async function saveSoal() {
     if (editId) { payload.id = data[parseInt(editId)].id; payload.action = 'update'; }
     else payload.action = 'add';
 
-    let res = null;
-    let lastError = null;
-
-    for (let attempt = 1; attempt <= 2; attempt++) {
-      try {
-        btn.innerHTML = '<span class="spinner"></span> Menyimpan' + (attempt > 1 ? ' (retry ' + attempt + ')...' : '...');
-        res = await safePost(payload, 90000);
-        if (res && !res.__empty && !res.__invalid) break;
-      } catch (err) {
-        lastError = err;
-        console.warn('Attempt ' + attempt + ' gagal:', err.message);
-        if (attempt < 2) await new Promise(r => setTimeout(r, 2000));
-      }
-    }
-
-    if (!res || lastError || res.__empty || res.__invalid) {
-      btn.innerHTML = '<span class="spinner"></span> Verifikasi...';
-      await new Promise(r => setTimeout(r, 3000));
-
-      try {
-        const checkRes = await safeGet('', 30000);
-        const list = Array.isArray(checkRes) ? checkRes : (checkRes.data || []);
-        const found = list.some(q =>
-          (q.soal || '').trim() === soal &&
-          (q.kategori || '').toLowerCase() === kategori
-        );
-        if (found) {
-          showToast('Soal tersimpan! (response lambat, tapi data masuk)', 'success');
-          resetForm();
-          data = list;
-          renderList();
-          return;
-        }
-      } catch(e) {}
-
-      const errMsg = lastError ? lastError.message : (res ? res.msg : 'Timeout / response lambat');
-      if (lastError && lastError.name === 'AbortError') {
-        showToast('Server terlalu lambat. Coba refresh & cek daftar soal.', 'error');
-        setTimeout(loadData, 1500);
-      } else {
-        showToast(errMsg, 'error');
-      }
-      return;
-    }
+    const res = await safePost(payload, 90000);
 
     if (res.success) {
       showToast('Soal ' + (editId ? 'diupdate' : 'ditambahkan'), 'success');
@@ -1723,16 +1831,11 @@ async function saveSoal() {
     }
   } catch (err) {
     console.error(err);
-    if (err.name === 'AbortError') {
-      showToast('Server lambat. Cek sheet — data mungkin sudah masuk.', 'error');
-      setTimeout(loadData, 1500);
-    } else {
-      showToast(err.message, 'error');
-    }
+    showToast(err.message || 'Error', 'error');
   } finally {
     if (btn) {
       btn.disabled = false;
-      try { btn.innerHTML = originalHTML; } catch(e) { console.warn(e); }
+      try { btn.innerHTML = originalHTML; } catch(e) {}
     }
   }
 }
@@ -1871,7 +1974,155 @@ function resetForm() {
   onSectionChange();
 }
 
-// ===== USERS =====
+// ============================================================
+//  FLASHCARD — CRUD
+// ============================================================
+function loadFlashcards() {
+  const box = document.getElementById('flashcardListBox');
+  if (box) box.innerHTML = `<div class="loading-block"><div class="spinner dark"></div><p style="margin-top:10px;">Memuat flashcard...</p></div>`;
+
+  safeGet('action=listFlashcards&adminUsername=' + encodeURIComponent(_user.username), 60000)
+    .then(res => {
+      if (res.success) {
+        flashcardsData = res.flashcards || [];
+        renderFlashcardList();
+      } else if (box) {
+        box.innerHTML = `<div class="empty-block"><p>${res.msg || 'Gagal memuat'}</p></div>`;
+      }
+    })
+    .catch(() => {
+      if (box) box.innerHTML = `<div class="empty-block"><i class="fas fa-exclamation-triangle"></i><p>Gagal memuat flashcard</p></div>`;
+    });
+}
+
+function renderFlashcardList() {
+  const box = document.getElementById('flashcardListBox');
+  if (!box) return;
+  const filterSel = document.getElementById('fcFilterKategori');
+  const filter = filterSel ? filterSel.value : '';
+  const filtered = filter ? flashcardsData.filter(f => f.kategori === filter) : flashcardsData;
+  setText('totalFlashcard', filtered.length);
+
+  if (filtered.length === 0) {
+    box.innerHTML = `<div class="empty-block"><i class="fas fa-clone"></i><p>${flashcardsData.length === 0 ? 'Belum ada flashcard.' : 'Ngga ada flashcard di kategori ini.'}</p></div>`;
+    return;
+  }
+
+  let html = '';
+  filtered.forEach(f => {
+    const realIndex = flashcardsData.indexOf(f);
+    html += `
+      <div class="fc-item">
+        <div class="num">${realIndex + 1}</div>
+        <div class="info">
+          <div class="pair">
+            <span class="indo">${escapeHtml(f.soal)}</span>
+            <i class="fas fa-arrow-right arrow"></i>
+            <span class="korea">${escapeHtml(f.jawaban)}</span>
+          </div>
+          <div class="meta">
+            <span class="tag">${getTemaLabel(f.kategori)}</span>
+            ${f.audio ? '<span class="tag"><i class="fas fa-volume-up"></i> Audio</span>' : ''}
+          </div>
+        </div>
+        <div class="btns">
+          <button class="btn btn-warning btn-sm" onclick="editFlashcard(${realIndex})"><i class="fas fa-pen"></i></button>
+          <button class="btn btn-danger btn-sm" onclick="hapusFlashcard(${realIndex})"><i class="fas fa-trash"></i></button>
+        </div>
+      </div>`;
+  });
+  box.innerHTML = html;
+}
+
+async function saveFlashcard() {
+  const soal = document.getElementById('fcSoal').value.trim();
+  const jawaban = document.getElementById('fcJawaban').value.trim();
+  const kategori = document.getElementById('fcKategori').value;
+  const audio = document.getElementById('fcAudio').value.trim();
+
+  if (!soal) { showToast('Kata Indonesia wajib diisi', 'error'); return; }
+  if (!jawaban) { showToast('Kata Korea wajib diisi', 'error'); return; }
+
+  const btn = document.getElementById('fcSaveBtn');
+  const original = btn.innerHTML;
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner"></span> Menyimpan...';
+
+  try {
+    const payload = {
+      username: _user.username,
+      soal, jawaban, kategori, audio
+    };
+    if (fcEditId) {
+      payload.action = 'updateFlashcard';
+      payload.id = fcEditId;
+    } else {
+      payload.action = 'addFlashcard';
+    }
+
+    const res = await safePost(payload, 60000);
+
+    if (res.success) {
+      showToast('Flashcard ' + (fcEditId ? 'diupdate' : 'ditambahkan'), 'success');
+      resetFcForm();
+      setTimeout(loadFlashcards, 500);
+    } else {
+      showToast(res.msg || 'Gagal', 'error');
+    }
+  } catch(err) {
+    showToast(err.message || 'Error', 'error');
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = original;
+  }
+}
+
+function editFlashcard(i) {
+  const f = flashcardsData[i];
+  if (!f) return;
+  fcEditId = f.id;
+  document.getElementById('fcEditId').value = f.id;
+  document.getElementById('fcSoal').value = f.soal || '';
+  document.getElementById('fcJawaban').value = f.jawaban || '';
+  document.getElementById('fcKategori').value = f.kategori || 'kosakata_umum';
+  document.getElementById('fcAudio').value = f.audio || '';
+
+  setText('fcFormTitle', 'Edit Flashcard #' + (i + 1));
+  setText('fcSaveBtnText', 'Update');
+  window.scrollTo({top: 0, behavior: 'smooth'});
+}
+
+function hapusFlashcard(i) {
+  const f = flashcardsData[i];
+  if (!f) return;
+  if (!confirm('Hapus flashcard ini?\n\n"' + f.soal + '" → "' + f.jawaban + '"')) return;
+
+  safePost({
+    action: 'deleteFlashcard',
+    username: _user.username,
+    id: f.id
+  }, 60000)
+    .then(res => {
+      if (res.success) { showToast('Dihapus', 'success'); setTimeout(loadFlashcards, 500); }
+      else showToast(res.msg || 'Gagal', 'error');
+    })
+    .catch(err => showToast(err.message, 'error'));
+}
+
+function resetFcForm() {
+  fcEditId = null;
+  document.getElementById('fcEditId').value = '';
+  document.getElementById('fcSoal').value = '';
+  document.getElementById('fcJawaban').value = '';
+  document.getElementById('fcKategori').value = 'kosakata_umum';
+  document.getElementById('fcAudio').value = '';
+  setText('fcFormTitle', 'Tambah Flashcard Baru');
+  setText('fcSaveBtnText', 'Simpan');
+}
+
+// ============================================================
+//  USERS
+// ============================================================
 function loadUsers() {
   const box = document.getElementById('usersList');
   if (box) box.innerHTML = `<div class="loading-block"><div class="spinner dark"></div><p style="margin-top:10px;">Memuat user...</p></div>`;
@@ -1916,9 +2167,7 @@ function renderUsers() {
     if (isAdmin) roleBadge = `<span class="badge-role admin">ADMIN</span>`;
     else if (isPrem) roleBadge = `<span class="badge-role premium">PREMIUM</span>`;
 
-    const verifiedBadge = isVerified
-      ? ''
-      : `<span class="badge-role unverified"><i class="fas fa-exclamation-triangle"></i> BELUM VERIFIKASI</span>`;
+    const verifiedBadge = isVerified ? '' : `<span class="badge-role unverified"><i class="fas fa-exclamation-triangle"></i> BELUM VERIFIKASI</span>`;
 
     html += `
       <div class="user-card">
@@ -2086,13 +2335,12 @@ async function deleteUser(username) {
   } catch(err) { alert(err.message); }
 }
 
-// ===== PREMIUM =====
+// ============================================================
+//  PREMIUM
+// ============================================================
 function openPremiumActivate(username, requestId) {
   const cleanReqId = (requestId && requestId !== 'null' && requestId !== 'undefined') ? requestId : null;
-  currentPremiumTarget = {
-    username: username,
-    requestId: cleanReqId
-  };
+  currentPremiumTarget = { username, requestId: cleanReqId };
 
   const targetUser = usersData.find(u => u.username === username);
   const isPrem = targetUser && targetUser.plan === 'premium';
@@ -2155,10 +2403,7 @@ async function doActivatePremium() {
 
   const btn = event?.target?.closest('button');
   const originalHTML = btn ? btn.innerHTML : '';
-  if (btn) {
-    btn.disabled = true;
-    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Memproses...';
-  }
+  if (btn) { btn.disabled = true; btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Memproses...'; }
 
   try {
     const payload = {
@@ -2189,10 +2434,7 @@ async function doActivatePremium() {
   } catch(err) {
     alert(err.message);
   } finally {
-    if (btn) {
-      btn.disabled = false;
-      btn.innerHTML = originalHTML;
-    }
+    if (btn) { btn.disabled = false; btn.innerHTML = originalHTML; }
   }
 }
 
@@ -2243,10 +2485,7 @@ function renderPremiumRequests(list) {
   if (!box) return;
 
   if (list.length === 0) {
-    box.innerHTML = `<div class="empty-block">
-      <i class="fas fa-crown"></i>
-      <p>Belum ada request premium</p>
-    </div>`;
+    box.innerHTML = `<div class="empty-block"><i class="fas fa-crown"></i><p>Belum ada request premium</p></div>`;
     return;
   }
 
@@ -2302,12 +2541,8 @@ async function rejectPremium(reqId) {
     if (res.success) {
       showToast('Request premium ditolak', 'success');
       setTimeout(loadPremiumRequests, 500);
-    } else {
-      alert(res.msg || 'Gagal');
-    }
-  } catch(err) {
-    alert(err.message);
-  }
+    } else alert(res.msg || 'Gagal');
+  } catch(err) { alert(err.message); }
 }
 
 function loadPremiumUsers() {
@@ -2337,10 +2572,7 @@ function renderPremiumUsers() {
   const premiumUsers = usersData.filter(u => u.plan === 'premium');
 
   if (premiumUsers.length === 0) {
-    box.innerHTML = `<div class="empty-block">
-      <i class="fas fa-crown"></i>
-      <p>Belum ada user premium aktif</p>
-    </div>`;
+    box.innerHTML = `<div class="empty-block"><i class="fas fa-crown"></i><p>Belum ada user premium aktif</p></div>`;
     return;
   }
 
@@ -2364,9 +2596,7 @@ function renderPremiumUsers() {
             <div class="uname">@${u.username}</div>
             <div class="meta">
               <span class="badge-role premium">PREMIUM</span>
-              <span style="background:var(--gold-soft);color:var(--gold);font-weight:700;padding:2px 8px;border-radius:10px;font-size:10px;border:1px solid var(--gold);">
-                Sisa: ${daysLeft} hari
-              </span>
+              <span style="background:var(--gold-soft);color:var(--gold);font-weight:700;padding:2px 8px;border-radius:10px;font-size:10px;border:1px solid var(--gold);">Sisa: ${daysLeft} hari</span>
               <span style="font-size:11px;">Berakhir: ${untilStr}</span>
             </div>
           </div>
@@ -2391,15 +2621,13 @@ async function deactivatePremiumUser(username) {
     if (res.success) {
       showToast('Premium dinonaktifkan', 'success');
       setTimeout(() => { loadPremiumUsers(); loadUsers(); }, 500);
-    } else {
-      alert(res.msg || 'Gagal');
-    }
-  } catch(err) {
-    alert(err.message);
-  }
+    } else alert(res.msg || 'Gagal');
+  } catch(err) { alert(err.message); }
 }
 
-// ===== REQUESTS =====
+// ============================================================
+//  REQUESTS
+// ============================================================
 function loadRequests() {
   const box = document.getElementById('requestsList');
   const sel = document.getElementById('filterReqStatus');
@@ -2503,7 +2731,9 @@ async function rejectReq(reqId) {
   } catch(err) { alert(err.message); }
 }
 
-// ===== TICKETS =====
+// ============================================================
+//  TICKETS
+// ============================================================
 function loadTickets() {
   const box = document.getElementById('ticketsList');
   if (box) box.innerHTML = `<div class="loading-block"><div class="spinner dark"></div><p style="margin-top:10px;">Memuat tiket...</p></div>`;
@@ -2565,16 +2795,12 @@ function renderTickets() {
           </div>
         ` : ''}
         <div class="ticket-actions">
-          ${t.status === 'open' ? `
-            <button class="btn btn-success btn-sm" onclick="openReply(${t.id}, '${t.subjek.replace(/'/g, "\\'")}')"><i class="fas fa-reply"></i> Balas Sekarang</button>
-          ` : ''}
+          ${t.status === 'open' ? `<button class="btn btn-success btn-sm" onclick="openReply(${t.id}, '${t.subjek.replace(/'/g, "\\'")}')"><i class="fas fa-reply"></i> Balas Sekarang</button>` : ''}
           ${t.status === 'diproses' ? `
             <button class="btn btn-success btn-sm" onclick="openReply(${t.id}, '${t.subjek.replace(/'/g, "\\'")}')"><i class="fas fa-reply"></i> Balas Lagi</button>
             <button class="btn btn-primary btn-sm" onclick="doCloseTicket(${t.id})"><i class="fas fa-check"></i> Tandai Selesai</button>
           ` : ''}
-          ${t.status === 'selesai' ? `
-            <button class="btn btn-secondary btn-sm" onclick="openReply(${t.id}, '${t.subjek.replace(/'/g, "\\'")}')"><i class="fas fa-reply"></i> Balas Lagi</button>
-          ` : ''}
+          ${t.status === 'selesai' ? `<button class="btn btn-secondary btn-sm" onclick="openReply(${t.id}, '${t.subjek.replace(/'/g, "\\'")}')"><i class="fas fa-reply"></i> Balas Lagi</button>` : ''}
         </div>
       </div>`;
   });
@@ -2609,7 +2835,7 @@ async function doReply() {
     });
     if (res.success) {
       closeModal('modalReply');
-      showToast('Balasan terkirim. User akan dapat notif.', 'success');
+      showToast('Balasan terkirim', 'success');
       setTimeout(loadTickets, 500);
     } else alert(res.msg || 'Gagal');
   } catch(err) { alert(err.message); }
@@ -2619,176 +2845,14 @@ async function doReply() {
 async function doCloseTicket(ticketId) {
   if (!confirm('Tandai tiket ini sebagai selesai?')) return;
   try {
-    const res = await safePost({
-      action: 'closeTicket',
-      username: _user.username,
-      ticketId
-    });
+    const res = await safePost({ action: 'closeTicket', username: _user.username, ticketId });
     if (res.success) { showToast('Tiket ditutup', 'success'); setTimeout(loadTickets, 500); }
     else alert(res.msg || 'Gagal');
   } catch(err) { alert(err.message); }
 }
 
-// ===== SETTINGS =====
-function loadConfig() {
-  safeGet('action=getConfig&adminUsername=' + encodeURIComponent(_user.username), 30000)
-    .then(res => {
-      if (res.success && res.config) {
-        configData = res.config;
-        const setVal = (id, v) => { const el = document.getElementById(id); if (el) el.value = v; };
-        const setChk = (id, v) => { const el = document.getElementById(id); if (el) el.checked = v; };
-        setVal('cfgNotifEmail', configData.notif_email || '');
-        setChk('cfgNotifRequest', String(configData.notif_on_request || '').toUpperCase() === 'TRUE');
-        setChk('cfgNotifTicket', String(configData.notif_on_ticket || '').toUpperCase() === 'TRUE');
-        setChk('cfgNotifRegister', String(configData.notif_on_register || '').toUpperCase() === 'TRUE');
-        setChk('cfgNotifRateLimit', String(configData.notif_on_ratelimit || '').toUpperCase() === 'TRUE');
-      }
-    })
-    .catch(() => showToast('Gagal memuat config', 'error'));
-}
-
-async function saveConfig() {
-  const getVal = (id) => { const el = document.getElementById(id); return el ? el.value : ''; };
-  const getChk = (id) => { const el = document.getElementById(id); return el ? el.checked : false; };
-  const config = {
-    notif_email: getVal('cfgNotifEmail').trim(),
-    notif_on_request: getChk('cfgNotifRequest') ? 'TRUE' : 'FALSE',
-    notif_on_ticket: getChk('cfgNotifTicket') ? 'TRUE' : 'FALSE',
-    notif_on_register: getChk('cfgNotifRegister') ? 'TRUE' : 'FALSE',
-    notif_on_ratelimit: getChk('cfgNotifRateLimit') ? 'TRUE' : 'FALSE'
-  };
-  try {
-    const res = await safePost({
-      action: 'adminSaveConfig',
-      username: _user.username,
-      config
-    });
-    if (res.success) showToast('Pengaturan disimpan', 'success');
-    else alert(res.msg || 'Gagal simpan');
-  } catch(err) { alert(err.message); }
-}
-
-async function testEmail() {
-  const emailEl = document.getElementById('cfgNotifEmail');
-  const targetEmail = emailEl ? emailEl.value.trim().split(',')[0].trim() : '';
-  if (!targetEmail) { alert('Isi email admin dulu'); return; }
-  try {
-    showToast('Mengirim test email...', 'success');
-    const res = await safePost({
-      action: 'adminTestEmail',
-      username: _user.username,
-      targetEmail
-    });
-    if (res.success) showToast(res.msg, 'success');
-    else alert(res.msg || 'Gagal kirim');
-  } catch(err) { alert(err.message); }
-}
-
-// ===== NOTIF DROPDOWN =====
-function toggleNotifDropdown(e) {
-  e.preventDefault();
-  e.stopPropagation();
-  const wrapper = document.getElementById('notifWrapper');
-  const isOpen = wrapper.classList.contains('open');
-  document.querySelectorAll('.notif-wrapper.open').forEach(w => w.classList.remove('open'));
-  if (!isOpen) {
-    wrapper.classList.add('open');
-    loadNotifDropdown();
-    startNotifPoll();
-  } else {
-    stopNotifPoll();
-  }
-}
-
-function startNotifPoll() {
-  stopNotifPoll();
-  notifPollTimer = setInterval(() => {
-    const wrapper = document.getElementById('notifWrapper');
-    if (wrapper && wrapper.classList.contains('open')) {
-      loadNotifDropdown(true);
-    } else {
-      stopNotifPoll();
-    }
-  }, 15000);
-}
-
-function stopNotifPoll() {
-  if (notifPollTimer) {
-    clearInterval(notifPollTimer);
-    notifPollTimer = null;
-  }
-}
-
-document.addEventListener('click', function(e) {
-  const wrapper = document.getElementById('notifWrapper');
-  if (wrapper && !wrapper.contains(e.target)) {
-    wrapper.classList.remove('open');
-    stopNotifPoll();
-  }
-});
-
-function loadNotifDropdown(silent) {
-  const body = document.getElementById('notifBody');
-  if (!silent) body.innerHTML = `<div class="notif-empty"><i class="fas fa-spinner fa-spin"></i> Memuat...</div>`;
-  safeGet('action=getNotifications&username=' + encodeURIComponent(_user.username), 30000)
-    .then(res => {
-      if (!res.success || !res.notifications) {
-        if (!silent) body.innerHTML = `<div class="notif-empty"><i class="fas fa-bell-slash"></i> Gagal memuat</div>`;
-        return;
-      }
-      const list = res.notifications.slice(0, 10);
-      if (list.length === 0) {
-        body.innerHTML = `<div class="notif-empty"><i class="fas fa-bell-slash"></i> Belum ada notifikasi</div>`;
-        return;
-      }
-      const iconMap = {
-        'bantuan': 'fa-question-circle', 'balasan': 'fa-comment-dots',
-        'kuota': 'fa-ticket-alt', 'sistem': 'fa-info-circle',
-        'request': 'fa-paper-plane', 'chat': 'fa-comments', 'info': 'fa-bell'
-      };
-      let html = '';
-      list.forEach(n => {
-        const ic = iconMap[n.tipe] || 'fa-bell';
-        const url = n.linkUrl || 'notifikasi.html';
-        html += `
-          <div class="notif-item-drop tipe-${n.tipe} ${!n.isRead ? 'unread' : ''}" onclick="handleNotifClick(event, ${n.id}, '${url.replace(/'/g, "\\'")}')">
-            <div class="ic"><i class="fas ${ic}"></i></div>
-            <div class="tx">
-              <div class="ttl">${n.judul || 'Notifikasi'}</div>
-              <div class="msg">${n.pesan || ''}</div>
-              <div class="tm">${n.tanggal}</div>
-            </div>
-          </div>`;
-      });
-      body.innerHTML = html;
-    })
-    .catch(() => {
-      if (!silent) body.innerHTML = `<div class="notif-empty"><i class="fas fa-exclamation-triangle"></i> Gagal memuat</div>`;
-    });
-}
-
-function handleNotifClick(e, notifId, url) {
-  e.stopPropagation();
-  safePost({ action: 'markNotifRead', username: _user.username, notifId })
-    .then(() => loadNotifDropdown(true)).catch(() => {});
-  document.getElementById('notifWrapper').classList.remove('open');
-  stopNotifPoll();
-  if (url && url !== 'notifikasi.html') {
-    setTimeout(() => location.href = url, 200);
-  } else {
-    location.href = 'notifikasi.html';
-  }
-}
-
-function markAllNotifRead(e) {
-  e.stopPropagation();
-  safePost({ action: 'markAllNotifRead', username: _user.username })
-    .then(() => { loadNotifDropdown(); })
-    .catch(() => {});
-}
-
 // ============================================================
-//  CHAT ADMIN
+//  CHAT
 // ============================================================
 function escapeAttr(t) {
   return String(t == null ? '' : t)
@@ -2821,8 +2885,7 @@ function loadChatRooms(silent) {
       chatRooms = res.rooms || [];
       renderChatRooms();
     })
-    .catch(err => {
-      console.error('[chat] error:', err);
+    .catch(() => {
       if (!silent) box.innerHTML = `<div class="empty-block"><i class="fas fa-exclamation-triangle"></i><p>Gagal memuat chat</p></div>`;
     });
 }
@@ -2836,22 +2899,12 @@ function renderChatRooms(filteredRooms) {
   const unreadTotal = chatRooms.reduce((s, r) => s + (Number(r.unread) || 0), 0);
   const badge = document.getElementById('chatTabBadge');
   if (badge) {
-    if (unreadTotal > 0) {
-      badge.textContent = unreadTotal;
-      badge.style.display = 'inline-block';
-    } else {
-      badge.style.display = 'none';
-    }
+    if (unreadTotal > 0) { badge.textContent = unreadTotal; badge.style.display = 'inline-block'; }
+    else badge.style.display = 'none';
   }
 
   if (rooms.length === 0) {
-    box.innerHTML = `<div class="empty-block">
-      <i class="fas fa-comments"></i>
-      <p>Belum ada chat dari user</p>
-      <p style="font-size:12px;margin-top:8px;color:var(--text-faint);">
-        Chat akan muncul di sini setelah user mengirim pesan
-      </p>
-    </div>`;
+    box.innerHTML = `<div class="empty-block"><i class="fas fa-comments"></i><p>Belum ada chat dari user</p></div>`;
     return;
   }
 
@@ -2868,9 +2921,7 @@ function renderChatRooms(filteredRooms) {
 
     let matchedHtml = '';
     if (r.matchedMessages && r.matchedMessages.length > 0) {
-      matchedHtml = `<div style="margin-top:6px;padding:6px 10px;background:var(--sub-bg);border-radius:6px;font-size:11px;color:var(--text-muted);border-left:3px solid var(--accent);">
-        Cocok: "${escapeHtml(r.matchedMessages[0])}"
-      </div>`;
+      matchedHtml = `<div style="margin-top:6px;padding:6px 10px;background:var(--sub-bg);border-radius:6px;font-size:11px;color:var(--text-muted);border-left:3px solid var(--accent);">Cocok: "${escapeHtml(r.matchedMessages[0])}"</div>`;
     }
 
     html += `
@@ -2902,35 +2953,23 @@ function onSearchChat(val) {
     box.innerHTML = `<div class="loading-block"><div class="spinner dark"></div><p style="margin-top:10px;">Mencari "${escapeHtml(q)}"...</p></div>`;
     safeGet('action=searchChat&username=' + encodeURIComponent(_user.username) + '&q=' + encodeURIComponent(q), 60000)
       .then(res => {
-        if (!res.success) {
-          box.innerHTML = `<div class="empty-block"><p>${escapeHtml(res.msg || 'Gagal')}</p></div>`;
-          return;
-        }
+        if (!res.success) { box.innerHTML = `<div class="empty-block"><p>${escapeHtml(res.msg || 'Gagal')}</p></div>`; return; }
         const rooms = res.rooms || [];
-        if (rooms.length === 0) {
-          box.innerHTML = `<div class="empty-block"><i class="fas fa-search"></i><p>Tidak ada hasil untuk "${escapeHtml(q)}"</p></div>`;
-          return;
-        }
+        if (rooms.length === 0) { box.innerHTML = `<div class="empty-block"><i class="fas fa-search"></i><p>Tidak ada hasil untuk "${escapeHtml(q)}"</p></div>`; return; }
         renderChatRooms(rooms);
       })
-      .catch(() => {
-        box.innerHTML = `<div class="empty-block"><p>Gagal mencari</p></div>`;
-      });
+      .catch(() => { box.innerHTML = `<div class="empty-block"><p>Gagal mencari</p></div>`; });
   }, 400);
 }
 
 function openAdminChat(roomKey, userId, nama, foto) {
   currentChatRoom = { roomKey, userId, nama };
-
   document.getElementById('chatModalName').textContent = nama;
 
   const init = (nama || userId || 'U').charAt(0).toUpperCase();
   const avatarEl = document.getElementById('chatModalAvatar');
-  if (foto) {
-    avatarEl.innerHTML = `<img src="${foto}" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">`;
-  } else {
-    avatarEl.textContent = init;
-  }
+  if (foto) avatarEl.innerHTML = `<img src="${foto}" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">`;
+  else avatarEl.textContent = init;
 
   openModal('modalChat');
   loadAdminChatMessages();
@@ -2954,13 +2993,9 @@ function openAdminChat(roomKey, userId, nama, foto) {
 function loadAdminChatMessages(silent) {
   if (!currentChatRoom) return;
   const body = document.getElementById('chatModalBody');
+  if (!silent) body.innerHTML = `<div style="text-align:center;padding:20px;color:var(--text-muted);font-size:13px;"><i class="fas fa-spinner fa-spin"></i> Memuat...</div>`;
 
-  if (!silent) {
-    body.innerHTML = `<div style="text-align:center;padding:20px;color:var(--text-muted);font-size:13px;"><i class="fas fa-spinner fa-spin"></i> Memuat...</div>`;
-  }
-
-  const url = 'action=getChat&username=' + encodeURIComponent(_user.username) +
-              '&roomKey=' + encodeURIComponent(currentChatRoom.roomKey);
+  const url = 'action=getChat&username=' + encodeURIComponent(_user.username) + '&roomKey=' + encodeURIComponent(currentChatRoom.roomKey);
 
   Promise.all([
     safeGet(url, 60000),
@@ -2968,23 +3003,17 @@ function loadAdminChatMessages(silent) {
   ])
   .then(([res, readRes]) => {
     if (!res.success) {
-      if (!silent) {
-        body.innerHTML = `<div style="text-align:center;padding:20px;color:var(--text-muted);">${escapeHtml(res.msg || 'Gagal memuat')}</div>`;
-      }
+      if (!silent) body.innerHTML = `<div style="text-align:center;padding:20px;color:var(--text-muted);">${escapeHtml(res.msg || 'Gagal memuat')}</div>`;
       return;
     }
 
     const msgs = res.messages || [];
     if (msgs.length === 0) {
-      body.innerHTML = `<div style="text-align:center;padding:40px;color:var(--text-muted);font-size:13px;">
-        <i class="fas fa-comment-slash" style="font-size:32px;opacity:.3;display:block;margin-bottom:8px;"></i>
-        Belum ada chat
-      </div>`;
+      body.innerHTML = `<div style="text-align:center;padding:40px;color:var(--text-muted);font-size:13px;"><i class="fas fa-comment-slash" style="font-size:32px;opacity:.3;display:block;margin-bottom:8px;"></i>Belum ada chat</div>`;
       return;
     }
 
     const userReadAt = (readRes && readRes.rooms) ? (readRes.rooms[currentChatRoom.roomKey] || '') : '';
-
     let html = '';
     msgs.forEach(m => {
       const cls = m.isMine ? 'mine' : 'theirs';
@@ -2995,21 +3024,13 @@ function loadAdminChatMessages(silent) {
       let readHtml = '';
       if (m.isMine && userReadAt) {
         const tglPesan = String(m.tanggal || '');
-        if (tglPesan <= userReadAt) {
-          readHtml = `<span style="font-size:10px;opacity:.85;margin-left:6px;">✓✓</span>`;
-        } else {
-          readHtml = `<span style="font-size:10px;opacity:.6;margin-left:6px;">✓</span>`;
-        }
+        if (tglPesan <= userReadAt) readHtml = `<span style="font-size:10px;opacity:.85;margin-left:6px;">✓✓</span>`;
+        else readHtml = `<span style="font-size:10px;opacity:.6;margin-left:6px;">✓</span>`;
       }
 
       let bubbleHtml = '';
       if (parsed.tipe === 'image') {
-        bubbleHtml = `
-          <div style="margin-bottom:6px;">
-            <img src="${escapeAttr(parsed.url)}" onclick="window.open('${escapeAttr(parsed.url)}','_blank')" style="max-width:100%;max-height:240px;border-radius:8px;cursor:pointer;display:block;" onerror="this.style.display='none'">
-          </div>
-          ${parsed.caption ? `<div>${escapeHtml(parsed.caption)}</div>` : ''}
-        `;
+        bubbleHtml = `<div style="margin-bottom:6px;"><img src="${escapeAttr(parsed.url)}" onclick="window.open('${escapeAttr(parsed.url)}','_blank')" style="max-width:100%;max-height:240px;border-radius:8px;cursor:pointer;display:block;" onerror="this.style.display='none'"></div>${parsed.caption ? `<div>${escapeHtml(parsed.caption)}</div>` : ''}`;
       } else {
         bubbleHtml = escapeHtml(parsed.caption);
       }
@@ -3028,11 +3049,8 @@ function loadAdminChatMessages(silent) {
       })
       .catch(() => {});
   })
-  .catch(err => {
-    console.error('[chat] load error:', err);
-    if (!silent) {
-      body.innerHTML = `<div style="text-align:center;padding:20px;color:var(--text-muted);">Gagal memuat</div>`;
-    }
+  .catch(() => {
+    if (!silent) body.innerHTML = `<div style="text-align:center;padding:20px;color:var(--text-muted);">Gagal memuat</div>`;
   });
 }
 
@@ -3109,20 +3127,14 @@ async function uploadAndSendImage(file) {
   if (btn) btn.disabled = true;
 
   const tempId = 'temp_img_' + Date.now();
-  const now = new Date();
-  const timeStr = String(now.getHours()).padStart(2,'0') + ':' + String(now.getMinutes()).padStart(2,'0');
+  const timeStr = String(new Date().getHours()).padStart(2,'0') + ':' + String(new Date().getMinutes()).padStart(2,'0');
 
   const reader = new FileReader();
   reader.onload = e => {
     const tempDiv = document.createElement('div');
     tempDiv.className = 'chat-msg mine';
     tempDiv.id = tempId;
-    tempDiv.innerHTML = `
-      <div style="margin-bottom:6px;">
-        <img src="${e.target.result}" style="max-width:100%;max-height:240px;border-radius:8px;opacity:.6;">
-      </div>
-      <span style="font-size:10px;opacity:.7;margin-top:4px;display:block;">${timeStr} Upload...</span>
-    `;
+    tempDiv.innerHTML = `<div style="margin-bottom:6px;"><img src="${e.target.result}" style="max-width:100%;max-height:240px;border-radius:8px;opacity:.6;"></div><span style="font-size:10px;opacity:.7;margin-top:4px;display:block;">${timeStr} Upload...</span>`;
     body.appendChild(tempDiv);
     body.scrollTop = body.scrollHeight;
   };
@@ -3175,18 +3187,324 @@ function updateChatTabBadge() {
       if (res.success) {
         const badge = document.getElementById('chatTabBadge');
         if (badge) {
-          if (res.count > 0) {
-            badge.textContent = res.count;
-            badge.style.display = 'inline-block';
-          } else {
-            badge.style.display = 'none';
-          }
+          if (res.count > 0) { badge.textContent = res.count; badge.style.display = 'inline-block'; }
+          else badge.style.display = 'none';
         }
       }
     })
     .catch(() => {});
 }
 setInterval(updateChatTabBadge, 5000);
+
+// ============================================================
+//  BADGES + LEADERBOARD (ADMIN)
+// ============================================================
+function loadBadgesList() {
+  const box = document.getElementById('badgesListBox');
+  if (!box) return;
+  box.innerHTML = `<div class="loading-block"><div class="spinner dark"></div><p style="margin-top:10px;">Memuat badges...</p></div>`;
+
+  safeGet('action=listAllBadges&adminUsername=' + encodeURIComponent(_user.username), 60000)
+    .then(res => {
+      if (res.success) {
+        badgesData = res.badges || [];
+        renderBadgesList();
+      } else {
+        box.innerHTML = `<div class="empty-block"><p>${res.msg || 'Gagal memuat'}</p></div>`;
+      }
+    })
+    .catch(() => {
+      box.innerHTML = `<div class="empty-block"><i class="fas fa-exclamation-triangle"></i><p>Gagal memuat badges</p></div>`;
+    });
+}
+
+function renderBadgesList() {
+  const box = document.getElementById('badgesListBox');
+  if (!box) return;
+  const searchEl = document.getElementById('searchBadge');
+  const search = (searchEl ? searchEl.value : '').toLowerCase();
+
+  const filtered = badgesData.filter(b =>
+    String(b.username || '').toLowerCase().includes(search) ||
+    String(b.judul || '').toLowerCase().includes(search) ||
+    String(b.tipe || '').toLowerCase().includes(search)
+  );
+
+  setText('totalBadges', badgesData.length);
+
+  if (filtered.length === 0) {
+    box.innerHTML = `<div class="empty-block"><i class="fas fa-trophy"></i><p>${badgesData.length === 0 ? 'Belum ada badge.' : 'Ngga ada badge yang cocok.'}</p></div>`;
+    return;
+  }
+
+  const now = new Date();
+  let html = '';
+  filtered.forEach(b => {
+    const expireDate = b.expiresAt ? new Date(b.expiresAt) : null;
+    const isExpired = expireDate && expireDate.getTime() < now.getTime();
+    const isPermanent = !b.expiresAt;
+
+    let expireBadge = '';
+    if (isPermanent) expireBadge = `<span class="tag permanent"><i class="fas fa-infinity"></i> Permanen</span>`;
+    else if (isExpired) expireBadge = `<span class="tag expired"><i class="fas fa-times"></i> Expired</span>`;
+    else expireBadge = `<span class="tag">Berakhir: ${b.expiresAt}</span>`;
+
+    html += `
+      <div class="badge-user-card">
+        <div class="row">
+          <div class="badge-emoji">${b.emoji || '🎖️'}</div>
+          <div class="info">
+            <div class="title">
+              ${escapeHtml(b.judul)}
+            </div>
+            <div class="uname">@${escapeHtml(b.username)}</div>
+            <div class="meta">
+              <span class="tag">${escapeHtml(b.tipe)}</span>
+              <span class="tag">${getLbKatLabel(b.kategori)}</span>
+              ${expireBadge}
+              <span style="font-size:10px;color:var(--text-faint);">Diberikan: ${b.unlockedAt}</span>
+            </div>
+          </div>
+          <div class="actions-right">
+            <button class="btn btn-danger btn-xs" onclick="revokeBadge(${b.id})"><i class="fas fa-times"></i> Revoke</button>
+          </div>
+        </div>
+      </div>`;
+  });
+  box.innerHTML = html;
+}
+
+async function revokeBadge(badgeId) {
+  if (!confirm('Revoke badge ini? User akan kehilangan badge ini.')) return;
+  try {
+    const res = await safePost({
+      action: 'adminRevokeBadge',
+      username: _user.username,
+      badgeId: badgeId
+    });
+    if (res.success) {
+      showToast('Badge direvoke', 'success');
+      setTimeout(loadBadgesList, 500);
+    } else {
+      alert(res.msg || 'Gagal revoke');
+    }
+  } catch(err) {
+    alert(err.message);
+  }
+}
+
+async function triggerLeaderboard() {
+  if (!confirm('Proses leaderboard minggu lalu sekarang?\n\nIni akan:\n1. Hitung juara per kategori minggu lalu\n2. Award badge 🥇🥈🥉 ke juara 1, 2, 3\n3. Simpan ke Hall of Fame\n\nLanjut?')) return;
+
+  showToast('Memproses leaderboard...', 'success');
+
+  try {
+    const res = await safePost({
+      action: 'processWeeklyLeaderboard',
+      username: _user.username
+    });
+
+    if (res.success) {
+      showToast('✅ Leaderboard minggu lalu berhasil diproses!', 'success');
+      setTimeout(() => {
+        loadBadgesList();
+        loadLeaderboardPreview();
+      }, 800);
+    } else {
+      alert(res.msg || 'Gagal proses');
+    }
+  } catch(err) {
+    alert('Error: ' + err.message);
+  }
+}
+
+function loadLeaderboardPreview() {
+  const box = document.getElementById('lbPreviewBox');
+  if (!box) return;
+  box.innerHTML = `<div class="loading-block"><div class="spinner dark"></div><p style="margin-top:10px;">Memuat preview...</p></div>`;
+
+  safeGet('action=getLeaderboard&kategori=all', 60000)
+    .then(res => {
+      if (!res.success || !res.leaders || res.leaders.length === 0) {
+        box.innerHTML = `<div class="empty-block"><i class="fas fa-trophy"></i><p>Belum ada peserta minggu ini</p></div>`;
+        return;
+      }
+
+      let html = '';
+      res.leaders.forEach(u => {
+        const medal = u.rank === 1 ? '🥇' : u.rank === 2 ? '🥈' : u.rank === 3 ? '🥉' : '';
+        const rankDisplay = medal ? `<div class="rank-medal">${medal}</div>` : `<div class="rank-num">#${u.rank}</div>`;
+        html += `
+          <div class="lb-preview-item">
+            ${rankDisplay}
+            <div class="info">
+              <div class="name">${escapeHtml(u.nama)}</div>
+              <div class="uname">@${escapeHtml(u.username)} · ${u.total}x ujian</div>
+            </div>
+            <div class="skor">${u.skor}</div>
+          </div>`;
+      });
+      box.innerHTML = html;
+    })
+    .catch(() => {
+      box.innerHTML = `<div class="empty-block"><p>Gagal memuat preview</p></div>`;
+    });
+}
+
+function getLbKatLabel(kat) {
+  const map = {
+    'all': 'Overall',
+    'eps': 'EPS-TOPIK',
+    'kosakata': 'Kosakata',
+    'tata_bahasa': 'Tata Bahasa',
+    'listening': 'Listening',
+    'reading': 'Reading'
+  };
+  return map[kat] || kat;
+}
+
+// ============================================================
+//  SETTINGS / CONFIG
+// ============================================================
+function loadConfig() {
+  safeGet('action=getConfig&adminUsername=' + encodeURIComponent(_user.username), 30000)
+    .then(res => {
+      if (res.success && res.config) {
+        configData = res.config;
+        const setVal = (id, v) => { const el = document.getElementById(id); if (el) el.value = v; };
+        const setChk = (id, v) => { const el = document.getElementById(id); if (el) el.checked = v; };
+        setVal('cfgNotifEmail', configData.notif_email || '');
+        setChk('cfgNotifRequest', String(configData.notif_on_request || '').toUpperCase() === 'TRUE');
+        setChk('cfgNotifTicket', String(configData.notif_on_ticket || '').toUpperCase() === 'TRUE');
+        setChk('cfgNotifRegister', String(configData.notif_on_register || '').toUpperCase() === 'TRUE');
+      }
+    })
+    .catch(() => showToast('Gagal memuat config', 'error'));
+}
+
+async function saveConfig() {
+  const getVal = (id) => { const el = document.getElementById(id); return el ? el.value : ''; };
+  const getChk = (id) => { const el = document.getElementById(id); return el ? el.checked : false; };
+  const config = {
+    notif_email: getVal('cfgNotifEmail').trim(),
+    notif_on_request: getChk('cfgNotifRequest') ? 'TRUE' : 'FALSE',
+    notif_on_ticket: getChk('cfgNotifTicket') ? 'TRUE' : 'FALSE',
+    notif_on_register: getChk('cfgNotifRegister') ? 'TRUE' : 'FALSE'
+  };
+  try {
+    const res = await safePost({ action: 'adminSaveConfig', username: _user.username, config });
+    if (res.success) showToast('Pengaturan disimpan', 'success');
+    else alert(res.msg || 'Gagal simpan');
+  } catch(err) { alert(err.message); }
+}
+
+async function testEmail() {
+  const emailEl = document.getElementById('cfgNotifEmail');
+  const targetEmail = emailEl ? emailEl.value.trim().split(',')[0].trim() : '';
+  if (!targetEmail) { alert('Isi email admin dulu'); return; }
+  try {
+    showToast('Mengirim test email...', 'success');
+    const res = await safePost({ action: 'adminTestEmail', username: _user.username, targetEmail });
+    if (res.success) showToast(res.msg, 'success');
+    else alert(res.msg || 'Gagal kirim');
+  } catch(err) { alert(err.message); }
+}
+
+// ============================================================
+//  NOTIF DROPDOWN
+// ============================================================
+function toggleNotifDropdown(e) {
+  e.preventDefault();
+  e.stopPropagation();
+  const wrapper = document.getElementById('notifWrapper');
+  const isOpen = wrapper.classList.contains('open');
+  document.querySelectorAll('.notif-wrapper.open').forEach(w => w.classList.remove('open'));
+  if (!isOpen) {
+    wrapper.classList.add('open');
+    loadNotifDropdown();
+    startNotifPoll();
+  } else {
+    stopNotifPoll();
+  }
+}
+
+function startNotifPoll() {
+  stopNotifPoll();
+  notifPollTimer = setInterval(() => {
+    const wrapper = document.getElementById('notifWrapper');
+    if (wrapper && wrapper.classList.contains('open')) loadNotifDropdown(true);
+    else stopNotifPoll();
+  }, 15000);
+}
+
+function stopNotifPoll() {
+  if (notifPollTimer) { clearInterval(notifPollTimer); notifPollTimer = null; }
+}
+
+document.addEventListener('click', function(e) {
+  const wrapper = document.getElementById('notifWrapper');
+  if (wrapper && !wrapper.contains(e.target)) {
+    wrapper.classList.remove('open');
+    stopNotifPoll();
+  }
+});
+
+function loadNotifDropdown(silent) {
+  const body = document.getElementById('notifBody');
+  if (!silent) body.innerHTML = `<div class="notif-empty"><i class="fas fa-spinner fa-spin"></i> Memuat...</div>`;
+  safeGet('action=getNotifications&username=' + encodeURIComponent(_user.username), 30000)
+    .then(res => {
+      if (!res.success || !res.notifications) {
+        if (!silent) body.innerHTML = `<div class="notif-empty"><i class="fas fa-bell-slash"></i> Gagal memuat</div>`;
+        return;
+      }
+      const list = res.notifications.slice(0, 10);
+      if (list.length === 0) {
+        body.innerHTML = `<div class="notif-empty"><i class="fas fa-bell-slash"></i> Belum ada notifikasi</div>`;
+        return;
+      }
+      const iconMap = {
+        'bantuan': 'fa-question-circle', 'balasan': 'fa-comment-dots',
+        'kuota': 'fa-ticket-alt', 'sistem': 'fa-info-circle',
+        'request': 'fa-paper-plane', 'chat': 'fa-comments', 'info': 'fa-bell'
+      };
+      let html = '';
+      list.forEach(n => {
+        const ic = iconMap[n.tipe] || 'fa-bell';
+        const url = n.linkUrl || 'notifikasi.html';
+        html += `
+          <div class="notif-item-drop tipe-${n.tipe} ${!n.isRead ? 'unread' : ''}" onclick="handleNotifClick(event, ${n.id}, '${url.replace(/'/g, "\\'")}')">
+            <div class="ic"><i class="fas ${ic}"></i></div>
+            <div class="tx">
+              <div class="ttl">${n.judul || 'Notifikasi'}</div>
+              <div class="msg">${n.pesan || ''}</div>
+              <div class="tm">${n.tanggal}</div>
+            </div>
+          </div>`;
+      });
+      body.innerHTML = html;
+    })
+    .catch(() => {
+      if (!silent) body.innerHTML = `<div class="notif-empty"><i class="fas fa-exclamation-triangle"></i> Gagal memuat</div>`;
+    });
+}
+
+function handleNotifClick(e, notifId, url) {
+  e.stopPropagation();
+  safePost({ action: 'markNotifRead', username: _user.username, notifId })
+    .then(() => loadNotifDropdown(true)).catch(() => {});
+  document.getElementById('notifWrapper').classList.remove('open');
+  stopNotifPoll();
+  if (url && url !== 'notifikasi.html') setTimeout(() => location.href = url, 200);
+  else location.href = 'notifikasi.html';
+}
+
+function markAllNotifRead(e) {
+  e.stopPropagation();
+  safePost({ action: 'markAllNotifRead', username: _user.username })
+    .then(() => { loadNotifDropdown(); })
+    .catch(() => {});
+}
 
 function logoutAdmin(e) {
   e.preventDefault();
@@ -3195,7 +3513,9 @@ function logoutAdmin(e) {
   location.href = 'login.html';
 }
 
-// ===== INIT =====
+// ============================================================
+//  INIT
+// ============================================================
 onSectionChange();
 onKategoriChange();
 loadData();
@@ -3205,10 +3525,7 @@ safeGet('action=getRequests&status=pending&adminUsername=' + encodeURIComponent(
   .then(res => {
     if (res.success && res.requests && res.requests.length > 0) {
       const badge = document.getElementById('reqBadge');
-      if (badge) {
-        badge.textContent = res.requests.length;
-        badge.style.display = 'inline-block';
-      }
+      if (badge) { badge.textContent = res.requests.length; badge.style.display = 'inline-block'; }
     }
   })
   .catch(() => {});
@@ -3232,10 +3549,7 @@ safeGet('action=getTickets&username=' + encodeURIComponent(_user.username) + '&i
       const openCount = res.tickets.filter(t => t.status === 'open').length;
       if (openCount > 0) {
         const badge = document.getElementById('ticketBadge');
-        if (badge) {
-          badge.textContent = openCount;
-          badge.style.display = 'inline-block';
-        }
+        if (badge) { badge.textContent = openCount; badge.style.display = 'inline-block'; }
       }
     }
   })
