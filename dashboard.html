@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Dashboard — EPS-TOPIK</title>
+<title>Dashboard — EPS-TOPIKU</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <style>
 :root{
@@ -115,6 +115,25 @@ body{
   background:transparent;color:var(--gold);border-color:var(--gold);
   font-weight:700;
 }
+
+/* 🎖️ BADGE DI TOPBAR */
+.topbar-user-badges{
+  display:flex;
+  gap:2px;
+  align-items:center;
+  margin-left:4px;
+}
+.topbar-user-badges .tb-badge{
+  font-size:13px;
+  line-height:1;
+  cursor:help;
+  transition:.15s;
+  filter:drop-shadow(0 1px 2px rgba(0,0,0,.15));
+}
+.topbar-user-badges .tb-badge:hover{
+  transform:scale(1.2);
+}
+
 .topbar .btn-icon{
   background:transparent;border:1px solid var(--border);color:var(--muted);
   width:36px;height:36px;border-radius:50%;cursor:pointer;
@@ -122,13 +141,6 @@ body{
   font-size:13px;transition:.15s;position:relative;text-decoration:none;
 }
 .topbar .btn-icon:hover{color:var(--text);border-color:var(--text);}
-.topbar .btn-icon .notif-badge{
-  position:absolute;top:-3px;right:-3px;
-  background:var(--c-red);color:#fff;font-size:10px;font-weight:700;
-  min-width:18px;height:18px;padding:0 4px;border-radius:10px;
-  display:flex;align-items:center;justify-content:center;
-  border:2px solid var(--card-bg);
-}
 .topbar .logout{
   color:var(--c-red);text-decoration:none;font-weight:500;font-size:13px;
   display:inline-flex;align-items:center;gap:6px;padding:8px 12px;border-radius:8px;
@@ -213,13 +225,6 @@ body.is-admin #premiumBadge{display:none !important;}
   z-index:150;transition:.2s;
 }
 .chat-fab:hover{transform:translateY(-2px);}
-.chat-fab .chat-badge{
-  position:absolute;top:-3px;right:-3px;
-  background:var(--c-red);color:#fff;font-size:11px;font-weight:700;
-  min-width:20px;height:20px;padding:0 5px;border-radius:10px;
-  display:flex;align-items:center;justify-content:center;
-  border:2px solid var(--bg);
-}
 
 /* ===== CHAT POPUP ===== */
 .chat-popup{
@@ -368,12 +373,8 @@ body.is-admin #premiumBadge{display:none !important;}
   margin-bottom:20px;
   display:flex;align-items:center;gap:18px;flex-wrap:wrap;
 }
-.quota-banner.empty{
-  border-left-color:var(--c-red);
-}
-.quota-banner.loading{
-  border-left-color:var(--muted);
-}
+.quota-banner.empty{border-left-color:var(--c-red);}
+.quota-banner.loading{border-left-color:var(--muted);}
 .quota-banner .ico-big{
   width:44px;height:44px;border-radius:50%;
   background:var(--sub-bg);color:var(--accent);
@@ -484,18 +485,21 @@ body.is-admin #premiumBadge{display:none !important;}
 }
 .menu:hover .arrow{color:var(--muted);transform:translateY(-50%) translateX(3px);}
 
-/* warna ikon menu */
 .ico-blue{color:var(--c-blue);}
 .ico-green{color:var(--c-green);}
 .ico-orange{color:var(--c-orange);}
 .ico-red{color:var(--c-red);}
 .ico-purple{color:var(--c-purple);}
 .ico-teal{color:var(--c-teal);}
+.ico-pink{color:var(--c-pink);}
+.ico-gold{color:var(--gold-dark);}
 
 .menu.admin-card{border-left:3px solid var(--c-red);}
 .menu.profile-card{border-left:3px solid var(--c-purple);}
 .menu.history-card{border-left:3px solid var(--c-orange);}
 .menu.help-card{border-left:3px solid var(--c-teal);}
+.menu.flashcard-card{border-left:3px solid var(--c-pink);}
+.menu.leaderboard-card{border-left:3px solid var(--gold);}
 .menu.premium-card{
   background:var(--gold-light);
   border-color:var(--gold);
@@ -504,6 +508,29 @@ body.is-admin #premiumBadge{display:none !important;}
 .menu.premium-card .ico{color:var(--gold-dark);background:transparent;}
 .menu.premium-card h3{color:var(--gold-dark);}
 [data-theme="dark"] .menu.premium-card h3{color:var(--gold);}
+
+/* ✨ LEADERBOARD CARD — bikin menonjol */
+.menu.leaderboard-card{
+  background:linear-gradient(135deg, var(--gold-light) 0%, var(--card-bg) 100%);
+  border-color:var(--gold);
+}
+.menu.leaderboard-card .ico{
+  color:var(--gold-dark);
+  background:transparent;
+}
+.menu.leaderboard-card h3{
+  color:var(--gold-dark);
+  display:flex;
+  align-items:center;
+  gap:6px;
+}
+[data-theme="dark"] .menu.leaderboard-card h3{color:var(--gold);}
+[data-theme="dark"] .menu.leaderboard-card{
+  background:linear-gradient(135deg, rgba(251,191,36,.15) 0%, var(--card-bg) 100%);
+}
+.menu.leaderboard-card .trophy-mini{
+  font-size:14px;
+}
 
 /* ===== DROPDOWN MENU (KOSAKATA) ===== */
 .menu-dropdown-wrapper{position:relative;}
@@ -574,7 +601,6 @@ body.is-admin #premiumBadge{display:none !important;}
 }
 .btn-show-all:hover{background:var(--accent-hover);}
 
-/* warna ikon tema kosakata */
 .ico-transportasi{color:var(--c-blue);}
 .ico-makanan{color:var(--c-red);}
 .ico-wisata{color:var(--c-green);}
@@ -626,7 +652,6 @@ body.is-admin #premiumBadge{display:none !important;}
   outline:none;border-color:var(--accent);
 }
 
-/* ===== KUOTA POPUP ===== */
 .kuota-popup-icon{
   width:64px;height:64px;border-radius:50%;
   display:flex;align-items:center;justify-content:center;
@@ -684,7 +709,6 @@ body.is-admin #premiumBadge{display:none !important;}
 .kuota-popup-buttons{display:flex;gap:10px;flex-wrap:wrap;}
 .kuota-popup-buttons .btn{flex:1;justify-content:center;padding:12px;font-size:14px;}
 
-/* ===== BUTTONS ===== */
 .btn{
   padding:10px 18px;border:none;border-radius:8px;
   font-weight:500;font-size:13px;cursor:pointer;transition:.15s;
@@ -703,12 +727,10 @@ body.is-admin #premiumBadge{display:none !important;}
 .btn-gold{background:var(--gold);color:#fff;font-weight:600;}
 .btn-gold:hover:not(:disabled){background:var(--gold-dark);}
 
-/* ===== WELCOME POPUP ===== */
 .welcome-popup .modal-box{text-align:center;}
 .welcome-popup .kuota-popup-icon{color:var(--accent);}
 .welcome-popup .kuota-popup-catatan{text-align:left;}
 
-/* ===== BENEFIT LIST ===== */
 .benefit-list{
   background:var(--sub-bg);border-radius:10px;
   padding:16px 18px;margin-bottom:18px;
@@ -724,7 +746,6 @@ body.is-admin #premiumBadge{display:none !important;}
 .benefit-list .item:last-child{margin-bottom:0;}
 .benefit-list .item i{color:var(--c-green);margin-top:3px;flex-shrink:0;}
 
-/* ===== SECTION TITLE & FOOTER ===== */
 .section-title{
   font-size:12px;font-weight:600;color:var(--muted);
   margin:26px 0 14px;letter-spacing:1px;text-transform:uppercase;
@@ -734,7 +755,6 @@ body.is-admin #premiumBadge{display:none !important;}
   color:var(--muted);font-size:12px;
 }
 
-/* ===== RESPONSIVE ===== */
 @media(max-width:600px){
   .wrap{margin:20px auto;padding-bottom:90px;}
   .hello{font-size:19px;}
@@ -757,7 +777,7 @@ body.is-admin #premiumBadge{display:none !important;}
 </head>
 <body>
 <div class="topbar">
-  <h1><i class="fas fa-graduation-cap"></i> EPS-TOPIK</h1>
+  <h1><i class="fas fa-graduation-cap"></i> EPS-TOPIKU</h1>
   <div class="spacer"></div>
   <span class="user">
     <span id="avatarBox"></span>
@@ -767,6 +787,7 @@ body.is-admin #premiumBadge{display:none !important;}
         <span class="badge premium" id="premiumBadge" style="display:none;">
           <i class="fas fa-crown"></i> PREMIUM
         </span>
+        <span class="topbar-user-badges" id="topbarBadges"></span>
       </div>
       <span id="userEmail" style="font-size:11px;color:var(--muted);">-</span>
     </div>
@@ -776,7 +797,6 @@ body.is-admin #premiumBadge{display:none !important;}
   <div class="notif-wrapper" id="notifWrapper">
     <button class="btn-icon" onclick="toggleNotifDropdown(event)" title="Notifikasi">
       <i class="fas fa-bell"></i>
-      <span class="notif-badge" id="notifBadge" style="display:none;">0</span>
     </button>
     <div class="notif-dropdown" id="notifDropdown">
       <div class="notif-head">
@@ -871,14 +891,32 @@ body.is-admin #premiumBadge{display:none !important;}
       <p id="menuChatDesc">Tanya langsung ke admin bila ada kendala</p>
       <i class="fas fa-chevron-right arrow"></i>
     </div>
+    <a class="menu admin-card" id="menuAdmin" href="admin.html" style="display:none;">
+      <div class="ico ico-red"><i class="fas fa-user-cog"></i></div>
+      <h3>Admin Dashboard</h3>
+      <p>Kelola soal, user & langganan (khusus admin)</p>
+      <i class="fas fa-chevron-right arrow"></i>
+    </a>
+  </div>
+
+  <div class="section-title">Sosial</div>
+  <div class="grid" style="margin-bottom:20px;">
+    <a class="menu leaderboard-card" href="leaderboard.html">
+      <div class="ico"><i class="fas fa-trophy"></i></div>
+      <h3>
+        <span class="trophy-mini">🏆</span> Leaderboard
+      </h3>
+      <p>Bersaing skor tertinggi sama teman-teman. Reset tiap Senin!</p>
+      <i class="fas fa-chevron-right arrow"></i>
+    </a>
   </div>
 
   <div class="section-title">Latihan</div>
   <div class="grid" id="menuGrid">
-    <a class="menu admin-card" id="menuAdmin" href="admin.html" style="display:none;">
-      <div class="ico ico-red"><i class="fas fa-user-cog"></i></div>
-      <h3>Admin Panel</h3>
-      <p>Kelola soal & user (khusus admin)</p>
+    <a class="menu flashcard-card" href="flashcard.html">
+      <div class="ico ico-pink"><i class="fas fa-clone"></i></div>
+      <h3>Flashcard Kosakata</h3>
+      <p>Hafalin kosakata pakai kartu interaktif. Belajar santai tanpa kuota!</p>
       <i class="fas fa-chevron-right arrow"></i>
     </a>
 
@@ -933,11 +971,10 @@ body.is-admin #premiumBadge{display:none !important;}
   </div>
 </div>
 
-<div class="footer">© EPS-TOPIK Practice</div>
+<div class="footer">© EPS-TOPIKU</div>
 
 <button class="chat-fab" id="chatFab" onclick="toggleChat()" title="Chat">
   <i class="fas fa-comments"></i>
-  <span class="chat-badge" id="chatBadge" style="display:none;">0</span>
 </button>
 
 <div class="chat-popup" id="chatPopup">
@@ -947,7 +984,7 @@ body.is-admin #premiumBadge{display:none !important;}
     </button>
     <div class="avatar" id="chatHeadAvatar"><i class="fas fa-headset"></i></div>
     <div class="info">
-      <h3 id="chatHeadTitle">Admin EPS-TOPIK</h3>
+      <h3 id="chatHeadTitle">Admin EPS-TOPIKU</h3>
       <p id="chatHeadSub">Biasanya balas dalam beberapa menit</p>
     </div>
     <button class="close-chat" onclick="toggleChat()"><i class="fas fa-times"></i></button>
@@ -1079,21 +1116,37 @@ body.is-admin #premiumBadge{display:none !important;}
   </div>
 </div>
 
-<div id="requestModal" class="modal-back">
-  <div class="modal-box">
-    <h2><i class="fas fa-paper-plane"></i> Minta Tambah Kuota</h2>
-    <p class="desc">Request kamu akan dikirim ke admin. Admin akan review dan menambahkan kuota ujian.</p>
-    <label>Pesan untuk admin (opsional)</label>
-    <textarea id="requestPesan" placeholder="Contoh: Pak, saya mau latihan lagi buat persiapan ujian..."></textarea>
-    <div style="display:flex;gap:10px;">
-      <button class="btn btn-secondary" onclick="closeModal('requestModal')" style="flex:1;justify-content:center;padding:12px;">Batal</button>
-      <button class="btn btn-primary" onclick="submitRequest()" id="btnSubmitReq" style="flex:1;justify-content:center;padding:12px;"><i class="fas fa-paper-plane"></i> Kirim</button>
-    </div>
-  </div>
-</div>
-
 <script>
-// ===== THEME =====
+// ============================================================
+//  SESSION & THEME
+// ============================================================
+const SESSION_MAX_AGE = 8 * 60 * 60 * 1000;
+
+function touchSession() {
+  const u = JSON.parse(localStorage.getItem('user') || 'null');
+  if (u && u.loginAt) {
+    u.loginAt = Date.now();
+    localStorage.setItem('user', JSON.stringify(u));
+  }
+}
+
+function checkSession() {
+  const u = JSON.parse(localStorage.getItem('user') || 'null');
+  if (!u) { location.href = 'login.html'; return false; }
+  if (Date.now() - (u.loginAt || 0) > SESSION_MAX_AGE) {
+    localStorage.removeItem('user');
+    alert('Sesi kamu habis (8 jam). Silakan login ulang.');
+    location.href = 'login.html';
+    return false;
+  }
+  return true;
+}
+
+['click','keydown','mousemove','scroll','touchstart'].forEach(evt => {
+  document.addEventListener(evt, touchSession, { passive: true });
+});
+setInterval(touchSession, 60000);
+
 function applyTheme(t){
   document.documentElement.setAttribute('data-theme', t);
   const icon = document.getElementById('themeIcon');
@@ -1107,7 +1160,7 @@ function toggleTheme(){
 }
 applyTheme(localStorage.getItem('theme') || 'light');
 
-const API = 'https://script.google.com/macros/s/AKfycbxCS8Y8fMgZpSmGNBuBwJMERbXuf4CGTQAH2GKXMnIskJKJFUoHg4l3UNrt9YLZ59il/exec';
+const API = 'https://script.google.com/macros/s/AKfycbyQ4fuG4bapGT2qDD078qMC2l6oNOjcCTqYkPqO7PDY6g9b7HNdSOk2ZGrKHL4OmJ8j/exec';
 
 const WHATSAPP_ADMIN = '6287852456680';
 const PREMIUM_PAKET = [
@@ -1115,6 +1168,16 @@ const PREMIUM_PAKET = [
 ];
 let selectedPaket = 'bulanan';
 
+if (!checkSession()) throw new Error('Session expired');
+
+let user = JSON.parse(localStorage.getItem('user') || 'null');
+if (!user) location.href = 'login.html';
+
+const IS_ADMIN = user.role === 'admin';
+
+// ============================================================
+//  PREMIUM
+// ============================================================
 function isPremiumUser() {
   if (!user) return false;
   if (String(user.plan || '').toLowerCase() !== 'premium') return false;
@@ -1190,24 +1253,18 @@ async function langgananSekarang() {
       showPremiumSuccessModal(paket);
     } else {
       alert('Gagal: ' + (res.msg || 'Gagal kirim request'));
-      if (btn) {
-        btn.disabled = false;
-        btn.innerHTML = original;
-      }
+      if (btn) { btn.disabled = false; btn.innerHTML = original; }
     }
   } catch(e) {
     alert('Gagal kirim request. Cek koneksi internet & coba lagi.');
     console.error(e);
-    if (btn) {
-      btn.disabled = false;
-      btn.innerHTML = original;
-    }
+    if (btn) { btn.disabled = false; btn.innerHTML = original; }
   }
 }
 
 function showPremiumSuccessModal(paket) {
   const pesan = encodeURIComponent(
-    `Halo Admin, saya sudah request langganan PREMIUM EPS-TOPIK di aplikasi.\n\n` +
+    `Halo Admin, saya sudah request langganan PREMIUM EPS-TOPIKU di aplikasi.\n\n` +
     `Username: ${user.username}\n` +
     `Nama: ${user.nama || user.username}\n` +
     `Paket: ${paket.label} (${paket.days} hari)\n` +
@@ -1240,25 +1297,9 @@ async function refreshPremiumStatus() {
   }
 }
 
-const TEMA_KOSAKATA = [
-  { value: 'transportasi',   label: 'Transportasi',     desc: 'Bus, kereta, taksi, dll',    icon: 'fa-bus',            icoClass: 'ico-transportasi' },
-  { value: 'makanan',        label: 'Makanan & Minuman', desc: 'Kimchi, bibimbap, kopi, dll', icon: 'fa-utensils',      icoClass: 'ico-makanan' },
-  { value: 'tempat_wisata',  label: 'Tempat Wisata',    desc: 'Namsan, Gyeongbokgung, dll', icon: 'fa-landmark',       icoClass: 'ico-wisata' },
-  { value: 'keluarga',       label: 'Keluarga',         desc: 'Ayah, ibu, kakak, adik',     icon: 'fa-users',          icoClass: 'ico-keluarga' },
-  { value: 'sekolah',        label: 'Sekolah',          desc: 'Buku, guru, kelas, dll',     icon: 'fa-graduation-cap', icoClass: 'ico-sekolah' },
-  { value: 'tubuh',          label: 'Anggota Tubuh',    desc: 'Kepala, tangan, kaki',       icon: 'fa-hand-paper',     icoClass: 'ico-tubuh' },
-  { value: 'pakaian',        label: 'Pakaian',          desc: 'Baju, celana, sepatu',       icon: 'fa-tshirt',         icoClass: 'ico-pakaian' },
-  { value: 'alam',           label: 'Alam & Cuaca',     desc: 'Hujan, matahari, gunung',    icon: 'fa-cloud-sun',      icoClass: 'ico-alam' },
-  { value: 'pekerjaan',      label: 'Pekerjaan',        desc: 'Dokter, guru, polisi',       icon: 'fa-briefcase',      icoClass: 'ico-pekerjaan' },
-  { value: 'hobi',           label: 'Hobi & Olahraga',  desc: 'Sepakbola, musik, baca',     icon: 'fa-futbol',         icoClass: 'ico-hobi' },
-  { value: 'umum',           label: 'Kosakata Umum',    desc: 'Campuran semua kategori',    icon: 'fa-book',           icoClass: 'ico-umum' }
-];
-
-let user = JSON.parse(localStorage.getItem('user') || 'null');
-if (!user) location.href = 'login.html';
-
-const IS_ADMIN = user.role === 'admin';
-
+// ============================================================
+//  USER INIT
+// ============================================================
 document.getElementById('userName').textContent = user.nama || user.username;
 document.getElementById('greetName').textContent = user.nama || user.username;
 const emailEl = document.getElementById('userEmail');
@@ -1292,7 +1333,38 @@ if (IS_ADMIN) {
   badge.className = 'badge user';
 }
 
-// ===== NOTIF DROPDOWN =====
+// ============================================================
+//  🎖️ LOAD BADGES (TOPBAR)
+// ============================================================
+async function loadTopbarBadges() {
+  if (IS_ADMIN) return;
+  try {
+    const r = await fetch(API + '?action=getBadges&username=' + encodeURIComponent(user.username) + '&t=' + Date.now());
+    const res = await r.json();
+    if (!res.success || !res.badges) return;
+
+    const box = document.getElementById('topbarBadges');
+    if (!box) return;
+
+    // Ambil max 2 badge (biar gak terlalu rame di topbar)
+    const top = res.badges.slice(0, 2);
+    if (top.length === 0) { box.innerHTML = ''; return; }
+
+    let html = '';
+    top.forEach(b => {
+      html += `<span class="tb-badge" title="${escapeHtml(b.judul)}">${b.emoji}</span>`;
+    });
+    box.innerHTML = html;
+  } catch(e) {
+    console.warn('Gagal load topbar badges:', e);
+  }
+}
+
+// ============================================================
+//  NOTIF DROPDOWN
+// ============================================================
+let notifPollTimer = null;
+
 function toggleNotifDropdown(e) {
   e.preventDefault();
   e.stopPropagation();
@@ -1302,24 +1374,49 @@ function toggleNotifDropdown(e) {
   if (!isOpen) {
     wrapper.classList.add('open');
     loadNotifDropdown();
+    startNotifPoll();
+  } else {
+    stopNotifPoll();
+  }
+}
+
+function startNotifPoll() {
+  stopNotifPoll();
+  notifPollTimer = setInterval(() => {
+    const wrapper = document.getElementById('notifWrapper');
+    if (wrapper && wrapper.classList.contains('open')) {
+      loadNotifDropdown(true);
+    } else {
+      stopNotifPoll();
+    }
+  }, 15000);
+}
+
+function stopNotifPoll() {
+  if (notifPollTimer) {
+    clearInterval(notifPollTimer);
+    notifPollTimer = null;
   }
 }
 
 document.addEventListener('click', function(e) {
   const wrapper = document.getElementById('notifWrapper');
-  if (wrapper && !wrapper.contains(e.target)) wrapper.classList.remove('open');
+  if (wrapper && !wrapper.contains(e.target)) {
+    wrapper.classList.remove('open');
+    stopNotifPoll();
+  }
 });
 
-function loadNotifDropdown() {
+function loadNotifDropdown(silent) {
   const body = document.getElementById('notifBody');
   if (!body) return;
-  body.innerHTML = `<div class="notif-empty"><i class="fas fa-spinner fa-spin"></i> Memuat...</div>`;
+  if (!silent) body.innerHTML = `<div class="notif-empty"><i class="fas fa-spinner fa-spin"></i> Memuat...</div>`;
 
   fetch(API + '?action=getNotifications&username=' + encodeURIComponent(user.username) + '&t=' + Date.now())
     .then(r => r.json())
     .then(res => {
       if (!res.success || !res.notifications) {
-        body.innerHTML = `<div class="notif-empty"><i class="fas fa-bell-slash"></i> Gagal memuat</div>`;
+        if (!silent) body.innerHTML = `<div class="notif-empty"><i class="fas fa-bell-slash"></i> Gagal memuat</div>`;
         return;
       }
       const list = res.notifications.slice(0, 10);
@@ -1349,7 +1446,7 @@ function loadNotifDropdown() {
       body.innerHTML = html;
     })
     .catch(() => {
-      body.innerHTML = `<div class="notif-empty"><i class="fas fa-exclamation-triangle"></i> Gagal memuat</div>`;
+      if (!silent) body.innerHTML = `<div class="notif-empty"><i class="fas fa-exclamation-triangle"></i> Gagal memuat</div>`;
     });
 }
 
@@ -1358,9 +1455,10 @@ function handleNotifClick(e, notifId, url) {
   fetch(API, {
     method: 'POST', headers: {'Content-Type':'text/plain;charset=utf-8'},
     body: JSON.stringify({ action: 'markNotifRead', username: user.username, notifId })
-  }).then(() => updateNotifBadge()).catch(() => {});
+  }).then(() => loadNotifDropdown(true)).catch(() => {});
   const wrapper = document.getElementById('notifWrapper');
   if (wrapper) wrapper.classList.remove('open');
+  stopNotifPoll();
   if (url && url !== 'notifikasi.html') {
     setTimeout(() => location.href = url, 200);
   } else {
@@ -1374,49 +1472,17 @@ function markAllNotifRead(e) {
     method: 'POST', headers: {'Content-Type':'text/plain;charset=utf-8'},
     body: JSON.stringify({ action: 'markAllNotifRead', username: user.username })
   })
-  .then(() => { loadNotifDropdown(); updateNotifBadge(); })
+  .then(() => { loadNotifDropdown(); })
   .catch(() => {});
 }
 
 // ============================================================
-//  CHAT
+//  CHAT (auto-refresh 5 detik)
 // ============================================================
 let currentChatRoom = null;
 let chatRooms = [];
 let chatPollTimer = null;
-let lastChatCount = 0;
-
-async function requestNotifPermission() {
-  if (!('Notification' in window)) return false;
-  if (Notification.permission === 'granted') return true;
-  if (Notification.permission === 'denied') return false;
-  const perm = await Notification.requestPermission();
-  return perm === 'granted';
-}
-
-function showPushNotif(title, body, tag) {
-  if (!('Notification' in window)) return;
-  if (Notification.permission !== 'granted') return;
-  try {
-    const n = new Notification(title, {
-      body: body,
-      icon: 'https://cdn-icons-png.flaticon.com/512/2965/2965345.png',
-      tag: tag || 'chat-notif',
-      badge: 'https://cdn-icons-png.flaticon.com/512/2965/2965345.png'
-    });
-    setTimeout(() => n.close(), 8000);
-    n.onclick = function() {
-      window.focus();
-      if (!IS_ADMIN) openChat();
-      else if (tag && tag.startsWith('chat:')) {
-        const roomKey = tag.replace('chat:', '');
-        const room = chatRooms.find(r => r.roomKey === roomKey);
-        if (room) openChatRoom(room.roomKey, room.userId, room.nama, room.foto);
-      }
-      n.close();
-    };
-  } catch(e) {}
-}
+let chatMsgPollTimer = null;
 
 function parseMsg(pesan) {
   if (typeof pesan === 'string' && pesan.startsWith('IMG||')) {
@@ -1438,8 +1504,10 @@ function toggleChat() {
       currentChatRoom = null;
       showChatListHeader();
       loadChatRooms();
+      startChatListPoll();
     } else {
       loadChat();
+      startChatMsgPoll();
     }
   }
 }
@@ -1447,7 +1515,8 @@ function toggleChat() {
 function closeChatPopup() {
   const popup = document.getElementById('chatPopup');
   if (popup) popup.classList.remove('open');
-  if (chatPollTimer) { clearInterval(chatPollTimer); chatPollTimer = null; }
+  stopChatListPoll();
+  stopChatMsgPoll();
   currentChatRoom = null;
 }
 
@@ -1459,8 +1528,52 @@ function openChat() {
     currentChatRoom = null;
     showChatListHeader();
     loadChatRooms();
+    startChatListPoll();
   } else {
     loadChat();
+    startChatMsgPoll();
+  }
+}
+
+function startChatListPoll() {
+  stopChatListPoll();
+  chatPollTimer = setInterval(() => {
+    const popup = document.getElementById('chatPopup');
+    if (popup && popup.classList.contains('open') && IS_ADMIN && !currentChatRoom) {
+      loadChatRooms(true);
+    } else {
+      stopChatListPoll();
+    }
+  }, 5000);
+}
+
+function stopChatListPoll() {
+  if (chatPollTimer) {
+    clearInterval(chatPollTimer);
+    chatPollTimer = null;
+  }
+}
+
+function startChatMsgPoll() {
+  stopChatMsgPoll();
+  chatMsgPollTimer = setInterval(() => {
+    const popup = document.getElementById('chatPopup');
+    if (!popup || !popup.classList.contains('open')) {
+      stopChatMsgPoll();
+      return;
+    }
+    if (IS_ADMIN && currentChatRoom) {
+      loadChatRoomMessages(true);
+    } else if (!IS_ADMIN) {
+      loadChat(true);
+    }
+  }, 5000);
+}
+
+function stopChatMsgPoll() {
+  if (chatMsgPollTimer) {
+    clearInterval(chatMsgPollTimer);
+    chatMsgPollTimer = null;
   }
 }
 
@@ -1499,7 +1612,7 @@ function showUserChatHeader() {
   const avatar = document.getElementById('chatHeadAvatar');
   const backBtn = document.getElementById('chatBackBtn');
   const foot = document.getElementById('chatFoot');
-  if (title) title.textContent = 'Admin EPS-TOPIK';
+  if (title) title.textContent = 'Admin EPS-TOPIKU';
   if (sub) sub.textContent = 'Biasanya balas dalam beberapa menit';
   if (avatar) avatar.innerHTML = '<i class="fas fa-headset"></i>';
   if (backBtn) backBtn.style.display = 'none';
@@ -1508,30 +1621,31 @@ function showUserChatHeader() {
 
 function closeChatRoom() {
   currentChatRoom = null;
-  if (chatPollTimer) { clearInterval(chatPollTimer); chatPollTimer = null; }
+  stopChatMsgPoll();
   if (IS_ADMIN) {
     showChatListHeader();
     loadChatRooms();
+    startChatListPoll();
   }
 }
 
-function loadChatRooms() {
+function loadChatRooms(silent) {
   const body = document.getElementById('chatBody');
   if (!body) return;
-  body.innerHTML = `<div class="chat-empty"><i class="fas fa-spinner fa-spin"></i> Memuat...</div>`;
+  if (!silent) body.innerHTML = `<div class="chat-empty"><i class="fas fa-spinner fa-spin"></i> Memuat...</div>`;
 
   fetch(API + '?action=getChatList&username=' + encodeURIComponent(user.username) + '&isAdmin=true&t=' + Date.now())
     .then(r => r.json())
     .then(res => {
       if (!res.success) {
-        body.innerHTML = `<div class="chat-empty"><i class="fas fa-exclamation-triangle"></i> ${escapeHtml(res.msg || 'Gagal')}</div>`;
+        if (!silent) body.innerHTML = `<div class="chat-empty"><i class="fas fa-exclamation-triangle"></i> ${escapeHtml(res.msg || 'Gagal')}</div>`;
         return;
       }
       chatRooms = res.rooms || [];
       renderChatRooms();
     })
     .catch(() => {
-      body.innerHTML = `<div class="chat-empty"><i class="fas fa-exclamation-triangle"></i> Gagal memuat chat</div>`;
+      if (!silent) body.innerHTML = `<div class="chat-empty"><i class="fas fa-exclamation-triangle"></i> Gagal memuat chat</div>`;
     });
 }
 
@@ -1574,18 +1688,9 @@ function renderChatRooms() {
 function openChatRoom(roomKey, userId, nama, foto) {
   currentChatRoom = { roomKey, userId, nama };
   showChatRoomHeader(nama, foto);
+  stopChatListPoll();
   loadChatRoomMessages();
-
-  if (chatPollTimer) clearInterval(chatPollTimer);
-  chatPollTimer = setInterval(() => {
-    const popup = document.getElementById('chatPopup');
-    if (popup && popup.classList.contains('open') && currentChatRoom) {
-      loadChatRoomMessages(true);
-    } else {
-      clearInterval(chatPollTimer);
-      chatPollTimer = null;
-    }
-  }, 5000);
+  startChatMsgPoll();
 }
 
 function loadChatRoomMessages(silent) {
@@ -1612,7 +1717,7 @@ function loadChatRoomMessages(silent) {
     fetch(API, {
       method: 'POST', headers: {'Content-Type':'text/plain;charset=utf-8'},
       body: JSON.stringify({ action: 'markChatRead', username: user.username, roomKey: currentChatRoom.roomKey })
-    }).then(() => updateChatBadge()).catch(() => {});
+    }).catch(() => {});
   })
   .catch(() => {
     if (!silent) body.innerHTML = `<div class="chat-empty"><i class="fas fa-exclamation-triangle"></i> Gagal memuat</div>`;
@@ -1661,17 +1766,17 @@ function renderChatRoomMessages(msgs, userReadAt) {
   body.scrollTop = body.scrollHeight;
 }
 
-function loadChat() {
+function loadChat(silent) {
   const body = document.getElementById('chatBody');
   if (!body) return;
   showUserChatHeader();
-  body.innerHTML = `<div class="chat-empty"><i class="fas fa-spinner fa-spin"></i> Memuat...</div>`;
+  if (!silent) body.innerHTML = `<div class="chat-empty"><i class="fas fa-spinner fa-spin"></i> Memuat...</div>`;
 
   fetch(API + '?action=getChat&username=' + encodeURIComponent(user.username) + '&t=' + Date.now())
     .then(r => r.json())
     .then(res => {
       if (!res.success) {
-        body.innerHTML = `<div class="chat-empty"><i class="fas fa-exclamation-triangle"></i> ${escapeHtml(res.msg || 'Gagal')}</div>`;
+        if (!silent) body.innerHTML = `<div class="chat-empty"><i class="fas fa-exclamation-triangle"></i> ${escapeHtml(res.msg || 'Gagal')}</div>`;
         return;
       }
       const msgs = res.messages || [];
@@ -1681,11 +1786,11 @@ function loadChat() {
         fetch(API, {
           method: 'POST', headers: {'Content-Type':'text/plain;charset=utf-8'},
           body: JSON.stringify({ action: 'markChatRead', username: user.username, roomKey })
-        }).then(() => updateChatBadge()).catch(() => {});
+        }).catch(() => {});
       }
     })
     .catch(() => {
-      body.innerHTML = `<div class="chat-empty"><i class="fas fa-exclamation-triangle"></i> Gagal memuat chat</div>`;
+      if (!silent) body.innerHTML = `<div class="chat-empty"><i class="fas fa-exclamation-triangle"></i> Gagal memuat chat</div>`;
     });
 }
 
@@ -1759,7 +1864,7 @@ async function sendChat() {
     const res = await r.json();
     if (res.success) {
       if (IS_ADMIN && currentChatRoom) loadChatRoomMessages(true);
-      else if (!IS_ADMIN) loadChat();
+      else if (!IS_ADMIN) loadChat(true);
     } else {
       tempDiv.remove();
       input.value = pesan;
@@ -1843,8 +1948,7 @@ async function uploadAndSendImageUser(file) {
 
     if (sendRes.success) {
       if (IS_ADMIN && currentChatRoom) loadChatRoomMessages(true);
-      else if (!IS_ADMIN) loadChat();
-      setTimeout(loadChatRooms, 500);
+      else if (!IS_ADMIN) loadChat(true);
     } else throw new Error(sendRes.msg || 'Gagal kirim');
   } catch(err) {
     const t = document.getElementById(tempId);
@@ -1874,72 +1978,64 @@ function updateChatBadge() {
     .then(r => r.json())
     .then(res => {
       if (res.success) {
-        const badge = document.getElementById('chatBadge');
-        if (!badge) return;
-        if (res.count > 0) { badge.textContent = res.count > 99 ? '99+' : res.count; badge.style.display = 'flex'; }
-        else badge.style.display = 'none';
-      }
-    })
-    .catch(() => {});
-}
-
-function updateNotifBadge() {
-  fetch(API + '?action=getUnreadCount&username=' + encodeURIComponent(user.username) + '&t=' + Date.now())
-    .then(r => r.json())
-    .then(res => {
-      if (res.success) {
-        const badge = document.getElementById('notifBadge');
-        if (!badge) return;
-        if (res.count > 0) { badge.textContent = res.count > 99 ? '99+' : res.count; badge.style.display = 'flex'; }
-        else badge.style.display = 'none';
-      }
-    })
-    .catch(() => {});
-}
-
-setInterval(() => {
-  updateNotifBadge();
-  updateChatBadge();
-
-  fetch(API + '?action=getChatUnread&username=' + encodeURIComponent(user.username) + '&t=' + Date.now())
-    .then(r => r.json())
-    .then(res => {
-      if (res.success && Number(res.count) > lastChatCount) {
-        const popup = document.getElementById('chatPopup');
-        if (!popup || !popup.classList.contains('open')) {
-          showPushNotif('Pesan baru' + (IS_ADMIN ? ' dari user' : ' dari admin'), 'Buka chat untuk lihat', 'chat-notif');
+        if (Number(res.count) > lastChatCount) {
+          const popup = document.getElementById('chatPopup');
+          if (!popup || !popup.classList.contains('open')) {
+            showPushNotif('Pesan baru' + (IS_ADMIN ? ' dari user' : ' dari admin'), 'Buka chat untuk lihat', 'chat-notif');
+          }
         }
+        lastChatCount = Number(res.count) || 0;
       }
-      lastChatCount = Number(res.count) || 0;
     })
     .catch(() => {});
-}, 30000);
-
-setTimeout(() => {
-  if ('Notification' in window && Notification.permission === 'default') {
-    const fab = document.getElementById('chatFab');
-    if (fab && !document.getElementById('notifHintFab')) {
-      const hint = document.createElement('button');
-      hint.id = 'notifHintFab';
-      hint.title = 'Aktifkan notifikasi chat';
-      hint.style.cssText = 'position:fixed;bottom:92px;right:24px;width:36px;height:36px;border-radius:50%;background:var(--c-orange);color:#fff;border:none;cursor:pointer;font-size:14px;box-shadow:0 4px 12px rgba(0,0,0,.2);z-index:149;';
-      hint.innerHTML = '<i class="fas fa-bell"></i>';
-      hint.onclick = enableNotifUser;
-      document.body.appendChild(hint);
-    }
-  }
-}, 2000);
-
-async function enableNotifUser() {
-  const ok = await requestNotifPermission();
-  if (ok) {
-    showPushNotif('Notifikasi Aktif', 'Kamu akan dapat notif saat ada chat baru', 'welcome');
-    const h = document.getElementById('notifHintFab');
-    if (h) h.remove();
-  } else {
-    alert('Izin notifikasi ditolak. Buka pengaturan browser untuk mengaktifkan.');
-  }
 }
+
+let lastChatCount = 0;
+
+async function requestNotifPermission() {
+  if (!('Notification' in window)) return false;
+  if (Notification.permission === 'granted') return true;
+  if (Notification.permission === 'denied') return false;
+  const perm = await Notification.requestPermission();
+  return perm === 'granted';
+}
+
+function showPushNotif(title, body, tag) {
+  if (!('Notification' in window)) return;
+  if (Notification.permission !== 'granted') return;
+  try {
+    const n = new Notification(title, {
+      body: body,
+      icon: 'https://cdn-icons-png.flaticon.com/512/2965/2965345.png',
+      tag: tag || 'chat-notif'
+    });
+    setTimeout(() => n.close(), 8000);
+    n.onclick = function() {
+      window.focus();
+      if (!IS_ADMIN) openChat();
+      n.close();
+    };
+  } catch(e) {}
+}
+
+setInterval(updateChatBadge, 5000);
+
+// ============================================================
+//  DROPDOWN KOSAKATA
+// ============================================================
+const TEMA_KOSAKATA = [
+  { value: 'transportasi',   label: 'Transportasi',     desc: 'Bus, kereta, taksi, dll',    icon: 'fa-bus',            icoClass: 'ico-transportasi' },
+  { value: 'makanan',        label: 'Makanan & Minuman', desc: 'Kimchi, bibimbap, kopi, dll', icon: 'fa-utensils',      icoClass: 'ico-makanan' },
+  { value: 'tempat_wisata',  label: 'Tempat Wisata',    desc: 'Namsan, Gyeongbokgung, dll', icon: 'fa-landmark',       icoClass: 'ico-wisata' },
+  { value: 'keluarga',       label: 'Keluarga',         desc: 'Ayah, ibu, kakak, adik',     icon: 'fa-users',          icoClass: 'ico-keluarga' },
+  { value: 'sekolah',        label: 'Sekolah',          desc: 'Buku, guru, kelas, dll',     icon: 'fa-graduation-cap', icoClass: 'ico-sekolah' },
+  { value: 'tubuh',          label: 'Anggota Tubuh',    desc: 'Kepala, tangan, kaki',       icon: 'fa-hand-paper',     icoClass: 'ico-tubuh' },
+  { value: 'pakaian',        label: 'Pakaian',          desc: 'Baju, celana, sepatu',       icon: 'fa-tshirt',         icoClass: 'ico-pakaian' },
+  { value: 'alam',           label: 'Alam & Cuaca',     desc: 'Hujan, matahari, gunung',    icon: 'fa-cloud-sun',      icoClass: 'ico-alam' },
+  { value: 'pekerjaan',      label: 'Pekerjaan',        desc: 'Dokter, guru, polisi',       icon: 'fa-briefcase',      icoClass: 'ico-pekerjaan' },
+  { value: 'hobi',           label: 'Hobi & Olahraga',  desc: 'Sepakbola, musik, baca',     icon: 'fa-futbol',         icoClass: 'ico-hobi' },
+  { value: 'umum',           label: 'Kosakata Umum',    desc: 'Campuran semua kategori',    icon: 'fa-book',           icoClass: 'ico-umum' }
+];
 
 function renderTemaList() {
   const box = document.getElementById('temaListBox');
@@ -1979,6 +2075,9 @@ document.addEventListener('keydown', function(e) {
   }
 });
 
+// ============================================================
+//  KUOTA POPUP
+// ============================================================
 let pendingSoal = null;
 function openKuotaPopup(kategori, label, icon, url, desc) {
   pendingSoal = { url, kategori, label };
@@ -1996,7 +2095,7 @@ function tampilkanPopupKuota(label, desc, icon) {
   const isAdmin = user.role === 'admin';
   const isPrem = isPremiumUser();
   const used = Number(user.quotaUsed) || 0;
-  const max = Number(user.quotaMax) || 3;
+  const max = Number(user.quotaMax) || 5;
   const remain = Math.max(0, max - used);
   const canExam = isAdmin || isPrem || (used < max);
 
@@ -2064,6 +2163,9 @@ function mulaiSoal() {
   setTimeout(() => { location.href = url; }, 150);
 }
 
+// ============================================================
+//  STATS
+// ============================================================
 function loadStats() {
   fetch(API + '?action=getHistory&username=' + encodeURIComponent(user.username) + '&t=' + Date.now())
     .then(r => r.json())
@@ -2086,14 +2188,9 @@ function loadStats() {
 
 function updateQuotaUI() {
   const banner = document.getElementById('quotaBanner');
-
   if (!banner) return;
   if (user.role === 'admin') { banner.style.display = 'none'; return; }
-
-  if (isPremiumUser()) {
-    banner.style.display = 'none';
-    return;
-  }
+  if (isPremiumUser()) { banner.style.display = 'none'; return; }
 
   if (user.quotaMax === undefined || user.quotaMax === null) {
     banner.style.display = 'flex';
@@ -2116,7 +2213,7 @@ function updateQuotaUI() {
   const btnReq = document.getElementById('btnRequest');
 
   const used = Number(user.quotaUsed) || 0;
-  const max = Number(user.quotaMax) || 3;
+  const max = Number(user.quotaMax) || 5;
   const remain = Math.max(0, max - used);
   if (badge) badge.textContent = `${remain}/${max}`;
 
@@ -2139,7 +2236,7 @@ function refreshQuota() {
     .then(res => {
       if (res.success) {
         user.quotaUsed = Number(res.quotaUsed) || 0;
-        user.quotaMax = Number(res.quotaMax) || 3;
+        user.quotaMax = Number(res.quotaMax) || 5;
         localStorage.setItem('user', JSON.stringify(user));
         updateQuotaUI();
       }
@@ -2166,29 +2263,6 @@ function refreshUserProfile() {
 
 function openModal(id) { const el = document.getElementById(id); if (el) el.classList.add('show'); }
 function closeModal(id) { const el = document.getElementById(id); if (el) el.classList.remove('show'); }
-function openRequestModal() { openModal('requestModal'); }
-
-async function submitRequest() {
-  const pesanEl = document.getElementById('requestPesan');
-  const pesan = pesanEl ? pesanEl.value.trim() : '';
-  const btn = document.getElementById('btnSubmitReq');
-  const original = btn.innerHTML;
-  btn.disabled = true;
-  btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Mengirim...';
-  try {
-    const r = await fetch(API, {
-      method: 'POST', headers: {'Content-Type':'text/plain;charset=utf-8'},
-      body: JSON.stringify({ action: 'requestQuota', username: user.username, pesan })
-    });
-    const res = await r.json();
-    if (res.success) {
-      alert('Request terkirim! Admin akan review segera.');
-      closeModal('requestModal');
-      if (pesanEl) pesanEl.value = '';
-    } else alert('Gagal: ' + (res.msg || 'Gagal'));
-  } catch(err) { alert('Gagal: ' + err.message); }
-  finally { btn.disabled = false; btn.innerHTML = original; }
-}
 
 function logout(e) {
   e.preventDefault();
@@ -2211,7 +2285,7 @@ function buildWelcomeContent() {
   const isAdmin = user.role === 'admin';
   const isPrem = isPremiumUser();
   const used = Number(user.quotaUsed) || 0;
-  const max = Number(user.quotaMax) || 3;
+  const max = Number(user.quotaMax) || 5;
   const remain = Math.max(0, max - used);
 
   const hour = new Date().getHours();
@@ -2289,9 +2363,9 @@ document.addEventListener('click', function(e) {
 renderTemaList();
 renderPremiumBadge();
 updateQuotaUI();
-updateNotifBadge();
 updateChatBadge();
 loadStats();
+loadTopbarBadges();
 
 Promise.all([refreshQuota(), refreshUserProfile(), refreshPremiumStatus()])
   .then(() => {
