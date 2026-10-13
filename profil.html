@@ -16,9 +16,12 @@
   --accent-hover:#1d4ed8;
   --sub-bg:#f5f5f5;
   --input-bg:#ffffff;
+  --dropdown-shadow:0 8px 24px rgba(0,0,0,.08);
   --red:#dc2626;
   --green:#16a34a;
   --yellow:#d97706;
+  --purple:#7c3aed;
+  --gold:#b45309;
 }
 [data-theme="dark"]{
   --bg:#0f0f0f;
@@ -30,9 +33,12 @@
   --accent-hover:#7ab0ff;
   --sub-bg:#141414;
   --input-bg:#141414;
+  --dropdown-shadow:0 8px 24px rgba(0,0,0,.5);
   --red:#f87171;
   --green:#4ade80;
   --yellow:#fbbf24;
+  --purple:#a78bfa;
+  --gold:#fbbf24;
 }
 *{margin:0;padding:0;box-sizing:border-box;
   font-family:-apple-system,'Segoe UI',Roboto,'Malgun Gothic',sans-serif;}
@@ -45,7 +51,7 @@ body{
   transition:background .2s,color .2s;
 }
 
-/* ===== TOPBAR ===== */
+/* ===== TOPBAR (persis kaya dashboard) ===== */
 .topbar{
   background:var(--card-bg);
   padding:14px 24px;
@@ -55,18 +61,165 @@ body{
   gap:12px;
   position:sticky;
   top:0;
-  z-index:10;
+  z-index:50;
+  flex-wrap:wrap;
 }
 .topbar h1{
   font-size:16px;
   color:var(--text);
   font-weight:600;
-  display:flex;
-  align-items:center;
-  gap:8px;
+  display:flex;align-items:center;gap:8px;
 }
 .topbar h1 i{color:var(--muted);font-size:14px;}
 .topbar .spacer{flex:1;}
+
+/* User — POLOS (no pill) */
+.topbar .user{
+  font-size:13px;color:var(--muted);
+  display:flex;align-items:center;gap:8px;
+}
+.topbar .user strong{color:var(--text);font-weight:500;}
+
+.topbar .user .user-meta{
+  display:flex;flex-direction:column;line-height:1.2;
+}
+.topbar .user .user-meta .name-row{
+  display:flex;align-items:center;gap:6px;
+}
+.topbar .user .user-meta .email{
+  font-size:11px;color:var(--muted);
+}
+
+.topbar .user .avatar-mini{
+  width:28px;height:28px;border-radius:50%;object-fit:cover;
+  border:1px solid var(--border);
+}
+.topbar .user .avatar-init{
+  width:28px;height:28px;border-radius:50%;
+  background:var(--sub-bg);color:var(--text);
+  border:1px solid var(--border);
+  display:flex;align-items:center;justify-content:center;
+  font-size:12px;font-weight:600;
+}
+
+/* Badge — outline, no background */
+.topbar .user .badge{
+  font-size:10px;
+  padding:2px 8px;
+  border-radius:10px;
+  font-weight:600;
+  border:1px solid transparent;
+  background:transparent;
+}
+.topbar .user .badge.admin{color:var(--red);border-color:var(--red);}
+.topbar .user .badge.user{color:var(--muted);border-color:var(--border);}
+.topbar .user .badge.premium{color:var(--gold);border-color:var(--gold);font-weight:700;}
+
+/* Icon bell & moon — BULAT */
+.topbar .btn-icon{
+  background:transparent;
+  border:1px solid var(--border);
+  color:var(--muted);
+  width:36px;height:36px;
+  border-radius:50%;
+  cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  font-size:13px;
+  transition:.15s;
+  position:relative;
+  text-decoration:none;
+}
+.topbar .btn-icon:hover{color:var(--text);border-color:var(--text);}
+
+/* Tombol Dashboard — subtle */
+.topbar .btn-dashboard{
+  background:transparent;
+  border:1px solid var(--border);
+  color:var(--text);
+  padding:7px 12px;
+  border-radius:8px;
+  font-weight:500;
+  font-size:12px;
+  text-decoration:none;
+  display:inline-flex;align-items:center;gap:6px;
+  transition:.15s;
+}
+.topbar .btn-dashboard:hover{background:var(--sub-bg);border-color:var(--muted);}
+
+/* Tombol Keluar — link teks */
+.topbar .logout{
+  color:var(--red);
+  text-decoration:none;
+  font-weight:500;
+  font-size:13px;
+  display:inline-flex;align-items:center;gap:6px;
+  padding:8px 12px;border-radius:8px;
+  transition:.15s;
+}
+.topbar .logout:hover{background:var(--sub-bg);}
+
+/* ===== NOTIF DROPDOWN ===== */
+.notif-wrapper{position:relative;}
+.notif-dropdown{
+  display:none;position:absolute;top:calc(100% + 12px);right:0;
+  width:360px;max-width:calc(100vw - 40px);
+  background:var(--card-bg);
+  border:1px solid var(--border);
+  border-radius:10px;
+  box-shadow:var(--dropdown-shadow);
+  z-index:100;overflow:hidden;
+}
+.notif-wrapper.open .notif-dropdown{display:block;}
+.notif-head{
+  padding:14px 18px;border-bottom:1px solid var(--border);
+  display:flex;justify-content:space-between;align-items:center;
+}
+.notif-head h3{font-size:13px;font-weight:600;color:var(--text);}
+.notif-head .btn-mark{
+  background:transparent;border:none;color:var(--accent);
+  font-size:11px;font-weight:500;cursor:pointer;font-family:inherit;
+  padding:4px 8px;border-radius:6px;transition:.15s;
+}
+.notif-head .btn-mark:hover{background:var(--sub-bg);}
+.notif-body{max-height:400px;overflow-y:auto;}
+.notif-item-drop{
+  display:flex;gap:12px;padding:12px 18px;
+  border-bottom:1px solid var(--border);
+  cursor:pointer;transition:.15s;text-decoration:none;color:inherit;
+  position:relative;
+}
+.notif-item-drop:last-child{border-bottom:none;}
+.notif-item-drop:hover{background:var(--sub-bg);}
+.notif-item-drop.unread{background:var(--sub-bg);}
+.notif-item-drop .ic{
+  width:34px;height:34px;border-radius:8px;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+  color:var(--muted);font-size:14px;
+  background:var(--sub-bg);border:1px solid var(--border);
+}
+.notif-item-drop.tipe-bantuan .ic{color:var(--yellow);}
+.notif-item-drop.tipe-balasan .ic{color:var(--green);}
+.notif-item-drop.tipe-kuota .ic{color:var(--purple);}
+.notif-item-drop.tipe-sistem .ic{color:var(--accent);}
+.notif-item-drop.tipe-request .ic{color:var(--red);}
+.notif-item-drop.tipe-chat .ic{color:var(--accent);}
+.notif-item-drop .tx{flex:1;min-width:0;}
+.notif-item-drop .tx .ttl{
+  font-size:13px;font-weight:600;color:var(--text);margin-bottom:2px;line-height:1.3;
+}
+.notif-item-drop .tx .msg{
+  font-size:12px;color:var(--muted);line-height:1.4;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
+}
+.notif-item-drop .tx .tm{font-size:10px;color:var(--muted);margin-top:4px;}
+.notif-empty{padding:40px 20px;text-align:center;color:var(--muted);font-size:13px;}
+.notif-empty i{font-size:32px;opacity:.3;display:block;margin-bottom:10px;}
+.notif-foot{padding:12px 18px;border-top:1px solid var(--border);text-align:center;}
+.notif-foot a{
+  color:var(--accent);font-weight:500;font-size:13px;text-decoration:none;
+  display:inline-flex;align-items:center;gap:6px;transition:.15s;
+}
+.notif-foot a:hover{gap:9px;}
 
 /* ===== BUTTONS ===== */
 .btn{
@@ -97,17 +250,6 @@ body{
 .btn-warning{background:var(--yellow);color:#fff;}
 .btn-warning:hover:not(:disabled){filter:brightness(1.1);}
 .btn-sm{padding:7px 12px;font-size:12px;}
-
-.btn-icon{
-  background:transparent;
-  border:1px solid var(--border);
-  color:var(--muted);
-  width:36px;height:36px;border-radius:50%;
-  cursor:pointer;
-  display:flex;align-items:center;justify-content:center;
-  font-size:13px;transition:.15s;
-}
-.btn-icon:hover{color:var(--text);border-color:var(--text);}
 
 /* ===== LAYOUT ===== */
 .wrap{
@@ -267,6 +409,8 @@ body{
 /* ===== RESPONSIVE ===== */
 @media(max-width:600px){
   .topbar{padding:12px 16px;}
+  .topbar .user .user-meta{display:none;}
+  .notif-dropdown{position:fixed;top:70px;right:12px;left:12px;width:auto;}
   .wrap{margin:20px auto;}
   .card{padding:18px;}
   .avatar-section{gap:16px;}
@@ -279,11 +423,41 @@ body{
 <div class="topbar">
   <h1><i class="fas fa-user-edit"></i> Edit Profil</h1>
   <div class="spacer"></div>
+  <span class="user" id="topbarUser">
+    <span id="avatarBox"></span>
+    <div class="user-meta">
+      <div class="name-row">
+        <strong id="userName">-</strong>
+        <span class="badge" id="userRole">-</span>
+      </div>
+      <span class="email" id="userEmail">-</span>
+    </div>
+  </span>
+  <div class="notif-wrapper" id="notifWrapper">
+    <button class="btn-icon" onclick="toggleNotifDropdown(event)" title="Notifikasi">
+      <i class="fas fa-bell"></i>
+    </button>
+    <div class="notif-dropdown">
+      <div class="notif-head">
+        <h3>Notifikasi</h3>
+        <button class="btn-mark" onclick="markAllNotifRead(event)">Tandai semua dibaca</button>
+      </div>
+      <div class="notif-body" id="notifBody">
+        <div class="notif-empty"><i class="fas fa-bell-slash"></i> Memuat...</div>
+      </div>
+      <div class="notif-foot">
+        <a href="notifikasi.html">Lihat Semua Notifikasi <i class="fas fa-arrow-right"></i></a>
+      </div>
+    </div>
+  </div>
   <button class="btn-icon" onclick="toggleTheme()" title="Ganti tema">
     <i class="fas fa-moon" id="themeIcon"></i>
   </button>
-  <a href="dashboard.html" class="btn btn-secondary btn-sm">
+  <a href="dashboard.html" class="btn-dashboard">
     <i class="fas fa-home"></i> Dashboard
+  </a>
+  <a href="#" class="logout" onclick="logout(event)">
+    <i class="fas fa-sign-out-alt"></i> Keluar
   </a>
 </div>
 
@@ -294,7 +468,7 @@ body{
   <div class="card">
     <h2><i class="fas fa-camera"></i> Foto Profil</h2>
     <div class="avatar-section">
-      <div id="avatarBox" class="avatar-preview"></div>
+      <div id="avatarBigBox" class="avatar-preview"></div>
       <div class="avatar-controls">
         <input type="file" id="fotoFile" accept="image/*" style="display:none;" onchange="onFilePick(this)">
         <button class="btn btn-primary" onclick="document.getElementById('fotoFile').click()">
@@ -369,7 +543,36 @@ body{
 </div>
 
 <script>
-// ===== THEME =====
+// ============================================================
+//  SESSION & THEME
+// ============================================================
+const SESSION_MAX_AGE = 8 * 60 * 60 * 1000; // 8 jam
+
+function touchSession() {
+  const u = JSON.parse(localStorage.getItem('user') || 'null');
+  if (u && u.loginAt) {
+    u.loginAt = Date.now();
+    localStorage.setItem('user', JSON.stringify(u));
+  }
+}
+
+function checkSession() {
+  const u = JSON.parse(localStorage.getItem('user') || 'null');
+  if (!u) { location.href = 'login.html'; return false; }
+  if (Date.now() - (u.loginAt || 0) > SESSION_MAX_AGE) {
+    localStorage.removeItem('user');
+    alert('Sesi kamu habis (8 jam). Silakan login ulang.');
+    location.href = 'login.html';
+    return false;
+  }
+  return true;
+}
+
+['click','keydown','mousemove','scroll','touchstart'].forEach(evt => {
+  document.addEventListener(evt, touchSession, { passive: true });
+});
+setInterval(touchSession, 60000);
+
 function applyTheme(t){
   document.documentElement.setAttribute('data-theme', t);
   const icon = document.getElementById('themeIcon');
@@ -383,16 +586,186 @@ function toggleTheme(){
 }
 applyTheme(localStorage.getItem('theme') || 'light');
 
-const API = 'https://script.google.com/macros/s/AKfycbxCS8Y8fMgZpSmGNBuBwJMERbXuf4CGTQAH2GKXMnIskJKJFUoHg4l3UNrt9YLZ59il/exec';
+const API = 'https://script.google.com/macros/s/AKfycbyQ4fuG4bapGT2qDD078qMC2l6oNOjcCTqYkPqO7PDY6g9b7HNdSOk2ZGrKHL4OmJ8j/exec';
 
-const user = JSON.parse(localStorage.getItem('user') || 'null');
+if (!checkSession()) throw new Error('Session expired');
+
+let user = JSON.parse(localStorage.getItem('user') || 'null');
 if (!user) location.href = 'login.html';
 
 let currentFoto = user.foto || '';
 let pendingFile = null;
 
+// ============================================================
+//  RENDER TOPBAR
+// ============================================================
+function renderTopbar() {
+  document.getElementById('userName').textContent = user.nama || user.username;
+  const e = document.getElementById('userEmail');
+  if (e) e.textContent = user.email || '';
+
+  const roleBadge = document.getElementById('userRole');
+  if (user.role === 'admin') {
+    roleBadge.textContent = 'ADMIN';
+    roleBadge.className = 'badge admin';
+  } else {
+    const isPrem = (String(user.plan || '').toLowerCase() === 'premium') &&
+                   user.premiumUntil && new Date(user.premiumUntil).getTime() > Date.now();
+    if (isPrem) {
+      roleBadge.innerHTML = '<i class="fas fa-crown"></i> PREMIUM';
+      roleBadge.className = 'badge premium';
+    } else {
+      roleBadge.textContent = 'PELAJAR';
+      roleBadge.className = 'badge user';
+    }
+  }
+}
+
+function renderTopbarAvatar() {
+  const avBox = document.getElementById('avatarBox');
+  if (!avBox) return;
+  if (user.foto) {
+    avBox.innerHTML = `<img src="${user.foto}" class="avatar-mini" onerror="this.outerHTML='<div class=&quot;avatar-init&quot;>${(user.nama||user.username).charAt(0).toUpperCase()}</div>'">`;
+  } else {
+    const init = (user.nama || user.username).charAt(0).toUpperCase();
+    avBox.innerHTML = `<div class="avatar-init">${init}</div>`;
+  }
+}
+
+renderTopbar();
+renderTopbarAvatar();
+
+// ============================================================
+//  NOTIF DROPDOWN (auto-refresh kalau kebuka)
+// ============================================================
+let notifPollTimer = null;
+
+function toggleNotifDropdown(e) {
+  e.preventDefault();
+  e.stopPropagation();
+  const wrapper = document.getElementById('notifWrapper');
+  const isOpen = wrapper.classList.contains('open');
+  document.querySelectorAll('.notif-wrapper.open').forEach(w => w.classList.remove('open'));
+  if (!isOpen) {
+    wrapper.classList.add('open');
+    loadNotifDropdown();
+    startNotifPoll();
+  } else {
+    stopNotifPoll();
+  }
+}
+
+function startNotifPoll() {
+  stopNotifPoll();
+  notifPollTimer = setInterval(() => {
+    const wrapper = document.getElementById('notifWrapper');
+    if (wrapper && wrapper.classList.contains('open')) {
+      loadNotifDropdown(true);
+    } else {
+      stopNotifPoll();
+    }
+  }, 15000);
+}
+
+function stopNotifPoll() {
+  if (notifPollTimer) {
+    clearInterval(notifPollTimer);
+    notifPollTimer = null;
+  }
+}
+
+document.addEventListener('click', function(e) {
+  const wrapper = document.getElementById('notifWrapper');
+  if (wrapper && !wrapper.contains(e.target)) {
+    wrapper.classList.remove('open');
+    stopNotifPoll();
+  }
+});
+
+function loadNotifDropdown(silent) {
+  const body = document.getElementById('notifBody');
+  if (!body) return;
+  if (!silent) body.innerHTML = `<div class="notif-empty"><i class="fas fa-spinner fa-spin"></i> Memuat...</div>`;
+
+  fetch(API + '?action=getNotifications&username=' + encodeURIComponent(user.username) + '&t=' + Date.now())
+    .then(r => r.json())
+    .then(res => {
+      if (!res.success || !res.notifications) {
+        if (!silent) body.innerHTML = `<div class="notif-empty"><i class="fas fa-bell-slash"></i> Gagal memuat</div>`;
+        return;
+      }
+      const list = res.notifications.slice(0, 10);
+      if (list.length === 0) {
+        body.innerHTML = `<div class="notif-empty"><i class="fas fa-bell-slash"></i> Belum ada notifikasi</div>`;
+        return;
+      }
+      const iconMap = {
+        'bantuan': 'fa-question-circle', 'balasan': 'fa-comment-dots',
+        'kuota': 'fa-ticket-alt', 'sistem': 'fa-info-circle',
+        'request': 'fa-paper-plane', 'chat': 'fa-comments', 'info': 'fa-bell'
+      };
+      let html = '';
+      list.forEach(n => {
+        const ic = iconMap[n.tipe] || 'fa-bell';
+        const url = n.linkUrl || 'notifikasi.html';
+        html += `
+          <div class="notif-item-drop tipe-${n.tipe} ${!n.isRead ? 'unread' : ''}" onclick="handleNotifClick(event, ${n.id}, '${url.replace(/'/g, "\\'")}')">
+            <div class="ic"><i class="fas ${ic}"></i></div>
+            <div class="tx">
+              <div class="ttl">${n.judul || 'Notifikasi'}</div>
+              <div class="msg">${n.pesan || ''}</div>
+              <div class="tm">${n.tanggal}</div>
+            </div>
+          </div>`;
+      });
+      body.innerHTML = html;
+    })
+    .catch(() => {
+      if (!silent) body.innerHTML = `<div class="notif-empty"><i class="fas fa-exclamation-triangle"></i> Gagal memuat</div>`;
+    });
+}
+
+function handleNotifClick(e, notifId, url) {
+  e.stopPropagation();
+  fetch(API, {
+    method: 'POST', headers: {'Content-Type':'text/plain;charset=utf-8'},
+    body: JSON.stringify({ action: 'markNotifRead', username: user.username, notifId })
+  }).then(() => loadNotifDropdown(true)).catch(() => {});
+  const wrapper = document.getElementById('notifWrapper');
+  if (wrapper) wrapper.classList.remove('open');
+  stopNotifPoll();
+  if (url && url !== 'notifikasi.html') {
+    setTimeout(() => location.href = url, 200);
+  } else {
+    location.href = 'notifikasi.html';
+  }
+}
+
+function markAllNotifRead(e) {
+  e.stopPropagation();
+  fetch(API, {
+    method: 'POST', headers: {'Content-Type':'text/plain;charset=utf-8'},
+    body: JSON.stringify({ action: 'markAllNotifRead', username: user.username })
+  })
+  .then(() => { loadNotifDropdown(); })
+  .catch(() => {});
+}
+
+// ============================================================
+//  LOGOUT
+// ============================================================
+function logout(e) {
+  e.preventDefault();
+  if (!confirm('Yakin mau keluar?')) return;
+  localStorage.removeItem('user');
+  location.href = 'login.html';
+}
+
+// ============================================================
+//  RENDER HALAMAN PROFIL
+// ============================================================
 function renderAvatar() {
-  const box = document.getElementById('avatarBox');
+  const box = document.getElementById('avatarBigBox');
   if (currentFoto) {
     box.innerHTML = `<img src="${currentFoto}" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">`;
     document.getElementById('btnHapusFoto').style.display = 'inline-flex';
@@ -425,16 +798,21 @@ document.getElementById('profNama').value = user.nama || user.username;
 renderAvatar();
 renderEmail(user.email || '');
 
-// Auto-fetch email kalau belum ada di localStorage
-if (!user.email) {
+// Auto-fetch profile kalau belum ada email / foto di localStorage
+if (!user.email || !user.foto) {
   fetch(API + '?action=getProfile&username=' + encodeURIComponent(user.username) + '&t=' + Date.now())
     .then(r => r.json())
     .then(res => {
       if (res.success && res.user) {
-        user.email = res.user.email || '';
+        user.email = res.user.email || user.email || '';
         user.nama = res.user.nama || user.nama;
         user.foto = res.user.foto || user.foto;
+        user.plan = res.user.plan || user.plan;
+        user.premiumUntil = res.user.premiumUntil || user.premiumUntil;
         localStorage.setItem('user', JSON.stringify(user));
+
+        renderTopbar();
+        renderTopbarAvatar();
         renderEmail(user.email);
         document.getElementById('profNama').value = user.nama || user.username;
         currentFoto = user.foto || '';
@@ -461,7 +839,9 @@ async function post(payload) {
   try { return JSON.parse(t); } catch(e) { return { success:false, msg:'Response tidak valid' }; }
 }
 
-// ===== FOTO =====
+// ============================================================
+//  FOTO
+// ============================================================
 function onFilePick(input) {
   const file = input.files[0];
   if (!file) return;
@@ -472,7 +852,7 @@ function onFilePick(input) {
 
   const reader = new FileReader();
   reader.onload = e => {
-    const box = document.getElementById('avatarBox');
+    const box = document.getElementById('avatarBigBox');
     box.innerHTML = `<img src="${e.target.result}" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">`;
     pendingFile = file;
     document.getElementById('btnUploadFoto').style.display = 'inline-flex';
@@ -516,6 +896,7 @@ async function uploadFoto() {
     pendingFile = null;
     document.getElementById('btnUploadFoto').style.display = 'none';
     renderAvatar();
+    renderTopbarAvatar();
     showMsg('Foto profil berhasil disimpan!', 'ok');
   } catch(err) {
     showMsg(err.message, 'err');
@@ -548,6 +929,7 @@ async function hapusFoto() {
       localStorage.setItem('user', JSON.stringify(user));
       currentFoto = '';
       renderAvatar();
+      renderTopbarAvatar();
       showMsg('Foto profil dihapus', 'ok');
     } else {
       showMsg(res.msg || 'Gagal hapus', 'err');
@@ -557,7 +939,9 @@ async function hapusFoto() {
   }
 }
 
-// ===== NAMA =====
+// ============================================================
+//  NAMA
+// ============================================================
 async function simpanNama() {
   const newNama = document.getElementById('profNama').value.trim();
   if (!newNama) { showMsg('Nama tidak boleh kosong', 'err'); return; }
@@ -571,6 +955,8 @@ async function simpanNama() {
       user.nama = newNama;
       localStorage.setItem('user', JSON.stringify(user));
       renderAvatar();
+      renderTopbar();
+      renderTopbarAvatar();
       showMsg('Nama berhasil diupdate', 'ok');
     } else {
       showMsg(res.msg || 'Gagal simpan', 'err');
@@ -580,7 +966,9 @@ async function simpanNama() {
   }
 }
 
-// ===== PASSWORD =====
+// ============================================================
+//  PASSWORD
+// ============================================================
 async function gantiPassword() {
   const oldPass = document.getElementById('oldPass').value;
   const newPass = document.getElementById('newPass').value;
