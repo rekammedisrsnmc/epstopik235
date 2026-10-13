@@ -1,0 +1,1068 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Flashcard Kosakata — EPS-TOPIKU</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+:root{
+  --bg:#fafafa;
+  --card-bg:#ffffff;
+  --text:#1a1a1a;
+  --muted:#8a8a8a;
+  --border:#e5e5e5;
+  --accent:#2563eb;
+  --accent-hover:#1d4ed8;
+  --sub-bg:#f5f5f5;
+  --dropdown-shadow:0 8px 24px rgba(0,0,0,.08);
+
+  --pink:#db2777;
+  --pink-dark:#be185d;
+  --pink-light:#fce7f3;
+  --green:#16a34a;
+  --yellow:#d97706;
+  --red:#dc2626;
+}
+[data-theme="dark"]{
+  --bg:#0f0f0f;
+  --card-bg:#1a1a1a;
+  --text:#ededed;
+  --muted:#888;
+  --border:#2a2a2a;
+  --accent:#5b9cff;
+  --accent-hover:#7ab0ff;
+  --sub-bg:#141414;
+  --dropdown-shadow:0 8px 24px rgba(0,0,0,.5);
+
+  --pink:#f472b6;
+  --pink-dark:#ec4899;
+  --pink-light:#2a1520;
+  --green:#4ade80;
+  --yellow:#fbbf24;
+  --red:#f87171;
+}
+*{margin:0;padding:0;box-sizing:border-box;
+  font-family:-apple-system,'Segoe UI',Roboto,'Malgun Gothic',sans-serif;}
+body{
+  background:var(--bg);
+  min-height:100vh;
+  color:var(--text);
+  font-size:15px;
+  line-height:1.6;
+  transition:background .2s,color .2s;
+}
+
+/* ===== TOPBAR ===== */
+.topbar{
+  background:var(--card-bg);
+  padding:14px 24px;
+  border-bottom:1px solid var(--border);
+  display:flex;
+  align-items:center;
+  gap:12px;
+  position:sticky;
+  top:0;
+  z-index:50;
+  flex-wrap:wrap;
+}
+.topbar h1{
+  font-size:16px;
+  color:var(--text);
+  font-weight:600;
+  display:flex;align-items:center;gap:8px;
+}
+.topbar h1 i{color:var(--pink);font-size:14px;}
+.topbar .spacer{flex:1;}
+
+.topbar .btn-icon{
+  background:transparent;
+  border:1px solid var(--border);
+  color:var(--muted);
+  width:36px;height:36px;
+  border-radius:50%;
+  cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  font-size:13px;
+  transition:.15s;
+  text-decoration:none;
+}
+.topbar .btn-icon:hover{color:var(--text);border-color:var(--text);}
+
+.topbar .btn-back{
+  background:transparent;
+  border:1px solid var(--border);
+  color:var(--text);
+  padding:7px 12px;
+  border-radius:8px;
+  font-weight:500;
+  font-size:12px;
+  text-decoration:none;
+  display:inline-flex;align-items:center;gap:6px;
+  transition:.15s;
+}
+.topbar .btn-back:hover{background:var(--sub-bg);border-color:var(--muted);}
+
+/* ===== BUTTONS ===== */
+.btn{
+  padding:10px 18px;border:none;border-radius:8px;
+  font-weight:500;font-size:14px;cursor:pointer;transition:.15s;
+  display:inline-flex;align-items:center;gap:6px;
+  font-family:inherit;text-decoration:none;
+  justify-content:center;
+}
+.btn:disabled{opacity:.5;cursor:not-allowed;}
+.btn-primary{background:var(--accent);color:#fff;}
+.btn-primary:hover:not(:disabled){background:var(--accent-hover);}
+.btn-secondary{
+  background:transparent;color:var(--text);
+  border:1px solid var(--border);
+}
+.btn-secondary:hover:not(:disabled){background:var(--sub-bg);border-color:var(--muted);}
+.btn-success{background:var(--green);color:#fff;}
+.btn-success:hover:not(:disabled){filter:brightness(1.1);}
+.btn-warning{background:var(--yellow);color:#fff;}
+.btn-warning:hover:not(:disabled){filter:brightness(1.1);}
+
+/* ===== LAYOUT ===== */
+.wrap{
+  max-width:720px;
+  margin:32px auto;
+  padding:0 20px;
+}
+
+/* ===== SETUP SCREEN ===== */
+.setup-screen{
+  background:var(--card-bg);
+  border:1px solid var(--border);
+  border-radius:14px;
+  padding:36px 32px;
+  box-shadow:0 4px 20px rgba(0,0,0,.06);
+}
+.setup-icon{
+  width:72px;height:72px;border-radius:50%;
+  background:var(--pink-light);
+  color:var(--pink);
+  display:flex;align-items:center;justify-content:center;
+  font-size:32px;margin:0 auto 20px;
+}
+.setup-title{
+  text-align:center;
+  font-size:22px;font-weight:700;
+  margin-bottom:6px;
+  letter-spacing:-0.3px;
+}
+.setup-subtitle{
+  text-align:center;
+  font-size:13px;color:var(--muted);
+  margin-bottom:28px;line-height:1.6;
+}
+.setup-label{
+  font-size:12px;
+  font-weight:600;
+  color:var(--muted);
+  text-transform:uppercase;
+  letter-spacing:1px;
+  margin-bottom:8px;
+  display:block;
+}
+.setup-select{
+  width:100%;
+  padding:12px 16px;
+  border:1.5px solid var(--border);
+  border-radius:10px;
+  font-size:14px;
+  font-family:inherit;
+  background:var(--card-bg);
+  color:var(--text);
+  margin-bottom:20px;
+  cursor:pointer;
+  transition:.15s;
+  appearance:none;
+  background-image:url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%238a8a8a' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+  background-repeat:no-repeat;
+  background-position:right 14px center;
+  background-size:16px;
+  padding-right:40px;
+}
+.setup-select:focus{
+  outline:none;
+  border-color:var(--pink);
+}
+[data-theme="dark"] .setup-select{
+  background-image:url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23888888' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+}
+.setup-info{
+  background:var(--sub-bg);
+  border-left:3px solid var(--pink);
+  border-radius:8px;
+  padding:14px 16px;
+  font-size:13px;
+  color:var(--text);
+  line-height:1.6;
+  margin-bottom:24px;
+}
+.setup-info strong{color:var(--pink);}
+
+/* ===== FLASHCARD SCREEN ===== */
+.flashcard-screen{
+  display:none;
+}
+
+/* Progress Bar */
+.fc-progress-wrap{
+  margin-bottom:20px;
+}
+.fc-progress-info{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  font-size:12px;
+  color:var(--muted);
+  margin-bottom:8px;
+  font-weight:500;
+}
+.fc-progress-info strong{color:var(--text);font-weight:700;}
+.fc-progress-bar{
+  height:6px;
+  background:var(--sub-bg);
+  border-radius:6px;
+  overflow:hidden;
+}
+.fc-progress-fill{
+  height:100%;
+  background:linear-gradient(90deg, var(--pink), var(--pink-dark));
+  width:0%;
+  transition:width .4s ease;
+  border-radius:6px;
+}
+
+/* Kartu */
+.fc-card-wrap{
+  perspective:1500px;
+  width:100%;
+  height:340px;
+  margin-bottom:24px;
+  position:relative;
+  cursor:pointer;
+}
+.fc-card{
+  width:100%;
+  height:100%;
+  position:relative;
+  transform-style:preserve-3d;
+  transition:transform .6s cubic-bezier(.4,0,.2,1);
+}
+.fc-card.flipped{
+  transform:rotateY(180deg);
+}
+.fc-side{
+  position:absolute;
+  inset:0;
+  backface-visibility:hidden;
+  -webkit-backface-visibility:hidden;
+  border-radius:16px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  padding:32px 24px;
+  text-align:center;
+  box-shadow:0 10px 40px rgba(0,0,0,.1);
+  overflow:hidden;
+}
+.fc-front{
+  background:var(--card-bg);
+  border:2px solid var(--border);
+}
+.fc-back{
+  background:linear-gradient(135deg, var(--pink), var(--pink-dark));
+  color:#fff;
+  transform:rotateY(180deg);
+  border:2px solid var(--pink);
+}
+[data-theme="dark"] .fc-front{
+  background:var(--card-bg);
+}
+
+/* Label kecil di atas kartu */
+.fc-side-label{
+  position:absolute;
+  top:16px;left:16px;
+  font-size:10px;
+  font-weight:700;
+  letter-spacing:1.5px;
+  text-transform:uppercase;
+  padding:4px 10px;
+  border-radius:6px;
+}
+.fc-front .fc-side-label{
+  background:var(--sub-bg);
+  color:var(--muted);
+  border:1px solid var(--border);
+}
+.fc-back .fc-side-label{
+  background:rgba(255,255,255,.2);
+  color:#fff;
+}
+
+/* Hint klik di bawah */
+.fc-hint{
+  position:absolute;
+  bottom:16px;
+  left:50%;
+  transform:translateX(-50%);
+  font-size:11px;
+  color:var(--muted);
+  display:flex;
+  align-items:center;
+  gap:6px;
+  white-space:nowrap;
+}
+.fc-back .fc-hint{color:rgba(255,255,255,.75);}
+
+/* Konten kartu */
+.fc-word{
+  font-size:36px;
+  font-weight:700;
+  line-height:1.3;
+  letter-spacing:-0.5px;
+  word-break:break-word;
+  max-width:100%;
+}
+.fc-back .fc-word{
+  font-size:40px;
+  letter-spacing:0;
+}
+.fc-word-ko{
+  font-family:'Malgun Gothic','Apple SD Gothic Neo',sans-serif;
+  font-weight:800;
+}
+
+/* Tombol audio di kartu belakang */
+.fc-audio-btn{
+  background:rgba(255,255,255,.2);
+  border:1px solid rgba(255,255,255,.35);
+  color:#fff;
+  width:44px;height:44px;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:16px;
+  cursor:pointer;
+  margin-top:18px;
+  transition:.15s;
+}
+.fc-audio-btn:hover{background:rgba(255,255,255,.35);}
+.fc-audio-btn:active{transform:scale(.95);}
+
+/* Aksi bawah */
+.fc-actions{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+  margin-bottom:14px;
+}
+.fc-btn-action{
+  padding:16px 20px;
+  border-radius:12px;
+  font-size:15px;
+  font-weight:600;
+  cursor:pointer;
+  border:none;
+  font-family:inherit;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  transition:.15s;
+}
+.fc-btn-ulang{
+  background:var(--sub-bg);
+  color:var(--text);
+  border:1.5px solid var(--border);
+}
+.fc-btn-ulang:hover{background:var(--yellow);color:#fff;border-color:var(--yellow);}
+.fc-btn-hafal{
+  background:var(--green);
+  color:#fff;
+  border:1.5px solid var(--green);
+}
+.fc-btn-hafal:hover{filter:brightness(1.05);}
+
+.fc-btn-secondary{
+  width:100%;
+  padding:10px;
+  background:transparent;
+  color:var(--muted);
+  border:1px solid var(--border);
+  border-radius:8px;
+  font-size:13px;
+  font-family:inherit;
+  cursor:pointer;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:6px;
+  transition:.15s;
+}
+.fc-btn-secondary:hover{color:var(--text);border-color:var(--muted);}
+.fc-btn-secondary:disabled{opacity:.4;cursor:not-allowed;}
+
+/* Kartu pertama: tombol hafal/ulang disembunyiin */
+.fc-actions.hidden{
+  visibility:hidden;
+  pointer-events:none;
+}
+
+/* ===== SELESAI ===== */
+.done-screen{
+  display:none;
+  background:var(--card-bg);
+  border:1px solid var(--border);
+  border-radius:16px;
+  padding:48px 32px;
+  text-align:center;
+  box-shadow:0 4px 20px rgba(0,0,0,.06);
+}
+.done-icon{
+  width:88px;height:88px;border-radius:50%;
+  background:linear-gradient(135deg, var(--pink-light), #fff);
+  color:var(--pink);
+  display:flex;align-items:center;justify-content:center;
+  font-size:42px;margin:0 auto 22px;
+  animation:bounce .6s cubic-bezier(.68,-0.55,.27,1.55);
+}
+@keyframes bounce{
+  0%{transform:scale(0);}
+  100%{transform:scale(1);}
+}
+.done-title{
+  font-size:24px;
+  font-weight:700;
+  margin-bottom:6px;
+  letter-spacing:-0.3px;
+}
+.done-sub{
+  font-size:14px;
+  color:var(--muted);
+  margin-bottom:28px;
+}
+.done-stats{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:10px;
+  margin-bottom:28px;
+}
+.done-stat{
+  background:var(--sub-bg);
+  border-radius:12px;
+  padding:18px 12px;
+}
+.done-stat .n{
+  font-size:26px;
+  font-weight:800;
+  line-height:1;
+  letter-spacing:-0.5px;
+}
+.done-stat .l{
+  font-size:11px;
+  color:var(--muted);
+  text-transform:uppercase;
+  letter-spacing:.8px;
+  margin-top:6px;
+  font-weight:600;
+}
+.done-stat.hafal .n{color:var(--green);}
+.done-stat.ulang .n{color:var(--yellow);}
+.done-stat.total .n{color:var(--pink);}
+
+.done-actions{
+  display:flex;
+  gap:10px;
+  justify-content:center;
+  flex-wrap:wrap;
+}
+
+/* ===== LOADING ===== */
+.loading-screen{
+  text-align:center;
+  padding:80px 20px;
+  color:var(--muted);
+}
+.spinner{
+  display:inline-block;
+  width:36px;height:36px;
+  border:3px solid var(--border);
+  border-top-color:var(--pink);
+  border-radius:50%;
+  animation:spin .8s linear infinite;
+}
+@keyframes spin{100%{transform:rotate(360deg)}}
+.loading-screen p{margin-top:14px;font-size:13px;}
+
+/* Empty state */
+.empty-screen{
+  text-align:center;
+  padding:60px 24px;
+  background:var(--card-bg);
+  border:1px solid var(--border);
+  border-radius:14px;
+}
+.empty-screen i{
+  font-size:48px;
+  opacity:.3;
+  color:var(--muted);
+  display:block;
+  margin-bottom:16px;
+}
+.empty-screen h3{
+  font-size:17px;
+  margin-bottom:8px;
+  font-weight:600;
+}
+.empty-screen p{
+  font-size:13px;
+  color:var(--muted);
+  margin-bottom:22px;
+}
+
+@media(max-width:600px){
+  .wrap{margin:20px auto;padding:0 14px;}
+  .fc-card-wrap{height:280px;}
+  .fc-word{font-size:28px;}
+  .fc-back .fc-word{font-size:32px;}
+  .setup-screen,.done-screen{padding:28px 22px;}
+  .done-stats{grid-template-columns:1fr 1fr 1fr;gap:6px;}
+  .done-stat{padding:14px 8px;}
+  .done-stat .n{font-size:20px;}
+  .done-stat .l{font-size:9px;}
+  .topbar{padding:12px 16px;}
+  .topbar h1{font-size:14px;}
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <h1><i class="fas fa-clone"></i> Flashcard Kosakata</h1>
+  <div class="spacer"></div>
+  <a href="dashboard.html" class="btn-back">
+    <i class="fas fa-arrow-left"></i> Dashboard
+  </a>
+</div>
+
+<div class="wrap">
+
+  <!-- ===== LOADING ===== -->
+  <div id="loadingScreen" class="loading-screen">
+    <div class="spinner"></div>
+    <p>Memuat kosakata...</p>
+  </div>
+
+  <!-- ===== SETUP SCREEN ===== -->
+  <div id="setupScreen" class="setup-screen" style="display:none;">
+    <div class="setup-icon">
+      <i class="fas fa-clone"></i>
+    </div>
+    <div class="setup-title">Flashcard Kosakata</div>
+    <div class="setup-subtitle">
+      Hafalin kosakata pakai kartu interaktif.<br>
+      Belajar santai, gratis, tanpa batas!
+    </div>
+
+    <label class="setup-label">Pilih Tema</label>
+    <select id="temaSelect" class="setup-select">
+      <option value="">Memuat tema...</option>
+    </select>
+
+    <div class="setup-info">
+      <strong>Cara pakai:</strong><br>
+      1. Kartu depan = kata <strong>Indonesia</strong><br>
+      2. Klik kartu untuk lihat arti <strong>Korea</strong><br>
+      3. Tandai <strong>Hafal</strong> kalau udah inget, atau <strong>Ulang</strong> kalau belum
+    </div>
+
+    <button class="btn btn-primary" onclick="startFlashcard()" style="width:100%;">
+      <i class="fas fa-play"></i> Mulai Flashcard
+    </button>
+  </div>
+
+  <!-- ===== FLASHCARD SCREEN ===== -->
+  <div id="flashcardScreen" class="flashcard-screen">
+
+    <!-- Progress -->
+    <div class="fc-progress-wrap">
+      <div class="fc-progress-info">
+        <span>Kartu <strong id="currentNum">1</strong> dari <strong id="totalNum">0</strong></span>
+        <span><strong id="hafalCount">0</strong> hafal · <strong id="ulangCount">0</strong> ulang</span>
+      </div>
+      <div class="fc-progress-bar">
+        <div class="fc-progress-fill" id="progressFill"></div>
+      </div>
+    </div>
+
+    <!-- Kartu -->
+    <div class="fc-card-wrap" onclick="flipCard()">
+      <div class="fc-card" id="fcCard">
+
+        <!-- Sisi depan (Indonesia) -->
+        <div class="fc-side fc-front">
+          <div class="fc-side-label">🇮🇩 Indonesia</div>
+          <div class="fc-word" id="wordFront">-</div>
+          <div class="fc-hint">
+            <i class="fas fa-hand-pointer"></i> Klik untuk lihat arti
+          </div>
+        </div>
+
+        <!-- Sisi belakang (Korea) -->
+        <div class="fc-side fc-back">
+          <div class="fc-side-label">🇰🇷 한국어</div>
+          <div class="fc-word fc-word-ko" id="wordBack">-</div>
+          <button id="audioBtn" class="fc-audio-btn" style="display:none;" onclick="event.stopPropagation();playAudio();" title="Dengar pengucapan">
+            <i class="fas fa-volume-up"></i>
+          </button>
+          <div class="fc-hint">
+            <i class="fas fa-check"></i> Udah inget? Klik tombol di bawah
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Aksi -->
+    <div class="fc-actions hidden" id="fcActions">
+      <button class="fc-btn-action fc-btn-ulang" onclick="markUlang(event)">
+        <i class="fas fa-redo"></i> Ulang
+      </button>
+      <button class="fc-btn-action fc-btn-hafal" onclick="markHafal(event)">
+        <i class="fas fa-check"></i> Hafal
+      </button>
+    </div>
+
+    <button class="fc-btn-secondary" id="btnPrev" onclick="prevCard()" style="margin-top:8px;">
+      <i class="fas fa-arrow-left"></i> Kartu Sebelumnya
+    </button>
+
+  </div>
+
+  <!-- ===== DONE SCREEN ===== -->
+  <div id="doneScreen" class="done-screen">
+    <div class="done-icon">
+      <i class="fas fa-trophy"></i>
+    </div>
+    <div class="done-title">Selesai! 🎉</div>
+    <div class="done-sub" id="doneSub">Kamu udah hafal semua kartu!</div>
+
+    <div class="done-stats">
+      <div class="done-stat hafal">
+        <div class="n" id="doneHafal">0</div>
+        <div class="l">Hafal</div>
+      </div>
+      <div class="done-stat ulang">
+        <div class="n" id="doneUlang">0</div>
+        <div class="l">Ulang</div>
+      </div>
+      <div class="done-stat total">
+        <div class="n" id="doneTotal">0</div>
+        <div class="l">Total</div>
+      </div>
+    </div>
+
+    <div class="done-actions">
+      <button class="btn btn-primary" onclick="restartSession()">
+        <i class="fas fa-redo"></i> Ulangi Sesi
+      </button>
+      <button class="btn btn-secondary" onclick="backToSetup()">
+        <i class="fas fa-cog"></i> Ganti Tema
+      </button>
+      <a href="dashboard.html" class="btn btn-secondary">
+        <i class="fas fa-home"></i> Dashboard
+      </a>
+    </div>
+  </div>
+
+  <!-- ===== EMPTY ===== -->
+  <div id="emptyScreen" class="empty-screen" style="display:none;">
+    <i class="fas fa-inbox"></i>
+    <h3>Belum Ada Kosakata</h3>
+    <p>Tema ini belum punya kosakata untuk dihafal.<br>Coba pilih tema lain ya!</p>
+    <button class="btn btn-secondary" onclick="backToSetup()">
+      <i class="fas fa-arrow-left"></i> Kembali
+    </button>
+  </div>
+
+</div>
+
+<script>
+// ============================================================
+//  SESSION & THEME
+// ============================================================
+const SESSION_MAX_AGE = 8 * 60 * 60 * 1000;
+
+function touchSession() {
+  const u = JSON.parse(localStorage.getItem('user') || 'null');
+  if (u && u.loginAt) {
+    u.loginAt = Date.now();
+    localStorage.setItem('user', JSON.stringify(u));
+  }
+}
+
+function checkSession() {
+  const u = JSON.parse(localStorage.getItem('user') || 'null');
+  if (!u) { location.href = 'login.html'; return false; }
+  if (Date.now() - (u.loginAt || 0) > SESSION_MAX_AGE) {
+    localStorage.removeItem('user');
+    alert('Sesi kamu habis (8 jam). Silakan login ulang.');
+    location.href = 'login.html';
+    return false;
+  }
+  return true;
+}
+
+['click','keydown','mousemove','scroll','touchstart'].forEach(evt => {
+  document.addEventListener(evt, touchSession, { passive: true });
+});
+setInterval(touchSession, 60000);
+
+function applyTheme(t){
+  document.documentElement.setAttribute('data-theme', t);
+}
+applyTheme(localStorage.getItem('theme') || 'light');
+
+const API = 'https://script.google.com/macros/s/AKfycbyQ4fuG4bapGT2qDD078qMC2l6oNOjcCTqYkPqO7PDY6g9b7HNdSOk2ZGrKHL4OmJ8j/exec';
+
+if (!checkSession()) throw new Error('Session expired');
+const user = JSON.parse(localStorage.getItem('user') || 'null');
+if (!user) location.href = 'login.html';
+
+// ============================================================
+//  TEMA MAP
+// ============================================================
+const TEMA_MAP = [
+  { value: 'kosakata_transportasi',   label: 'Transportasi' },
+  { value: 'kosakata_makanan',        label: 'Makanan & Minuman' },
+  { value: 'kosakata_tempat_wisata',  label: 'Tempat Wisata' },
+  { value: 'kosakata_keluarga',       label: 'Keluarga' },
+  { value: 'kosakata_sekolah',        label: 'Sekolah' },
+  { value: 'kosakata_tubuh',          label: 'Anggota Tubuh' },
+  { value: 'kosakata_pakaian',        label: 'Pakaian' },
+  { value: 'kosakata_alam',           label: 'Alam & Cuaca' },
+  { value: 'kosakata_pekerjaan',      label: 'Pekerjaan' },
+  { value: 'kosakata_hobi',           label: 'Hobi & Olahraga' },
+  { value: 'kosakata_umum',           label: 'Kosakata Umum' },
+  { value: '__all__',                 label: 'Semua Tema (Campur)' }
+];
+
+// ============================================================
+//  STATE
+// ============================================================
+let allCards = [];         // semua kartu dari server
+let sessionQueue = [];     // kartu yang belum selesai
+let hafalCards = [];       // kartu yang udah ditandai hafal
+let ulangCards = [];       // kartu yang ditandai ulang (masuk queue akhir)
+let currentIndex = 0;      // pointer ke sessionQueue
+let isFlipped = false;
+let currentAudio = null;
+let currentTema = '__all__';
+
+// ============================================================
+//  INIT
+// ============================================================
+function init() {
+  showScreen('loading');
+  fetch(API + '?action=getFlashcards&kategori=all&t=' + Date.now())
+    .then(r => r.json())
+    .then(res => {
+      if (!res.success || !res.cards) {
+        showScreen('empty');
+        return;
+      }
+      allCards = res.cards;
+      renderTemaDropdown();
+      showScreen('setup');
+    })
+    .catch(err => {
+      console.error(err);
+      showScreen('empty');
+    });
+}
+
+function renderTemaDropdown() {
+  const sel = document.getElementById('temaSelect');
+  let html = '';
+  TEMA_MAP.forEach(t => {
+    const count = (t.value === '__all__')
+      ? allCards.length
+      : allCards.filter(c => c.kategori === t.value).length;
+    html += `<option value="${t.value}" ${count === 0 ? 'disabled' : ''}>${t.label} (${count} kata)</option>`;
+  });
+  sel.innerHTML = html;
+  sel.value = '__all__';
+  currentTema = '__all__';
+  sel.onchange = () => { currentTema = sel.value; };
+}
+
+// ============================================================
+//  SCREEN MANAGEMENT
+// ============================================================
+function showScreen(name) {
+  document.getElementById('loadingScreen').style.display = (name === 'loading') ? 'block' : 'none';
+  document.getElementById('setupScreen').style.display = (name === 'setup') ? 'block' : 'none';
+  document.getElementById('flashcardScreen').style.display = (name === 'flashcard') ? 'block' : 'none';
+  document.getElementById('doneScreen').style.display = (name === 'done') ? 'block' : 'none';
+  document.getElementById('emptyScreen').style.display = (name === 'empty') ? 'block' : 'none';
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+// ============================================================
+//  START SESSION
+// ============================================================
+function startFlashcard() {
+  const tema = document.getElementById('temaSelect').value;
+  currentTema = tema;
+
+  // Filter cards
+  let filtered;
+  if (tema === '__all__') {
+    filtered = allCards.slice();
+  } else {
+    filtered = allCards.filter(c => c.kategori === tema);
+  }
+
+  if (filtered.length === 0) {
+    showScreen('empty');
+    return;
+  }
+
+  // Shuffle
+  filtered = shuffleArray(filtered);
+
+  // Init session
+  sessionQueue = filtered.slice();
+  hafalCards = [];
+  ulangCards = [];
+  currentIndex = 0;
+
+  showScreen('flashcard');
+  renderCard();
+}
+
+function shuffleArray(arr) {
+  const a = arr.slice();
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+// ============================================================
+//  RENDER CARD
+// ============================================================
+function renderCard() {
+  if (currentIndex >= sessionQueue.length) {
+    showDoneScreen();
+    return;
+  }
+
+  const card = sessionQueue[currentIndex];
+
+  // Reset flip
+  isFlipped = false;
+  const fcCard = document.getElementById('fcCard');
+  fcCard.classList.remove('flipped');
+
+  // Isi teks
+  document.getElementById('wordFront').textContent = card.soal || '-';
+  document.getElementById('wordBack').textContent = card.jawaban || '-';
+
+  // Audio — tampil cuma kalau ada & di sisi belakang
+  const audioBtn = document.getElementById('audioBtn');
+  if (card.audio) {
+    audioBtn.style.display = 'flex';
+    audioBtn.onclick = (e) => { e.stopPropagation(); playAudio(card.audio); };
+  } else {
+    audioBtn.style.display = 'none';
+    audioBtn.onclick = null;
+  }
+
+  // Progress
+  document.getElementById('currentNum').textContent = (currentIndex + 1);
+  document.getElementById('totalNum').textContent = sessionQueue.length;
+  document.getElementById('hafalCount').textContent = hafalCards.length;
+  document.getElementById('ulangCount').textContent = ulangCards.length;
+
+  const progress = ((currentIndex) / sessionQueue.length) * 100;
+  document.getElementById('progressFill').style.width = progress + '%';
+
+  // Sembunyiin tombol Hafal/Ulang — muncul setelah flip
+  const actions = document.getElementById('fcActions');
+  actions.classList.add('hidden');
+
+  // Tombol prev
+  document.getElementById('btnPrev').disabled = (currentIndex === 0);
+}
+
+// ============================================================
+//  FLIP
+// ============================================================
+function flipCard() {
+  if (isFlipped) return;
+  isFlipped = true;
+  document.getElementById('fcCard').classList.add('flipped');
+  // Munculin tombol hafal/ulang
+  setTimeout(() => {
+    document.getElementById('fcActions').classList.remove('hidden');
+  }, 300);
+}
+
+// ============================================================
+//  MARK HAFAL / ULANG
+// ============================================================
+function markHafal(e) {
+  if (e) e.stopPropagation();
+  if (!isFlipped) return;
+
+  const card = sessionQueue[currentIndex];
+  hafalCards.push(card);
+
+  // Hapus dari queue
+  sessionQueue.splice(currentIndex, 1);
+
+  // Kalau queue habis, selesai
+  if (sessionQueue.length === 0) {
+    showDoneScreen();
+    return;
+  }
+
+  // Kalau currentIndex udah lewat batas, reset ke 0
+  if (currentIndex >= sessionQueue.length) {
+    currentIndex = 0;
+  }
+
+  renderCard();
+}
+
+function markUlang(e) {
+  if (e) e.stopPropagation();
+  if (!isFlipped) return;
+
+  const card = sessionQueue[currentIndex];
+  ulangCards.push(card);
+
+  // Pindah kartu ini ke akhir queue
+  sessionQueue.splice(currentIndex, 1);
+  sessionQueue.push(card);
+
+  // Kalau currentIndex udah lewat batas, reset ke 0
+  if (currentIndex >= sessionQueue.length) {
+    currentIndex = 0;
+  }
+
+  renderCard();
+}
+
+// ============================================================
+//  NAVIGASI
+// ============================================================
+function prevCard() {
+  if (currentIndex === 0) return;
+  currentIndex--;
+  renderCard();
+}
+
+// ============================================================
+//  DONE SCREEN
+// ============================================================
+function showDoneScreen() {
+  document.getElementById('doneHafal').textContent = hafalCards.length;
+  document.getElementById('doneUlang').textContent = ulangCards.length;
+  document.getElementById('doneTotal').textContent = hafalCards.length + ulangCards.length;
+
+  const total = hafalCards.length + ulangCards.length;
+  const ratio = total > 0 ? hafalCards.length / total : 0;
+
+  let msg = '';
+  if (ratio === 1) msg = '🎉 Mantap! Kamu hafal semua kartu!';
+  else if (ratio >= 0.8) msg = '👏 Bagus! Hampir semua hafal!';
+  else if (ratio >= 0.5) msg = '💪 Lumayan! Terus latihan ya!';
+  else msg = '📚 Belajar lagi yuk, biar makin hafal!';
+
+  document.getElementById('doneSub').textContent = msg;
+  showScreen('done');
+}
+
+// ============================================================
+//  RESTART / BACK
+// ============================================================
+function restartSession() {
+  startFlashcard();
+}
+
+function backToSetup() {
+  showScreen('setup');
+}
+
+// ============================================================
+//  AUDIO
+// ============================================================
+function playAudio(url) {
+  try {
+    if (currentAudio) {
+      currentAudio.pause();
+      currentAudio = null;
+    }
+    currentAudio = new Audio(url);
+    currentAudio.play().catch(err => {
+      console.warn('Gagal play audio:', err);
+      alert('Gagal putar audio');
+    });
+  } catch(e) {
+    console.warn(e);
+  }
+}
+
+// ============================================================
+//  KEYBOARD SHORTCUT
+// ============================================================
+document.addEventListener('keydown', function(e) {
+  const screen = document.getElementById('flashcardScreen').style.display;
+  if (screen === 'none') return;
+
+  // Spasi / Enter → flip
+  if (e.key === ' ' || e.key === 'Enter') {
+    e.preventDefault();
+    if (!isFlipped) flipCard();
+    return;
+  }
+
+  // Arrow left → ulang
+  if (e.key === 'ArrowLeft' && isFlipped) {
+    e.preventDefault();
+    markUlang();
+    return;
+  }
+
+  // Arrow right → hafal
+  if (e.key === 'ArrowRight' && isFlipped) {
+    e.preventDefault();
+    markHafal();
+    return;
+  }
+
+  // Arrow up → prev
+  if (e.key === 'ArrowUp' && !isFlipped) {
+    e.preventDefault();
+    prevCard();
+  }
+});
+
+// ============================================================
+//  GO
+// ============================================================
+init();
+</script>
+</body>
+</html>
