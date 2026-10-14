@@ -152,6 +152,11 @@ body.is-admin #menuPremium,
 body.is-admin #premiumBanner,
 body.is-admin #premiumBadge{display:none !important;}
 
+/* Promo mode — sembunyiin UI premium */
+body.promo-mode #menuPremium,
+body.promo-mode #premiumBanner,
+body.promo-mode #premiumBadge{display:none !important;}
+
 /* ===== NOTIF DROPDOWN ===== */
 .notif-wrapper{position:relative;}
 .notif-dropdown{
@@ -426,6 +431,26 @@ body.is-admin #premiumBadge{display:none !important;}
   color:var(--gold-dark);
 }
 
+/* ===== PROMO BANNER ===== */
+.promo-banner{
+  background:linear-gradient(135deg,#16a34a,#0d9488);
+  color:#fff;
+  border-radius:10px;
+  padding:16px 22px;
+  margin-bottom:20px;
+  display:flex;align-items:center;gap:18px;flex-wrap:wrap;
+  box-shadow:0 4px 16px rgba(22,163,74,.25);
+}
+.promo-banner .ico-big{
+  width:44px;height:44px;border-radius:50%;
+  background:rgba(255,255,255,.2);
+  display:flex;align-items:center;justify-content:center;
+  font-size:20px;flex-shrink:0;
+}
+.promo-banner .txt{flex:1;min-width:200px;}
+.promo-banner .txt h3{font-size:15px;font-weight:700;margin-bottom:2px;}
+.promo-banner .txt p{font-size:13px;opacity:.92;line-height:1.5;}
+
 /* ===== QUICK STATS ===== */
 .quick-stats{
   display:grid;grid-template-columns:repeat(3,1fr);
@@ -662,6 +687,7 @@ body.is-admin #premiumBadge{display:none !important;}
 .kuota-popup-icon.empty{color:var(--c-red);}
 .kuota-popup-icon.admin{color:var(--c-purple);}
 .kuota-popup-icon.premium{color:var(--gold);}
+.kuota-popup-icon.promo{color:#16a34a;}
 .kuota-popup-title{
   text-align:center;font-size:18px;font-weight:600;
   color:var(--text);margin-bottom:4px;
@@ -680,6 +706,7 @@ body.is-admin #premiumBadge{display:none !important;}
 .kuota-info-box.empty{border-color:var(--c-red);}
 .kuota-info-box.admin{border-color:var(--c-purple);}
 .kuota-info-box.premium{border-color:var(--gold);}
+.kuota-info-box.promo{border-color:#16a34a;}
 .kuota-big-num{
   font-size:40px;font-weight:700;line-height:1;
   margin-bottom:4px;letter-spacing:-1px;
@@ -688,6 +715,7 @@ body.is-admin #premiumBadge{display:none !important;}
 .kuota-big-num.empty{color:var(--c-red);}
 .kuota-big-num.admin{color:var(--c-purple);}
 .kuota-big-num.premium{color:var(--gold);}
+.kuota-big-num.promo{color:#16a34a;}
 .kuota-info-label{
   font-size:11px;color:var(--muted);
   text-transform:uppercase;letter-spacing:1.5px;font-weight:600;
@@ -706,6 +734,7 @@ body.is-admin #premiumBadge{display:none !important;}
 .kuota-popup-catatan.empty{border-left-color:var(--c-red);color:var(--text);}
 .kuota-popup-catatan.admin{border-left-color:var(--c-purple);color:var(--text);}
 .kuota-popup-catatan.premium{border-left-color:var(--gold);color:var(--text);}
+.kuota-popup-catatan.promo{border-left-color:#16a34a;color:var(--text);}
 .kuota-popup-buttons{display:flex;gap:10px;flex-wrap:wrap;}
 .kuota-popup-buttons .btn{flex:1;justify-content:center;padding:12px;font-size:14px;}
 
@@ -763,6 +792,7 @@ body.is-admin #premiumBadge{display:none !important;}
   .quick-stats{grid-template-columns:1fr;}
   .quota-banner{padding:14px;}
   .premium-banner{padding:14px;}
+  .promo-banner{padding:14px;}
   .dropdown-panel{
     position:fixed;top:auto;bottom:0;left:0;right:0;
     border-radius:16px 16px 0 0;max-height:70vh;
@@ -819,6 +849,15 @@ body.is-admin #premiumBadge{display:none !important;}
 <div class="wrap">
   <div class="hello">Halo, <strong id="greetName">User</strong></div>
   <p class="sub">Pilih kategori latihan yang mau kamu kerjakan</p>
+
+  <!-- 🎁 PROMO BANNER -->
+  <div id="promoBanner" class="promo-banner" style="display:none;">
+    <div class="ico-big">🎉</div>
+    <div class="txt">
+      <h3>Selamat Datang Di EPS-TOPIKU</h3>
+      <p>Nikmatin akses bebas ke semua ujian & fitur sudah tersedia lengkap. Beberapa soal masih dalam proses input, jadi pantau terus ya. Selamat belajar!</p>
+    </div>
+  </div>
 
   <div id="quotaBanner" class="quota-banner loading" style="display:none;">
     <div class="ico-big"><i class="fas fa-ticket-alt"></i></div>
@@ -1160,7 +1199,7 @@ function toggleTheme(){
 }
 applyTheme(localStorage.getItem('theme') || 'light');
 
-const API = 'https://script.google.com/macros/s/AKfycbyQ4fuG4bapGT2qDD078qMC2l6oNOjcCTqYkPqO7PDY6g9b7HNdSOk2ZGrKHL4OmJ8j/exec';
+const API = 'https://script.google.com/macros/s/AKfycbwtzP5Cbl7CMbY0X_qGWOeaxy4IUtkgm6eYKVH7CyH96J2MNKJDHZp1KOi6psSqrXNv/exec';
 
 const WHATSAPP_ADMIN = '6287852456680';
 const PREMIUM_PAKET = [
@@ -1179,6 +1218,7 @@ const IS_ADMIN = user.role === 'admin';
 //  PREMIUM
 // ============================================================
 function isPremiumUser() {
+  if (user && user.promoMode) return true;
   if (!user) return false;
   if (String(user.plan || '').toLowerCase() !== 'premium') return false;
   if (!user.premiumUntil) return false;
@@ -1187,12 +1227,41 @@ function isPremiumUser() {
 }
 
 function getDaysLeft() {
-  if (!isPremiumUser()) return 0;
+  if (!user || !user.premiumUntil) return 0;
+  if (String(user.plan || '').toLowerCase() !== 'premium') return 0;
   const exp = new Date(user.premiumUntil);
+  if (isNaN(exp.getTime())) return 0;
   return Math.max(0, Math.ceil((exp.getTime() - Date.now()) / (24 * 60 * 60 * 1000)));
 }
 
+function applyPromoModeUI() {
+  if (user.promoMode && !IS_ADMIN) {
+    document.body.classList.add('promo-mode');
+    const promo = document.getElementById('promoBanner');
+    if (promo) promo.style.display = 'flex';
+    const qb = document.getElementById('quotaBanner');
+    if (qb) qb.style.display = 'none';
+    const pb = document.getElementById('premiumBanner');
+    if (pb) pb.style.display = 'none';
+    const badge = document.getElementById('premiumBadge');
+    if (badge) badge.style.display = 'none';
+  } else {
+    document.body.classList.remove('promo-mode');
+    const promo = document.getElementById('promoBanner');
+    if (promo) promo.style.display = 'none';
+  }
+}
+
 function renderPremiumBadge() {
+  // Pas promo, sembunyiin semua badge premium
+  if (user.promoMode || IS_ADMIN) {
+    const badge = document.getElementById('premiumBadge');
+    const banner = document.getElementById('premiumBanner');
+    if (badge) badge.style.display = 'none';
+    if (banner) banner.style.display = 'none';
+    return;
+  }
+
   const badge = document.getElementById('premiumBadge');
   const banner = document.getElementById('premiumBanner');
   const bannerDesc = document.getElementById('premiumBannerDesc');
@@ -1217,6 +1286,10 @@ function renderPremiumBadge() {
 }
 
 function openPremiumModal() {
+  if (user.promoMode && !IS_ADMIN) {
+    alert('🎉 Promo aktif! Semua fitur GRATIS unlimited. Selamat belajar!');
+    return;
+  }
   if (isPremiumUser()) {
     const days = getDaysLeft();
     alert(`Kamu sudah Premium!\n\nSisa: ${days} hari\nBerakhir: ${user.premiumUntil}\n\nNikmati akses unlimited ke semua ujian.`);
@@ -1226,6 +1299,11 @@ function openPremiumModal() {
 }
 
 async function langgananSekarang() {
+  if (user.promoMode) {
+    alert('🎉 Promo aktif! Semua fitur GRATIS unlimited. Selamat belajar!');
+    return;
+  }
+
   const paket = PREMIUM_PAKET[0];
   const btn = document.getElementById('btnLangganan');
   const original = btn ? btn.innerHTML : '';
@@ -1289,7 +1367,10 @@ async function refreshPremiumStatus() {
     if (res.success) {
       user.plan = res.plan || 'free';
       user.premiumUntil = res.premiumUntil || '';
+      user.promoMode = res.promoMode === true;
       localStorage.setItem('user', JSON.stringify(user));
+
+      applyPromoModeUI();
       renderPremiumBadge();
     }
   } catch(e) {
@@ -2093,15 +2174,24 @@ function openKuotaPopupKosakata(tema, label, icon) {
 
 function tampilkanPopupKuota(label, desc, icon) {
   const isAdmin = user.role === 'admin';
-  const isPrem = isPremiumUser();
+  const isPromo = !!user.promoMode && !isAdmin;
+  const isPrem = isPremiumUser() && !isPromo;
   const used = Number(user.quotaUsed) || 0;
   const max = Number(user.quotaMax) || 5;
   const remain = Math.max(0, max - used);
-  const canExam = isAdmin || isPrem || (used < max);
+  const canExam = isAdmin || isPromo || isPrem || (used < max);
 
   const iconEl = document.getElementById('kuotaPopupIcon');
   const iconFa = document.getElementById('kuotaPopupIconFa');
-  if (iconEl) iconEl.className = 'kuota-popup-icon ' + (isAdmin ? 'admin' : (isPrem ? 'premium' : (canExam ? 'ok' : 'empty')));
+  if (iconEl) {
+    let cls = 'kuota-popup-icon ';
+    if (isAdmin) cls += 'admin';
+    else if (isPromo) cls += 'promo';
+    else if (isPrem) cls += 'premium';
+    else if (canExam) cls += 'ok';
+    else cls += 'empty';
+    iconEl.className = cls;
+  }
   if (iconFa) iconFa.className = 'fas ' + (icon || 'fa-book');
 
   const titleEl = document.getElementById('kuotaPopupTitle');
@@ -2119,6 +2209,11 @@ function tampilkanPopupKuota(label, desc, icon) {
     if (bigNum) { bigNum.className = 'kuota-big-num admin'; bigNum.textContent = '∞'; }
     if (infoDetail) infoDetail.textContent = 'Admin bebas akses semua ujian';
     if (catatan) { catatan.className = 'kuota-popup-catatan admin'; catatan.innerHTML = 'Sebagai admin, kamu bisa mengerjakan ujian tanpa batas kuota.'; }
+  } else if (isPromo) {
+    if (infoBox) infoBox.className = 'kuota-info-box promo';
+    if (bigNum) { bigNum.className = 'kuota-big-num promo'; bigNum.textContent = '∞'; }
+    if (infoDetail) infoDetail.textContent = 'Unlimited';
+    if (catatan) { catatan.className = 'kuota-popup-catatan promo'; catatan.innerHTML = '🎉 Promo aktif! Semua ujian <strong>GRATIS unlimited</strong>. Selamat belajar !.'; }
   } else if (isPrem) {
     const days = getDaysLeft();
     if (infoBox) infoBox.className = 'kuota-info-box premium';
@@ -2136,7 +2231,7 @@ function tampilkanPopupKuota(label, desc, icon) {
     if (infoDetail) infoDetail.textContent = `dari ${max} kuota ujian`;
     if (catatan) {
       catatan.className = 'kuota-popup-catatan empty';
-      catatan.innerHTML = `Kuota kamu sudah habis. Langganan Premium <strong>Rp 25.000/bulan</strong> untuk ujian unlimited!`;
+      catatan.innerHTML = `Kuota kamu sudah habis. Request tambah kuota ke admin atau hubungi admin lewat chat.`;
     }
   }
 
@@ -2148,9 +2243,9 @@ function tampilkanPopupKuota(label, desc, icon) {
     btnMulai.onclick = mulaiSoal;
   } else {
     btnMulai.disabled = false;
-    btnMulai.className = 'btn btn-gold';
-    btnMulai.innerHTML = '<i class="fas fa-crown"></i> Langganan Premium';
-    btnMulai.onclick = () => { closeModal('kuotaPopup'); openPremiumModal(); };
+    btnMulai.className = 'btn btn-secondary';
+    btnMulai.innerHTML = '<i class="fas fa-comments"></i> Chat Admin';
+    btnMulai.onclick = () => { closeModal('kuotaPopup'); openChat(); };
   }
 
   openModal('kuotaPopup');
@@ -2190,6 +2285,7 @@ function updateQuotaUI() {
   const banner = document.getElementById('quotaBanner');
   if (!banner) return;
   if (user.role === 'admin') { banner.style.display = 'none'; return; }
+  if (user.promoMode) { banner.style.display = 'none'; return; }
   if (isPremiumUser()) { banner.style.display = 'none'; return; }
 
   if (user.quotaMax === undefined || user.quotaMax === null) {
@@ -2225,8 +2321,8 @@ function updateQuotaUI() {
   } else {
     banner.className = 'quota-banner empty';
     if (title) title.textContent = `Kuota Ujian Habis`;
-    if (desc) desc.textContent = `Langganan Premium Rp 25.000/bulan untuk ujian unlimited!`;
-    if (btnReq) btnReq.style.display = 'inline-flex';
+    if (desc) desc.textContent = `Hubungi admin lewat chat untuk request tambah kuota.`;
+    if (btnReq) btnReq.style.display = 'none';
   }
 }
 
@@ -2237,7 +2333,11 @@ function refreshQuota() {
       if (res.success) {
         user.quotaUsed = Number(res.quotaUsed) || 0;
         user.quotaMax = Number(res.quotaMax) || 5;
+        user.promoMode = res.promoMode === true;
         localStorage.setItem('user', JSON.stringify(user));
+
+        // Apply promo mode UI
+        applyPromoModeUI();
         updateQuotaUI();
       }
     })
@@ -2249,7 +2349,7 @@ function refreshUserProfile() {
     .then(r => r.json())
     .then(res => {
       if (res.success && res.user) {
-        user = Object.assign({}, user, res.user);
+        user = Object.assign({}, user, res.user, { promoMode: user.promoMode, loginAt: user.loginAt });
         localStorage.setItem('user', JSON.stringify(user));
         document.getElementById('userName').textContent = user.nama || user.username;
         document.getElementById('greetName').textContent = user.nama || user.username;
@@ -2283,7 +2383,8 @@ function shouldShowWelcome() {
 
 function buildWelcomeContent() {
   const isAdmin = user.role === 'admin';
-  const isPrem = isPremiumUser();
+  const isPromo = !!user.promoMode && !isAdmin;
+  const isPrem = isPremiumUser() && !isPromo;
   const used = Number(user.quotaUsed) || 0;
   const max = Number(user.quotaMax) || 5;
   const remain = Math.max(0, max - used);
@@ -2308,6 +2409,15 @@ function buildWelcomeContent() {
       </div>`;
   }
 
+  if (isPromo) {
+    if (subEl) subEl.textContent = 'Selamat Datang Di EPS-TOPIKU! 🎉';
+    return `
+      <div class="kuota-popup-catatan promo" style="margin-bottom:0;">
+        <strong>🎉 HALLO YEOROBUN!</strong><br>
+        Beberapa soal masih dalam proses input, jadi pantau terus ya. Selamat belajar!
+      </div>`;
+  }
+
   if (isPrem) {
     const days = getDaysLeft();
     if (subEl) subEl.textContent = 'Premium aktif, selamat belajar tanpa batas!';
@@ -2327,11 +2437,11 @@ function buildWelcomeContent() {
       </div>`;
   }
 
-  if (subEl) subEl.textContent = 'Yuk, langganan premium biar bisa unlimited!';
+  if (subEl) subEl.textContent = 'Kuota habis, hubungi admin lewat chat ya!';
   return `
     <div class="kuota-popup-catatan empty" style="margin-bottom:0;">
       <strong>Kuota Ujian Habis</strong><br>
-      <a href="#" onclick="event.preventDefault();closeWelcomePopup();openPremiumModal();" style="color:var(--gold-dark);font-weight:600;text-decoration:underline;">Langganan Premium Rp 25.000/bulan</a> untuk unlimited ujian.
+      <a href="#" onclick="event.preventDefault();closeWelcomePopup();openChat();" style="color:var(--c-teal);font-weight:600;text-decoration:underline;">Chat admin</a> untuk request tambah kuota.
     </div>`;
 }
 
@@ -2361,6 +2471,7 @@ document.addEventListener('click', function(e) {
 
 // ===== INIT =====
 renderTemaList();
+applyPromoModeUI();
 renderPremiumBadge();
 updateQuotaUI();
 updateChatBadge();
@@ -2369,6 +2480,7 @@ loadTopbarBadges();
 
 Promise.all([refreshQuota(), refreshUserProfile(), refreshPremiumStatus()])
   .then(() => {
+    applyPromoModeUI();
     renderPremiumBadge();
     updateQuotaUI();
     showWelcomePopup();
