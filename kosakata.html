@@ -272,6 +272,22 @@ body{
 }
 .exam-info .btn-icon:hover{color:var(--text);border-color:var(--text);}
 
+/* 🎉 PROMO TAG */
+.exam-info #promoTag{
+  display:none;
+  align-items:center;
+  gap:5px;
+  background:linear-gradient(135deg,#16a34a,#0d9488);
+  color:#fff;
+  padding:5px 12px;
+  border-radius:20px;
+  font-size:11px;
+  font-weight:700;
+  letter-spacing:.3px;
+  box-shadow:0 2px 8px rgba(22,163,74,.3);
+}
+.exam-info #promoTag.show{display:inline-flex;}
+
 .btn-exit{
   background:transparent;
   border:1px solid var(--border);
@@ -570,6 +586,7 @@ footer{
 <div class="exam-info" id="examInfo" style="display:none;">
   <div class="item">Soal <strong id="curNum">1</strong> / <strong id="totNum">-</strong></div>
   <div class="item">Terjawab: <strong id="answeredNum">0</strong></div>
+  <div id="promoTag">🎉 PROMO — GRATIS</div>
   <button class="btn-icon" onclick="toggleTheme()" title="Ganti tema">
     <i class="fas fa-moon" id="themeIcon"></i>
   </button>
@@ -653,7 +670,7 @@ function toggleTheme(){
 }
 applyTheme(localStorage.getItem('theme') || 'light');
 
-const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyQ4fuG4bapGT2qDD078qMC2l6oNOjcCTqYkPqO7PDY6g9b7HNdSOk2ZGrKHL4OmJ8j/exec';
+const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwtzP5Cbl7CMbY0X_qGWOeaxy4IUtkgm6eYKVH7CyH96J2MNKJDHZp1KOi6psSqrXNv/exec';
 
 if (!checkSession()) throw new Error('Session expired');
 
@@ -690,6 +707,12 @@ let isFinished = false;
 let resultSaved = false;
 
 const CIRCLES = { '1':'①', '2':'②', '3':'③', '4':'④' };
+
+function escapeHtml(str) {
+  const div = document.createElement('div');
+  div.textContent = String(str == null ? '' : str);
+  return div.innerHTML;
+}
 
 function confirmExit() {
   const titleEl = document.getElementById('exitModalTitle');
@@ -740,15 +763,28 @@ document.addEventListener('keydown', function(e) {
   }
 });
 
+// ============================================================
+//  CEK KUOTA (dengan PROMO MODE support)
+// ============================================================
 async function checkQuota() {
   if (_user.role === 'admin') return true;
+
   try {
     const r = await fetch(APPS_SCRIPT_URL + '?action=getQuota&username=' + encodeURIComponent(_user.username) + '&t=' + Date.now());
     const res = await r.json();
     if (res.success) {
       _user.quotaUsed = res.quotaUsed;
       _user.quotaMax = res.quotaMax;
+      _user.promoMode = res.promoMode === true;   // ⬅️ TAMBAH INI
       localStorage.setItem('user', JSON.stringify(_user));
+
+      // 🎉 Kalau promo mode, tampilkan tag & selalu boleh ujian
+      if (res.promoMode === true) {
+        const tag = document.getElementById('promoTag');
+        if (tag) tag.classList.add('show');
+        return true;                              // ⬅️ TAMBAH INI
+      }
+
       return res.canExam;
     }
   } catch(e) {}
@@ -824,6 +860,12 @@ function startExam() {
   document.getElementById('examInfo').style.display = 'flex';
   document.getElementById('progressWrap').style.display = 'block';
   document.getElementById('totNum').textContent = questions.length;
+
+  // 🎉 Tampilkan tag promo kalau aktif
+  if (_user.promoMode) {
+    const tag = document.getElementById('promoTag');
+    if (tag) tag.classList.add('show');
+  }
 
   if (timerInterval) clearInterval(timerInterval);
   timerInterval = setInterval(updateTimer, 1000);
@@ -1014,9 +1056,16 @@ function saveResultToServer(skor, benar, salah, kosong, total) {
         _user.quotaUsed = res.quotaUsed;
         _user.quotaMax = res.quotaMax;
         localStorage.setItem('user', JSON.stringify(_user));
-        const remain = res.remaining;
-        const remainText = remain > 0 ? ` · Sisa kuota: ${remain}` : ' · Kuota habis';
-        statusBox.innerHTML = `<span class="saved-badge"><i class="fas fa-check"></i> Hasil tersimpan${remainText}</span>`;
+
+        // 🎉 Kalau promo / premium, tampilkan pesan unlimited
+        if (res.premium || _user.promoMode) {
+          const label = _user.promoMode ? 'PROMO — GRATIS unlimited' : 'Premium — unlimited';
+          statusBox.innerHTML = `<span class="saved-badge" style="background:var(--sub-bg);color:var(--green);border-color:var(--green);"><i class="fas fa-infinity"></i> Hasil tersimpan · ${label}</span>`;
+        } else {
+          const remain = res.remaining;
+          const remainText = remain > 0 ? ` · Sisa kuota: ${remain}` : ' · Kuota habis';
+          statusBox.innerHTML = `<span class="saved-badge"><i class="fas fa-check"></i> Hasil tersimpan${remainText}</span>`;
+        }
       } else {
         statusBox.innerHTML = '<span class="saved-badge" style="background:var(--sub-bg);color:var(--red);border-color:var(--red);"><i class="fas fa-times"></i> ' + (res.msg || 'Gagal simpan hasil') + '</span>';
       }
