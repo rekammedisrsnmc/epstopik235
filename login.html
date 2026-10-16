@@ -290,7 +290,7 @@ body{
 .btn-link:hover{color:var(--accent-hover);}
 .btn-link:disabled{color:var(--muted);cursor:not-allowed;text-decoration:none;}
 
-/* ===== GOOGLE SIGN-IN ===== */
+/* ===== GOOGLE SIGN-IN (CUSTOM) ===== */
 .divider{
   display:flex;
   align-items:center;
@@ -307,11 +307,38 @@ body{
   background:var(--border);
 }
 
-.google-btn-wrap{
+.btn-google-custom{
   display:flex;
+  align-items:center;
   justify-content:center;
-  margin-bottom:6px;
-  min-height:44px;
+  gap:10px;
+  width:100%;
+  max-width:320px;
+  margin:0 auto 6px auto;
+  padding:11px 14px;
+  border:1px solid var(--border);
+  border-radius:8px;
+  background:var(--card-bg);
+  color:var(--text);
+  font-size:14px;
+  font-weight:500;
+  font-family:inherit;
+  cursor:pointer;
+  transition:.15s;
+  box-sizing:border-box;
+}
+.btn-google-custom:hover:not(:disabled){
+  background:var(--sub-bg);
+  border-color:var(--muted);
+}
+.btn-google-custom:disabled{
+  opacity:.5;
+  cursor:not-allowed;
+}
+.btn-google-custom svg{
+  width:18px;
+  height:18px;
+  flex-shrink:0;
 }
 
 .google-hint{
@@ -321,6 +348,19 @@ body{
   margin-top:6px;
   line-height:1.5;
   margin-bottom:4px;
+}
+
+/* Container buat tombol Google asli (bener-bener disembunyiin) */
+.google-real-btn{
+  position:absolute;
+  opacity:0;
+  pointer-events:none;
+  width:0;
+  height:0;
+  overflow:hidden;
+  visibility:hidden;
+  top:0;
+  left:0;
 }
 
 /* ===== CHAT FAB ===== */
@@ -420,12 +460,30 @@ body{
 .chat-foot button.send:disabled{opacity:.5;cursor:not-allowed;}
 
 @media(max-width:600px){
+  body{padding:16px;}
+  .box{
+    padding:32px 20px;
+    border-radius:10px;
+  }
+  .box h1{font-size:18px;}
+  .box .sub{font-size:12px;margin-bottom:24px;}
   .otp-inputs input{width:38px;height:48px;font-size:18px;}
+  .otp-inputs{gap:6px;}
   .chat-popup{
     bottom:88px;right:12px;left:12px;width:auto;
     height:auto;max-height:calc(100vh - 120px);
   }
   .chat-fab{bottom:20px;right:20px;width:52px;height:52px;font-size:20px;}
+  .btn-google-custom{
+    max-width:100%;
+    padding:10px 12px;
+    font-size:13px;
+    gap:8px;
+  }
+  .btn-google-custom svg{
+    width:16px;
+    height:16px;
+  }
 }
 </style>
 </head>
@@ -465,7 +523,16 @@ body{
 
     <div class="divider">atau</div>
 
-    <div class="google-btn-wrap" id="googleBtnLogin"></div>
+    <button type="button" class="btn-google-custom" onclick="triggerGoogleLogin()">
+      <svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+        <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
+        <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
+        <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
+        <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
+      </svg>
+      Lanjutkan dengan Google
+    </button>
+
     <div class="google-hint">
       Login cepat pakai akun Google — gak perlu isi form
     </div>
@@ -515,7 +582,16 @@ body{
 
     <div class="divider">atau</div>
 
-    <div class="google-btn-wrap" id="googleBtnRegister"></div>
+    <button type="button" class="btn-google-custom" onclick="triggerGoogleLogin()">
+      <svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+        <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
+        <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
+        <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
+        <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
+      </svg>
+      Daftar dengan Google
+    </button>
+
     <div class="google-hint">
       Daftar instan pakai Google — email otomatis terverifikasi
     </div>
@@ -569,6 +645,10 @@ body{
   <p class="footer-txt">© EPS-TOPIKU</p>
 </div>
 
+<!-- Tombol Google asli (disembunyiin bener-bener, tapi di-render buat handler) -->
+<div class="google-real-btn" id="googleBtnLogin"></div>
+<div class="google-real-btn" id="googleBtnRegister"></div>
+
 <!-- ===== CHAT FAB ===== -->
 <button class="chat-fab" id="chatFab" onclick="toggleGuestChat()" title="Chat Admin">
   <i class="fas fa-comments"></i>
@@ -618,10 +698,6 @@ function toggleTheme(){
   const next = cur === 'dark' ? 'light' : 'dark';
   localStorage.setItem('theme', next);
   applyTheme(next);
-  // Re-render Google button biar warnanya nyesuain tema
-  if (typeof renderGoogleButtons === 'function') {
-    setTimeout(renderGoogleButtons, 100);
-  }
 }
 applyTheme(localStorage.getItem('theme') || 'light');
 
@@ -648,17 +724,11 @@ function switchMode(mode) {
   if (mode === 'login') {
     document.getElementById('formLogin').style.display = 'block';
     document.getElementById('subtitle').textContent = 'Masuk untuk mulai latihan';
-    setTimeout(() => {
-      renderGoogleButtons();
-      document.getElementById('loginUser').focus();
-    }, 100);
+    setTimeout(() => document.getElementById('loginUser').focus(), 100);
   } else if (mode === 'register') {
     document.getElementById('formRegister').style.display = 'block';
     document.getElementById('subtitle').textContent = 'Buat akun baru untuk mulai latihan';
-    setTimeout(() => {
-      renderGoogleButtons();
-      document.getElementById('regNama').focus();
-    }, 100);
+    setTimeout(() => document.getElementById('regNama').focus(), 100);
   } else if (mode === 'otp') {
     document.getElementById('formOtp').style.display = 'block';
     document.getElementById('subtitle').textContent = 'Verifikasi email kamu';
@@ -722,7 +792,7 @@ function validatePassword(el) {
   }
 }
 
-const API = 'https://script.google.com/macros/s/AKfycbxfHFBDHJuOl-TfzFS65x9aB64vyTX7YnIXu_izwvEZ3e1cNVTXFx3MutlfCGEl6D3R/exec';
+const API = 'https://script.google.com/macros/s/AKfycbwTJ7vIu5lz9sJJxFWBZ2HwCn39obWBVdUtkCUHtBZToUX-9Xe4EcLt5Y2vHNUZcAMl/exec';
 const GOOGLE_CLIENT_ID = '465306926558-g79epgt6tlaq8mti7a8bknodru71l2c7.apps.googleusercontent.com';
 
 function resetWelcomeFlag() {
@@ -746,7 +816,6 @@ function resetWelcomeFlag() {
       resetWelcomeFlag();
       location.href = 'dashboard.html';
     } else {
-      // Session expired, hapus
       localStorage.removeItem('user');
     }
   } catch(e) {
@@ -977,10 +1046,8 @@ function updateOtpTimer() {
 function startResendCountdown() {
   let counter = 60;
   const btn = document.getElementById('btnResend');
-  const timer = document.getElementById('resendTimer');
   btn.disabled = true;
   btn.innerHTML = 'Kirim Ulang (<span id="resendTimer">' + counter + '</span>s)';
-  const timerEl = document.getElementById('resendTimer');
 
   if (resendTimerInterval) clearInterval(resendTimerInterval);
   resendTimerInterval = setInterval(() => {
@@ -1153,30 +1220,57 @@ function initGoogleSignIn() {
   }
 }
 
+// Render tombol Google asli (disembunyiin)
 function renderGoogleButtons() {
   if (!googleInitialized) return;
 
   const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-
   const commonOpts = {
     theme: isDark ? 'filled_black' : 'outline',
     size: 'large',
     text: 'continue_with',
     shape: 'rectangular',
     logo_alignment: 'left',
-    width: 340
+    width: 300
   };
 
   const btnLogin = document.getElementById('googleBtnLogin');
-  if (btnLogin && btnLogin.offsetParent !== null) {
+  if (btnLogin) {
     btnLogin.innerHTML = '';
     try { google.accounts.id.renderButton(btnLogin, commonOpts); } catch(e) {}
   }
 
   const btnReg = document.getElementById('googleBtnRegister');
-  if (btnReg && btnReg.offsetParent !== null) {
+  if (btnReg) {
     btnReg.innerHTML = '';
     try { google.accounts.id.renderButton(btnReg, commonOpts); } catch(e) {}
+  }
+}
+
+// Fungsi buat trigger login dari tombol custom
+function triggerGoogleLogin() {
+  if (!googleInitialized) {
+    showMsg('Google Sign-In belum siap. Tunggu sebentar ya...', 'warn');
+    return;
+  }
+
+  // Cari tombol Google yang bener-bener di-render, terus klik programatik
+  const realBtn = document.querySelector(
+    '#googleBtnLogin div[role="button"], ' +
+    '#googleBtnLogin iframe, ' +
+    '#googleBtnRegister div[role="button"], ' +
+    '#googleBtnRegister iframe'
+  );
+
+  if (realBtn) {
+    realBtn.click();
+  } else {
+    // Fallback: pakai prompt One Tap
+    try {
+      google.accounts.id.prompt();
+    } catch(e) {
+      showMsg('Gagal buka login Google. Coba refresh halaman.', 'err');
+    }
   }
 }
 
