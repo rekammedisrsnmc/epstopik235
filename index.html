@@ -3,9 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Masuk — EPS-TOPIKU</title>
+<title>Leaderboard — EPS-TOPIKU</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-<script src="https://accounts.google.com/gsi/client" async defer></script>
 <style>
 :root{
   --bg:#fafafa;
@@ -15,13 +14,21 @@
   --border:#e5e5e5;
   --accent:#2563eb;
   --accent-hover:#1d4ed8;
-  --input-bg:#ffffff;
-  --input-border:#e0e0e0;
-  --teal:#0d9488;
-  --green:#16a34a;
-  --red:#dc2626;
-  --yellow:#d97706;
   --sub-bg:#f5f5f5;
+  --dropdown-shadow:0 8px 24px rgba(0,0,0,.08);
+
+  --gold:#d97706;
+  --gold-dark:#b45309;
+  --gold-light:#fef3c7;
+  --silver:#6b7280;
+  --silver-light:#f3f4f6;
+  --bronze:#b45309;
+  --bronze-light:#fef3c7;
+
+  --c-green:#16a34a;
+  --c-red:#dc2626;
+  --c-purple:#7c3aed;
+  --c-orange:#d97706;
 }
 [data-theme="dark"]{
   --bg:#0f0f0f;
@@ -31,583 +38,749 @@
   --border:#2a2a2a;
   --accent:#5b9cff;
   --accent-hover:#7ab0ff;
-  --input-bg:#141414;
-  --input-border:#2e2e2e;
-  --teal:#2dd4bf;
-  --green:#4ade80;
-  --red:#f87171;
-  --yellow:#fbbf24;
   --sub-bg:#141414;
+  --dropdown-shadow:0 8px 24px rgba(0,0,0,.5);
+
+  --gold:#fbbf24;
+  --gold-dark:#f59e0b;
+  --gold-light:#3a2e10;
+  --silver:#9ca3af;
+  --silver-light:#1f2937;
+  --bronze:#fbbf24;
+  --bronze-light:#3a2e10;
+
+  --c-green:#4ade80;
+  --c-red:#f87171;
+  --c-purple:#a78bfa;
+  --c-orange:#fbbf24;
 }
 *{margin:0;padding:0;box-sizing:border-box;
   font-family:-apple-system,'Segoe UI',Roboto,'Malgun Gothic',sans-serif;}
 body{
   background:var(--bg);
-  color:var(--text);
   min-height:100vh;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  padding:24px;
-  transition:background .2s;
+  color:var(--text);
   font-size:15px;
   line-height:1.6;
+  transition:background .2s,color .2s;
 }
-.theme-toggle{
-  position:fixed;top:20px;right:20px;
-  background:transparent;
-  border:1px solid var(--border);
-  color:var(--muted);
-  width:40px;height:40px;border-radius:50%;
-  cursor:pointer;font-size:14px;
-  display:flex;align-items:center;justify-content:center;
-  transition:.2s;
-  z-index:10;
-}
-.theme-toggle:hover{color:var(--text);border-color:var(--text);}
 
-.box{
+/* ===== TOPBAR ===== */
+.topbar{
   background:var(--card-bg);
-  border:1px solid var(--border);
-  border-radius:12px;
-  padding:44px 36px;
-  width:100%;
-  max-width:420px;
-}
-.box .logo{
-  text-align:center;
-  font-size:32px;
-  margin-bottom:16px;
-  line-height:1;
-}
-.box h1{
-  text-align:center;
-  color:var(--text);
-  margin-bottom:6px;
-  font-size:20px;
-  font-weight:600;
-  letter-spacing:-0.2px;
-}
-.box .sub{
-  text-align:center;
-  color:var(--muted);
-  font-size:13px;
-  margin-bottom:32px;
-}
-
-.field{margin-bottom:16px;}
-.field label{
-  font-size:13px;
-  font-weight:500;
-  color:var(--text);
-  display:block;
-  margin-bottom:6px;
-}
-.field label .req{color:var(--red);margin-left:2px;}
-.input-wrap{position:relative;}
-.input-wrap input{
-  width:100%;
-  padding:11px 44px 11px 14px;
-  border:1px solid var(--input-border);
-  border-radius:8px;
-  font-size:14px;
-  font-family:inherit;
-  background:var(--input-bg);
-  color:var(--text);
-  transition:border-color .15s;
-}
-.input-wrap input:focus{
-  outline:none;
-  border-color:var(--accent);
-}
-.input-wrap input::placeholder{color:var(--muted);opacity:.7;}
-.input-wrap input.valid:not(:placeholder-shown){border-color:var(--green);}
-
-.input-wrap .eye-btn{
-  position:absolute;right:6px;top:50%;transform:translateY(-50%);
-  background:transparent;border:none;cursor:pointer;
-  color:var(--muted);font-size:14px;padding:8px;
-  border-radius:6px;transition:color .15s;
-  display:flex;align-items:center;justify-content:center;
-  -webkit-tap-highlight-color:transparent;
-}
-.input-wrap .eye-btn:hover{color:var(--text);}
-
-.btn{
-  width:100%;
-  padding:12px;
-  border:none;
-  border-radius:8px;
-  background:var(--accent);
-  color:#fff;
-  font-weight:500;
-  font-size:14px;
-  cursor:pointer;
-  margin-top:8px;
-  font-family:inherit;
-  transition:background .15s;
-}
-.btn:hover:not(:disabled){background:var(--accent-hover);}
-.btn:disabled{opacity:.6;cursor:not-allowed;}
-
-.msg{
-  padding:10px 14px;
-  border-radius:8px;
-  font-size:13px;
-  margin-bottom:20px;
-  display:none;
-  border:1px solid transparent;
-}
-.msg.err{background:#fef2f2;color:#b91c1c;border-color:#fecaca;display:block;}
-.msg.ok{background:#f0fdf4;color:#15803d;border-color:#bbf7d0;display:block;}
-.msg.warn{background:#fffbeb;color:#a16207;border-color:#fde68a;display:block;}
-[data-theme="dark"] .msg.err{background:#2a1515;color:#f87171;border-color:#4a2020;}
-[data-theme="dark"] .msg.ok{background:#0f2418;color:#4ade80;border-color:#1e4030;}
-[data-theme="dark"] .msg.warn{background:#2a2210;color:#fbbf24;border-color:#4a3a15;}
-
-.spinner{
-  display:inline-block;width:14px;height:14px;
-  border:2px solid rgba(255,255,255,.4);
-  border-top-color:#fff;
-  border-radius:50%;
-  animation:spin .7s linear infinite;
-  vertical-align:middle;
-}
-@keyframes spin{100%{transform:rotate(360deg)}}
-
-.signup-row{
-  text-align:center;
-  font-size:13px;
-  color:var(--muted);
-  margin-top:20px;
-}
-.signup-row a{
-  color:var(--accent);
-  text-decoration:none;
-  font-weight:500;
-  cursor:pointer;
-}
-.signup-row a:hover{text-decoration:underline;}
-
-.forgot{
-  text-align:center;
-  font-size:12px;
-  color:var(--muted);
-  margin-top:14px;
-}
-.forgot a{
-  color:var(--teal);
-  text-decoration:none;
-  font-weight:600;
-  cursor:pointer;
-}
-.forgot a:hover{text-decoration:underline;}
-
-.field-hint{
-  font-size:11px;
-  color:var(--muted);
-  margin-top:4px;
-}
-.field-hint.ok{color:var(--green);}
-.field-hint.err{color:var(--red);}
-
-.footer-txt{
-  text-align:center;
-  font-size:12px;
-  color:var(--muted);
-  margin-top:28px;
-  padding-top:20px;
-  border-top:1px solid var(--border);
-}
-
-/* ===== OTP FORM ===== */
-.otp-info{
-  text-align:center;
-  font-size:13px;
-  color:var(--muted);
-  line-height:1.6;
-  margin-bottom:24px;
-}
-.otp-info strong{color:var(--text);}
-.otp-inputs{
-  display:flex;
-  gap:8px;
-  justify-content:center;
-  margin:24px 0 20px;
-}
-.otp-inputs input{
-  width:44px;
-  height:56px;
-  text-align:center;
-  font-size:22px;
-  font-weight:700;
-  border:2px solid var(--input-border);
-  border-radius:10px;
-  background:var(--input-bg);
-  color:var(--text);
-  font-family:'Courier New',monospace;
-  transition:.15s;
-  padding:0;
-}
-.otp-inputs input:focus{
-  outline:none;
-  border-color:var(--accent);
-  box-shadow:0 0 0 3px rgba(37,99,235,.15);
-}
-.otp-inputs input.filled{
-  border-color:var(--accent);
-}
-.otp-countdown{
-  text-align:center;
-  font-size:12px;
-  color:var(--muted);
-  margin-bottom:16px;
-}
-.otp-countdown strong{color:var(--accent);}
-.otp-actions{
-  display:flex;
-  gap:10px;
-  margin-top:20px;
-}
-.otp-actions .btn{flex:1;margin-top:0;}
-.btn-secondary{
-  background:transparent;
-  color:var(--text);
-  border:1px solid var(--border);
-}
-.btn-secondary:hover:not(:disabled){background:var(--sub-bg);border-color:var(--muted);}
-.btn-link{
-  background:transparent;
-  color:var(--accent);
-  border:none;
-  font-size:13px;
-  font-weight:500;
-  cursor:pointer;
-  padding:8px;
-  text-decoration:underline;
-  font-family:inherit;
-}
-.btn-link:hover{color:var(--accent-hover);}
-.btn-link:disabled{color:var(--muted);cursor:not-allowed;text-decoration:none;}
-
-/* ===== GOOGLE SIGN-IN ===== */
-.divider{
+  padding:14px 24px;
+  border-bottom:1px solid var(--border);
   display:flex;
   align-items:center;
   gap:12px;
-  margin:20px 0;
+  position:sticky;
+  top:0;
+  z-index:50;
+  flex-wrap:wrap;
+}
+.topbar h1{
+  font-size:16px;
+  color:var(--text);
+  font-weight:600;
+  display:flex;align-items:center;gap:8px;
+}
+.topbar h1 i{color:var(--gold);font-size:15px;}
+.topbar .spacer{flex:1;}
+
+.topbar .btn-icon{
+  background:transparent;
+  border:1px solid var(--border);
   color:var(--muted);
+  width:36px;height:36px;
+  border-radius:50%;
+  cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  font-size:13px;
+  transition:.15s;
+  text-decoration:none;
+}
+.topbar .btn-icon:hover{color:var(--text);border-color:var(--text);}
+
+.topbar .btn-back{
+  background:transparent;
+  border:1px solid var(--border);
+  color:var(--text);
+  padding:7px 12px;
+  border-radius:8px;
+  font-weight:500;
   font-size:12px;
+  text-decoration:none;
+  display:inline-flex;align-items:center;gap:6px;
+  transition:.15s;
 }
-.divider::before,
-.divider::after{
-  content:'';
-  flex:1;
-  height:1px;
-  background:var(--border);
+.topbar .btn-back:hover{background:var(--sub-bg);border-color:var(--muted);}
+
+/* ===== LAYOUT ===== */
+.wrap{
+  max-width:820px;
+  margin:32px auto;
+  padding:0 20px;
 }
 
-.google-btn-wrap{
-  display:flex;
-  justify-content:center;
-  margin-bottom:6px;
-  min-height:44px;
-}
-
-.google-hint{
+/* ===== HEADER CARD ===== */
+.hero-card{
+  background:linear-gradient(135deg, var(--gold) 0%, var(--gold-dark) 100%);
+  color:#fff;
+  border-radius:16px;
+  padding:28px 24px;
   text-align:center;
-  font-size:11px;
-  color:var(--muted);
-  margin-top:6px;
-  line-height:1.5;
+  margin-bottom:24px;
+  box-shadow:0 8px 30px rgba(217,119,6,.25);
+  position:relative;
+  overflow:hidden;
+}
+.hero-card::before{
+  content:'🏆';
+  position:absolute;
+  top:-30px;right:-30px;
+  font-size:180px;
+  opacity:.08;
+}
+.hero-icon{
+  font-size:36px;
+  margin-bottom:8px;
+}
+.hero-title{
+  font-size:24px;
+  font-weight:800;
+  letter-spacing:-0.3px;
   margin-bottom:4px;
 }
-
-/* ===== CHAT FAB ===== */
-.chat-fab{
-  position:fixed;bottom:24px;right:24px;
-  width:56px;height:56px;border-radius:50%;
-  background:var(--teal);color:#fff;border:none;cursor:pointer;
-  display:flex;align-items:center;justify-content:center;
-  font-size:22px;box-shadow:0 6px 20px rgba(0,0,0,.18);
-  z-index:150;transition:.2s;
+.hero-sub{
+  font-size:13px;
+  opacity:.9;
+  margin-bottom:16px;
 }
-.chat-fab:hover{transform:translateY(-2px);}
+.hero-period{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  background:rgba(255,255,255,.15);
+  border:1px solid rgba(255,255,255,.25);
+  padding:6px 14px;
+  border-radius:20px;
+  font-size:12px;
+  font-weight:600;
+  margin-bottom:12px;
+}
+.hero-countdown{
+  background:rgba(0,0,0,.15);
+  border-radius:10px;
+  padding:12px 20px;
+  display:inline-block;
+  backdrop-filter:blur(4px);
+  position:relative;
+  z-index:1;
+}
+.hero-countdown .lbl{
+  font-size:10px;
+  letter-spacing:1.5px;
+  text-transform:uppercase;
+  opacity:.85;
+  font-weight:600;
+  margin-bottom:2px;
+}
+.hero-countdown .val{
+  font-size:18px;
+  font-weight:800;
+  letter-spacing:.5px;
+  font-family:'Courier New',monospace;
+}
 
-/* ===== CHAT POPUP ===== */
-.chat-popup{
-  display:none;position:fixed;bottom:92px;right:24px;
-  width:380px;max-width:calc(100vw - 40px);
-  height:520px;max-height:calc(100vh - 140px);
+/* ===== FILTER KATEGORI ===== */
+.filter-wrap{
   background:var(--card-bg);
   border:1px solid var(--border);
   border-radius:12px;
-  box-shadow:0 8px 30px rgba(0,0,0,.15);
-  z-index:160;
-  flex-direction:column;overflow:hidden;
+  padding:6px;
+  display:flex;
+  gap:4px;
+  margin-bottom:20px;
+  flex-wrap:wrap;
 }
-.chat-popup.open{display:flex;}
-.chat-head{
-  padding:14px 18px;
-  border-bottom:1px solid var(--border);
+.filter-btn{
+  flex:1;
+  min-width:100px;
+  padding:10px 14px;
+  border:none;
+  background:transparent;
+  color:var(--muted);
+  font-weight:600;
+  font-size:13px;
+  cursor:pointer;
+  border-radius:8px;
+  font-family:inherit;
+  transition:.15s;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:6px;
+}
+.filter-btn:hover{background:var(--sub-bg);color:var(--text);}
+.filter-btn.active{background:var(--accent);color:#fff;}
+
+/* ===== LIST ===== */
+.list-wrap{
   background:var(--card-bg);
-  display:flex;align-items:center;gap:10px;
+  border:1px solid var(--border);
+  border-radius:14px;
+  padding:8px;
+  margin-bottom:16px;
 }
-.chat-head .avatar{
-  width:34px;height:34px;border-radius:50%;
+
+/* Top 3 (Highlight) */
+.top3-wrap{
+  margin-bottom:16px;
+}
+.top3-item{
+  display:flex;
+  align-items:center;
+  gap:14px;
+  padding:16px 18px;
+  border-radius:12px;
+  margin-bottom:8px;
+  transition:.15s;
+  border:1.5px solid var(--border);
+  position:relative;
+  overflow:hidden;
+}
+.top3-item.rank-1{
+  background:linear-gradient(135deg, var(--gold-light), var(--card-bg));
+  border-color:var(--gold);
+}
+.top3-item.rank-2{
+  background:linear-gradient(135deg, var(--silver-light), var(--card-bg));
+  border-color:var(--silver);
+}
+.top3-item.rank-3{
+  background:linear-gradient(135deg, var(--bronze-light), var(--card-bg));
+  border-color:var(--bronze);
+}
+.top3-item .rank-badge{
+  width:44px;height:44px;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:22px;
+  flex-shrink:0;
+  font-weight:800;
+  border:2px solid;
+}
+.rank-1 .rank-badge{
+  background:var(--gold);
+  color:#fff;
+  border-color:var(--gold);
+  box-shadow:0 4px 12px rgba(217,119,6,.35);
+}
+.rank-2 .rank-badge{
+  background:var(--silver);
+  color:#fff;
+  border-color:var(--silver);
+}
+.rank-3 .rank-badge{
+  background:var(--bronze);
+  color:#fff;
+  border-color:var(--bronze);
+}
+.top3-item .avatar{
+  width:44px;height:44px;
+  border-radius:50%;
+  object-fit:cover;
+  border:2px solid var(--border);
+  flex-shrink:0;
+  background:var(--sub-bg);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:700;
+  font-size:16px;
+  color:var(--muted);
+}
+.top3-item .info{
+  flex:1;
+  min-width:0;
+}
+.top3-item .info .name{
+  font-size:15px;
+  font-weight:700;
+  margin-bottom:2px;
+  display:flex;
+  align-items:center;
+  gap:6px;
+  flex-wrap:wrap;
+}
+.top3-item .info .username{
+  font-size:12px;
+  color:var(--muted);
+}
+.top3-item .score{
+  text-align:right;
+  flex-shrink:0;
+}
+.top3-item .score .val{
+  font-size:22px;
+  font-weight:800;
+  letter-spacing:-0.5px;
+  line-height:1;
+}
+.top3-item .score .lbl{
+  font-size:10px;
+  color:var(--muted);
+  text-transform:uppercase;
+  letter-spacing:.5px;
+  margin-top:3px;
+  font-weight:600;
+}
+.rank-1 .score .val{color:var(--gold-dark);}
+.rank-2 .score .val{color:var(--silver);}
+.rank-3 .score .val{color:var(--bronze);}
+
+/* List biasa */
+.list-item{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:12px 14px;
+  border-radius:10px;
+  transition:.15s;
+  border:1px solid transparent;
+}
+.list-item:hover{
+  background:var(--sub-bg);
+  border-color:var(--border);
+}
+.list-item.me{
+  background:var(--accent-soft, #eff6ff);
+  border-color:var(--accent);
+  border-style:dashed;
+}
+[data-theme="dark"] .list-item.me{background:rgba(91,156,255,.1);}
+.list-item .rank-num{
+  width:32px;
+  font-size:13px;
+  font-weight:700;
+  color:var(--muted);
+  flex-shrink:0;
+  text-align:center;
+}
+.list-item .avatar{
+  width:36px;height:36px;
+  border-radius:50%;
+  object-fit:cover;
+  border:1px solid var(--border);
+  flex-shrink:0;
+  background:var(--sub-bg);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:700;
+  font-size:14px;
+  color:var(--muted);
+}
+.list-item .info{
+  flex:1;
+  min-width:0;
+}
+.list-item .info .name{
+  font-size:14px;
+  font-weight:600;
+  display:flex;
+  align-items:center;
+  gap:6px;
+  flex-wrap:wrap;
+}
+.list-item .info .meta{
+  font-size:11px;
+  color:var(--muted);
+  margin-top:2px;
+}
+.list-item .score{
+  font-size:16px;
+  font-weight:800;
+  color:var(--accent);
+  flex-shrink:0;
+}
+.list-item .score-lbl{
+  font-size:10px;
+  color:var(--muted);
+  text-align:right;
+  margin-top:2px;
+}
+.me-badge{
+  background:var(--accent);
+  color:#fff;
+  font-size:9px;
+  font-weight:700;
+  padding:2px 6px;
+  border-radius:8px;
+  letter-spacing:.3px;
+}
+
+/* ===== BADGE ===== */
+.badge-chip{
+  display:inline-flex;
+  align-items:center;
+  gap:3px;
+  font-size:10px;
+  font-weight:700;
+  padding:2px 7px;
+  border-radius:8px;
   background:var(--sub-bg);
   border:1px solid var(--border);
-  display:flex;align-items:center;justify-content:center;
-  color:var(--teal);font-size:14px;flex-shrink:0;
+  color:var(--text-muted, var(--muted));
+  line-height:1.2;
 }
-.chat-head .info{flex:1;min-width:0;}
-.chat-head .info h3{font-size:14px;font-weight:600;color:var(--text);margin-bottom:2px;}
-.chat-head .info p{font-size:11px;color:var(--muted);}
-.chat-head .close-chat{
-  background:transparent;border:1px solid var(--border);
-  color:var(--muted);width:30px;height:30px;border-radius:50%;
-  cursor:pointer;display:flex;align-items:center;justify-content:center;
-  font-size:12px;transition:.15s;
+.badge-chip.gold{
+  background:var(--gold-light);
+  border-color:var(--gold);
+  color:var(--gold-dark);
 }
-.chat-head .close-chat:hover{color:var(--text);border-color:var(--text);}
-.chat-body{
-  flex:1;overflow-y:auto;padding:18px;
-  display:flex;flex-direction:column;gap:12px;
-  background:var(--bg);
+.badge-chip.fire{
+  background:#fef2f2;
+  border-color:#fca5a5;
+  color:#b91c1c;
 }
-.chat-intro{
+[data-theme="dark"] .badge-chip.fire{
+  background:#2a1515;
+  border-color:#7f1d1d;
+  color:#fca5a5;
+}
+.badge-chip.legend{
+  background:#f5f3ff;
+  border-color:#a78bfa;
+  color:#6d28d9;
+}
+[data-theme="dark"] .badge-chip.legend{
+  background:#1e1b4b;
+  border-color:#7c3aed;
+  color:#c4b5fd;
+}
+.badge-chip.silver{
+  background:var(--silver-light);
+  border-color:var(--silver);
+  color:var(--silver);
+}
+.badge-chip.bronze{
+  background:var(--bronze-light);
+  border-color:var(--bronze);
+  color:var(--bronze);
+}
+
+/* ===== MY RANK CARD ===== */
+.my-rank{
   background:var(--card-bg);
-  border:1px solid var(--border);
-  border-radius:10px;
-  padding:14px 16px;
-  font-size:13px;color:var(--text);line-height:1.6;
+  border:2px solid var(--accent);
+  border-radius:14px;
+  padding:16px 20px;
+  display:flex;
+  align-items:center;
+  gap:16px;
+  margin-bottom:16px;
+  position:relative;
+  overflow:hidden;
+}
+.my-rank::before{
+  content:'📍';
+  position:absolute;
+  top:-10px;right:-10px;
+  font-size:80px;
+  opacity:.08;
+}
+.my-rank .rank-big{
+  background:var(--accent);
+  color:#fff;
+  width:52px;height:52px;
+  border-radius:12px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  flex-shrink:0;
+  font-weight:800;
+}
+.my-rank .rank-big .hash{font-size:10px;opacity:.7;line-height:1;margin-bottom:1px;}
+.my-rank .rank-big .num{font-size:20px;line-height:1;letter-spacing:-0.5px;}
+.my-rank .info{flex:1;min-width:0;}
+.my-rank .info h4{font-size:14px;font-weight:700;margin-bottom:2px;}
+.my-rank .info p{font-size:12px;color:var(--muted);}
+.my-rank .score-big{
+  font-size:28px;
+  font-weight:800;
+  color:var(--accent);
+  letter-spacing:-1px;
+  line-height:1;
+}
+.my-rank .score-big-lbl{
+  font-size:10px;
+  color:var(--muted);
+  text-align:right;
+  margin-top:3px;
+  letter-spacing:.5px;
+  text-transform:uppercase;
+  font-weight:600;
+}
+
+/* ===== EMPTY / LOADING ===== */
+.loading-block{
+  text-align:center;
+  padding:60px 20px;
+  color:var(--muted);
+}
+.spinner{
+  display:inline-block;
+  width:36px;height:36px;
+  border:3px solid var(--border);
+  border-top-color:var(--gold);
+  border-radius:50%;
+  animation:spin .8s linear infinite;
+}
+@keyframes spin{100%{transform:rotate(360deg)}}
+.loading-block p{margin-top:14px;font-size:13px;}
+
+.empty-block{
+  text-align:center;
+  padding:60px 20px;
+  color:var(--muted);
+}
+.empty-block i{
+  font-size:48px;
+  opacity:.3;
+  display:block;
+  margin-bottom:14px;
+}
+.empty-block h3{
+  color:var(--text);
+  font-size:16px;
+  font-weight:600;
   margin-bottom:6px;
 }
-.chat-intro strong{color:var(--teal);}
-.chat-foot{
-  padding:12px;border-top:1px solid var(--border);
+.empty-block p{
+  font-size:13px;
+  line-height:1.6;
+}
+
+/* ===== INFO CARD ===== */
+.info-card{
+  background:var(--sub-bg);
+  border:1px solid var(--border);
+  border-radius:10px;
+  padding:14px 18px;
+  font-size:12px;
+  color:var(--muted);
+  line-height:1.7;
+  display:flex;
+  gap:12px;
+  align-items:flex-start;
+}
+.info-card i{
+  color:var(--gold);
+  font-size:16px;
+  margin-top:1px;
+  flex-shrink:0;
+}
+.info-card strong{color:var(--text);}
+
+/* ===== HAL OF FAME ===== */
+.hof-wrap{
+  margin-top:24px;
+}
+.hof-title{
+  font-size:12px;
+  font-weight:700;
+  color:var(--muted);
+  text-transform:uppercase;
+  letter-spacing:1.2px;
+  margin-bottom:12px;
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+.hof-title i{color:var(--gold);}
+.hof-list{
   background:var(--card-bg);
+  border:1px solid var(--border);
+  border-radius:12px;
+  padding:8px;
 }
-.chat-foot .row{
-  display:flex;gap:8px;align-items:center;
-  margin-bottom:8px;
-}
-.chat-foot .row:last-child{margin-bottom:0;}
-.chat-foot input,
-.chat-foot textarea{
-  flex:1;padding:10px 14px;
-  border:1px solid var(--border);border-radius:8px;
-  font-size:13px;font-family:inherit;
-  background:var(--input-bg);color:var(--text);
+.hof-item{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:12px;
+  border-radius:8px;
   transition:.15s;
 }
-.chat-foot textarea{
-  resize:vertical;min-height:70px;
-  border-radius:10px;
+.hof-item:hover{background:var(--sub-bg);}
+.hof-item .trophy{
+  font-size:20px;
+  flex-shrink:0;
 }
-.chat-foot input:focus,
-.chat-foot textarea:focus{
-  outline:none;border-color:var(--teal);
+.hof-item .info{flex:1;min-width:0;}
+.hof-item .info .name{
+  font-size:13px;
+  font-weight:700;
+  margin-bottom:2px;
 }
-.chat-foot button.send{
-  background:var(--teal);color:#fff;border:none;
-  width:100%;padding:12px;border-radius:8px;
-  cursor:pointer;font-size:14px;font-weight:600;
-  display:flex;align-items:center;justify-content:center;gap:8px;
-  transition:.15s;font-family:inherit;
+.hof-item .info .date{
+  font-size:11px;
+  color:var(--muted);
 }
-.chat-foot button.send:hover:not(:disabled){background:#0f766e;}
-.chat-foot button.send:disabled{opacity:.5;cursor:not-allowed;}
+.hof-item .info .kat{
+  display:inline-block;
+  font-size:10px;
+  font-weight:600;
+  padding:1px 7px;
+  border-radius:6px;
+  background:var(--sub-bg);
+  border:1px solid var(--border);
+  color:var(--muted);
+  margin-left:6px;
+}
+.hof-item .skor{
+  font-size:15px;
+  font-weight:800;
+  color:var(--gold-dark);
+  flex-shrink:0;
+}
 
 @media(max-width:600px){
-  .otp-inputs input{width:38px;height:48px;font-size:18px;}
-  .chat-popup{
-    bottom:88px;right:12px;left:12px;width:auto;
-    height:auto;max-height:calc(100vh - 120px);
-  }
-  .chat-fab{bottom:20px;right:20px;width:52px;height:52px;font-size:20px;}
+  .wrap{margin:20px auto;padding:0 14px;}
+  .hero-card{padding:22px 18px;border-radius:14px;}
+  .hero-title{font-size:20px;}
+  .top3-item{padding:14px 12px;gap:10px;}
+  .top3-item .rank-badge{width:36px;height:36px;font-size:18px;}
+  .top3-item .avatar{width:36px;height:36px;font-size:14px;}
+  .top3-item .info .name{font-size:14px;}
+  .top3-item .score .val{font-size:18px;}
+  .filter-btn{padding:9px 10px;font-size:12px;min-width:auto;}
+  .topbar{padding:12px 16px;}
+  .topbar h1{font-size:14px;}
+  .my-rank{padding:14px;}
+  .my-rank .rank-big{width:44px;height:44px;}
+  .my-rank .rank-big .num{font-size:17px;}
+  .my-rank .score-big{font-size:22px;}
 }
 </style>
 </head>
 <body>
 
-<button class="theme-toggle" onclick="toggleTheme()" title="Ganti tema">
-  <i class="fas fa-moon" id="themeIcon"></i>
-</button>
-
-<div class="box">
-  <div class="logo">🇰🇷</div>
-  <h1>EPS-TOPIKU</h1>
-  <p class="sub" id="subtitle">Masuk untuk mulai latihan</p>
-
-  <div class="msg" id="msg"></div>
-
-  <!-- ============ FORM LOGIN ============ -->
-  <form id="formLogin" onsubmit="doLogin(event)" autocomplete="on">
-    <div class="field">
-      <label>Username</label>
-      <div class="input-wrap">
-        <input type="text" id="loginUser" required autocomplete="username" placeholder="username kamu">
-      </div>
-    </div>
-
-    <div class="field">
-      <label>Password</label>
-      <div class="input-wrap">
-        <input type="password" id="loginPass" required autocomplete="current-password" placeholder="••••••••">
-        <button type="button" class="eye-btn" data-target="loginPass" onclick="togglePassword(event, this)" title="Lihat password">
-          <i class="fas fa-eye"></i>
-        </button>
-      </div>
-    </div>
-
-    <button class="btn" id="btnLogin" type="submit">Masuk</button>
-
-    <div class="divider">atau</div>
-
-    <div class="google-btn-wrap" id="googleBtnLogin"></div>
-    <div class="google-hint">
-      Login cepat pakai akun Google — gak perlu isi form
-    </div>
-
-    <p class="signup-row">Belum punya akun? <a onclick="switchMode('register')">Daftar</a></p>
-    <p class="forgot">Lupa password? <a onclick="openGuestChat()">Chat admin</a></p>
-  </form>
-
-  <!-- ============ FORM REGISTER ============ -->
-  <form id="formRegister" onsubmit="doRegister(event)" style="display:none;" autocomplete="on">
-    <div class="field">
-      <label>Nama Lengkap <span class="req">*</span></label>
-      <div class="input-wrap">
-        <input type="text" id="regNama" required placeholder="Nama kamu" autocomplete="name" minlength="2">
-      </div>
-    </div>
-
-    <div class="field">
-      <label>Email <span class="req">*</span></label>
-      <div class="input-wrap">
-        <input type="email" id="regEmail" required placeholder="email@example.com" autocomplete="email" oninput="validateEmail(this)">
-      </div>
-      <div class="field-hint" id="emailHint">Kode OTP akan dikirim ke email ini</div>
-    </div>
-
-    <div class="field">
-      <label>Username <span class="req">*</span></label>
-      <div class="input-wrap">
-        <input type="text" id="regUser" required minlength="3" placeholder="minimal 3 karakter" autocomplete="username" pattern="[a-zA-Z0-9_.]+" title="Hanya huruf, angka, titik, underscore">
-      </div>
-    </div>
-
-    <div class="field">
-      <label>Password <span class="req">*</span></label>
-      <div class="input-wrap">
-        <input type="password" id="regPass" required minlength="4" placeholder="minimal 4 karakter" autocomplete="new-password" oninput="validatePassword(this)">
-        <button type="button" class="eye-btn" data-target="regPass" onclick="togglePassword(event, this)" title="Lihat password">
-          <i class="fas fa-eye"></i>
-        </button>
-      </div>
-      <div class="field-hint" id="passHint"></div>
-    </div>
-
-    <button class="btn" id="btnReg" type="submit">
-      <i class="fas fa-envelope"></i> Kirim Kode Verifikasi
-    </button>
-
-    <div class="divider">atau</div>
-
-    <div class="google-btn-wrap" id="googleBtnRegister"></div>
-    <div class="google-hint">
-      Daftar instan pakai Google — email otomatis terverifikasi
-    </div>
-
-    <p class="signup-row">Sudah punya akun? <a onclick="switchMode('login')">Masuk</a></p>
-  </form>
-
-  <!-- ============ FORM OTP ============ -->
-  <div id="formOtp" style="display:none;">
-    <div class="otp-info">
-      Kode 6 digit sudah dikirim ke<br>
-      <strong id="otpEmailDisplay">-</strong>
-    </div>
-
-    <div class="otp-inputs" id="otpInputs">
-      <input type="tel" maxlength="1" inputmode="numeric" pattern="[0-9]" data-idx="0" oninput="otpInput(this)" onkeydown="otpKeyDown(event, this)" onpaste="otpPaste(event)">
-      <input type="tel" maxlength="1" inputmode="numeric" pattern="[0-9]" data-idx="1" oninput="otpInput(this)" onkeydown="otpKeyDown(event, this)">
-      <input type="tel" maxlength="1" inputmode="numeric" pattern="[0-9]" data-idx="2" oninput="otpInput(this)" onkeydown="otpKeyDown(event, this)">
-      <input type="tel" maxlength="1" inputmode="numeric" pattern="[0-9]" data-idx="3" oninput="otpInput(this)" onkeydown="otpKeyDown(event, this)">
-      <input type="tel" maxlength="1" inputmode="numeric" pattern="[0-9]" data-idx="4" oninput="otpInput(this)" onkeydown="otpKeyDown(event, this)">
-      <input type="tel" maxlength="1" inputmode="numeric" pattern="[0-9]" data-idx="5" oninput="otpInput(this)" onkeydown="otpKeyDown(event, this)">
-    </div>
-
-    <div class="otp-countdown" id="otpCountdown">
-      Kode berlaku: <strong id="otpTimer">10:00</strong>
-    </div>
-
-    <div style="background:var(--sub-bg);border:1px solid var(--border);border-radius:8px;padding:10px 14px;font-size:12px;color:var(--muted);margin-bottom:16px;line-height:1.5;">
-      <i class="fas fa-info-circle"></i>
-      Kode gak masuk? Cek folder <strong>Spam</strong> atau <strong>Promosi</strong> di email kamu.
-    </div>
-
-    <button class="btn" id="btnVerify" onclick="doVerifyOtp()">
-      <i class="fas fa-check"></i> Verifikasi & Aktifkan Akun
-    </button>
-
-    <div class="otp-actions">
-      <button class="btn btn-secondary" onclick="switchMode('register')">
-        <i class="fas fa-arrow-left"></i> Ganti Data
-      </button>
-      <button class="btn-link" id="btnResend" onclick="doResendOtp()" disabled>
-        Kirim Ulang (<span id="resendTimer">60</span>s)
-      </button>
-    </div>
-
-    <p class="signup-row" style="margin-top:20px;">
-      Salah masukin email? <a onclick="switchMode('register')">Daftar ulang</a>
-    </p>
-  </div>
-
-  <p class="footer-txt">© EPS-TOPIKU</p>
+<div class="topbar">
+  <h1><i class="fas fa-trophy"></i> Leaderboard</h1>
+  <div class="spacer"></div>
+  <button class="btn-icon" onclick="toggleTheme()" title="Ganti tema">
+    <i class="fas fa-moon" id="themeIcon"></i>
+  </button>
+  <a href="dashboard.html" class="btn-back">
+    <i class="fas fa-arrow-left"></i> Dashboard
+  </a>
 </div>
 
-<!-- ===== CHAT FAB ===== -->
-<button class="chat-fab" id="chatFab" onclick="toggleGuestChat()" title="Chat Admin">
-  <i class="fas fa-comments"></i>
-</button>
+<div class="wrap">
 
-<!-- ===== CHAT POPUP ===== -->
-<div class="chat-popup" id="chatPopup">
-  <div class="chat-head">
-    <div class="avatar"><i class="fas fa-headset"></i></div>
-    <div class="info">
-      <h3>Chat Admin</h3>
-      <p>Untuk lupa password / kendala login</p>
+  <!-- HERO CARD -->
+  <div class="hero-card">
+    <div class="hero-icon">🏆</div>
+    <div class="hero-title">Leaderboard Mingguan</div>
+    <div class="hero-sub">Bersaing dengan teman-teman, raih posisi teratas!</div>
+
+    <div class="hero-period">
+      <i class="fas fa-calendar-alt"></i>
+      <span id="periodText">Memuat periode...</span>
     </div>
-    <button class="close-chat" onclick="toggleGuestChat()"><i class="fas fa-times"></i></button>
+
+    <div class="hero-countdown">
+      <div class="lbl">Reset dalam</div>
+      <div class="val" id="countdownText">--:--:--:--</div>
+    </div>
   </div>
-  <div class="chat-body" id="guestChatBody">
-    <div class="chat-intro">
-      Halo! 👋 Ada kendala login atau lupa password?<br>
-      Isi <strong>username</strong> dan <strong>email terdaftar</strong> kamu, terus tulis pesan di bawah. Admin akan balas via email.
-    </div>
-  </div>
-  <div class="chat-foot">
-    <div class="row">
-      <input type="text" id="guestUsername" placeholder="Username kamu" autocomplete="username">
-    </div>
-    <div class="row">
-      <input type="email" id="guestEmail" placeholder="Email terdaftar" autocomplete="email">
-    </div>
-    <div class="row">
-      <textarea id="guestPesan" placeholder="Tulis pesan kamu di sini... (contoh: saya lupa password, tolong reset ya)"></textarea>
-    </div>
-    <button class="send" id="guestSendBtn" onclick="sendGuestChat()">
-      <i class="fas fa-paper-plane"></i> Kirim ke Admin
+
+  <!-- FILTER KATEGORI -->
+  <div class="filter-wrap" id="filterWrap">
+    <button class="filter-btn active" data-kat="all" onclick="switchKat('all')">
+      <i class="fas fa-globe"></i> Overall
+    </button>
+    <button class="filter-btn" data-kat="eps" onclick="switchKat('eps')">
+      <i class="fas fa-book-open"></i> EPS-TOPIK
+    </button>
+    <button class="filter-btn" data-kat="kosakata" onclick="switchKat('kosakata')">
+      <i class="fas fa-book"></i> Kosakata
+    </button>
+    <button class="filter-btn" data-kat="listening" onclick="switchKat('listening')">
+      <i class="fas fa-headphones"></i> Listening
+    </button>
+    <button class="filter-btn" data-kat="reading" onclick="switchKat('reading')">
+      <i class="fas fa-book-reader"></i> Reading
     </button>
   </div>
+
+  <!-- MY RANK CARD -->
+  <div id="myRankBox" style="display:none;"></div>
+
+  <!-- LIST -->
+  <div id="listBox">
+    <div class="loading-block">
+      <div class="spinner"></div>
+      <p>Memuat leaderboard...</p>
+    </div>
+  </div>
+
+  <!-- INFO -->
+  <div class="info-card" style="margin-top:16px;">
+    <i class="fas fa-info-circle"></i>
+    <div>
+      <strong>Info:</strong> Leaderboard reset otomatis tiap <strong>Senin 00:00 WIB</strong>.
+      Cuma ujian dengan skor minimal <strong>60</strong> yang dihitung.
+      Top 3 dapet badge 🥇🥈🥉 — juara 3x & 5x dapet badge permanen 🔥⚡
+    </div>
+  </div>
+
+  <!-- HALL OF FAME -->
+  <div class="hof-wrap" id="hofWrap" style="display:none;">
+    <div class="hof-title">
+      <i class="fas fa-crown"></i> Hall of Fame
+    </div>
+    <div class="hof-list" id="hofList"></div>
+  </div>
+
 </div>
 
 <script>
-// ===== THEME =====
+// ============================================================
+//  SESSION & THEME
+// ============================================================
+const SESSION_MAX_AGE = 8 * 60 * 60 * 1000;
+
+function touchSession() {
+  const u = JSON.parse(localStorage.getItem('user') || 'null');
+  if (u && u.loginAt) {
+    u.loginAt = Date.now();
+    localStorage.setItem('user', JSON.stringify(u));
+  }
+}
+
+function checkSession() {
+  const u = JSON.parse(localStorage.getItem('user') || 'null');
+  if (!u) { location.href = 'login.html'; return false; }
+  if (Date.now() - (u.loginAt || 0) > SESSION_MAX_AGE) {
+    localStorage.removeItem('user');
+    alert('Sesi kamu habis (8 jam). Silakan login ulang.');
+    location.href = 'login.html';
+    return false;
+  }
+  return true;
+}
+
+['click','keydown','mousemove','scroll','touchstart'].forEach(evt => {
+  document.addEventListener(evt, touchSession, { passive: true });
+});
+setInterval(touchSession, 60000);
+
 function applyTheme(t){
   document.documentElement.setAttribute('data-theme', t);
   const icon = document.getElementById('themeIcon');
@@ -618,702 +791,373 @@ function toggleTheme(){
   const next = cur === 'dark' ? 'light' : 'dark';
   localStorage.setItem('theme', next);
   applyTheme(next);
-  // Re-render Google button biar warnanya nyesuain tema
-  if (typeof renderGoogleButtons === 'function') {
-    setTimeout(renderGoogleButtons, 100);
-  }
 }
 applyTheme(localStorage.getItem('theme') || 'light');
 
-// ===== STATE =====
-let currentMode = 'login';
-let currentOtpEmail = '';
-let otpTimerInterval = null;
-let resendTimerInterval = null;
-let otpExpiryAt = 0;
+const API = 'https://script.google.com/macros/s/AKfycbwTJ7vIu5lz9sJJxFWBZ2HwCn39obWBVdUtkCUHtBZToUX-9Xe4EcLt5Y2vHNUZcAMl/exec';
 
-// ===== SWITCH MODE =====
-function switchMode(mode) {
-  currentMode = mode;
+if (!checkSession()) throw new Error('Session expired');
+const user = JSON.parse(localStorage.getItem('user') || 'null');
+if (!user) location.href = 'login.html';
 
-  showMsg('', '');
+// ============================================================
+//  STATE
+// ============================================================
+let currentKat = 'all';
+let allBadges = {};   // { username: [badge, badge, ...] }
+let weekEndDate = null;
+let countdownTimer = null;
 
-  document.getElementById('formLogin').style.display = 'none';
-  document.getElementById('formRegister').style.display = 'none';
-  document.getElementById('formOtp').style.display = 'none';
-
-  clearOtpTimers();
-  resetOtpInputs();
-
-  if (mode === 'login') {
-    document.getElementById('formLogin').style.display = 'block';
-    document.getElementById('subtitle').textContent = 'Masuk untuk mulai latihan';
-    setTimeout(() => {
-      renderGoogleButtons();
-      document.getElementById('loginUser').focus();
-    }, 100);
-  } else if (mode === 'register') {
-    document.getElementById('formRegister').style.display = 'block';
-    document.getElementById('subtitle').textContent = 'Buat akun baru untuk mulai latihan';
-    setTimeout(() => {
-      renderGoogleButtons();
-      document.getElementById('regNama').focus();
-    }, 100);
-  } else if (mode === 'otp') {
-    document.getElementById('formOtp').style.display = 'block';
-    document.getElementById('subtitle').textContent = 'Verifikasi email kamu';
-    document.getElementById('otpEmailDisplay').textContent = currentOtpEmail;
-    startOtpCountdown();
-    startResendCountdown();
-    setTimeout(() => document.querySelector('#otpInputs input[data-idx="0"]').focus(), 200);
-  }
-
-  window.scrollTo({top:0, behavior:'smooth'});
-}
-
-// ===== SHOW/HIDE PASSWORD =====
-function togglePassword(event, btn) {
-  if (event) { event.preventDefault(); event.stopPropagation(); }
-  const input = document.getElementById(btn.dataset.target);
-  if (!input) return;
-  const isPassword = input.type === 'password';
-  input.type = isPassword ? 'text' : 'password';
-  const icon = btn.querySelector('i');
-  if (icon) icon.className = isPassword ? 'fas fa-eye-slash' : 'fas fa-eye';
-  btn.title = isPassword ? 'Sembunyikan password' : 'Lihat password';
-  input.focus();
-  const val = input.value;
-  try { input.setSelectionRange(val.length, val.length); } catch(e) {}
-}
-
-// ===== VALIDASI =====
-function validateEmail(el) {
-  const hint = document.getElementById('emailHint');
-  const v = el.value.trim();
-  if (!v) {
-    el.classList.remove('valid');
-    hint.className = 'field-hint';
-    hint.textContent = 'Kode OTP akan dikirim ke email ini';
-    return;
-  }
-  const ok = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
-  if (ok) {
-    el.classList.add('valid');
-    hint.className = 'field-hint ok';
-    hint.textContent = '✓ Format email valid — OTP akan dikirim ke sini';
-  } else {
-    el.classList.remove('valid');
-    hint.className = 'field-hint err';
-    hint.textContent = 'Format email tidak valid';
-  }
-}
-
-function validatePassword(el) {
-  const hint = document.getElementById('passHint');
-  const v = el.value;
-  if (v.length >= 4) {
-    el.classList.add('valid');
-    hint.className = 'field-hint ok';
-    hint.textContent = '✓ Password OK';
-  } else {
-    el.classList.remove('valid');
-    hint.className = 'field-hint';
-    hint.textContent = v.length ? `Minimal 4 karakter (${v.length}/4)` : '';
-  }
-}
-
-const API = 'https://script.google.com/macros/s/AKfycbxfHFBDHJuOl-TfzFS65x9aB64vyTX7YnIXu_izwvEZ3e1cNVTXFx3MutlfCGEl6D3R/exec';
-const GOOGLE_CLIENT_ID = '465306926558-g79epg6t1laq8mi7a8bknodru7112c7.apps.googleusercontent.com';
-
-function resetWelcomeFlag() {
-  try {
-    sessionStorage.removeItem('welcome_shown');
-    sessionStorage.removeItem('welcome_shown_at');
-    sessionStorage.removeItem('welcome_shown_session');
-    sessionStorage.setItem('login_session_id', Date.now().toString());
-  } catch(e) {}
-}
-
-// Cek session — cuma skip kalau belum expired
-(function checkExistingSession() {
-  try {
-    const raw = localStorage.getItem('user');
-    if (!raw) return;
-    const u = JSON.parse(raw);
-    if (!u) return;
-    const SESSION_MAX_AGE = 8 * 60 * 60 * 1000;
-    if (u.loginAt && (Date.now() - u.loginAt) < SESSION_MAX_AGE) {
-      resetWelcomeFlag();
-      location.href = 'dashboard.html';
-    } else {
-      // Session expired, hapus
-      localStorage.removeItem('user');
-    }
-  } catch(e) {
-    localStorage.removeItem('user');
-  }
-})();
-
-function showMsg(text, type) {
-  const el = document.getElementById('msg');
-  el.textContent = text;
-  el.className = 'msg ' + (type || '');
-}
-
-async function post(payload) {
-  const r = await fetch(API, {
-    method: 'POST',
-    headers: {'Content-Type':'text/plain;charset=utf-8'},
-    body: JSON.stringify(payload)
+// ============================================================
+//  INIT
+// ============================================================
+function init() {
+  loadBadges().then(() => {
+    loadLeaderboard();
   });
-  const t = await r.text();
-  try { return JSON.parse(t); } catch(e) { return { success:false, msg:'Response tidak valid' }; }
+  loadHallOfFame();
 }
 
-function detectMsgType(msg) {
-  if (msg && (msg.includes('⚠️') || msg.toLowerCase().includes('terlalu banyak'))) return 'warn';
-  return 'err';
-}
-
-// ===== LOGIN =====
-async function doLogin(e) {
-  e.preventDefault();
-  const username = document.getElementById('loginUser').value.trim();
-  const password = document.getElementById('loginPass').value;
-  const btn = document.getElementById('btnLogin');
-  const original = btn.innerHTML;
-  btn.disabled = true;
-  btn.innerHTML = '<span class="spinner"></span> Memproses...';
-  showMsg('', '');
+// Load semua badge — sekali, biar bisa render di list
+async function loadBadges() {
   try {
-    const res = await post({ action:'login', username, password });
+    // Ambil badge top 10 + user (biar tau siapa aja yg punya badge)
+    // Kita pakai getBadges per user yg muncul di leaderboard — tapi itu banyak request
+    // Alternatif: ambil list semua badge (admin-only) — nggak bisa dari user biasa
+    // Solusi: tambahin action publik getPublicBadges untuk leaderboard
+    // Fallback: skip dulu badge di leaderboard user biasa
+    // → kita cuma render badge milik user sendiri (dari getBadges)
+
+    const r = await fetch(API + '?action=getBadges&username=' + encodeURIComponent(user.username) + '&t=' + Date.now());
+    const res = await r.json();
     if (res.success) {
-      res.user.loginAt = Date.now();
-      localStorage.setItem('user', JSON.stringify(res.user));
-      resetWelcomeFlag();
-      const roleLabel = res.user.role === 'admin' ? 'Admin' : 'Pelajar';
-      showMsg(`Login berhasil sebagai ${roleLabel}. Mengalihkan...`, 'ok');
-      setTimeout(() => location.href = 'dashboard.html', 700);
-    } else {
-      showMsg(res.msg || 'Login gagal', detectMsgType(res.msg));
+      allBadges[user.username] = res.badges || [];
     }
-  } catch(err) {
-    showMsg(err.message, 'err');
-  } finally {
-    btn.disabled = false;
-    btn.innerHTML = original;
-  }
+  } catch(e) { console.warn('Gagal load badges:', e); }
 }
 
-// ===== REGISTER (kirim OTP) =====
-async function doRegister(e) {
-  e.preventDefault();
-  const nama = document.getElementById('regNama').value.trim();
-  const email = document.getElementById('regEmail').value.trim().toLowerCase();
-  const username = document.getElementById('regUser').value.trim().toLowerCase();
-  const password = document.getElementById('regPass').value;
-  const btn = document.getElementById('btnReg');
-  const original = btn.innerHTML;
-
-  if (!nama || nama.length < 2) { showMsg('Nama minimal 2 karakter', 'err'); return; }
-  if (!email) { showMsg('Email wajib diisi', 'err'); return; }
-  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { showMsg('Format email tidak valid', 'err'); return; }
-  if (!username || username.length < 3) { showMsg('Username minimal 3 karakter', 'err'); return; }
-  if (!/^[a-z0-9_.]+$/.test(username)) { showMsg('Username hanya boleh huruf, angka, titik, underscore', 'err'); return; }
-  if (!password || password.length < 4) { showMsg('Password minimal 4 karakter', 'err'); return; }
-
-  btn.disabled = true;
-  btn.innerHTML = '<span class="spinner"></span> Mengirim kode...';
-  showMsg('', '');
-
-  try {
-    const sendRes = await post({
-      action: 'sendOtp',
-      email: email,
-      username: username,
-      nama: nama
-    });
-
-    if (!sendRes.success) {
-      showMsg(sendRes.msg || 'Gagal kirim OTP', detectMsgType(sendRes.msg));
-      btn.disabled = false;
-      btn.innerHTML = original;
-      return;
-    }
-
-    sessionStorage.setItem('pendingRegister', JSON.stringify({
-      username, password, nama, email
-    }));
-    sessionStorage.setItem('otpEmail', email);
-
-    currentOtpEmail = email;
-    showMsg('Kode OTP terkirim ke ' + email, 'ok');
-
-    setTimeout(() => {
-      switchMode('otp');
-    }, 800);
-
-  } catch(err) {
-    showMsg(err.message, 'err');
-    btn.disabled = false;
-    btn.innerHTML = original;
-  }
-}
-
-// ===== OTP INPUT HANDLERS =====
-function otpInput(el) {
-  let v = el.value.replace(/\D/g, '');
-  el.value = v.slice(0, 1);
-  if (el.value) el.classList.add('filled');
-  else el.classList.remove('filled');
-
-  const idx = Number(el.dataset.idx);
-  if (el.value && idx < 5) {
-    const next = document.querySelector(`#otpInputs input[data-idx="${idx + 1}"]`);
-    if (next) next.focus();
-  }
-
-  checkOtpComplete();
-}
-
-function otpKeyDown(e, el) {
-  const idx = Number(el.dataset.idx);
-
-  if (e.key === 'Backspace' && !el.value && idx > 0) {
-    const prev = document.querySelector(`#otpInputs input[data-idx="${idx - 1}"]`);
-    if (prev) { prev.focus(); prev.value = ''; prev.classList.remove('filled'); }
-    e.preventDefault();
-  }
-
-  if (e.key === 'ArrowLeft' && idx > 0) {
-    document.querySelector(`#otpInputs input[data-idx="${idx - 1}"]`).focus();
-  }
-  if (e.key === 'ArrowRight' && idx < 5) {
-    document.querySelector(`#otpInputs input[data-idx="${idx + 1}"]`).focus();
-  }
-
-  if (e.key === 'Enter') {
-    e.preventDefault();
-    doVerifyOtp();
-  }
-}
-
-function otpPaste(e) {
-  e.preventDefault();
-  const pasteData = (e.clipboardData || window.clipboardData).getData('text').replace(/\D/g, '');
-  if (!pasteData) return;
-
-  const inputs = document.querySelectorAll('#otpInputs input');
-  for (let i = 0; i < 6; i++) {
-    if (pasteData[i]) {
-      inputs[i].value = pasteData[i];
-      inputs[i].classList.add('filled');
-    } else {
-      inputs[i].value = '';
-      inputs[i].classList.remove('filled');
-    }
-  }
-
-  const lastFilled = Math.min(pasteData.length, 6) - 1;
-  if (lastFilled >= 0) inputs[lastFilled].focus();
-
-  checkOtpComplete();
-}
-
-function getOtpValue() {
-  const inputs = document.querySelectorAll('#otpInputs input');
-  let code = '';
-  inputs.forEach(i => code += i.value);
-  return code;
-}
-
-function resetOtpInputs() {
-  const inputs = document.querySelectorAll('#otpInputs input');
-  inputs.forEach(i => {
-    i.value = '';
-    i.classList.remove('filled');
+// ============================================================
+//  SWITCH KATEGORI
+// ============================================================
+function switchKat(kat) {
+  currentKat = kat;
+  document.querySelectorAll('.filter-btn').forEach(b => {
+    b.classList.toggle('active', b.dataset.kat === kat);
   });
-  const vbtn = document.getElementById('btnVerify');
-  vbtn.disabled = false;
-  vbtn.innerHTML = '<i class="fas fa-check"></i> Verifikasi & Aktifkan Akun';
-  const resend = document.getElementById('btnResend');
-  if (resend) resend.disabled = true;
+  loadLeaderboard();
 }
 
-let otpVerifyTimeout = null;
-function checkOtpComplete() {
-  if (otpVerifyTimeout) clearTimeout(otpVerifyTimeout);
-  const code = getOtpValue();
-  if (code.length === 6) {
-    otpVerifyTimeout = setTimeout(() => doVerifyOtp(), 300);
-  }
-}
-
-// ===== TIMER: OTP EXPIRY (10 menit) =====
-function startOtpCountdown() {
-  otpExpiryAt = Date.now() + 10 * 60 * 1000;
-
-  if (otpTimerInterval) clearInterval(otpTimerInterval);
-  updateOtpTimer();
-  otpTimerInterval = setInterval(updateOtpTimer, 1000);
-}
-
-function updateOtpTimer() {
-  const el = document.getElementById('otpTimer');
-  if (!el) return;
-  const remaining = Math.max(0, otpExpiryAt - Date.now());
-  const totalSec = Math.floor(remaining / 1000);
-  const m = Math.floor(totalSec / 60);
-  const s = totalSec % 60;
-  el.textContent = `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
-
-  if (remaining <= 0) {
-    clearInterval(otpTimerInterval);
-    showMsg('Kode OTP kadaluarsa. Klik "Kirim Ulang".', 'warn');
-  }
-}
-
-// ===== TIMER: RESEND (60 detik) =====
-function startResendCountdown() {
-  let counter = 60;
-  const btn = document.getElementById('btnResend');
-  const timer = document.getElementById('resendTimer');
-  btn.disabled = true;
-  btn.innerHTML = 'Kirim Ulang (<span id="resendTimer">' + counter + '</span>s)';
-  const timerEl = document.getElementById('resendTimer');
-
-  if (resendTimerInterval) clearInterval(resendTimerInterval);
-  resendTimerInterval = setInterval(() => {
-    counter--;
-    const t = document.getElementById('resendTimer');
-    if (t) t.textContent = counter;
-    if (counter <= 0) {
-      clearInterval(resendTimerInterval);
-      btn.disabled = false;
-      btn.innerHTML = '<i class="fas fa-redo"></i> Kirim Ulang Kode';
-    }
-  }, 1000);
-}
-
-function clearOtpTimers() {
-  if (otpTimerInterval) { clearInterval(otpTimerInterval); otpTimerInterval = null; }
-  if (resendTimerInterval) { clearInterval(resendTimerInterval); resendTimerInterval = null; }
-  if (otpVerifyTimeout) { clearTimeout(otpVerifyTimeout); otpVerifyTimeout = null; }
-}
-
-// ===== VERIFY OTP =====
-async function doVerifyOtp() {
-  const kode = getOtpValue();
-  const email = sessionStorage.getItem('otpEmail') || currentOtpEmail;
-
-  if (!email) {
-    showMsg('Email tidak ditemukan. Coba daftar ulang.', 'err');
-    switchMode('register');
-    return;
-  }
-
-  if (kode.length !== 6) {
-    showMsg('Masukkan 6 digit kode lengkap', 'warn');
-    return;
-  }
-
-  const btn = document.getElementById('btnVerify');
-  btn.disabled = true;
-  btn.innerHTML = '<span class="spinner"></span> Verifikasi...';
-  showMsg('', '');
+// ============================================================
+//  LOAD LEADERBOARD
+// ============================================================
+async function loadLeaderboard() {
+  const box = document.getElementById('listBox');
+  box.innerHTML = `<div class="loading-block">
+    <div class="spinner"></div>
+    <p>Memuat leaderboard...</p>
+  </div>`;
 
   try {
-    const verifyRes = await post({
-      action: 'verifyOtp',
-      email: email,
-      kode: kode
-    });
+    const url = API + '?action=getLeaderboard&kategori=' + encodeURIComponent(currentKat) +
+                '&username=' + encodeURIComponent(user.username) +
+                '&t=' + Date.now();
+    const r = await fetch(url);
+    const res = await r.json();
 
-    if (!verifyRes.success) {
-      showMsg(verifyRes.msg || 'Kode salah', detectMsgType(verifyRes.msg));
-      btn.disabled = false;
-      btn.innerHTML = '<i class="fas fa-check"></i> Verifikasi & Aktifkan Akun';
-      resetOtpInputs();
-      document.querySelector('#otpInputs input[data-idx="0"]').focus();
+    if (!res.success) {
+      box.innerHTML = `<div class="empty-block">
+        <i class="fas fa-exclamation-triangle"></i>
+        <h3>Gagal Memuat</h3>
+        <p>${res.msg || 'Coba lagi nanti'}</p>
+      </div>`;
       return;
     }
 
-    const pendingData = sessionStorage.getItem('pendingRegister');
-    if (!pendingData) {
-      showMsg('Data pendaftaran hilang. Coba daftar ulang.', 'err');
-      switchMode('register');
-      return;
-    }
+    // Update periode
+    updatePeriod(res.weekStart, res.weekEnd);
 
-    const regData = JSON.parse(pendingData);
-    btn.innerHTML = '<span class="spinner"></span> Membuat akun...';
+    // Update my rank
+    renderMyRank(res);
 
-    const regRes = await post({
-      action: 'register',
-      username: regData.username,
-      password: regData.password,
-      nama: regData.nama,
-      email: regData.email
-    });
-
-    if (!regRes.success) {
-      showMsg(regRes.msg || 'Gagal bikin akun', 'err');
-      btn.disabled = false;
-      btn.innerHTML = '<i class="fas fa-check"></i> Verifikasi & Aktifkan Akun';
-      return;
-    }
-
-    clearOtpTimers();
-    sessionStorage.removeItem('pendingRegister');
-    sessionStorage.removeItem('otpEmail');
-
-    showMsg('Akun berhasil dibuat! Mengalihkan...', 'ok');
-
-    regRes.user.loginAt = Date.now();
-    localStorage.setItem('user', JSON.stringify(regRes.user));
-    resetWelcomeFlag();
-
-    setTimeout(() => location.href = 'dashboard.html', 1200);
+    // Render list
+    renderList(res);
 
   } catch(err) {
-    showMsg(err.message, 'err');
-    btn.disabled = false;
-    btn.innerHTML = '<i class="fas fa-check"></i> Verifikasi & Aktifkan Akun';
-  }
-}
-
-// ===== RESEND OTP =====
-async function doResendOtp() {
-  const email = sessionStorage.getItem('otpEmail') || currentOtpEmail;
-  let pending = {};
-  try { pending = JSON.parse(sessionStorage.getItem('pendingRegister') || '{}') || {}; } catch(e) {}
-  const username = pending.username;
-  const nama = pending.nama;
-
-  if (!email || !username) {
-    showMsg('Data hilang. Coba daftar ulang.', 'err');
-    return;
-  }
-
-  const btn = document.getElementById('btnResend');
-  btn.disabled = true;
-  btn.innerHTML = '<span class="spinner"></span> Mengirim...';
-  showMsg('', '');
-
-  try {
-    const res = await post({
-      action: 'sendOtp',
-      email: email,
-      username: username,
-      nama: nama
-    });
-
-    if (res.success) {
-      showMsg('Kode baru sudah dikirim ke ' + email, 'ok');
-      resetOtpInputs();
-      document.querySelector('#otpInputs input[data-idx="0"]').focus();
-      startOtpCountdown();
-      startResendCountdown();
-    } else {
-      showMsg(res.msg || 'Gagal kirim ulang', detectMsgType(res.msg));
-      btn.disabled = false;
-      btn.innerHTML = '<i class="fas fa-redo"></i> Kirim Ulang Kode';
-    }
-  } catch(err) {
-    showMsg(err.message, 'err');
-    btn.disabled = false;
-    btn.innerHTML = '<i class="fas fa-redo"></i> Kirim Ulang Kode';
+    console.error(err);
+    box.innerHTML = `<div class="empty-block">
+      <i class="fas fa-exclamation-triangle"></i>
+      <h3>Koneksi Error</h3>
+      <p>Periksa koneksi internet & coba lagi</p>
+    </div>`;
   }
 }
 
 // ============================================================
-//  GOOGLE SIGN-IN
+//  PERIODE + COUNTDOWN
 // ============================================================
-let googleInitialized = false;
+function updatePeriod(startStr, endStr) {
+  if (!startStr) return;
 
-function initGoogleSignIn() {
-  if (typeof google === 'undefined' || !google.accounts) {
-    return false;
-  }
-  if (googleInitialized) return true;
-  googleInitialized = true;
-
-  try {
-    google.accounts.id.initialize({
-      client_id: GOOGLE_CLIENT_ID,
-      callback: handleGoogleCredential,
-      auto_select: false,
-      cancel_on_tap_outside: true
-    });
-    renderGoogleButtons();
-    return true;
-  } catch(e) {
-    console.warn('Google init error:', e);
-    return false;
-  }
-}
-
-function renderGoogleButtons() {
-  if (!googleInitialized) return;
-
-  const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-
-  const commonOpts = {
-    theme: isDark ? 'filled_black' : 'outline',
-    size: 'large',
-    text: 'continue_with',
-    shape: 'rectangular',
-    logo_alignment: 'left',
-    width: 340
+  // Format tanggal: "2026-10-12 00:00" → "12 Okt 2026"
+  const fmt = (s) => {
+    if (!s) return '-';
+    const parts = s.split(' ')[0].split('-');
+    const months = ['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'];
+    return `${parseInt(parts[2], 10)} ${months[parseInt(parts[1], 10) - 1]} ${parts[0]}`;
   };
 
-  const btnLogin = document.getElementById('googleBtnLogin');
-  if (btnLogin && btnLogin.offsetParent !== null) {
-    btnLogin.innerHTML = '';
-    try { google.accounts.id.renderButton(btnLogin, commonOpts); } catch(e) {}
-  }
+  document.getElementById('periodText').textContent = fmt(startStr) + ' - ' + fmt(endStr);
 
-  const btnReg = document.getElementById('googleBtnRegister');
-  if (btnReg && btnReg.offsetParent !== null) {
-    btnReg.innerHTML = '';
-    try { google.accounts.id.renderButton(btnReg, commonOpts); } catch(e) {}
+  // Simpan endDate buat countdown
+  if (endStr) {
+    weekEndDate = new Date(endStr.replace(' ', 'T'));
+    // endDate itu "next Monday 00:00" → jadi weekend beneran = endDate
+    startCountdown();
   }
 }
 
-async function handleGoogleCredential(response) {
-  if (!response || !response.credential) {
-    showMsg('Login Google gagal. Coba lagi.', 'err');
+function startCountdown() {
+  if (countdownTimer) clearInterval(countdownTimer);
+  updateCountdown();
+  countdownTimer = setInterval(updateCountdown, 1000);
+}
+
+function updateCountdown() {
+  if (!weekEndDate) return;
+  const now = Date.now();
+  const diff = weekEndDate.getTime() - now;
+
+  if (diff <= 0) {
+    document.getElementById('countdownText').textContent = 'Reset!';
+    if (countdownTimer) clearInterval(countdownTimer);
     return;
   }
 
-  showMsg('Memproses login Google...', 'ok');
+  const d = Math.floor(diff / (24 * 60 * 60 * 1000));
+  const h = Math.floor((diff % (24 * 60 * 60 * 1000)) / (60 * 60 * 1000));
+  const m = Math.floor((diff % (60 * 60 * 1000)) / (60 * 1000));
+  const s = Math.floor((diff % (60 * 1000)) / 1000);
 
-  try {
-    const res = await post({
-      action: 'loginViaGoogle',
-      credential: response.credential
-    });
-
-    if (res.success && res.user) {
-      res.user.loginAt = Date.now();
-      localStorage.setItem('user', JSON.stringify(res.user));
-      resetWelcomeFlag();
-
-      const label = res.isNewUser ? 'Akun berhasil dibuat' : 'Login berhasil';
-      showMsg(`${label}! Mengalihkan...`, 'ok');
-
-      setTimeout(() => location.href = 'dashboard.html', 800);
-    } else {
-      showMsg(res.msg || 'Login Google gagal', 'err');
-    }
-  } catch(err) {
-    showMsg('Gagal: ' + err.message, 'err');
-  }
+  document.getElementById('countdownText').textContent =
+    `${d}h ${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
 }
-
-// Coba init Google — retry sampai GIS loaded
-let googleRetryCount = 0;
-const googleRetryInterval = setInterval(() => {
-  if (initGoogleSignIn()) {
-    clearInterval(googleRetryInterval);
-  }
-  googleRetryCount++;
-  if (googleRetryCount > 40) {
-    clearInterval(googleRetryInterval);
-    console.warn('Google Sign-In gagal load setelah 20 detik');
-  }
-}, 500);
-
-// Init langsung (kalau GIS udah load)
-setTimeout(initGoogleSignIn, 300);
 
 // ============================================================
-//  GUEST CHAT
+//  MY RANK
 // ============================================================
-function toggleGuestChat() {
-  const popup = document.getElementById('chatPopup');
-  if (!popup) return;
-  popup.classList.toggle('open');
-  if (popup.classList.contains('open')) {
-    const loginUserVal = document.getElementById('loginUser').value.trim();
-    const guestUserEl = document.getElementById('guestUsername');
-    if (loginUserVal && !guestUserEl.value) guestUserEl.value = loginUserVal;
-    setTimeout(() => guestUserEl.focus(), 200);
-  }
-}
+function renderMyRank(res) {
+  const box = document.getElementById('myRankBox');
 
-function openGuestChat() {
-  const popup = document.getElementById('chatPopup');
-  if (popup && !popup.classList.contains('open')) {
-    toggleGuestChat();
-  } else {
-    const el = document.getElementById('guestUsername');
-    if (el) el.focus();
-  }
-}
-
-async function sendGuestChat() {
-  const username = document.getElementById('guestUsername').value.trim().toLowerCase();
-  const email = document.getElementById('guestEmail').value.trim().toLowerCase();
-  const pesan = document.getElementById('guestPesan').value.trim();
-
-  if (!username) { alert('Isi username dulu'); return; }
-  if (!email) { alert('Isi email terdaftar'); return; }
-  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { alert('Format email tidak valid'); return; }
-  if (!pesan) { alert('Tulis pesan kamu dulu'); return; }
-  if (pesan.length > 1000) { alert('Pesan terlalu panjang (max 1000 karakter)'); return; }
-
-  const btn = document.getElementById('guestSendBtn');
-  const original = btn.innerHTML;
-  btn.disabled = true;
-  btn.innerHTML = '<span class="spinner" style="border-color:rgba(255,255,255,.4);border-top-color:#fff;"></span> Mengirim...';
-
-  try {
-    const res = await post({
-      action: 'guestChat',
-      username: username,
-      email: email,
-      pesan: pesan
-    });
-
-    if (res.success) {
-      const body = document.getElementById('guestChatBody');
-      body.innerHTML = `
-        <div class="chat-intro" style="border-color:var(--green);background:var(--card-bg);">
-          <div style="text-align:center;margin-bottom:10px;font-size:32px;">✅</div>
-          <div style="text-align:center;font-weight:700;color:var(--green);margin-bottom:8px;">Pesan Terkirim!</div>
-          <p style="font-size:13px;text-align:center;line-height:1.6;margin:0;">
-            Admin sudah menerima pesanmu.<br>
-            Balasan akan dikirim ke email <strong>${escapeHtml(email)}</strong>.<br><br>
-            <span style="color:var(--muted);font-size:12px;">Kalau belum dibalas dalam 1x24 jam, coba kirim ulang atau hubungi admin via WhatsApp.</span>
-          </p>
+  if (!res.myRank || res.myRank === 0) {
+    // User belum masuk leaderboard minggu ini
+    box.style.display = 'block';
+    box.innerHTML = `
+      <div class="my-rank" style="border-color:var(--muted);">
+        <div class="rank-big" style="background:var(--muted);">
+          <div class="hash">-</div>
+          <div class="num">?</div>
         </div>
-        <button class="send" onclick="resetGuestChat()" style="background:var(--sub-bg);color:var(--text);border:1px solid var(--border);">
-          <i class="fas fa-redo"></i> Kirim Pesan Lagi
-        </button>
-      `;
-      document.querySelector('.chat-foot').style.display = 'none';
-    } else {
-      alert('Gagal: ' + (res.msg || 'Terjadi kesalahan'));
+        <div class="info">
+          <h4>Kamu belum masuk leaderboard</h4>
+          <p>Kerjakan ujian dengan skor min 60 buat masuk ranking!</p>
+        </div>
+      </div>`;
+    return;
+  }
+
+  box.style.display = 'block';
+  box.innerHTML = `
+    <div class="my-rank">
+      <div class="rank-big">
+        <div class="hash">#</div>
+        <div class="num">${res.myRank}</div>
+      </div>
+      <div class="info">
+        <h4>Posisi kamu</h4>
+        <p>dari ${res.totalPeserta} peserta · ${res.myTotal}x ujian</p>
+      </div>
+      <div style="text-align:right;">
+        <div class="score-big">${res.mySkor}</div>
+        <div class="score-big-lbl">Skor</div>
+      </div>
+    </div>`;
+}
+
+// ============================================================
+//  RENDER LIST
+// ============================================================
+function renderList(res) {
+  const box = document.getElementById('listBox');
+
+  if (!res.leaders || res.leaders.length === 0) {
+    box.innerHTML = `<div class="empty-block">
+      <i class="fas fa-trophy"></i>
+      <h3>Belum Ada Peserta</h3>
+      <p>Jadilah yang pertama masuk leaderboard minggu ini!<br>Kerjakan ujian dengan skor minimal 60.</p>
+    </div>`;
+    return;
+  }
+
+  let html = '';
+
+  // Top 3 dulu
+  const top3 = res.leaders.slice(0, 3);
+  const rest = res.leaders.slice(3);
+
+  if (top3.length > 0) {
+    html += '<div class="top3-wrap">';
+    top3.forEach(u => {
+      html += renderTop3Item(u);
+    });
+    html += '</div>';
+  }
+
+  // Sisanya
+  if (rest.length > 0) {
+    html += '<div class="list-wrap">';
+    rest.forEach(u => {
+      html += renderListItem(u);
+    });
+    html += '</div>';
+  }
+
+  box.innerHTML = html;
+}
+
+function renderTop3Item(u) {
+  const medal = u.rank === 1 ? '🥇' : u.rank === 2 ? '🥈' : '🥉';
+  const avatar = u.foto
+    ? `<img src="${u.foto}" class="avatar" onerror="this.outerHTML='<div class=&quot;avatar&quot;>${initials(u.nama)}</div>'">`
+    : `<div class="avatar">${initials(u.nama)}</div>`;
+  const isMe = u.username === user.username;
+  const badges = renderBadges(u.username);
+
+  return `
+    <div class="top3-item rank-${u.rank}">
+      <div class="rank-badge">${medal}</div>
+      ${avatar}
+      <div class="info">
+        <div class="name">
+          ${escapeHtml(u.nama)}
+          ${isMe ? '<span class="me-badge">KAMU</span>' : ''}
+          ${badges}
+        </div>
+        <div class="username">@${escapeHtml(u.username)} · ${u.total}x ujian</div>
+      </div>
+      <div class="score">
+        <div class="val">${u.skor}</div>
+        <div class="lbl">Skor</div>
+      </div>
+    </div>`;
+}
+
+function renderListItem(u) {
+  const avatar = u.foto
+    ? `<img src="${u.foto}" class="avatar" onerror="this.outerHTML='<div class=&quot;avatar&quot;>${initials(u.nama)}</div>'">`
+    : `<div class="avatar">${initials(u.nama)}</div>`;
+  const isMe = u.username === user.username;
+  const badges = renderBadges(u.username);
+
+  return `
+    <div class="list-item ${isMe ? 'me' : ''}">
+      <div class="rank-num">#${u.rank}</div>
+      ${avatar}
+      <div class="info">
+        <div class="name">
+          ${escapeHtml(u.nama)}
+          ${isMe ? '<span class="me-badge">KAMU</span>' : ''}
+          ${badges}
+        </div>
+        <div class="meta">@${escapeHtml(u.username)} · ${u.total}x ujian</div>
+      </div>
+      <div>
+        <div class="score">${u.skor}</div>
+        <div class="score-lbl">skor</div>
+      </div>
+    </div>`;
+}
+
+// ============================================================
+//  RENDER BADGES
+// ============================================================
+function renderBadges(username) {
+  const badges = allBadges[username] || [];
+  if (badges.length === 0) return '';
+
+  // Ambil max 3 badge (yang aktif)
+  const top = badges.slice(0, 3);
+  let html = '';
+  top.forEach(b => {
+    let cls = 'badge-chip';
+    if (b.tipe === 'weekly_champion') cls += ' gold';
+    else if (b.tipe === 'runner_up') cls += ' silver';
+    else if (b.tipe === 'third_place') cls += ' bronze';
+    else if (b.tipe === 'streak_3') cls += ' fire';
+    else if (b.tipe === 'legend') cls += ' legend';
+
+    html += `<span class="${cls}" title="${escapeHtml(b.judul)}">${b.emoji}</span>`;
+  });
+  return html;
+}
+
+// ============================================================
+//  HALL OF FAME
+// ============================================================
+async function loadHallOfFame() {
+  try {
+    const r = await fetch(API + '?action=getHallOfFame&limit=8&t=' + Date.now());
+    const res = await r.json();
+    if (!res.success || !res.fame || res.fame.length === 0) {
+      document.getElementById('hofWrap').style.display = 'none';
+      return;
     }
-  } catch(err) {
-    alert('Gagal kirim: ' + err.message);
-  } finally {
-    btn.disabled = false;
-    btn.innerHTML = original;
+
+    const hofList = document.getElementById('hofList');
+    const medalMap = { 'all': '👑', 'eps': '📘', 'kosakata': '📚', 'listening': '🎧', 'reading': '📖', 'tata_bahasa': '📝' };
+
+    let html = '';
+    res.fame.forEach(f => {
+      const icon = medalMap[f.kategori] || '🏆';
+      const katLabel = getKatLabel(f.kategori);
+      html += `
+        <div class="hof-item">
+          <div class="trophy">${icon}</div>
+          <div class="info">
+            <div class="name">${escapeHtml(f.nama)}</div>
+            <div class="date">${f.weekStart} - ${f.weekEnd} <span class="kat">${katLabel}</span></div>
+          </div>
+          <div class="skor">${f.skor}</div>
+        </div>`;
+    });
+    hofList.innerHTML = html;
+    document.getElementById('hofWrap').style.display = 'block';
+  } catch(e) {
+    console.warn('Gagal load HOF:', e);
   }
 }
 
-function resetGuestChat() {
-  const body = document.getElementById('guestChatBody');
-  body.innerHTML = `
-    <div class="chat-intro">
-      Halo! 👋 Ada kendala login atau lupa password?<br>
-      Isi <strong>username</strong> dan <strong>email terdaftar</strong> kamu, terus tulis pesan di bawah. Admin akan balas via email.
-    </div>
-  `;
-  document.getElementById('guestPesan').value = '';
-  document.querySelector('.chat-foot').style.display = 'block';
+function getKatLabel(kat) {
+  const map = {
+    'all': 'Overall',
+    'eps': 'EPS-TOPIK',
+    'kosakata': 'Kosakata',
+    'listening': 'Listening',
+    'reading': 'Reading',
+    'tata_bahasa': 'Tata Bahasa'
+  };
+  return map[kat] || kat;
+}
+
+// ============================================================
+//  HELPERS
+// ============================================================
+function initials(nama) {
+  if (!nama) return '?';
+  const parts = String(nama).trim().split(' ');
+  if (parts.length >= 2) {
+    return (parts[0].charAt(0) + parts[1].charAt(0)).toUpperCase();
+  }
+  return String(nama).charAt(0).toUpperCase();
 }
 
 function escapeHtml(t) {
@@ -1322,8 +1166,10 @@ function escapeHtml(t) {
   return div.innerHTML;
 }
 
-// autofocus
-setTimeout(() => document.getElementById('loginUser').focus(), 100);
+// ============================================================
+//  GO
+// ============================================================
+init();
 </script>
 </body>
 </html>
