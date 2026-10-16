@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Masuk — EPS-TOPIKU</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<script src="https://accounts.google.com/gsi/client" async defer></script>
 <style>
 :root{
   --bg:#fafafa;
@@ -20,6 +21,7 @@
   --green:#16a34a;
   --red:#dc2626;
   --yellow:#d97706;
+  --sub-bg:#f5f5f5;
 }
 [data-theme="dark"]{
   --bg:#0f0f0f;
@@ -35,6 +37,7 @@
   --green:#4ade80;
   --red:#f87171;
   --yellow:#fbbf24;
+  --sub-bg:#141414;
 }
 *{margin:0;padding:0;box-sizing:border-box;
   font-family:-apple-system,'Segoe UI',Roboto,'Malgun Gothic',sans-serif;}
@@ -287,6 +290,39 @@ body{
 .btn-link:hover{color:var(--accent-hover);}
 .btn-link:disabled{color:var(--muted);cursor:not-allowed;text-decoration:none;}
 
+/* ===== GOOGLE SIGN-IN ===== */
+.divider{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  margin:20px 0;
+  color:var(--muted);
+  font-size:12px;
+}
+.divider::before,
+.divider::after{
+  content:'';
+  flex:1;
+  height:1px;
+  background:var(--border);
+}
+
+.google-btn-wrap{
+  display:flex;
+  justify-content:center;
+  margin-bottom:6px;
+  min-height:44px;
+}
+
+.google-hint{
+  text-align:center;
+  font-size:11px;
+  color:var(--muted);
+  margin-top:6px;
+  line-height:1.5;
+  margin-bottom:4px;
+}
+
 /* ===== CHAT FAB ===== */
 .chat-fab{
   position:fixed;bottom:24px;right:24px;
@@ -427,6 +463,13 @@ body{
 
     <button class="btn" id="btnLogin" type="submit">Masuk</button>
 
+    <div class="divider">atau</div>
+
+    <div class="google-btn-wrap" id="googleBtnLogin"></div>
+    <div class="google-hint">
+      Login cepat pakai akun Google — gak perlu isi form
+    </div>
+
     <p class="signup-row">Belum punya akun? <a onclick="switchMode('register')">Daftar</a></p>
     <p class="forgot">Lupa password? <a onclick="openGuestChat()">Chat admin</a></p>
   </form>
@@ -470,6 +513,13 @@ body{
       <i class="fas fa-envelope"></i> Kirim Kode Verifikasi
     </button>
 
+    <div class="divider">atau</div>
+
+    <div class="google-btn-wrap" id="googleBtnRegister"></div>
+    <div class="google-hint">
+      Daftar instan pakai Google — email otomatis terverifikasi
+    </div>
+
     <p class="signup-row">Sudah punya akun? <a onclick="switchMode('login')">Masuk</a></p>
   </form>
 
@@ -491,6 +541,11 @@ body{
 
     <div class="otp-countdown" id="otpCountdown">
       Kode berlaku: <strong id="otpTimer">10:00</strong>
+    </div>
+
+    <div style="background:var(--sub-bg);border:1px solid var(--border);border-radius:8px;padding:10px 14px;font-size:12px;color:var(--muted);margin-bottom:16px;line-height:1.5;">
+      <i class="fas fa-info-circle"></i>
+      Kode gak masuk? Cek folder <strong>Spam</strong> atau <strong>Promosi</strong> di email kamu.
     </div>
 
     <button class="btn" id="btnVerify" onclick="doVerifyOtp()">
@@ -563,6 +618,10 @@ function toggleTheme(){
   const next = cur === 'dark' ? 'light' : 'dark';
   localStorage.setItem('theme', next);
   applyTheme(next);
+  // Re-render Google button biar warnanya nyesuain tema
+  if (typeof renderGoogleButtons === 'function') {
+    setTimeout(renderGoogleButtons, 100);
+  }
 }
 applyTheme(localStorage.getItem('theme') || 'light');
 
@@ -577,26 +636,29 @@ let otpExpiryAt = 0;
 function switchMode(mode) {
   currentMode = mode;
 
-  // Reset msg
   showMsg('', '');
 
-  // Sembunyiin semua
   document.getElementById('formLogin').style.display = 'none';
   document.getElementById('formRegister').style.display = 'none';
   document.getElementById('formOtp').style.display = 'none';
 
-  // Reset OTP UI
   clearOtpTimers();
   resetOtpInputs();
 
   if (mode === 'login') {
     document.getElementById('formLogin').style.display = 'block';
     document.getElementById('subtitle').textContent = 'Masuk untuk mulai latihan';
-    setTimeout(() => document.getElementById('loginUser').focus(), 100);
+    setTimeout(() => {
+      renderGoogleButtons();
+      document.getElementById('loginUser').focus();
+    }, 100);
   } else if (mode === 'register') {
     document.getElementById('formRegister').style.display = 'block';
     document.getElementById('subtitle').textContent = 'Buat akun baru untuk mulai latihan';
-    setTimeout(() => document.getElementById('regNama').focus(), 100);
+    setTimeout(() => {
+      renderGoogleButtons();
+      document.getElementById('regNama').focus();
+    }, 100);
   } else if (mode === 'otp') {
     document.getElementById('formOtp').style.display = 'block';
     document.getElementById('subtitle').textContent = 'Verifikasi email kamu';
@@ -621,7 +683,7 @@ function togglePassword(event, btn) {
   btn.title = isPassword ? 'Sembunyikan password' : 'Lihat password';
   input.focus();
   const val = input.value;
-  input.setSelectionRange(val.length, val.length);
+  try { input.setSelectionRange(val.length, val.length); } catch(e) {}
 }
 
 // ===== VALIDASI =====
@@ -660,7 +722,8 @@ function validatePassword(el) {
   }
 }
 
-const API = 'https://script.google.com/macros/s/AKfycbwtzP5Cbl7CMbY0X_qGWOeaxy4IUtkgm6eYKVH7CyH96J2MNKJDHZp1KOi6psSqrXNv/exec';
+const API = 'https://script.google.com/macros/s/AKfycbxfHFBDHJuOl-TfzFS65x9aB64vyTX7YnIXu_izwvEZ3e1cNVTXFx3MutlfCGEl6D3R/exec';
+const GOOGLE_CLIENT_ID = '465306926558-g79epg6t1laq8mi7a8bknodru7112c7.apps.googleusercontent.com';
 
 function resetWelcomeFlag() {
   try {
@@ -671,10 +734,25 @@ function resetWelcomeFlag() {
   } catch(e) {}
 }
 
-if (localStorage.getItem('user')) {
-  resetWelcomeFlag();
-  location.href = 'dashboard.html';
-}
+// Cek session — cuma skip kalau belum expired
+(function checkExistingSession() {
+  try {
+    const raw = localStorage.getItem('user');
+    if (!raw) return;
+    const u = JSON.parse(raw);
+    if (!u) return;
+    const SESSION_MAX_AGE = 8 * 60 * 60 * 1000;
+    if (u.loginAt && (Date.now() - u.loginAt) < SESSION_MAX_AGE) {
+      resetWelcomeFlag();
+      location.href = 'dashboard.html';
+    } else {
+      // Session expired, hapus
+      localStorage.removeItem('user');
+    }
+  } catch(e) {
+    localStorage.removeItem('user');
+  }
+})();
 
 function showMsg(text, type) {
   const el = document.getElementById('msg');
@@ -749,7 +827,6 @@ async function doRegister(e) {
   showMsg('', '');
 
   try {
-    // 1. Kirim OTP
     const sendRes = await post({
       action: 'sendOtp',
       email: email,
@@ -764,13 +841,11 @@ async function doRegister(e) {
       return;
     }
 
-    // 2. Simpan data register sementara di sessionStorage
     sessionStorage.setItem('pendingRegister', JSON.stringify({
       username, password, nama, email
     }));
     sessionStorage.setItem('otpEmail', email);
 
-    // 3. Pindah ke form OTP
     currentOtpEmail = email;
     showMsg('Kode OTP terkirim ke ' + email, 'ok');
 
@@ -792,28 +867,24 @@ function otpInput(el) {
   if (el.value) el.classList.add('filled');
   else el.classList.remove('filled');
 
-  // Auto-focus next
   const idx = Number(el.dataset.idx);
   if (el.value && idx < 5) {
     const next = document.querySelector(`#otpInputs input[data-idx="${idx + 1}"]`);
     if (next) next.focus();
   }
 
-  // Auto-submit kalau semua keisi
   checkOtpComplete();
 }
 
 function otpKeyDown(e, el) {
   const idx = Number(el.dataset.idx);
 
-  // Backspace di field kosong → mundur
   if (e.key === 'Backspace' && !el.value && idx > 0) {
     const prev = document.querySelector(`#otpInputs input[data-idx="${idx - 1}"]`);
     if (prev) { prev.focus(); prev.value = ''; prev.classList.remove('filled'); }
     e.preventDefault();
   }
 
-  // Panah kiri/kanan
   if (e.key === 'ArrowLeft' && idx > 0) {
     document.querySelector(`#otpInputs input[data-idx="${idx - 1}"]`).focus();
   }
@@ -821,7 +892,6 @@ function otpKeyDown(e, el) {
     document.querySelector(`#otpInputs input[data-idx="${idx + 1}"]`).focus();
   }
 
-  // Enter → verify
   if (e.key === 'Enter') {
     e.preventDefault();
     doVerifyOtp();
@@ -844,7 +914,6 @@ function otpPaste(e) {
     }
   }
 
-  // Focus ke field terakhir yang keisi
   const lastFilled = Math.min(pasteData.length, 6) - 1;
   if (lastFilled >= 0) inputs[lastFilled].focus();
 
@@ -864,23 +933,25 @@ function resetOtpInputs() {
     i.value = '';
     i.classList.remove('filled');
   });
-  document.getElementById('btnVerify').disabled = false;
-  document.getElementById('btnVerify').innerHTML = '<i class="fas fa-check"></i> Verifikasi & Aktifkan Akun';
+  const vbtn = document.getElementById('btnVerify');
+  vbtn.disabled = false;
+  vbtn.innerHTML = '<i class="fas fa-check"></i> Verifikasi & Aktifkan Akun';
   const resend = document.getElementById('btnResend');
   if (resend) resend.disabled = true;
 }
 
+let otpVerifyTimeout = null;
 function checkOtpComplete() {
+  if (otpVerifyTimeout) clearTimeout(otpVerifyTimeout);
   const code = getOtpValue();
   if (code.length === 6) {
-    // Auto-verify
-    setTimeout(() => doVerifyOtp(), 300);
+    otpVerifyTimeout = setTimeout(() => doVerifyOtp(), 300);
   }
 }
 
 // ===== TIMER: OTP EXPIRY (10 menit) =====
 function startOtpCountdown() {
-  otpExpiryAt = Date.now() + 10 * 60 * 1000; // 10 menit
+  otpExpiryAt = Date.now() + 10 * 60 * 1000;
 
   if (otpTimerInterval) clearInterval(otpTimerInterval);
   updateOtpTimer();
@@ -908,11 +979,14 @@ function startResendCountdown() {
   const btn = document.getElementById('btnResend');
   const timer = document.getElementById('resendTimer');
   btn.disabled = true;
+  btn.innerHTML = 'Kirim Ulang (<span id="resendTimer">' + counter + '</span>s)';
+  const timerEl = document.getElementById('resendTimer');
 
   if (resendTimerInterval) clearInterval(resendTimerInterval);
   resendTimerInterval = setInterval(() => {
     counter--;
-    timer.textContent = counter;
+    const t = document.getElementById('resendTimer');
+    if (t) t.textContent = counter;
     if (counter <= 0) {
       clearInterval(resendTimerInterval);
       btn.disabled = false;
@@ -924,6 +998,7 @@ function startResendCountdown() {
 function clearOtpTimers() {
   if (otpTimerInterval) { clearInterval(otpTimerInterval); otpTimerInterval = null; }
   if (resendTimerInterval) { clearInterval(resendTimerInterval); resendTimerInterval = null; }
+  if (otpVerifyTimeout) { clearTimeout(otpVerifyTimeout); otpVerifyTimeout = null; }
 }
 
 // ===== VERIFY OTP =====
@@ -948,7 +1023,6 @@ async function doVerifyOtp() {
   showMsg('', '');
 
   try {
-    // 1. Verifikasi OTP dulu
     const verifyRes = await post({
       action: 'verifyOtp',
       email: email,
@@ -959,13 +1033,11 @@ async function doVerifyOtp() {
       showMsg(verifyRes.msg || 'Kode salah', detectMsgType(verifyRes.msg));
       btn.disabled = false;
       btn.innerHTML = '<i class="fas fa-check"></i> Verifikasi & Aktifkan Akun';
-      // Reset input OTP
       resetOtpInputs();
       document.querySelector('#otpInputs input[data-idx="0"]').focus();
       return;
     }
 
-    // 2. Ambil data register & bikin akun
     const pendingData = sessionStorage.getItem('pendingRegister');
     if (!pendingData) {
       showMsg('Data pendaftaran hilang. Coba daftar ulang.', 'err');
@@ -991,14 +1063,12 @@ async function doVerifyOtp() {
       return;
     }
 
-    // 3. Sukses
     clearOtpTimers();
     sessionStorage.removeItem('pendingRegister');
     sessionStorage.removeItem('otpEmail');
 
-    showMsg('Akun berhasil dibuat! Mengalihkan ke login...', 'ok');
+    showMsg('Akun berhasil dibuat! Mengalihkan...', 'ok');
 
-    // Auto-login
     regRes.user.loginAt = Date.now();
     localStorage.setItem('user', JSON.stringify(regRes.user));
     resetWelcomeFlag();
@@ -1015,8 +1085,10 @@ async function doVerifyOtp() {
 // ===== RESEND OTP =====
 async function doResendOtp() {
   const email = sessionStorage.getItem('otpEmail') || currentOtpEmail;
-  const username = (JSON.parse(sessionStorage.getItem('pendingRegister') || '{}') || {}).username;
-  const nama = (JSON.parse(sessionStorage.getItem('pendingRegister') || '{}') || {}).nama;
+  let pending = {};
+  try { pending = JSON.parse(sessionStorage.getItem('pendingRegister') || '{}') || {}; } catch(e) {}
+  const username = pending.username;
+  const nama = pending.nama;
 
   if (!email || !username) {
     showMsg('Data hilang. Coba daftar ulang.', 'err');
@@ -1038,10 +1110,8 @@ async function doResendOtp() {
 
     if (res.success) {
       showMsg('Kode baru sudah dikirim ke ' + email, 'ok');
-      // Reset input OTP
       resetOtpInputs();
       document.querySelector('#otpInputs input[data-idx="0"]').focus();
-      // Restart timer
       startOtpCountdown();
       startResendCountdown();
     } else {
@@ -1055,6 +1125,107 @@ async function doResendOtp() {
     btn.innerHTML = '<i class="fas fa-redo"></i> Kirim Ulang Kode';
   }
 }
+
+// ============================================================
+//  GOOGLE SIGN-IN
+// ============================================================
+let googleInitialized = false;
+
+function initGoogleSignIn() {
+  if (typeof google === 'undefined' || !google.accounts) {
+    return false;
+  }
+  if (googleInitialized) return true;
+  googleInitialized = true;
+
+  try {
+    google.accounts.id.initialize({
+      client_id: GOOGLE_CLIENT_ID,
+      callback: handleGoogleCredential,
+      auto_select: false,
+      cancel_on_tap_outside: true
+    });
+    renderGoogleButtons();
+    return true;
+  } catch(e) {
+    console.warn('Google init error:', e);
+    return false;
+  }
+}
+
+function renderGoogleButtons() {
+  if (!googleInitialized) return;
+
+  const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+
+  const commonOpts = {
+    theme: isDark ? 'filled_black' : 'outline',
+    size: 'large',
+    text: 'continue_with',
+    shape: 'rectangular',
+    logo_alignment: 'left',
+    width: 340
+  };
+
+  const btnLogin = document.getElementById('googleBtnLogin');
+  if (btnLogin && btnLogin.offsetParent !== null) {
+    btnLogin.innerHTML = '';
+    try { google.accounts.id.renderButton(btnLogin, commonOpts); } catch(e) {}
+  }
+
+  const btnReg = document.getElementById('googleBtnRegister');
+  if (btnReg && btnReg.offsetParent !== null) {
+    btnReg.innerHTML = '';
+    try { google.accounts.id.renderButton(btnReg, commonOpts); } catch(e) {}
+  }
+}
+
+async function handleGoogleCredential(response) {
+  if (!response || !response.credential) {
+    showMsg('Login Google gagal. Coba lagi.', 'err');
+    return;
+  }
+
+  showMsg('Memproses login Google...', 'ok');
+
+  try {
+    const res = await post({
+      action: 'loginViaGoogle',
+      credential: response.credential
+    });
+
+    if (res.success && res.user) {
+      res.user.loginAt = Date.now();
+      localStorage.setItem('user', JSON.stringify(res.user));
+      resetWelcomeFlag();
+
+      const label = res.isNewUser ? 'Akun berhasil dibuat' : 'Login berhasil';
+      showMsg(`${label}! Mengalihkan...`, 'ok');
+
+      setTimeout(() => location.href = 'dashboard.html', 800);
+    } else {
+      showMsg(res.msg || 'Login Google gagal', 'err');
+    }
+  } catch(err) {
+    showMsg('Gagal: ' + err.message, 'err');
+  }
+}
+
+// Coba init Google — retry sampai GIS loaded
+let googleRetryCount = 0;
+const googleRetryInterval = setInterval(() => {
+  if (initGoogleSignIn()) {
+    clearInterval(googleRetryInterval);
+  }
+  googleRetryCount++;
+  if (googleRetryCount > 40) {
+    clearInterval(googleRetryInterval);
+    console.warn('Google Sign-In gagal load setelah 20 detik');
+  }
+}, 500);
+
+// Init langsung (kalau GIS udah load)
+setTimeout(initGoogleSignIn, 300);
 
 // ============================================================
 //  GUEST CHAT
