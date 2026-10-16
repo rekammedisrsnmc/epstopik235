@@ -571,7 +571,6 @@ footer{
 <div class="exam-info" id="examInfo" style="display:none;">
   <div class="item">Soal <strong id="curNum">1</strong> / <strong id="totNum">-</strong></div>
   <div class="item">Terjawab: <strong id="answeredNum">0</strong></div>
-  <div id="promoTag">🎉 PROMO — GRATIS</div>
   <button class="btn-icon" onclick="toggleTheme()" title="Ganti tema">
     <i class="fas fa-moon" id="themeIcon"></i>
   </button>
@@ -655,7 +654,7 @@ function toggleTheme(){
 }
 applyTheme(localStorage.getItem('theme') || 'light');
 
-const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwtzP5Cbl7CMbY0X_qGWOeaxy4IUtkgm6eYKVH7CyH96J2MNKJDHZp1KOi6psSqrXNv/exec';
+const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxfHFBDHJuOl-TfzFS65x9aB64vyTX7YnIXu_izwvEZ3e1cNVTXFx3MutlfCGEl6D3R/exec';
 
 if (!checkSession()) throw new Error('Session expired');
 
