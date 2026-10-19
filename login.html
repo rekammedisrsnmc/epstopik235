@@ -350,7 +350,7 @@ body{
   margin-bottom:4px;
 }
 
-/* Container buat tombol Google asli (bener-bener disembunyiin) */
+/* Container buat tombol Google asli (default disembunyiin) */
 .google-real-btn{
   position:absolute;
   opacity:0;
@@ -459,6 +459,7 @@ body{
 .chat-foot button.send:hover:not(:disabled){background:#0f766e;}
 .chat-foot button.send:disabled{opacity:.5;cursor:not-allowed;}
 
+/* Media query mobile */
 @media(max-width:600px){
   body{padding:16px;}
   .box{
@@ -523,6 +524,7 @@ body{
 
     <div class="divider">atau</div>
 
+    <!-- Tombol Custom (Desktop/Android) -->
     <button type="button" class="btn-google-custom" onclick="triggerGoogleLogin()">
       <svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
         <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
@@ -532,6 +534,9 @@ body{
       </svg>
       Lanjutkan dengan Google
     </button>
+
+    <!-- Container Tombol Asli (iOS) -->
+    <div class="google-real-btn" id="googleBtnLogin"></div>
 
     <div class="google-hint">
       Login cepat pakai akun Google — gak perlu isi form
@@ -582,6 +587,7 @@ body{
 
     <div class="divider">atau</div>
 
+    <!-- Tombol Custom (Desktop/Android) -->
     <button type="button" class="btn-google-custom" onclick="triggerGoogleLogin()">
       <svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
         <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
@@ -591,6 +597,9 @@ body{
       </svg>
       Daftar dengan Google
     </button>
+
+    <!-- Container Tombol Asli (iOS) -->
+    <div class="google-real-btn" id="googleBtnRegister"></div>
 
     <div class="google-hint">
       Daftar instan pakai Google — email otomatis terverifikasi
@@ -645,10 +654,6 @@ body{
   <p class="footer-txt">© EPS-TOPIKU</p>
 </div>
 
-<!-- Tombol Google asli (disembunyiin bener-bener, tapi di-render buat handler) -->
-<div class="google-real-btn" id="googleBtnLogin"></div>
-<div class="google-real-btn" id="googleBtnRegister"></div>
-
 <!-- ===== CHAT FAB ===== -->
 <button class="chat-fab" id="chatFab" onclick="toggleGuestChat()" title="Chat Admin">
   <i class="fas fa-comments"></i>
@@ -698,6 +703,7 @@ function toggleTheme(){
   const next = cur === 'dark' ? 'light' : 'dark';
   localStorage.setItem('theme', next);
   applyTheme(next);
+  if (typeof renderGoogleButtons === 'function') renderGoogleButtons();
 }
 applyTheme(localStorage.getItem('theme') || 'light');
 
@@ -711,13 +717,10 @@ let otpExpiryAt = 0;
 // ===== SWITCH MODE =====
 function switchMode(mode) {
   currentMode = mode;
-
   showMsg('', '');
-
   document.getElementById('formLogin').style.display = 'none';
   document.getElementById('formRegister').style.display = 'none';
   document.getElementById('formOtp').style.display = 'none';
-
   clearOtpTimers();
   resetOtpInputs();
 
@@ -737,6 +740,9 @@ function switchMode(mode) {
     startResendCountdown();
     setTimeout(() => document.querySelector('#otpInputs input[data-idx="0"]').focus(), 200);
   }
+  
+  // Re-render Google Button biar posisinya pas setelah ganti form
+  if (typeof renderGoogleButtons === 'function') setTimeout(renderGoogleButtons, 50);
 
   window.scrollTo({top:0, behavior:'smooth'});
 }
@@ -804,7 +810,7 @@ function resetWelcomeFlag() {
   } catch(e) {}
 }
 
-// Cek session — cuma skip kalau belum expired
+// Cek session
 (function checkExistingSession() {
   try {
     const raw = localStorage.getItem('user');
@@ -918,9 +924,7 @@ async function doRegister(e) {
     currentOtpEmail = email;
     showMsg('Kode OTP terkirim ke ' + email, 'ok');
 
-    setTimeout(() => {
-      switchMode('otp');
-    }, 800);
+    setTimeout(() => { switchMode('otp'); }, 800);
 
   } catch(err) {
     showMsg(err.message, 'err');
@@ -941,51 +945,32 @@ function otpInput(el) {
     const next = document.querySelector(`#otpInputs input[data-idx="${idx + 1}"]`);
     if (next) next.focus();
   }
-
   checkOtpComplete();
 }
 
 function otpKeyDown(e, el) {
   const idx = Number(el.dataset.idx);
-
   if (e.key === 'Backspace' && !el.value && idx > 0) {
     const prev = document.querySelector(`#otpInputs input[data-idx="${idx - 1}"]`);
     if (prev) { prev.focus(); prev.value = ''; prev.classList.remove('filled'); }
     e.preventDefault();
   }
-
-  if (e.key === 'ArrowLeft' && idx > 0) {
-    document.querySelector(`#otpInputs input[data-idx="${idx - 1}"]`).focus();
-  }
-  if (e.key === 'ArrowRight' && idx < 5) {
-    document.querySelector(`#otpInputs input[data-idx="${idx + 1}"]`).focus();
-  }
-
-  if (e.key === 'Enter') {
-    e.preventDefault();
-    doVerifyOtp();
-  }
+  if (e.key === 'ArrowLeft' && idx > 0) document.querySelector(`#otpInputs input[data-idx="${idx - 1}"]`).focus();
+  if (e.key === 'ArrowRight' && idx < 5) document.querySelector(`#otpInputs input[data-idx="${idx + 1}"]`).focus();
+  if (e.key === 'Enter') { e.preventDefault(); doVerifyOtp(); }
 }
 
 function otpPaste(e) {
   e.preventDefault();
   const pasteData = (e.clipboardData || window.clipboardData).getData('text').replace(/\D/g, '');
   if (!pasteData) return;
-
   const inputs = document.querySelectorAll('#otpInputs input');
   for (let i = 0; i < 6; i++) {
-    if (pasteData[i]) {
-      inputs[i].value = pasteData[i];
-      inputs[i].classList.add('filled');
-    } else {
-      inputs[i].value = '';
-      inputs[i].classList.remove('filled');
-    }
+    if (pasteData[i]) { inputs[i].value = pasteData[i]; inputs[i].classList.add('filled'); }
+    else { inputs[i].value = ''; inputs[i].classList.remove('filled'); }
   }
-
   const lastFilled = Math.min(pasteData.length, 6) - 1;
   if (lastFilled >= 0) inputs[lastFilled].focus();
-
   checkOtpComplete();
 }
 
@@ -998,10 +983,7 @@ function getOtpValue() {
 
 function resetOtpInputs() {
   const inputs = document.querySelectorAll('#otpInputs input');
-  inputs.forEach(i => {
-    i.value = '';
-    i.classList.remove('filled');
-  });
+  inputs.forEach(i => { i.value = ''; i.classList.remove('filled'); });
   const vbtn = document.getElementById('btnVerify');
   vbtn.disabled = false;
   vbtn.innerHTML = '<i class="fas fa-check"></i> Verifikasi & Aktifkan Akun';
@@ -1013,15 +995,12 @@ let otpVerifyTimeout = null;
 function checkOtpComplete() {
   if (otpVerifyTimeout) clearTimeout(otpVerifyTimeout);
   const code = getOtpValue();
-  if (code.length === 6) {
-    otpVerifyTimeout = setTimeout(() => doVerifyOtp(), 300);
-  }
+  if (code.length === 6) otpVerifyTimeout = setTimeout(() => doVerifyOtp(), 300);
 }
 
-// ===== TIMER: OTP EXPIRY (10 menit) =====
+// ===== TIMER: OTP EXPIRY =====
 function startOtpCountdown() {
   otpExpiryAt = Date.now() + 10 * 60 * 1000;
-
   if (otpTimerInterval) clearInterval(otpTimerInterval);
   updateOtpTimer();
   otpTimerInterval = setInterval(updateOtpTimer, 1000);
@@ -1035,20 +1014,18 @@ function updateOtpTimer() {
   const m = Math.floor(totalSec / 60);
   const s = totalSec % 60;
   el.textContent = `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
-
   if (remaining <= 0) {
     clearInterval(otpTimerInterval);
     showMsg('Kode OTP kadaluarsa. Klik "Kirim Ulang".', 'warn');
   }
 }
 
-// ===== TIMER: RESEND (60 detik) =====
+// ===== TIMER: RESEND =====
 function startResendCountdown() {
   let counter = 60;
   const btn = document.getElementById('btnResend');
   btn.disabled = true;
   btn.innerHTML = 'Kirim Ulang (<span id="resendTimer">' + counter + '</span>s)';
-
   if (resendTimerInterval) clearInterval(resendTimerInterval);
   resendTimerInterval = setInterval(() => {
     counter--;
@@ -1072,17 +1049,8 @@ function clearOtpTimers() {
 async function doVerifyOtp() {
   const kode = getOtpValue();
   const email = sessionStorage.getItem('otpEmail') || currentOtpEmail;
-
-  if (!email) {
-    showMsg('Email tidak ditemukan. Coba daftar ulang.', 'err');
-    switchMode('register');
-    return;
-  }
-
-  if (kode.length !== 6) {
-    showMsg('Masukkan 6 digit kode lengkap', 'warn');
-    return;
-  }
+  if (!email) { showMsg('Email tidak ditemukan. Coba daftar ulang.', 'err'); switchMode('register'); return; }
+  if (kode.length !== 6) { showMsg('Masukkan 6 digit kode lengkap', 'warn'); return; }
 
   const btn = document.getElementById('btnVerify');
   btn.disabled = true;
@@ -1090,12 +1058,7 @@ async function doVerifyOtp() {
   showMsg('', '');
 
   try {
-    const verifyRes = await post({
-      action: 'verifyOtp',
-      email: email,
-      kode: kode
-    });
-
+    const verifyRes = await post({ action: 'verifyOtp', email: email, kode: kode });
     if (!verifyRes.success) {
       showMsg(verifyRes.msg || 'Kode salah', detectMsgType(verifyRes.msg));
       btn.disabled = false;
@@ -1106,12 +1069,7 @@ async function doVerifyOtp() {
     }
 
     const pendingData = sessionStorage.getItem('pendingRegister');
-    if (!pendingData) {
-      showMsg('Data pendaftaran hilang. Coba daftar ulang.', 'err');
-      switchMode('register');
-      return;
-    }
-
+    if (!pendingData) { showMsg('Data pendaftaran hilang. Coba daftar ulang.', 'err'); switchMode('register'); return; }
     const regData = JSON.parse(pendingData);
     btn.innerHTML = '<span class="spinner"></span> Membuat akun...';
 
@@ -1133,15 +1091,11 @@ async function doVerifyOtp() {
     clearOtpTimers();
     sessionStorage.removeItem('pendingRegister');
     sessionStorage.removeItem('otpEmail');
-
     showMsg('Akun berhasil dibuat! Mengalihkan...', 'ok');
-
     regRes.user.loginAt = Date.now();
     localStorage.setItem('user', JSON.stringify(regRes.user));
     resetWelcomeFlag();
-
     setTimeout(() => location.href = 'dashboard.html', 1200);
-
   } catch(err) {
     showMsg(err.message, 'err');
     btn.disabled = false;
@@ -1156,11 +1110,7 @@ async function doResendOtp() {
   try { pending = JSON.parse(sessionStorage.getItem('pendingRegister') || '{}') || {}; } catch(e) {}
   const username = pending.username;
   const nama = pending.nama;
-
-  if (!email || !username) {
-    showMsg('Data hilang. Coba daftar ulang.', 'err');
-    return;
-  }
+  if (!email || !username) { showMsg('Data hilang. Coba daftar ulang.', 'err'); return; }
 
   const btn = document.getElementById('btnResend');
   btn.disabled = true;
@@ -1168,13 +1118,7 @@ async function doResendOtp() {
   showMsg('', '');
 
   try {
-    const res = await post({
-      action: 'sendOtp',
-      email: email,
-      username: username,
-      nama: nama
-    });
-
+    const res = await post({ action: 'sendOtp', email: email, username: username, nama: nama });
     if (res.success) {
       showMsg('Kode baru sudah dikirim ke ' + email, 'ok');
       resetOtpInputs();
@@ -1194,14 +1138,13 @@ async function doResendOtp() {
 }
 
 // ============================================================
-//  GOOGLE SIGN-IN
+//  GOOGLE SIGN-IN (DENGAN DETEKSI iOS)
 // ============================================================
 let googleInitialized = false;
+const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
 
 function initGoogleSignIn() {
-  if (typeof google === 'undefined' || !google.accounts) {
-    return false;
-  }
+  if (typeof google === 'undefined' || !google.accounts) return false;
   if (googleInitialized) return true;
   googleInitialized = true;
 
@@ -1220,7 +1163,6 @@ function initGoogleSignIn() {
   }
 }
 
-// Render tombol Google asli (disembunyiin)
 function renderGoogleButtons() {
   if (!googleInitialized) return;
 
@@ -1234,43 +1176,62 @@ function renderGoogleButtons() {
     width: 300
   };
 
-  const btnLogin = document.getElementById('googleBtnLogin');
-  if (btnLogin) {
-    btnLogin.innerHTML = '';
-    try { google.accounts.id.renderButton(btnLogin, commonOpts); } catch(e) {}
-  }
+  // Kalau di iOS/Safari, paksa pakai tombol Google asli yang kelihatan
+  if (isIOS) {
+    // Sembunyiin tombol custom
+    document.querySelectorAll('.btn-google-custom').forEach(el => el.style.display = 'none');
+    document.querySelectorAll('.google-hint').forEach(el => el.style.display = 'none');
 
-  const btnReg = document.getElementById('googleBtnRegister');
-  if (btnReg) {
-    btnReg.innerHTML = '';
-    try { google.accounts.id.renderButton(btnReg, commonOpts); } catch(e) {}
+    // Tampilkan tombol asli
+    const showRealBtn = (id) => {
+      const el = document.getElementById(id);
+      if (!el) return;
+      el.style.position = 'relative';
+      el.style.visibility = 'visible';
+      el.style.opacity = '1';
+      el.style.width = '100%';
+      el.style.height = 'auto';
+      el.style.overflow = 'visible';
+      el.style.display = 'flex';
+      el.style.justifyContent = 'center';
+      el.style.margin = '10px 0';
+      el.innerHTML = '';
+      try { google.accounts.id.renderButton(el, commonOpts); } catch(e) {}
+    };
+
+    showRealBtn('googleBtnLogin');
+    showRealBtn('googleBtnRegister');
+
+  } else {
+    // Non-iOS: pakai tombol custom + sembunyiin tombol asli
+    const btnLogin = document.getElementById('googleBtnLogin');
+    if (btnLogin) {
+      btnLogin.style.cssText = 'position:absolute;opacity:0;pointer-events:none;width:0;height:0;overflow:hidden;visibility:hidden;top:0;left:0;';
+      btnLogin.innerHTML = '';
+      try { google.accounts.id.renderButton(btnLogin, commonOpts); } catch(e) {}
+    }
+
+    const btnReg = document.getElementById('googleBtnRegister');
+    if (btnReg) {
+      btnReg.style.cssText = 'position:absolute;opacity:0;pointer-events:none;width:0;height:0;overflow:hidden;visibility:hidden;top:0;left:0;';
+      btnReg.innerHTML = '';
+      try { google.accounts.id.renderButton(btnReg, commonOpts); } catch(e) {}
+    }
   }
 }
 
-// Fungsi buat trigger login dari tombol custom
+// Hanya jalan di Desktop/Android
 function triggerGoogleLogin() {
-  if (!googleInitialized) {
-    showMsg('Google Sign-In belum siap. Tunggu sebentar ya...', 'warn');
-    return;
-  }
+  if (isIOS) return; 
+  if (!googleInitialized) { showMsg('Google Sign-In belum siap. Tunggu sebentar ya...', 'warn'); return; }
 
-  // Cari tombol Google yang bener-bener di-render, terus klik programatik
-  const realBtn = document.querySelector(
-    '#googleBtnLogin div[role="button"], ' +
-    '#googleBtnLogin iframe, ' +
-    '#googleBtnRegister div[role="button"], ' +
-    '#googleBtnRegister iframe'
-  );
+  const realBtn = document.querySelector('#googleBtnLogin div[role="button"], #googleBtnLogin iframe, #googleBtnRegister div[role="button"], #googleBtnRegister iframe');
 
   if (realBtn) {
-    realBtn.click();
+    const clickEvent = new MouseEvent('click', { view: window, bubbles: true, cancelable: true });
+    realBtn.dispatchEvent(clickEvent);
   } else {
-    // Fallback: pakai prompt One Tap
-    try {
-      google.accounts.id.prompt();
-    } catch(e) {
-      showMsg('Gagal buka login Google. Coba refresh halaman.', 'err');
-    }
+    try { google.accounts.id.prompt(); } catch(e) {}
   }
 }
 
@@ -1279,23 +1240,16 @@ async function handleGoogleCredential(response) {
     showMsg('Login Google gagal. Coba lagi.', 'err');
     return;
   }
-
   showMsg('Memproses login Google...', 'ok');
 
   try {
-    const res = await post({
-      action: 'loginViaGoogle',
-      credential: response.credential
-    });
-
+    const res = await post({ action: 'loginViaGoogle', credential: response.credential });
     if (res.success && res.user) {
       res.user.loginAt = Date.now();
       localStorage.setItem('user', JSON.stringify(res.user));
       resetWelcomeFlag();
-
       const label = res.isNewUser ? 'Akun berhasil dibuat' : 'Login berhasil';
       showMsg(`${label}! Mengalihkan...`, 'ok');
-
       setTimeout(() => location.href = 'dashboard.html', 800);
     } else {
       showMsg(res.msg || 'Login Google gagal', 'err');
@@ -1305,20 +1259,14 @@ async function handleGoogleCredential(response) {
   }
 }
 
-// Coba init Google — retry sampai GIS loaded
+// Retry init Google sampai GIS loaded
 let googleRetryCount = 0;
 const googleRetryInterval = setInterval(() => {
-  if (initGoogleSignIn()) {
-    clearInterval(googleRetryInterval);
-  }
+  if (initGoogleSignIn()) clearInterval(googleRetryInterval);
   googleRetryCount++;
-  if (googleRetryCount > 40) {
-    clearInterval(googleRetryInterval);
-    console.warn('Google Sign-In gagal load setelah 20 detik');
-  }
+  if (googleRetryCount > 40) clearInterval(googleRetryInterval);
 }, 500);
 
-// Init langsung (kalau GIS udah load)
 setTimeout(initGoogleSignIn, 300);
 
 // ============================================================
@@ -1338,12 +1286,8 @@ function toggleGuestChat() {
 
 function openGuestChat() {
   const popup = document.getElementById('chatPopup');
-  if (popup && !popup.classList.contains('open')) {
-    toggleGuestChat();
-  } else {
-    const el = document.getElementById('guestUsername');
-    if (el) el.focus();
-  }
+  if (popup && !popup.classList.contains('open')) toggleGuestChat();
+  else { const el = document.getElementById('guestUsername'); if (el) el.focus(); }
 }
 
 async function sendGuestChat() {
@@ -1363,13 +1307,7 @@ async function sendGuestChat() {
   btn.innerHTML = '<span class="spinner" style="border-color:rgba(255,255,255,.4);border-top-color:#fff;"></span> Mengirim...';
 
   try {
-    const res = await post({
-      action: 'guestChat',
-      username: username,
-      email: email,
-      pesan: pesan
-    });
-
+    const res = await post({ action: 'guestChat', username: username, email: email, pesan: pesan });
     if (res.success) {
       const body = document.getElementById('guestChatBody');
       body.innerHTML = `
@@ -1416,7 +1354,6 @@ function escapeHtml(t) {
   return div.innerHTML;
 }
 
-// autofocus
 setTimeout(() => document.getElementById('loginUser').focus(), 100);
 </script>
 </body>
