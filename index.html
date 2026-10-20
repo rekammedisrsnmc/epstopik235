@@ -741,117 +741,25 @@ const API = 'https://script.google.com/macros/s/AKfycbwTJ7vIu5lz9sJJxFWBZ2HwCn39
 const GOOGLE_CLIENT_ID = '465306926558-g79epgt6tlaq8mti7a8bknodru71l2c7.apps.googleusercontent.com';
 
 // ============================================================
-//  HANDLE REDIRECT TOKEN (Sangat Penting untuk iOS/Chrome)
+//  UTILITY: deteksi credential di URL (dipanggil kapan aja)
 // ============================================================
-// 1. Cek apakah ada token di URL (# atau ?)
-(function handleRedirectToken() {
-  // Ambil dari hash fragment (#credential=...)
-  let hashParams = new URLSearchParams(window.location.hash.substring(1));
-  let credential = hashParams.get('credential') || hashParams.get('id_token');
-  
-  // Ambil dari query string (?credential=...)
-  let searchParams = new URLSearchParams(window.location.search);
-  if (!credential) credential = searchParams.get('credential') || searchParams.get('id_token');
-
-  // Kalau dapet credential, proses login!
-  if (credential) {
-    // Bersihkan URL biar rapi
-    window.history.replaceState({}, document.title, window.location.pathname);
-    
-    // Sembunyiin UI utama, tampilkan loader full screen
-    document.getElementById('mainBox').style.display = 'none';
-    document.getElementById('globalLoader').classList.add('show');
-    
-    // Proses credential ke backend
-    handleGoogleCredential({ credential: credential });
-  }
-})();
-
-// ============================================================
-//  GOOGLE SIGN-IN
-// ============================================================
-let googleInitialized = false;
-
-// Init Google SDK
-function initGoogleSignIn() {
-  if (typeof google === 'undefined' || !google.accounts) return false;
-  if (googleInitialized) return true;
-  googleInitialized = true;
+function getCredentialFromUrl() {
   try {
-    google.accounts.id.initialize({
-      client_id: GOOGLE_CLIENT_ID,
-      callback: handleGoogleCredential,
-      auto_select: false,
-      cancel_on_tap_outside: true,
-      use_fedcm_for_prompt: true // Fitur baru biar lebih stabil
-    });
-    renderGoogleButtons();
-    return true;
-  } catch(e) { 
-    console.warn('Google Init Error', e);
-    return false; 
-  }
-}
-
-function renderGoogleButtons() {
-  if (!googleInitialized) return;
-  const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-  const commonOpts = { theme: isDark ? 'filled_black' : 'outline', size: 'large', text: 'continue_with', shape: 'rectangular', logo_alignment: 'left', width: 300 };
-
-  const btnLogin = document.getElementById('googleBtnLogin');
-  if (btnLogin) { btnLogin.innerHTML = ''; try { google.accounts.id.renderButton(btnLogin, commonOpts); } catch(e) {} }
-  const btnReg = document.getElementById('googleBtnRegister');
-  if (btnReg) { btnReg.innerHTML = ''; try { google.accounts.id.renderButton(btnReg, commonOpts); } catch(e) {} }
-}
-
-// Fungsi klik tombol custom (Desktop/Android)
-function triggerGoogleLogin() {
-  if (!googleInitialized) { 
-    showMsg('Google Sign-In sedang dimuat. Tunggu sebentar...', 'warn'); 
-    initGoogleSignIn(); // Coba init lagi kalau belum
-    return; 
-  }
-  
-  const realBtn = document.querySelector('#googleBtnLogin div[role="button"], #googleBtnLogin iframe, #googleBtnRegister div[role="button"], #googleBtnRegister iframe');
-  if (realBtn) {
-    const clickEvent = new MouseEvent('click', { view: window, bubbles: true, cancelable: true });
-    realBtn.dispatchEvent(clickEvent);
-  } else {
-    // Kalau tombol asli gak nemu, pake prompt
-    try { google.accounts.id.prompt(); } catch(e) { showMsg('Gagal buka Google. Refresh halaman ini.', 'err'); }
-  }
-}
-
-// Proses credential (dipanggil dari redirect URL ATAU dari popup desktop)
-async function handleGoogleCredential(response) {
-  if (!response || !response.credential) { 
-    showMsg('Login Google gagal. Kredensial tidak ditemukan.', 'err'); 
-    document.getElementById('globalLoader').classList.remove('show');
-    document.getElementById('mainBox').style.display = 'block';
-    return; 
-  }
-  
-  try {
-    const res = await post({ action: 'loginViaGoogle', credential: response.credential });
-    if (res.success && res.user) {
-      res.user.loginAt = Date.now();
-      localStorage.setItem('user', JSON.stringify(res.user));
-      resetWelcomeFlag();
-      showMsg('Login berhasil! Mengalihkan ke dashboard...', 'ok');
-      setTimeout(() => location.href = 'dashboard.html', 800);
-    } else { 
-      showMsg(res.msg || 'Login Google gagal diproses server.', 'err'); 
-      document.getElementById('globalLoader').classList.remove('show');
-      document.getElementById('mainBox').style.display = 'block';
+    const hashParams = new URLSearchParams(window.location.hash.substring(1));
+    let cred = hashParams.get('credential') || hashParams.get('id_token');
+    if (!cred) {
+      const searchParams = new URLSearchParams(window.location.search);
+      cred = searchParams.get('credential') || searchParams.get('id_token');
     }
-  } catch(err) { 
-    showMsg('Kesalahan jaringan: ' + err.message, 'err'); 
-    document.getElementById('globalLoader').classList.remove('show');
-    document.getElementById('mainBox').style.display = 'block';
+    return cred || null;
+  } catch(e) {
+    return null;
   }
 }
 
-// ===== SISA KODE LAIN (LOGIN/REGISTER MANUAL, OTP, DLL) =====
+// ============================================================
+//  SISA KODE LAIN (LOGIN/REGISTER MANUAL, OTP, DLL)
+// ============================================================
 function resetWelcomeFlag() {
   try {
     sessionStorage.removeItem('welcome_shown');
@@ -860,27 +768,47 @@ function resetWelcomeFlag() {
     sessionStorage.setItem('login_session_id', Date.now().toString());
   } catch(e) {}
 }
+
+// ⬅️ PATCH: checkExistingSession SKIP kalau ada credential di URL
 (function checkExistingSession() {
   try {
+    if (getCredentialFromUrl()) return; // penting! jangan race sama redirect login
+
     const raw = localStorage.getItem('user');
     if (!raw) return;
     const u = JSON.parse(raw);
     if (!u) return;
     const SESSION_MAX_AGE = 8 * 60 * 60 * 1000;
-    if (u.loginAt && (Date.now() - u.loginAt) < SESSION_MAX_AGE) { resetWelcomeFlag(); location.href = 'dashboard.html'; }
-    else { localStorage.removeItem('user'); }
-  } catch(e) { localStorage.removeItem('user'); }
+    if (u.loginAt && (Date.now() - u.loginAt) < SESSION_MAX_AGE) { 
+      resetWelcomeFlag(); 
+      location.href = 'dashboard.html'; 
+    } else { 
+      localStorage.removeItem('user'); 
+    }
+  } catch(e) { 
+    try { localStorage.removeItem('user'); } catch(_) {}
+  }
 })();
 
 function showMsg(text, type) {
   const el = document.getElementById('msg');
+  if (!el) return;
   el.textContent = text;
   el.className = 'msg ' + (type || '');
 }
 async function post(payload) {
-  const r = await fetch(API, { method: 'POST', headers: {'Content-Type':'text/plain;charset=utf-8'}, body: JSON.stringify(payload) });
+  const r = await fetch(API, { 
+    method: 'POST', 
+    headers: {'Content-Type':'text/plain;charset=utf-8'}, 
+    body: JSON.stringify(payload),
+    redirect: 'follow'
+  });
   const t = await r.text();
-  try { return JSON.parse(t); } catch(e) { return { success:false, msg:'Response tidak valid' }; }
+  try { return JSON.parse(t); } 
+  catch(e) { 
+    console.error('Response bukan JSON:', t.substring(0, 300));
+    return { success:false, msg:'Response tidak valid dari server' }; 
+  }
 }
 function detectMsgType(msg) {
   if (msg && (msg.includes('⚠️') || msg.toLowerCase().includes('terlalu banyak'))) return 'warn';
@@ -1128,6 +1056,100 @@ function resetGuestChat() {
 }
 function escapeHtml(t) { const div = document.createElement('div'); div.textContent = String(t == null ? '' : t); return div.innerHTML; }
 
+// ============================================================
+//  GOOGLE SIGN-IN
+// ============================================================
+let googleInitialized = false;
+
+function initGoogleSignIn() {
+  if (typeof google === 'undefined' || !google.accounts) return false;
+  if (googleInitialized) return true;
+  googleInitialized = true;
+  try {
+    google.accounts.id.initialize({
+      client_id: GOOGLE_CLIENT_ID,
+      callback: handleGoogleCredential,
+      auto_select: false,
+      cancel_on_tap_outside: true,
+      use_fedcm_for_prompt: true
+    });
+    renderGoogleButtons();
+    return true;
+  } catch(e) { 
+    console.warn('Google Init Error', e);
+    return false; 
+  }
+}
+
+function renderGoogleButtons() {
+  if (!googleInitialized) return;
+  const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+  const commonOpts = { theme: isDark ? 'filled_black' : 'outline', size: 'large', text: 'continue_with', shape: 'rectangular', logo_alignment: 'left', width: 300 };
+
+  const btnLogin = document.getElementById('googleBtnLogin');
+  if (btnLogin) { btnLogin.innerHTML = ''; try { google.accounts.id.renderButton(btnLogin, commonOpts); } catch(e) {} }
+  const btnReg = document.getElementById('googleBtnRegister');
+  if (btnReg) { btnReg.innerHTML = ''; try { google.accounts.id.renderButton(btnReg, commonOpts); } catch(e) {} }
+}
+
+function triggerGoogleLogin() {
+  if (!googleInitialized) { 
+    showMsg('Google Sign-In sedang dimuat. Tunggu sebentar...', 'warn'); 
+    initGoogleSignIn();
+    return; 
+  }
+  
+  const realBtn = document.querySelector('#googleBtnLogin div[role="button"], #googleBtnLogin iframe, #googleBtnRegister div[role="button"], #googleBtnRegister iframe');
+  if (realBtn) {
+    const clickEvent = new MouseEvent('click', { view: window, bubbles: true, cancelable: true });
+    realBtn.dispatchEvent(clickEvent);
+  } else {
+    try { google.accounts.id.prompt(); } catch(e) { showMsg('Gagal buka Google. Refresh halaman ini.', 'err'); }
+  }
+}
+
+// ⬅️ PATCH: handleGoogleCredential lebih robust + fallback UI restore
+async function handleGoogleCredential(response) {
+  const mainBox = document.getElementById('mainBox');
+  const loader = document.getElementById('globalLoader');
+
+  function restoreUI(msg) {
+    if (loader) loader.classList.remove('show');
+    if (mainBox) mainBox.style.display = 'block';
+    if (msg) showMsg(msg, 'err');
+  }
+
+  if (!response || !response.credential) { 
+    restoreUI('Login Google gagal. Kredensial tidak ditemukan.'); 
+    return; 
+  }
+  
+  try {
+    console.log('🟢 Mengirim credential ke backend...');
+    const res = await post({ action: 'loginViaGoogle', credential: response.credential });
+    console.log('🟢 Response backend:', res);
+
+    if (res && res.success && res.user) {
+      res.user.loginAt = Date.now();
+      try { localStorage.setItem('user', JSON.stringify(res.user)); } catch(e) {}
+      resetWelcomeFlag();
+      showMsg('Login berhasil! Mengalihkan ke dashboard...', 'ok');
+      // Jangan reset UI — biarin loader tetap nyala sampai redirect
+      setTimeout(() => { 
+        try { location.href = 'dashboard.html'; } 
+        catch(e) { 
+          restoreUI('Gagal redirect ke dashboard: ' + e.message); 
+        } 
+      }, 800);
+    } else { 
+      restoreUI(res && res.msg ? res.msg : 'Login Google gagal diproses server.');
+    }
+  } catch(err) { 
+    console.error('🔴 handleGoogleCredential error:', err);
+    restoreUI('Kesalahan jaringan: ' + (err && err.message ? err.message : 'tidak diketahui'));
+  }
+}
+
 // INIT GOOGLE SDK RETRY
 let googleRetryCount = 0;
 const googleRetryInterval = setInterval(() => {
@@ -1138,6 +1160,44 @@ const googleRetryInterval = setInterval(() => {
 setTimeout(initGoogleSignIn, 300);
 
 setTimeout(() => { try { document.getElementById('loginUser').focus(); } catch(e){} }, 100);
+
+// ============================================================
+//  HANDLE REDIRECT TOKEN — DIPANGGIL PALING BELAKANG
+//  Semua fungsi & const di atas udah ready
+// ============================================================
+(function handleRedirectToken() {
+  const credential = getCredentialFromUrl();
+  if (!credential) return; // bukan redirect login
+
+  // Bersihkan URL biar rapi
+  try {
+    window.history.replaceState({}, document.title, window.location.pathname);
+  } catch(e) {}
+
+  const mainBox = document.getElementById('mainBox');
+  const loader = document.getElementById('globalLoader');
+  if (mainBox) mainBox.style.display = 'none';
+  if (loader) loader.classList.add('show');
+
+  // Fallback: kalau 15 detik gak ada progress, balikin UI
+  const fallbackTimer = setTimeout(() => {
+    console.warn('⚠️ Redirect login timeout 15s — balikin UI');
+    if (mainBox) mainBox.style.display = 'block';
+    if (loader) loader.classList.remove('show');
+    showMsg('Login Google timeout. Coba ulangi atau pakai form manual.', 'err');
+  }, 15000);
+
+  Promise.resolve()
+    .then(() => handleGoogleCredential({ credential }))
+    .then(() => clearTimeout(fallbackTimer))
+    .catch(err => {
+      clearTimeout(fallbackTimer);
+      console.error('🔴 handleRedirectToken error:', err);
+      if (mainBox) mainBox.style.display = 'block';
+      if (loader) loader.classList.remove('show');
+      showMsg('Error: ' + (err && err.message ? err.message : 'tidak diketahui'), 'err');
+    });
+})();
 </script>
 </body>
 </html>
