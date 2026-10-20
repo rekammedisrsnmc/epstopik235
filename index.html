@@ -740,6 +740,17 @@ let otpExpiryAt = 0;
 const API = 'https://script.google.com/macros/s/AKfycbytITG_mDmZfuH7mm6WHqOx1dm42nW7Hp18IK3vUBODVXJLtbZkyp5lNVKo59ZcEmCt/exec';
 const GOOGLE_CLIENT_ID = '465306926558-g79epgt6tlaq8mti7a8bknodru71l2c7.apps.googleusercontent.com';
 
+
+
+
+// Deteksi SEMUA browser di iOS (Safari, Chrome, Firefox, Edge, dll)
+function isIOS() {
+  const ua = navigator.userAgent;
+  if (/iPad|iPhone|iPod/.test(ua)) return true;
+  if (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1) return true;
+  if (/CriOS|FxiOS|EdgiOS|OPiOS/.test(ua)) return true;
+  return false;
+}
 // ============================================================
 //  UTILITY: deteksi credential di URL (dipanggil kapan aja)
 // ============================================================
@@ -1067,12 +1078,13 @@ function initGoogleSignIn() {
   googleInitialized = true;
   try {
     google.accounts.id.initialize({
-      client_id: GOOGLE_CLIENT_ID,
-      callback: handleGoogleCredential,
-      auto_select: false,
-      cancel_on_tap_outside: true,
-      use_fedcm_for_prompt: true
-    });
+    client_id: GOOGLE_CLIENT_ID,
+    callback: handleGoogleCredential,
+    auto_select: false,
+    cancel_on_tap_outside: true,
+    use_fedcm_for_prompt: true,
+    ux_mode: isIOS() ? 'redirect' : 'popup'  // ⬅️ TAMBAHAN
+  });
     renderGoogleButtons();
     return true;
   } catch(e) { 
@@ -1098,7 +1110,22 @@ function triggerGoogleLogin() {
     initGoogleSignIn();
     return; 
   }
-  
+
+  // ⬇️ KHUSUS iOS: paksa redirect mode (popup gak didukung di Safari/Chrome iOS)
+  if (isIOS()) {
+    const redirectUri = encodeURIComponent(window.location.href.split('#')[0].split('?')[0]);
+    const authUrl = 'https://accounts.google.com/o/oauth2/v2/auth' +
+      '?client_id=' + encodeURIComponent(GOOGLE_CLIENT_ID) +
+      '&redirect_uri=' + redirectUri +
+      '&response_type=id_token' +
+      '&scope=openid%20email%20profile' +
+      '&nonce=' + Math.random().toString(36).substring(2);
+    
+    window.location.href = authUrl;
+    return;
+  }
+
+  // Desktop/Android: pakai flow normal (popup)
   const realBtn = document.querySelector('#googleBtnLogin div[role="button"], #googleBtnLogin iframe, #googleBtnRegister div[role="button"], #googleBtnRegister iframe');
   if (realBtn) {
     const clickEvent = new MouseEvent('click', { view: window, bubbles: true, cancelable: true });
