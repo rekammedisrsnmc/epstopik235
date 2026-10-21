@@ -551,6 +551,7 @@ body{
 
     <div class="divider">atau</div>
 
+    <!-- Tombol Google Custom -->
     <button type="button" class="btn-google-custom" onclick="triggerGoogleLogin()">
       <svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
         <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
@@ -740,9 +741,6 @@ let otpExpiryAt = 0;
 const API = 'https://script.google.com/macros/s/AKfycbytITG_mDmZfuH7mm6WHqOx1dm42nW7Hp18IK3vUBODVXJLtbZkyp5lNVKo59ZcEmCt/exec';
 const GOOGLE_CLIENT_ID = '465306926558-g79epgt6tlaq8mti7a8bknodru71l2c7.apps.googleusercontent.com';
 
-
-
-
 // Deteksi SEMUA browser di iOS (Safari, Chrome, Firefox, Edge, dll)
 function isIOS() {
   const ua = navigator.userAgent;
@@ -751,6 +749,7 @@ function isIOS() {
   if (/CriOS|FxiOS|EdgiOS|OPiOS/.test(ua)) return true;
   return false;
 }
+
 // ============================================================
 //  UTILITY: deteksi credential di URL (dipanggil kapan aja)
 // ============================================================
@@ -1078,13 +1077,13 @@ function initGoogleSignIn() {
   googleInitialized = true;
   try {
     google.accounts.id.initialize({
-    client_id: GOOGLE_CLIENT_ID,
-    callback: handleGoogleCredential,
-    auto_select: false,
-    cancel_on_tap_outside: true,
-    use_fedcm_for_prompt: true,
-    ux_mode: isIOS() ? 'redirect' : 'popup'  // ⬅️ TAMBAHAN
-  });
+      client_id: GOOGLE_CLIENT_ID,
+      callback: handleGoogleCredential,
+      auto_select: false,
+      cancel_on_tap_outside: true,
+      use_fedcm_for_prompt: true,
+      ux_mode: isIOS() ? 'redirect' : 'popup' 
+    });
     renderGoogleButtons();
     return true;
   } catch(e) { 
@@ -1104,14 +1103,11 @@ function renderGoogleButtons() {
   if (btnReg) { btnReg.innerHTML = ''; try { google.accounts.id.renderButton(btnReg, commonOpts); } catch(e) {} }
 }
 
+// ============================================================
+//  FUNGSI YANG DIPERBAIKI UNTUK iPHONE
+// ============================================================
 function triggerGoogleLogin() {
-  if (!googleInitialized) { 
-    showMsg('Google Sign-In sedang dimuat. Tunggu sebentar...', 'warn'); 
-    initGoogleSignIn();
-    return; 
-  }
-
-  // ⬇️ KHUSUS iOS: paksa redirect mode (popup gak didukung di Safari/Chrome iOS)
+  // 1. JIKA iOS: PAKSA REDIRECT (Sesuai aturan Google & Apple)
   if (isIOS()) {
     const redirectUri = encodeURIComponent(window.location.href.split('#')[0].split('?')[0]);
     const authUrl = 'https://accounts.google.com/o/oauth2/v2/auth' +
@@ -1119,18 +1115,28 @@ function triggerGoogleLogin() {
       '&redirect_uri=' + redirectUri +
       '&response_type=id_token' +
       '&scope=openid%20email%20profile' +
-      '&nonce=' + Math.random().toString(36).substring(2);
+      '&nonce=' + Math.random().toString(36).substring(2) +
+      '&prompt=select_account'; // Biar user bisa pilih akun
     
     window.location.href = authUrl;
-    return;
+    return; // Hentikan eksekusi, jangan lanjut ke popup
   }
 
-  // Desktop/Android: pakai flow normal (popup)
+  // 2. JIKA DESKTOP/ANDROID: GUNAKAN POPUP
+  if (!googleInitialized) { 
+    showMsg('Google Sign-In sedang dimuat. Tunggu sebentar...', 'warn'); 
+    initGoogleSignIn();
+    return; 
+  }
+
+  // Cari tombol asli Google yang di-render secara hidden
   const realBtn = document.querySelector('#googleBtnLogin div[role="button"], #googleBtnLogin iframe, #googleBtnRegister div[role="button"], #googleBtnRegister iframe');
+  
   if (realBtn) {
     const clickEvent = new MouseEvent('click', { view: window, bubbles: true, cancelable: true });
     realBtn.dispatchEvent(clickEvent);
   } else {
+    // Fallback terakhir kalau tombol hidden gagal ditemukan
     try { google.accounts.id.prompt(); } catch(e) { showMsg('Gagal buka Google. Refresh halaman ini.', 'err'); }
   }
 }
