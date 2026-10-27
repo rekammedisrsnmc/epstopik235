@@ -689,7 +689,7 @@ function toggleTheme(){
 }
 applyTheme(localStorage.getItem('theme') || 'light');
 
-const API = 'https://script.google.com/macros/s/AKfycbytITG_mDmZfuH7mm6WHqOx1dm42nW7Hp18IK3vUBODVXJLtbZkyp5lNVKo59ZcEmCt/exec';
+const API = 'https://script.google.com/macros/s/AKfycbzHdHNjEqV3qfIg_UfHaOrimoHH5SpYG2KFGNFgu4P2J8she0Ho0b1emQTSm6knEMa_/exec';
 
 if (!checkSession()) throw new Error('Session expired');
 
@@ -996,6 +996,16 @@ function formatKategori(k) {
     };
     const temaLabel = temaMap[tema] || tema.charAt(0).toUpperCase() + tema.slice(1);
     return 'Kosakata: ' + temaLabel;
+  }
+
+  if (key.startsWith('tata_bahasa_')) {
+    const lv = key.replace('tata_bahasa_', '');
+    const lvMap = {
+      'dasar': 'Dasar (초급)',
+      'menengah': 'Menengah (중급)',
+      'lanjutan': 'Lanjutan (고급)'
+    };
+    return 'Tata Bahasa: ' + (lvMap[lv] || lv.charAt(0).toUpperCase() + lv.slice(1));
   }
 
   const map = {
