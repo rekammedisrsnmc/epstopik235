@@ -1,0 +1,1434 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Tata Bahasa 한국어 | EPS-TOPIKU</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+:root{
+  --bg:#fafafa;
+  --card-bg:#ffffff;
+  --text:#1a1a1a;
+  --muted:#8a8a8a;
+  --border:#e5e5e5;
+  --accent:#2563eb;
+  --accent-hover:#1d4ed8;
+  --accent-light:#eff6ff;
+  --sub-bg:#f5f5f5;
+  --red:#dc2626;
+  --green:#16a34a;
+  --yellow:#d97706;
+  --teal:#0d9488;
+
+  --lv-dasar:#16a34a;
+  --lv-menengah:#d97706;
+  --lv-lanjutan:#dc2626;
+  --lv-current:#16a34a;
+}
+[data-theme="dark"]{
+  --bg:#0f0f0f;
+  --card-bg:#1a1a1a;
+  --text:#ededed;
+  --muted:#888;
+  --border:#2a2a2a;
+  --accent:#5b9cff;
+  --accent-hover:#7ab0ff;
+  --accent-light:#152040;
+  --sub-bg:#141414;
+  --red:#f87171;
+  --green:#4ade80;
+  --yellow:#fbbf24;
+  --teal:#2dd4bf;
+
+  --lv-dasar:#4ade80;
+  --lv-menengah:#fbbf24;
+  --lv-lanjutan:#f87171;
+}
+*{margin:0;padding:0;box-sizing:border-box;
+  font-family:-apple-system,'Segoe UI',Roboto,'Malgun Gothic',sans-serif;}
+body{
+  background:var(--bg);
+  min-height:100vh;
+  color:var(--text);
+  font-size:15px;
+  line-height:1.6;
+  transition:background .2s,color .2s;
+}
+
+.exam-paper{
+  max-width:760px;
+  margin:24px auto;
+  background:var(--card-bg);
+  border:1px solid var(--border);
+  border-radius:10px;
+  padding:36px 44px;
+  position:relative;
+  border-top:4px solid var(--lv-current);
+}
+.exam-icon{
+  text-align:center;
+  font-size:38px;
+  margin-bottom:6px;
+}
+.exam-title{
+  text-align:center;
+  font-size:12px;
+  color:var(--muted);
+  margin-bottom:4px;
+  letter-spacing:2px;
+  text-transform:uppercase;
+  font-weight:500;
+}
+.exam-heading{
+  text-align:center;
+  font-size:22px;
+  font-weight:600;
+  margin:6px 0 4px 0;
+  color:var(--text);
+  letter-spacing:-0.3px;
+}
+.exam-subtitle{
+  text-align:center;
+  font-size:13px;
+  color:var(--muted);
+  margin-bottom:24px;
+}
+
+.level-badge{
+  display:table;
+  margin:0 auto 18px;
+  padding:5px 16px;
+  border-radius:20px;
+  font-size:11px;
+  font-weight:700;
+  background:var(--sub-bg);
+  color:var(--lv-current);
+  border:1px solid var(--lv-current);
+  letter-spacing:1.2px;
+}
+
+.grammar-progress-bar{
+  max-width:460px;
+  margin:0 auto 20px;
+  background:var(--card-bg);
+  border:1px solid var(--border);
+  border-radius:10px;
+  padding:14px 18px;
+  text-align:center;
+}
+.grammar-progress-bar .lbl{
+  font-size:11px;color:var(--muted);
+  text-transform:uppercase;letter-spacing:1px;
+  margin-bottom:4px;font-weight:600;
+}
+.grammar-progress-bar .val{
+  font-size:13px;color:var(--text);font-weight:600;
+  margin-bottom:8px;
+}
+.grammar-progress-bar .val strong{font-size:18px;color:var(--lv-current);}
+.grammar-progress-bar .track{
+  height:8px;background:var(--sub-bg);
+  border-radius:6px;overflow:hidden;
+  border:1px solid var(--border);
+}
+.grammar-progress-bar .fill{
+  height:100%;background:var(--lv-current);
+  transition:width .4s;border-radius:6px;
+}
+.grammar-progress-bar .hint{
+  font-size:11px;color:var(--muted);
+  margin-top:8px;line-height:1.5;
+}
+
+.question{margin-bottom:28px;}
+.question-num{
+  font-size:12px;
+  font-weight:500;
+  color:var(--muted);
+  margin-bottom:10px;
+  display:inline-block;
+  background:var(--sub-bg);
+  padding:3px 12px;
+  border-radius:20px;
+  letter-spacing:.5px;
+}
+.question-body{
+  display:flex;
+  gap:20px;
+  align-items:flex-start;
+}
+.question-media{
+  flex-shrink:0;
+  width:200px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:8px;
+}
+.question-media img{
+  max-width:100%;
+  max-height:180px;
+  border-radius:8px;
+  object-fit:contain;
+  border:1px solid var(--border);
+  padding:4px;
+  background:var(--card-bg);
+}
+.question-text{
+  font-size:16px;
+  line-height:1.7;
+  color:var(--text);
+  margin-bottom:12px;
+  font-weight:500;
+}
+.question-content{flex:1;min-width:0;}
+.question-media audio{width:100%;margin-top:8px;}
+
+.question-instruction{
+  font-size:13px;
+  color:var(--muted);
+  padding:10px 14px;
+  background:var(--sub-bg);
+  border-left:3px solid var(--lv-current);
+  border-radius:6px;
+  margin-bottom:12px;
+  line-height:1.6;
+  display:flex;
+  align-items:flex-start;
+  gap:8px;
+}
+.question-instruction::before{
+  content:'📌';
+  flex-shrink:0;
+}
+
+.options{
+  list-style:none;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:8px;
+  margin-top:12px;
+}
+.options.vertical{grid-template-columns:1fr;}
+.options li{
+  font-size:15px;
+  line-height:1.5;
+  color:var(--text);
+  padding:10px 14px;
+  border-radius:8px;
+  cursor:pointer;
+  transition:.15s;
+  display:flex;
+  align-items:center;
+  gap:10px;
+  border:1.5px solid var(--border);
+  user-select:none;
+  background:var(--card-bg);
+}
+.options li:hover{border-color:var(--accent);}
+.options li.selected{
+  background:var(--accent-light);
+  border-color:var(--accent);
+  font-weight:500;
+}
+.options li.selected .circle{color:var(--accent);}
+.options li .circle{
+  font-size:15px;
+  color:var(--muted);
+  flex-shrink:0;
+  font-weight:500;
+}
+
+.fill-input{
+  width:100%;
+  padding:12px 16px;
+  border:1.5px solid var(--border);
+  border-radius:8px;
+  font-size:15px;
+  margin-top:10px;
+  font-family:inherit;
+  background:var(--card-bg);
+  color:var(--text);
+  transition:.15s;
+}
+.fill-input:focus{
+  outline:none;
+  border-color:var(--accent);
+}
+
+.nav-bar{
+  max-width:760px;
+  margin:0 auto 24px;
+  padding:0 44px;
+  display:flex;
+  gap:12px;
+  justify-content:space-between;
+  flex-wrap:wrap;
+}
+
+.btn{
+  padding:10px 20px;
+  border:none;
+  border-radius:8px;
+  font-weight:500;
+  font-size:14px;
+  cursor:pointer;
+  transition:.15s;
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  font-family:inherit;
+  text-decoration:none;
+}
+.btn:disabled{opacity:.4;cursor:not-allowed;}
+.btn-primary{background:var(--accent);color:#fff;}
+.btn-primary:hover:not(:disabled){background:var(--accent-hover);}
+.btn-secondary{
+  background:transparent;
+  color:var(--text);
+  border:1px solid var(--border);
+}
+.btn-secondary:hover:not(:disabled){background:var(--sub-bg);border-color:var(--muted);}
+.btn-success{background:var(--green);color:#fff;}
+.btn-success:hover:not(:disabled){filter:brightness(1.1);}
+.btn-warning{background:var(--yellow);color:#fff;}
+.btn-warning:hover:not(:disabled){filter:brightness(1.1);}
+.btn-danger{background:var(--red);color:#fff;}
+.btn-danger:hover:not(:disabled){filter:brightness(1.1);}
+
+.exam-info{
+  max-width:760px;
+  margin:16px auto 0;
+  padding:12px 20px;
+  background:var(--card-bg);
+  border:1px solid var(--border);
+  border-radius:10px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:12px;
+  flex-wrap:wrap;
+}
+.exam-info .item{
+  font-size:13px;
+  color:var(--muted);
+  display:flex;
+  align-items:center;
+  gap:6px;
+}
+.exam-info .item strong{
+  color:var(--text);
+  font-size:15px;
+  font-weight:600;
+}
+.exam-info .btn-icon{
+  background:transparent;
+  border:1px solid var(--border);
+  color:var(--muted);
+  width:36px;height:36px;border-radius:50%;
+  cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  font-size:13px;transition:.15s;
+}
+.exam-info .btn-icon:hover{color:var(--text);border-color:var(--text);}
+
+.exam-info #promoTag{
+  display:none;
+  align-items:center;
+  gap:5px;
+  background:linear-gradient(135deg,#16a34a,#0d9488);
+  color:#fff;
+  padding:5px 12px;
+  border-radius:20px;
+  font-size:11px;
+  font-weight:700;
+  letter-spacing:.3px;
+  box-shadow:0 2px 8px rgba(22,163,74,.3);
+}
+.exam-info #promoTag.show{display:inline-flex;}
+
+.btn-exit{
+  background:transparent;
+  border:1px solid var(--border);
+  color:var(--muted);
+  padding:7px 14px;
+  border-radius:8px;
+  cursor:pointer;
+  font-family:inherit;
+  font-size:13px;
+  font-weight:500;
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  transition:.15s;
+}
+.btn-exit:hover{color:var(--red);border-color:var(--red);background:transparent;}
+
+.timer{
+  background:var(--accent);
+  color:#fff;
+  padding:6px 16px;
+  border-radius:20px;
+  font-weight:600;
+  font-size:14px;
+  display:flex;
+  align-items:center;
+  gap:6px;
+}
+.timer.warning{background:var(--yellow);}
+.timer.danger{background:var(--red);}
+
+.progress-wrap{
+  max-width:760px;
+  margin:10px auto 0;
+  height:3px;
+  background:var(--sub-bg);
+  border-radius:3px;
+  overflow:hidden;
+}
+.progress-fill{
+  height:100%;
+  background:var(--accent);
+  width:0%;
+  transition:width .3s;
+}
+
+.spinner-container{text-align:center;padding:100px 20px;}
+.spinner{
+  display:inline-block;
+  width:36px;height:36px;
+  border:2px solid var(--border);
+  border-top-color:var(--lv-current);
+  border-radius:50%;
+  animation:spin .8s linear infinite;
+}
+@keyframes spin{100%{transform:rotate(360deg)}}
+.spinner-container p{margin-top:14px;color:var(--muted);font-size:13px;}
+
+.result-wrap{
+  max-width:760px;
+  margin:24px auto;
+  padding:36px;
+  background:var(--card-bg);
+  border:1px solid var(--border);
+  border-radius:12px;
+  text-align:center;
+}
+.result-wrap h1{
+  color:var(--text);
+  margin-bottom:6px;
+  font-size:22px;
+  font-weight:600;
+  letter-spacing:-0.3px;
+}
+.result-wrap .sub{
+  color:var(--muted);
+  margin-bottom:24px;
+  font-size:13px;
+}
+
+.score-big{
+  width:140px;
+  height:140px;
+  border-radius:16px;
+  background:var(--card-bg);
+  border:2px solid currentColor;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  margin:0 auto 20px;
+}
+.score-big .num{
+  font-size:44px;
+  font-weight:700;
+  line-height:1;
+  letter-spacing:-1px;
+}
+.score-big .lbl{
+  font-size:11px;
+  opacity:.7;
+  margin-top:6px;
+  letter-spacing:1.5px;
+  font-weight:600;
+}
+
+.unlock-banner{
+  max-width:460px;
+  margin:0 auto 20px;
+  background:linear-gradient(135deg,#16a34a,#0d9488);
+  color:#fff;
+  border-radius:12px;
+  padding:16px 20px;
+  font-size:13px;
+  line-height:1.6;
+  display:flex;
+  align-items:flex-start;
+  gap:12px;
+  text-align:left;
+  box-shadow:0 6px 20px rgba(22,163,74,.3);
+  animation:fadeUp .5s ease;
+}
+.unlock-banner .ico{
+  font-size:24px;
+  flex-shrink:0;
+  animation:bounce 1s ease infinite alternate;
+}
+@keyframes bounce{
+  from{transform:translateY(0);}
+  to{transform:translateY(-4px);}
+}
+.unlock-banner strong{
+  display:block;
+  font-size:15px;
+  margin-bottom:2px;
+}
+.unlock-banner .btn-goto{
+  background:rgba(255,255,255,.2);
+  color:#fff;
+  border:1px solid rgba(255,255,255,.4);
+  padding:6px 14px;
+  border-radius:8px;
+  font-size:12px;
+  font-weight:600;
+  cursor:pointer;
+  font-family:inherit;
+  margin-top:8px;
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  transition:.15s;
+}
+.unlock-banner .btn-goto:hover{
+  background:rgba(255,255,255,.3);
+}
+
+.locked-next{
+  max-width:460px;
+  margin:0 auto 20px;
+  background:var(--sub-bg);
+  border:1px dashed var(--border);
+  border-radius:12px;
+  padding:14px 18px;
+  font-size:13px;
+  color:var(--text);
+  line-height:1.6;
+  display:flex;
+  align-items:flex-start;
+  gap:12px;
+  text-align:left;
+}
+.locked-next .ico{
+  font-size:22px;
+  flex-shrink:0;
+}
+.locked-next strong{color:var(--text);font-weight:700;}
+.locked-next .cur{
+  display:inline-block;
+  background:var(--card-bg);
+  border:1px solid var(--border);
+  padding:1px 8px;
+  border-radius:10px;
+  font-weight:700;
+  font-size:12px;
+  color:var(--lv-current);
+  margin:0 2px;
+}
+
+.stat-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:10px;
+  margin:20px 0;
+}
+.stat{
+  padding:16px;
+  background:var(--sub-bg);
+  border-radius:10px;
+}
+.stat .n{font-size:22px;font-weight:700;letter-spacing:-0.5px;}
+.stat .l{font-size:11px;color:var(--muted);margin-top:4px;font-weight:500;}
+.stat.green .n{color:var(--green);}
+.stat.red .n{color:var(--red);}
+.stat.gray .n{color:var(--muted);}
+
+.review-item{
+  text-align:left;
+  background:var(--card-bg);
+  border:1px solid var(--border);
+  border-radius:10px;
+  padding:16px;
+  margin-bottom:10px;
+}
+.review-item.correct{border-left:3px solid var(--green);}
+.review-item.wrong{border-left:3px solid var(--red);}
+.review-item .rhead{
+  display:flex;
+  justify-content:space-between;
+  font-size:13px;
+  font-weight:600;
+  margin-bottom:8px;
+}
+.review-item .rhead .ok{color:var(--green);}
+.review-item .rhead .no{color:var(--red);}
+.review-item .rq{font-size:14px;margin-bottom:10px;color:var(--text);}
+.review-item .ra{
+  font-size:13px;
+  color:var(--text);
+  background:var(--sub-bg);
+  padding:10px 14px;
+  border-radius:8px;
+  line-height:1.7;
+}
+
+.saved-badge{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  font-size:12px;
+  color:var(--green);
+  background:var(--sub-bg);
+  border:1px solid var(--border);
+  padding:4px 12px;
+  border-radius:20px;
+  margin-top:8px;
+  font-weight:500;
+}
+
+footer{
+  text-align:center;
+  padding:24px 20px;
+  color:var(--muted);
+  font-size:12px;
+}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.fade{animation:fadeUp .3s ease;}
+
+.blocked-wrap{
+  max-width:520px;
+  margin:60px auto;
+  padding:36px;
+  background:var(--card-bg);
+  border:1px solid var(--border);
+  border-radius:12px;
+  text-align:center;
+}
+.blocked-wrap .icon-big{
+  font-size:48px;
+  margin-bottom:14px;
+}
+.blocked-wrap h1{
+  color:var(--text);
+  margin-bottom:10px;
+  font-size:18px;
+  font-weight:600;
+}
+.blocked-wrap p{
+  color:var(--muted);
+  font-size:13px;
+  line-height:1.7;
+  margin-bottom:22px;
+}
+
+.modal-back{
+  display:none;
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.5);
+  z-index:200;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+  animation:fadeIn .15s ease;
+}
+.modal-back.show{display:flex;}
+@keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
+
+.modal-box{
+  background:var(--card-bg);
+  border:1px solid var(--border);
+  border-radius:12px;
+  padding:28px;
+  max-width:400px;
+  width:100%;
+  box-shadow:0 20px 60px rgba(0,0,0,.25);
+  text-align:center;
+  animation:popIn .2s cubic-bezier(.34,1.56,.64,1);
+}
+@keyframes popIn{
+  from{opacity:0;transform:scale(.92);}
+  to{opacity:1;transform:scale(1);}
+}
+.modal-box .icon-warn{
+  width:56px;height:56px;border-radius:50%;
+  background:var(--sub-bg);
+  color:var(--red);
+  border:1px solid var(--border);
+  display:flex;align-items:center;justify-content:center;
+  font-size:22px;margin:0 auto 16px;
+}
+.modal-box h2{
+  color:var(--text);
+  font-size:17px;
+  font-weight:600;
+  margin-bottom:8px;
+}
+.modal-box p.desc{
+  color:var(--muted);
+  font-size:13px;
+  line-height:1.6;
+  margin-bottom:22px;
+}
+.modal-box .modal-buttons{
+  display:flex;
+  gap:10px;
+}
+.modal-box .modal-buttons .btn{
+  flex:1;
+  justify-content:center;
+  padding:11px;
+}
+
+@media(max-width:700px){
+  .exam-paper{padding:24px 18px;margin:12px;border-radius:8px;}
+  .nav-bar{padding:0 16px;}
+  .question-body{flex-direction:column;}
+  .question-media{width:100%;}
+  .options{grid-template-columns:1fr;}
+  .stat-grid{grid-template-columns:1fr;}
+  .score-big{width:120px;height:120px;}
+  .score-big .num{font-size:36px;}
+  .result-wrap{padding:24px 18px;margin:12px;}
+  .exam-heading{font-size:19px;}
+  .exam-info{gap:8px;padding:10px 14px;}
+  .exam-info .item{font-size:12px;}
+  .btn-exit{padding:6px 10px;font-size:12px;}
+}
+</style>
+</head>
+<body>
+
+<div class="exam-info" id="examInfo" style="display:none;">
+  <div class="item">Soal <strong id="curNum">1</strong> / <strong id="totNum">-</strong></div>
+  <div class="item">Terjawab: <strong id="answeredNum">0</strong></div>
+  <button class="btn-icon" onclick="toggleTheme()" title="Ganti tema">
+    <i class="fas fa-moon" id="themeIcon"></i>
+  </button>
+  <button class="btn-exit" onclick="confirmExit()" title="Keluar dari latihan">
+    <i class="fas fa-sign-out-alt"></i> Keluar
+  </button>
+  <div class="timer" id="timerBox"><i class="fas fa-clock"></i> <span id="timerText">--:--</span></div>
+</div>
+<div class="progress-wrap" id="progressWrap" style="display:none;">
+  <div class="progress-fill" id="progressFill"></div>
+</div>
+
+<div id="app">
+  <div class="spinner-container">
+    <div class="spinner"></div>
+    <p>Memuat...</p>
+  </div>
+</div>
+
+<footer>한국어 문법 (Tata Bahasa Korea) — EPS-TOPIK Practice</footer>
+
+<div id="exitModal" class="modal-back">
+  <div class="modal-box">
+    <div class="icon-warn"><i class="fas fa-sign-out-alt"></i></div>
+    <h2 id="exitModalTitle">Yakin mau keluar?</h2>
+    <p class="desc" id="exitModalDesc">
+      Kalau keluar sekarang, jawaban yang belum disubmit akan hilang.
+    </p>
+    <div class="modal-buttons">
+      <button class="btn btn-secondary" onclick="closeExitModal()">
+        <i class="fas fa-times"></i> Batal
+      </button>
+      <button class="btn btn-danger" onclick="doExit()">
+        <i class="fas fa-sign-out-alt"></i> Ya, Keluar
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ============================================================
+//  SESSION & THEME
+// ============================================================
+const SESSION_MAX_AGE = 8 * 60 * 60 * 1000;
+
+function touchSession() {
+  const u = JSON.parse(localStorage.getItem('user') || 'null');
+  if (u && u.loginAt) {
+    u.loginAt = Date.now();
+    localStorage.setItem('user', JSON.stringify(u));
+  }
+}
+
+function checkSession() {
+  const u = JSON.parse(localStorage.getItem('user') || 'null');
+  if (!u) { location.href = 'login.html'; return false; }
+  if (Date.now() - (u.loginAt || 0) > SESSION_MAX_AGE) {
+    localStorage.removeItem('user');
+    alert('Sesi kamu habis (8 jam). Silakan login ulang.');
+    location.href = 'login.html';
+    return false;
+  }
+  return true;
+}
+
+['click','keydown','mousemove','scroll','touchstart'].forEach(evt => {
+  document.addEventListener(evt, touchSession, { passive: true });
+});
+setInterval(touchSession, 60000);
+
+function applyTheme(t){
+  document.documentElement.setAttribute('data-theme', t);
+  const icon = document.getElementById('themeIcon');
+  if (icon) icon.className = t === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+}
+function toggleTheme(){
+  const cur = document.documentElement.getAttribute('data-theme') || 'light';
+  const next = cur === 'dark' ? 'light' : 'dark';
+  localStorage.setItem('theme', next);
+  applyTheme(next);
+}
+applyTheme(localStorage.getItem('theme') || 'light');
+
+const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzHdHNjEqV3qfIg_UfHaOrimoHH5SpYG2KFGNFgu4P2J8she0Ho0b1emQTSm6knEMa_/exec';
+
+if (!checkSession()) throw new Error('Session expired');
+
+const _user = JSON.parse(localStorage.getItem('user') || 'null');
+if (!_user) location.href = 'login.html';
+
+// ============================================================
+//  LEVEL CONFIG
+// ============================================================
+const LEVEL_CONFIG = {
+  dasar: {
+    label: 'Level Dasar (초급)',
+    shortLabel: 'Dasar',
+    icon: '🌱',
+    color: '#16a34a',
+    bg: 'linear-gradient(135deg,#16a34a,#0d9488)',
+    desc: 'Partikel dasar, kata kerja sederhana, kalimat sehari-hari',
+    next: 'menengah'
+  },
+  menengah: {
+    label: 'Level Menengah (중급)',
+    shortLabel: 'Menengah',
+    icon: '🌿',
+    color: '#d97706',
+    bg: 'linear-gradient(135deg,#d97706,#b45309)',
+    desc: 'Tenses, kalimat majemuk, ungkapan umum',
+    next: 'lanjutan'
+  },
+  lanjutan: {
+    label: 'Level Lanjutan (고급)',
+    shortLabel: 'Lanjutan',
+    icon: '🌳',
+    color: '#dc2626',
+    bg: 'linear-gradient(135deg,#dc2626,#991b1b)',
+    desc: 'Grammar kompleks, nuansa formal & idiom',
+    next: null
+  }
+};
+
+const LEVEL_ORDER = ['dasar', 'menengah', 'lanjutan'];
+
+// ============================================================
+//  STATE
+// ============================================================
+const params = new URLSearchParams(location.search);
+const levelKey = String(params.get('level') || 'dasar').toLowerCase();
+const levelInfo = LEVEL_CONFIG[levelKey] || LEVEL_CONFIG.dasar;
+
+// Set CSS variable untuk warna level
+document.documentElement.style.setProperty('--lv-current', levelInfo.color);
+
+const kategori = 'tata_bahasa_' + levelKey;
+
+let questions = [];
+let currentIndex = 0;
+let answers = {};
+let startTime = null;
+let timerInterval = null;
+let examDuration = 20 * 60;
+let isFinished = false;
+let resultSaved = false;
+let grammarData = null;
+
+const CIRCLES = { '1':'①', '2':'②', '3':'③', '4':'④' };
+
+function escapeHtml(str) {
+  const div = document.createElement('div');
+  div.textContent = String(str == null ? '' : str);
+  return div.innerHTML;
+}
+
+// ============================================================
+//  EXIT MODAL
+// ============================================================
+function confirmExit() {
+  const titleEl = document.getElementById('exitModalTitle');
+  const descEl = document.getElementById('exitModalDesc');
+
+  if (isFinished || !startTime) {
+    if (titleEl) titleEl.textContent = 'Keluar ke dashboard?';
+    if (descEl) descEl.textContent = 'Kamu akan kembali ke halaman dashboard.';
+  } else {
+    const answeredCount = Object.keys(answers).filter(k => answers[k] !== '' && answers[k] !== undefined).length;
+    if (titleEl) titleEl.textContent = 'Yakin mau keluar?';
+    if (descEl) {
+      if (answeredCount > 0) {
+        descEl.innerHTML = `Kamu sudah menjawab <strong>${answeredCount} soal</strong>.<br>Kalau keluar sekarang, semua jawaban & progress akan <strong>hilang</strong>.`;
+      } else {
+        descEl.textContent = 'Kalau keluar sekarang, progress latihan akan hilang.';
+      }
+    }
+  }
+
+  document.getElementById('exitModal').classList.add('show');
+}
+
+function closeExitModal() {
+  document.getElementById('exitModal').classList.remove('show');
+}
+
+function doExit() {
+  if (timerInterval) {
+    clearInterval(timerInterval);
+    timerInterval = null;
+  }
+  isFinished = true;
+  location.href = 'dashboard.html';
+}
+
+document.addEventListener('click', function(e) {
+  const m = document.getElementById('exitModal');
+  if (m && m.classList.contains('show') && e.target === m) {
+    closeExitModal();
+  }
+});
+
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') {
+    const m = document.getElementById('exitModal');
+    if (m && m.classList.contains('show')) closeExitModal();
+  }
+});
+
+// ============================================================
+//  CEK KUOTA + UNLOCK LEVEL
+// ============================================================
+async function checkQuotaAndUnlock() {
+  if (_user.role === 'admin') return { canExam: true, unlocked: true };
+
+  try {
+    // 1. Cek kuota
+    const rq = await fetch(APPS_SCRIPT_URL + '?action=getQuota&username=' + encodeURIComponent(_user.username) + '&t=' + Date.now());
+    const resQ = await rq.json();
+    if (resQ.success) {
+      _user.quotaUsed = resQ.quotaUsed;
+      _user.quotaMax = resQ.quotaMax;
+      _user.promoMode = resQ.promoMode === true;
+      localStorage.setItem('user', JSON.stringify(_user));
+
+      if (resQ.promoMode === true) {
+        const tag = document.getElementById('promoTag');
+        if (tag) tag.classList.add('show');
+      }
+    }
+
+    // 2. Cek unlock level
+    const rg = await fetch(APPS_SCRIPT_URL + '?action=getGrammarProgress&username=' + encodeURIComponent(_user.username) + '&t=' + Date.now());
+    const resG = await rg.json();
+
+    if (resG.success && resG.levels) {
+      grammarData = resG;
+      const myLevel = resG.levels.find(l => l.key === levelKey);
+      if (!myLevel || !myLevel.unlocked) {
+        return { canExam: false, unlocked: false, reason: 'locked', data: myLevel };
+      }
+    }
+
+    return { canExam: resQ.canExam === true, unlocked: true, quota: resQ };
+  } catch(e) {
+    console.warn(e);
+  }
+
+  return { canExam: true, unlocked: true };
+}
+
+function showLockedScreen(data) {
+  document.getElementById('examInfo').style.display = 'none';
+  document.getElementById('progressWrap').style.display = 'none';
+
+  const prevLevelLabel = data && data.prevLabel ? data.prevLabel : 'level sebelumnya';
+  const bestScore = data && data.bestScore !== null && data.bestScore !== undefined ? data.bestScore : null;
+  const passScore = (grammarData && grammarData.passScore) || 90;
+
+  let detailHtml = '';
+  if (bestScore !== null) {
+    const pct = Math.min(100, Math.round((bestScore / passScore) * 100));
+    detailHtml = `
+      <div style="max-width:320px;margin:0 auto 22px;">
+        <div style="font-size:12px;color:var(--muted);margin-bottom:6px;">
+          Skor terbaik kamu di <strong>${prevLevelLabel}</strong>:
+          <strong style="color:var(--lv-current);font-size:16px;">${bestScore}</strong> / ${passScore}
+        </div>
+        <div style="height:8px;background:var(--sub-bg);border-radius:6px;overflow:hidden;border:1px solid var(--border);">
+          <div style="height:100%;width:${pct}%;background:${levelInfo.color};transition:width .4s;"></div>
+        </div>
+      </div>`;
+  } else {
+    detailHtml = `
+      <div style="max-width:320px;margin:0 auto 22px;background:var(--sub-bg);padding:12px 16px;border-radius:8px;font-size:13px;color:var(--text);line-height:1.5;">
+        Kamu belum pernah mengerjakan <strong>${prevLevelLabel}</strong>.<br>
+        Kerjakan dulu sampai skor ≥ ${passScore}.
+      </div>`;
+  }
+
+  document.getElementById('app').innerHTML = `
+    <div class="blocked-wrap fade">
+      <div class="icon-big">🔒</div>
+      <h1>Level ${levelInfo.shortLabel} Terkunci</h1>
+      <p>
+        Untuk membuka <strong>${levelInfo.label}</strong>, kamu harus menyelesaikan
+        <strong>${prevLevelLabel}</strong> dengan skor minimal <strong>${passScore}</strong>.
+      </p>
+      ${detailHtml}
+      <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;">
+        <a href="dashboard.html" class="btn btn-secondary">
+          <i class="fas fa-arrow-left"></i> Ke Dashboard
+        </a>
+      </div>
+    </div>`;
+}
+
+function showBlockedScreen() {
+  document.getElementById('examInfo').style.display = 'none';
+  document.getElementById('progressWrap').style.display = 'none';
+  document.getElementById('app').innerHTML = `
+    <div class="blocked-wrap fade">
+      <div class="icon-big">🔒</div>
+      <h1>Kuota Ujian Habis</h1>
+      <p>Kamu sudah menggunakan semua kuota ujian.<br>Silakan request tambah kuota ke admin melalui dashboard.</p>
+      <a href="dashboard.html" class="btn btn-primary"><i class="fas fa-home"></i> Ke Dashboard</a>
+    </div>`;
+}
+
+// ============================================================
+//  RENDER HEADER (khusus grammar)
+// ============================================================
+function buildHeaderHtml() {
+  const passScore = (grammarData && grammarData.passScore) || 90;
+  const myLevel = grammarData ? grammarData.levels.find(l => l.key === levelKey) : null;
+  const bestScore = myLevel && myLevel.bestScore !== null ? myLevel.bestScore : null;
+  const nextKey = levelInfo.next;
+  const nextInfo = nextKey ? LEVEL_CONFIG[nextKey] : null;
+
+  let progressHtml = '';
+  if (nextInfo) {
+    if (bestScore !== null) {
+      const pct = Math.min(100, Math.round((bestScore / passScore) * 100));
+      progressHtml = `
+        <div class="grammar-progress-bar">
+          <div class="lbl">Progress menuju ${nextInfo.shortLabel}</div>
+          <div class="val">Skor terbaik: <strong>${bestScore}</strong> / ${passScore}</div>
+          <div class="track">
+            <div class="fill" style="width:${pct}%;background:${levelInfo.color};"></div>
+          </div>
+          <div class="hint">
+            ${bestScore >= passScore
+              ? `🎉 Kamu sudah lulus! Level ${nextInfo.shortLabel} sudah terbuka.`
+              : `Butuh skor ≥ ${passScore} untuk membuka Level ${nextInfo.shortLabel}.`}
+          </div>
+        </div>`;
+    } else {
+      progressHtml = `
+        <div class="grammar-progress-bar">
+          <div class="lbl">Progress menuju ${nextInfo.shortLabel}</div>
+          <div class="val">Belum pernah dikerjakan</div>
+          <div class="track"><div class="fill" style="width:0%;"></div></div>
+          <div class="hint">Skor ≥ ${passScore} untuk membuka Level ${nextInfo.shortLabel}.</div>
+        </div>`;
+    }
+  } else {
+    progressHtml = `
+      <div class="grammar-progress-bar">
+        <div class="lbl">Level Terakhir</div>
+        <div class="val">${bestScore !== null ? `Skor terbaik: <strong>${bestScore}</strong>` : 'Belum pernah dikerjakan'}</div>
+        <div class="hint">🎓 Selesaikan level ini buat jadi master grammar!</div>
+      </div>`;
+  }
+
+  return `
+    <div style="text-align:center;margin-bottom:16px;font-size:${levelKey === 'lanjutan' ? '42' : '38'}px;">
+      ${levelInfo.icon}
+    </div>
+    <div class="exam-title">Korean Grammar Practice</div>
+    <div class="exam-heading">Tata Bahasa 한국어</div>
+    <div class="exam-subtitle">${levelInfo.desc}</div>
+    <div class="level-badge">${levelInfo.label.toUpperCase()}</div>
+    ${progressHtml}
+  `;
+}
+
+// ============================================================
+//  LOAD QUESTIONS
+// ============================================================
+async function loadQuestions() {
+  const app = document.getElementById('app');
+  app.innerHTML = `<div class="spinner-container"><div class="spinner"></div><p>Memeriksa akses...</p></div>`;
+
+  const check = await checkQuotaAndUnlock();
+
+  if (!check.unlocked) {
+    showLockedScreen(check.data);
+    return;
+  }
+
+  if (!check.canExam) {
+    showBlockedScreen();
+    return;
+  }
+
+  app.innerHTML = `<div class="spinner-container"><div class="spinner"></div><p>Memuat soal ${levelInfo.shortLabel.toLowerCase()}...</p></div>`;
+
+  const url = APPS_SCRIPT_URL + '?action=getData&kategori=' + encodeURIComponent(kategori) + '&t=' + Date.now();
+
+  fetch(url)
+    .then(res => { if (!res.ok) throw new Error('Network error'); return res.json(); })
+    .then(data => {
+      let filtered = Array.isArray(data) ? data : [];
+
+      if (filtered.length > 0) {
+        questions = filtered;
+        startExam();
+      } else {
+        app.innerHTML = `
+          <div class="result-wrap">
+            <div class="exam-icon">${levelInfo.icon}</div>
+            <h1>Belum Ada Soal</h1>
+            <p class="sub">Level <strong>${levelInfo.label}</strong> belum punya soal.<br>Silakan hubungi admin.</p>
+            <a href="dashboard.html" class="btn btn-secondary"><i class="fas fa-arrow-left"></i> Kembali ke Dashboard</a>
+          </div>`;
+      }
+    })
+    .catch(() => {
+      app.innerHTML = `
+        <div class="result-wrap">
+          <div class="exam-icon">⚠️</div>
+          <h1>Gagal Memuat Soal</h1>
+          <p class="sub">Periksa koneksi internet Anda</p>
+          <button class="btn btn-primary" onclick="loadQuestions()"><i class="fas fa-redo"></i> Coba Lagi</button>
+        </div>`;
+    });
+}
+
+// ============================================================
+//  START EXAM
+// ============================================================
+function startExam() {
+  currentIndex = 0;
+  answers = {};
+  isFinished = false;
+  resultSaved = false;
+  startTime = Date.now();
+  examDuration = Math.max(questions.length * 90, 300);
+
+  document.getElementById('examInfo').style.display = 'flex';
+  document.getElementById('progressWrap').style.display = 'block';
+  document.getElementById('totNum').textContent = questions.length;
+
+  if (_user.promoMode) {
+    const tag = document.getElementById('promoTag');
+    if (tag) tag.classList.add('show');
+  }
+
+  if (timerInterval) clearInterval(timerInterval);
+  timerInterval = setInterval(updateTimer, 1000);
+  renderQuestion();
+}
+
+function updateTimer() {
+  if (isFinished) return;
+  const elapsed = Math.floor((Date.now() - startTime) / 1000);
+  const remaining = examDuration - elapsed;
+  const box = document.getElementById('timerBox');
+  const text = document.getElementById('timerText');
+  if (remaining <= 0) { clearInterval(timerInterval); finishExam(true); return; }
+  const m = Math.floor(remaining / 60);
+  const s = remaining % 60;
+  text.textContent = `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+  box.classList.remove('warning','danger');
+  if (remaining <= 60) box.classList.add('danger');
+  else if (remaining <= 300) box.classList.add('warning');
+}
+
+// ============================================================
+//  RENDER QUESTION
+// ============================================================
+function renderQuestion() {
+  const app = document.getElementById('app');
+  const q = questions[currentIndex];
+  const total = questions.length;
+
+  document.getElementById('curNum').textContent = currentIndex + 1;
+  const answeredCount = Object.keys(answers).filter(k => answers[k] !== '' && answers[k] !== undefined).length;
+  document.getElementById('answeredNum').textContent = answeredCount;
+  document.getElementById('progressFill').style.width = ((currentIndex + 1) / total) * 100 + '%';
+
+  const instruksiHtml = q.instruksi
+    ? `<div class="question-instruction">${escapeHtml(q.instruksi)}</div>`
+    : '';
+
+  let mediaHtml = '';
+  if (q.gambar) mediaHtml += `<img src="${q.gambar}" alt="gambar soal" onerror="this.style.display='none'">`;
+  if (q.audio) mediaHtml += `<audio controls preload="metadata" style="width:100%;"><source src="${q.audio}"></audio>`;
+
+  let optionsHtml = '';
+  if (q.section === 'isian') {
+    const val = (answers[currentIndex] || '').replace(/"/g, '&quot;');
+    optionsHtml = `<input type="text" class="fill-input" id="fillInput" placeholder="답을 입력하세요..." value="${val}" oninput="saveAnswer(this.value)">`;
+  } else {
+    const opts = [
+      { n:'1', t:q.opsiA }, { n:'2', t:q.opsiB }, { n:'3', t:q.opsiC }, { n:'4', t:q.opsiD }
+    ].filter(o => o.t);
+    const cls = (q.section === 'pilihan_gambar') ? '' : 'vertical';
+    optionsHtml = `<ul class="options ${cls}">`;
+    opts.forEach(o => {
+      const sel = String(answers[currentIndex]) === o.n ? 'selected' : '';
+      optionsHtml += `<li class="${sel}" onclick="selectAnswer('${o.n}')"><span class="circle">${CIRCLES[o.n]}</span><span>${escapeHtml(o.t)}</span></li>`;
+    });
+    optionsHtml += '</ul>';
+  }
+
+  const hasMedia = mediaHtml !== '';
+  const headerHtml = currentIndex === 0 ? buildHeaderHtml() : '';
+
+  const bodyHtml = hasMedia
+    ? `<div class="question-body"><div class="question-media">${mediaHtml}</div><div class="question-content">${instruksiHtml}${q.soal ? `<div class="question-text">${escapeHtml(q.soal)}</div>` : ''}${optionsHtml}</div></div>`
+    : `<div class="question-body"><div class="question-content">${instruksiHtml}${q.soal ? `<div class="question-text">${escapeHtml(q.soal)}</div>` : ''}${optionsHtml}</div></div>`;
+
+  const isFirst = currentIndex === 0;
+  const isLast = currentIndex === total - 1;
+
+  app.innerHTML = `
+    <div class="exam-paper fade" id="paper">
+      ${headerHtml}
+      <div class="question">
+        <div class="question-num">Soal ${currentIndex + 1} dari ${total}</div>
+        ${bodyHtml}
+      </div>
+    </div>
+    <div class="nav-bar">
+      <button class="btn btn-secondary" onclick="prevQuestion()" ${isFirst ? 'disabled' : ''}><i class="fas fa-arrow-left"></i> Sebelumnya</button>
+      ${isLast
+        ? `<button class="btn btn-success" onclick="finishExam(false)"><i class="fas fa-check"></i> Selesai & Lihat Hasil</button>`
+        : `<button class="btn btn-primary" onclick="nextQuestion()">Selanjutnya <i class="fas fa-arrow-right"></i></button>`}
+    </div>`;
+  window.scrollTo({top: 0, behavior: 'smooth'});
+}
+
+function selectAnswer(num) {
+  answers[currentIndex] = num;
+  document.querySelectorAll('.options li').forEach(li => {
+    const circle = li.querySelector('.circle').textContent;
+    li.classList.toggle('selected', circle === CIRCLES[num]);
+  });
+  updateAnsweredCount();
+}
+function saveAnswer(val) { answers[currentIndex] = val; updateAnsweredCount(); }
+function updateAnsweredCount() {
+  const n = Object.keys(answers).filter(k => answers[k] !== '' && answers[k] !== undefined).length;
+  document.getElementById('answeredNum').textContent = n;
+}
+function nextQuestion() { if (currentIndex < questions.length - 1) { currentIndex++; renderQuestion(); } }
+function prevQuestion() { if (currentIndex > 0) { currentIndex--; renderQuestion(); } }
+
+// ============================================================
+//  FINISH EXAM
+// ============================================================
+function finishExam(timeUp) {
+  if (isFinished) return;
+  if (!timeUp && !confirm('Yakin ingin menyelesaikan latihan dan lihat hasil?')) return;
+
+  isFinished = true;
+  clearInterval(timerInterval);
+
+  let correct = 0, wrong = 0, blank = 0;
+
+  questions.forEach((q, i) => {
+    const ua = (answers[i] || '').toString().trim();
+    const ca = (q.jawaban || '').toString().trim();
+    if (!ua) { blank++; return; }
+    let isCorrect = false;
+    if (q.section === 'isian') isCorrect = ua.toLowerCase() === ca.toLowerCase();
+    else isCorrect = ua === ca;
+    if (isCorrect) correct++;
+    else wrong++;
+  });
+
+  const total = questions.length;
+  const score = Math.round((correct / total) * 100);
+  const passScore = (grammarData && grammarData.passScore) || 90;
+
+  document.getElementById('examInfo').style.display = 'none';
+  document.getElementById('progressWrap').style.display = 'none';
+
+  // Cek apakah naik level
+  const nextKey = levelInfo.next;
+  const nextInfo = nextKey ? LEVEL_CONFIG[nextKey] : null;
+  const isUnlock = nextInfo && score >= passScore;
+
+  let grade = 'A', color = 'var(--green)', gradeText = 'Luar Biasa!';
+  if (score < 90) { grade = 'B'; gradeText = 'Bagus!'; }
+  if (score < 80) { grade = 'C'; color = 'var(--yellow)'; gradeText = 'Cukup Baik'; }
+  if (score < 70) { grade = 'D'; color = 'var(--yellow)'; gradeText = 'Perlu Belajar Lagi'; }
+  if (score < 60) { grade = 'E'; color = 'var(--red)'; gradeText = 'Ayo Semangat!'; }
+
+  // Banner notif unlock
+  let bannerHtml = '';
+  if (isUnlock) {
+    bannerHtml = `
+      <div class="unlock-banner">
+        <div class="ico">🎉</div>
+        <div>
+          <strong>Level ${nextInfo.shortLabel} Terbuka!</strong>
+          Selamat! Skor kamu ${score} (≥ ${passScore}), sekarang kamu bisa mengerjakan <strong>${nextInfo.label}</strong>.
+          <br>
+          <button class="btn-goto" onclick="goToNextLevel('${nextKey}')">
+            Mulai ${nextInfo.shortLabel} Sekarang <i class="fas fa-arrow-right"></i>
+          </button>
+        </div>
+      </div>`;
+  } else if (nextInfo) {
+    const gap = passScore - score;
+    bannerHtml = `
+      <div class="locked-next">
+        <div class="ico">🔒</div>
+        <div>
+          Skor kamu <strong>${score}</strong>, butuh <strong>${gap}</strong> poin lagi buat buka <strong>Level ${nextInfo.shortLabel}</strong> (minimal ${passScore}).
+          Coba lagi ya!
+        </div>
+      </div>`;
+  }
+
+  document.getElementById('app').innerHTML = `
+    <div class="result-wrap fade">
+      <div class="exam-icon">${levelInfo.icon}</div>
+      <h1>Latihan ${levelInfo.shortLabel} Selesai!</h1>
+      <p class="sub">${timeUp ? 'Waktu habis' : 'Hasil latihan tata bahasa'} — ${gradeText}</p>
+
+      ${bannerHtml}
+
+      <div class="score-big" style="color:${color};"><div class="num">${score}</div><div class="lbl">SKOR AKHIR</div></div>
+      <p style="font-size:16px;font-weight:600;color:${color};margin-bottom:20px;">Grade ${grade}</p>
+      <div class="stat-grid">
+        <div class="stat green"><div class="n">${correct}</div><div class="l">정답 (Benar)</div></div>
+        <div class="stat red"><div class="n">${wrong}</div><div class="l">오답 (Salah)</div></div>
+        <div class="stat gray"><div class="n">${blank}</div><div class="l">미응답 (Kosong)</div></div>
+      </div>
+      <div id="saveStatus" style="text-align:center;"></div>
+      <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:20px;">
+        <a href="dashboard.html" class="btn btn-secondary"><i class="fas fa-home"></i> Dashboard</a>
+        <a href="riwayat.html" class="btn btn-warning"><i class="fas fa-history"></i> Riwayat</a>
+        <button class="btn btn-primary" onclick="location.reload()"><i class="fas fa-redo"></i> Ulangi</button>
+        <button class="btn btn-success" onclick="showReview()"><i class="fas fa-list"></i> Review Jawaban</button>
+      </div>
+      <div id="reviewBox" style="display:none;margin-top:28px;"></div>
+    </div>`;
+  window.scrollTo({top: 0, behavior: 'smooth'});
+
+  saveResultToServer(score, correct, wrong, blank, total);
+}
+
+function goToNextLevel(nextKey) {
+  location.href = 'tatabahasa.html?level=' + nextKey;
+}
+
+// ============================================================
+//  SAVE RESULT
+// ============================================================
+function saveResultToServer(skor, benar, salah, kosong, total) {
+  if (resultSaved) return;
+  resultSaved = true;
+  const statusBox = document.getElementById('saveStatus');
+  if (statusBox) statusBox.innerHTML = '<span class="saved-badge"><i class="fas fa-spinner fa-spin"></i> Menyimpan hasil...</span>';
+
+  fetch(APPS_SCRIPT_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+    body: JSON.stringify({
+      action: 'saveResult',
+      username: _user.username,
+      kategori: kategori,
+      skor, benar, salah, kosong, total,
+      benarListening: 0, totalListening: 0,
+      benarReading: benar, totalReading: total
+    })
+  })
+  .then(r => r.text())
+  .then(text => {
+    let res; try { res = JSON.parse(text); } catch(e) { res = { success: false }; }
+    if (statusBox) {
+      if (res.success) {
+        _user.quotaUsed = res.quotaUsed;
+        _user.quotaMax = res.quotaMax;
+        localStorage.setItem('user', JSON.stringify(_user));
+
+        if (res.premium || _user.promoMode) {
+          const label = _user.promoMode ? 'PROMO — GRATIS unlimited' : 'Premium — unlimited';
+          statusBox.innerHTML = `<span class="saved-badge" style="background:var(--sub-bg);color:var(--green);border-color:var(--green);"><i class="fas fa-infinity"></i> Hasil tersimpan · ${label}</span>`;
+        } else {
+          const remain = res.remaining;
+          const remainText = remain > 0 ? ` · Sisa kuota: ${remain}` : ' · Kuota habis';
+          statusBox.innerHTML = `<span class="saved-badge"><i class="fas fa-check"></i> Hasil tersimpan${remainText}</span>`;
+        }
+      } else {
+        statusBox.innerHTML = '<span class="saved-badge" style="background:var(--sub-bg);color:var(--red);border-color:var(--red);"><i class="fas fa-times"></i> ' + (res.msg || 'Gagal simpan hasil') + '</span>';
+      }
+    }
+  })
+  .catch(() => {
+    if (statusBox) statusBox.innerHTML = '<span class="saved-badge" style="background:var(--sub-bg);color:var(--red);border-color:var(--red);"><i class="fas fa-times"></i> Gagal simpan hasil</span>';
+  });
+}
+
+// ============================================================
+//  REVIEW
+// ============================================================
+function showReview() {
+  const box = document.getElementById('reviewBox');
+  if (box.style.display === 'block') { box.style.display = 'none'; return; }
+  let html = '';
+  questions.forEach((q, i) => {
+    const ua = (answers[i] || '').toString().trim();
+    const ca = (q.jawaban || '').toString().trim();
+    let ok = false;
+    if (q.section === 'isian') ok = ua.toLowerCase() === ca.toLowerCase();
+    else ok = ua === ca;
+    const dispUA = (q.section === 'isian') ? (ua || '(kosong)') : (CIRCLES[ua] || ua || '(kosong)');
+    const dispCA = (q.section === 'isian') ? ca : (CIRCLES[ca] || ca);
+    html += `
+      <div class="review-item ${ok ? 'correct' : 'wrong'}">
+        <div class="rhead"><span>Soal ${i + 1}</span><span class="${ok ? 'ok' : 'no'}">${ok ? 'Benar' : 'Salah'}</span></div>
+        <div class="rq">${q.soal ? escapeHtml(q.soal) : '(gambar/audio)'}</div>
+        <div class="ra">Jawaban Anda: <strong>${escapeHtml(dispUA)}</strong><br>Jawaban Benar: <strong style="color:var(--green);">${escapeHtml(dispCA)}</strong>${q.pembahasan ? `<br><br><strong>Pembahasan:</strong> ${escapeHtml(q.pembahasan)}` : ''}</div>
+      </div>`;
+  });
+  box.innerHTML = html;
+  box.style.display = 'block';
+}
+
+// ============================================================
+//  GO
+// ============================================================
+loadQuestions();
+</script>
+</body>
+</html>
