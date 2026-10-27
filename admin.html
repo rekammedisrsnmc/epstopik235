@@ -761,6 +761,16 @@ input:checked + .slider:before{transform:translateX(20px);}
         <div class="hint">Tema ini menentukan dropdown di dashboard user</div>
       </div>
 
+      <div class="form-group" id="tataBahasaGroup" style="display:none;">
+        <label>Level Tata Bahasa <span class="req">*</span></label>
+        <select id="tataBahasaLevel">
+          <option value="dasar">Level Dasar (초급)</option>
+          <option value="menengah">Level Menengah (중급)</option>
+          <option value="lanjutan">Level Lanjutan (고급)</option>
+        </select>
+        <div class="hint">User harus lulus level sebelumnya (skor ≥ 90) untuk membuka level berikutnya</div>
+      </div>
+
       <div class="form-group">
         <label><i class="fas fa-info-circle"></i> Instruksi / Petunjuk Soal (opsional)</label>
         <textarea id="instruksi" placeholder="Contoh: 다음을 듣고 알맞은 답을 고르십시오." style="min-height:60px;"></textarea>
@@ -887,7 +897,9 @@ input:checked + .slider:before{transform:translateX(20px);}
           <option value="">Semua Kategori</option>
           <optgroup label="Umum">
             <option value="eps">Soal EPS-TOPIK</option>
-            <option value="tata_bahasa">Tata Bahasa</option>
+            <option value="tata_bahasa_dasar">Tata Bahasa: Dasar</option>
+            <option value="tata_bahasa_menengah">Tata Bahasa: Menengah</option>
+            <option value="tata_bahasa_lanjutan">Tata Bahasa: Lanjutan</option>
             <option value="listening">Listening</option>
             <option value="reading">Reading</option>
             <option value="umum">Umum</option>
@@ -1398,7 +1410,7 @@ function toggleTheme(){
 }
 applyTheme(localStorage.getItem('theme') || 'light');
 
-const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbytITG_mDmZfuH7mm6WHqOx1dm42nW7Hp18IK3vUBODVXJLtbZkyp5lNVKo59ZcEmCt/exec';
+const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzHdHNjEqV3qfIg_UfHaOrimoHH5SpYG2KFGNFgu4P2J8she0Ho0b1emQTSm6knEMa_/exec';
 
 async function fetchWithTimeout(url, options = {}, timeoutMs = 90000) {
   const controller = new AbortController();
@@ -1543,11 +1555,13 @@ function closeModal(id) {
 function onKategoriChange() {
   const sel = document.getElementById('kategoriUtama');
   const temaGroup = document.getElementById('temaGroup');
+  const tbGroup = document.getElementById('tataBahasaGroup');
   const opsiImgBox = document.getElementById('opsiImgBox');
   if (!sel) return;
 
   const val = sel.value;
   if (temaGroup) temaGroup.style.display = (val === 'kosakata') ? 'block' : 'none';
+  if (tbGroup) tbGroup.style.display = (val === 'tata_bahasa') ? 'block' : 'none';
   if (opsiImgBox) opsiImgBox.style.display = (val === 'eps') ? 'block' : 'none';
 }
 
@@ -1555,11 +1569,19 @@ function getFinalKategori() {
   const sel = document.getElementById('kategoriUtama');
   if (!sel) return 'umum';
   const utama = sel.value;
+
   if (utama === 'kosakata') {
     const temaSel = document.getElementById('temaKategori');
     const tema = temaSel ? temaSel.value : 'umum';
     return 'kosakata_' + tema;
   }
+
+  if (utama === 'tata_bahasa') {
+    const tbSel = document.getElementById('tataBahasaLevel');
+    const lv = tbSel ? tbSel.value : 'dasar';
+    return 'tata_bahasa_' + lv;
+  }
+
   return utama;
 }
 
@@ -1695,7 +1717,10 @@ function getTemaLabel(kategori) {
     'kosakata_alam': 'Alam',
     'kosakata_pekerjaan': 'Pekerjaan',
     'kosakata_hobi': 'Hobi',
-    'kosakata_umum': 'Umum'
+    'kosakata_umum': 'Umum',
+    'tata_bahasa_dasar': 'Tata Bahasa: Dasar',
+    'tata_bahasa_menengah': 'Tata Bahasa: Menengah',
+    'tata_bahasa_lanjutan': 'Tata Bahasa: Lanjutan'
   };
   return map[kategori] || kategori;
 }
@@ -1849,15 +1874,25 @@ function editSoal(i) {
   const qKat = String(q.kategori || 'umum').toLowerCase();
   let utamaKat = qKat;
   let temaKat = 'umum';
+  let tbKat = 'dasar';
+
   if (qKat.startsWith('kosakata_')) {
     utamaKat = 'kosakata';
     temaKat = qKat.replace('kosakata_', '');
   } else if (qKat === 'kosakata') {
     utamaKat = 'kosakata';
     temaKat = 'umum';
+  } else if (qKat.startsWith('tata_bahasa_')) {
+    utamaKat = 'tata_bahasa';
+    tbKat = qKat.replace('tata_bahasa_', '');
+  } else if (qKat === 'tata_bahasa') {
+    utamaKat = 'tata_bahasa';
+    tbKat = 'dasar';
   }
+
   const katEl = document.getElementById('kategoriUtama'); if (katEl) katEl.value = utamaKat;
   const temaEl = document.getElementById('temaKategori'); if (temaEl) temaEl.value = temaKat;
+  const tbEl = document.getElementById('tataBahasaLevel'); if (tbEl) tbEl.value = tbKat;
   onKategoriChange();
 
   const instruksiEl = document.getElementById('instruksi'); if (instruksiEl) instruksiEl.value = q.instruksi || '';
@@ -1940,6 +1975,7 @@ function resetForm() {
   setVal('kategoriUtama', 'eps');
   setVal('temaKategori', 'transportasi');
   onKategoriChange();
+  setVal('tataBahasaLevel', 'dasar');
 
   setVal('instruksi', '');
   setVal('soal', '');
