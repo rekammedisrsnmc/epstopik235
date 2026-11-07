@@ -840,33 +840,40 @@ body.promo-mode #premiumBadge{display:none !important;}
   .hello{font-size:19px;}
   .topbar{padding:10px 14px; gap:6px;}
   
-  /* --- FIX FOTO PROFIL DI HP --- */
+  /* --- FIX TOPBAR DI HP --- */
+  
+  /* 1. Logo biar nggak turun baris & sembunyiin ikon topinya */
+  .topbar h1{font-size:14px; white-space:nowrap;}
+  .topbar h1 i{display:none;}
+  
+  /* 2. Foto profil dipaksa muncul, nama/email/badge disembunyiin */
   .topbar .user .user-meta{display:none !important;}
   .topbar .user > .badge{display:none !important;}
   .topbar .topbar-user-badges{display:none !important;}
-  
-  .topbar .user{
-    display:flex;
-    margin-right:2px;
-  }
+  .topbar .user{display:flex; margin-right:2px;}
   .topbar .avatar-mini,
   .topbar .avatar-init{
-    width:32px;
-    height:32px;
-    font-size:14px;
+    width:32px; height:32px; font-size:14px;
   }
-  .topbar .logout{
-    padding:6px 8px;
-    font-size:12px;
-  }
-  /* ------------------------------ */
-
-  /* --- KECILIN TOMBOL NOTIF & TEMA DI HP --- */
+  
+  /* 3. Tombol Notif & Tema dikecilin & anti-gepeng */
   .topbar .btn-icon{
-    width:32px;
-    height:32px;
-    font-size:12px;
+    width:32px; height:32px; font-size:12px; flex-shrink:0;
   }
+  
+  /* 4. Tombol Keluar jadi ikon bulat aja (teksnya hilang) */
+  .topbar .logout{
+    padding:0;
+    width:32px; height:32px;
+    border-radius:50%;
+    border:1px solid var(--border);
+    display:flex; align-items:center; justify-content:center;
+    flex-shrink:0;
+  }
+  .topbar .logout .logout-text{
+    display:none !important;
+  }
+  
   /* ---------------------------------------- */
 
   .quick-stats{grid-template-columns:1fr;}
@@ -923,7 +930,9 @@ body.promo-mode #premiumBadge{display:none !important;}
   </div>
 
   <button class="btn-icon" onclick="toggleTheme()" title="Toggle dark mode"><i class="fas fa-moon" id="themeIcon"></i></button>
-  <a href="#" class="logout" onclick="logout(event)"><i class="fas fa-sign-out-alt"></i> Keluar</a>
+  <a href="#" class="logout" onclick="logout(event)" title="Keluar">
+  <i class="fas fa-sign-out-alt"></i> <span class="logout-text">Keluar</span>
+</a>
 </div>
 
 <div class="wrap">
