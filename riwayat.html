@@ -561,14 +561,48 @@ body{
 
 /* ===== RESPONSIVE ===== */
 @media(max-width:700px){
-  .topbar{padding:12px 16px;}
-  .topbar .user .user-meta{display:none;}
+  /* --- FIX TOPBAR DI HP --- */
+  .topbar{padding:10px 14px; gap:6px;}
+  .topbar .user .user-meta{display:none !important;}
+  .topbar .user > .badge{display:none !important;}
+  
+  .topbar .user{
+    display:flex;
+    margin-right:2px;
+  }
+  .topbar .avatar-mini,
+  .topbar .avatar-init{
+    width:32px;
+    height:32px;
+    font-size:14px;
+  }
+  
+  /* Kecilin tombol notif & tema */
+  .topbar .btn-icon{
+    width:32px;
+    height:32px;
+    font-size:12px;
+  }
+  
+  /* Rapiin tombol dashboard & logout */
+  .topbar .btn-dashboard{
+    padding:5px 10px;
+    font-size:11px;
+  }
+  .topbar .logout{
+    padding:6px 8px;
+    font-size:12px;
+  }
+  /* ------------------------ */
+
   .notif-dropdown{position:fixed;top:70px;right:12px;left:12px;width:auto;}
   .wrap{margin:20px auto;}
   .stats{grid-template-columns:repeat(2,1fr);}
   .hist-item{flex-wrap:wrap;}
   .hist-actions{width:100%;}
   .hist-actions .btn{flex:1;justify-content:center;}
+  
+  /* Penyesuaian Sertifikat di HP */
   .cert-body{padding:20px;}
   .cert-kop{padding:14px 20px;}
   .cert-main{grid-template-columns:1fr;}
@@ -689,7 +723,7 @@ function toggleTheme(){
 }
 applyTheme(localStorage.getItem('theme') || 'light');
 
-const API = 'https://script.google.com/macros/s/AKfycbzHdHNjEqV3qfIg_UfHaOrimoHH5SpYG2KFGNFgu4P2J8she0Ho0b1emQTSm6knEMa_/exec';
+const API = 'https://script.google.com/macros/s/AKfycbzzS6CqUb5Vs889lnhT17OXGLuQY4oI1l64QTFWMrutpNjfN7JzRkh65fnWi4HeT1jlvQ/exec';
 
 if (!checkSession()) throw new Error('Session expired');
 
