@@ -51,7 +51,7 @@ body{
   transition:background .2s,color .2s;
 }
 
-/* ===== TOPBAR (persis kaya dashboard) ===== */
+/* ===== TOPBAR ===== */
 .topbar{
   background:var(--card-bg);
   padding:14px 24px;
@@ -73,7 +73,6 @@ body{
 .topbar h1 i{color:var(--muted);font-size:14px;}
 .topbar .spacer{flex:1;}
 
-/* User — POLOS (no pill) */
 .topbar .user{
   font-size:13px;color:var(--muted);
   display:flex;align-items:center;gap:8px;
@@ -102,7 +101,6 @@ body{
   font-size:12px;font-weight:600;
 }
 
-/* Badge — outline, no background */
 .topbar .user .badge{
   font-size:10px;
   padding:2px 8px;
@@ -115,7 +113,6 @@ body{
 .topbar .user .badge.user{color:var(--muted);border-color:var(--border);}
 .topbar .user .badge.premium{color:var(--gold);border-color:var(--gold);font-weight:700;}
 
-/* Icon bell & moon — BULAT */
 .topbar .btn-icon{
   background:transparent;
   border:1px solid var(--border);
@@ -131,7 +128,6 @@ body{
 }
 .topbar .btn-icon:hover{color:var(--text);border-color:var(--text);}
 
-/* Tombol Dashboard — subtle */
 .topbar .btn-dashboard{
   background:transparent;
   border:1px solid var(--border);
@@ -146,7 +142,6 @@ body{
 }
 .topbar .btn-dashboard:hover{background:var(--sub-bg);border-color:var(--muted);}
 
-/* Tombol Keluar — link teks */
 .topbar .logout{
   color:var(--red);
   text-decoration:none;
@@ -406,15 +401,54 @@ body{
 }
 @keyframes spin{100%{transform:rotate(360deg)}}
 
-/* ===== RESPONSIVE ===== */
+/* ===== RESPONSIVE (MOBILE FIX) ===== */
 @media(max-width:600px){
-  .topbar{padding:12px 16px;}
-  .topbar .user .user-meta{display:none;}
-  .notif-dropdown{position:fixed;top:70px;right:12px;left:12px;width:auto;}
   .wrap{margin:20px auto;}
   .card{padding:18px;}
   .avatar-section{gap:16px;}
   .avatar-preview{width:88px;height:88px;font-size:30px;}
+  
+  /* --- FIX TOPBAR DI HP --- */
+  .topbar{padding:10px 14px; gap:6px;}
+  
+  /* 1. Logo biar nggak turun baris & sembunyiin ikon topinya */
+  .topbar h1{font-size:14px; white-space:nowrap;}
+  .topbar h1 i{display:none;}
+  
+  /* 2. Foto profil dipaksa muncul, nama/email/badge disembunyiin */
+  .topbar .user .user-meta{display:none !important;}
+  .topbar .user > .badge{display:none !important;}
+  .topbar .user{display:flex; margin-right:2px;}
+  .topbar .avatar-mini,
+  .topbar .avatar-init{
+    width:32px; height:32px; font-size:14px;
+  }
+  
+  /* 3. Tombol Notif & Tema dikecilin & anti-gepeng */
+  .topbar .btn-icon{
+    width:32px; height:32px; font-size:12px; flex-shrink:0;
+  }
+  
+  /* 4. Tombol Dashboard dikecilin paddingnya */
+  .topbar .btn-dashboard{
+    padding:5px 10px; font-size:11px; flex-shrink:0;
+  }
+
+  /* 5. Tombol Keluar jadi ikon bulat aja (teksnya hilang) */
+  .topbar .logout{
+    padding:0;
+    width:32px; height:32px;
+    border-radius:50%;
+    border:1px solid var(--border);
+    display:flex; align-items:center; justify-content:center;
+    flex-shrink:0;
+  }
+  .topbar .logout .logout-text{
+    display:none !important;
+  }
+  /* ---------------------------------------- */
+
+  .notif-dropdown{position:fixed;top:70px;right:12px;left:12px;width:auto;}
 }
 </style>
 </head>
@@ -456,8 +490,8 @@ body{
   <a href="dashboard.html" class="btn-dashboard">
     <i class="fas fa-home"></i> Dashboard
   </a>
-  <a href="#" class="logout" onclick="logout(event)">
-    <i class="fas fa-sign-out-alt"></i> Keluar
+  <a href="#" class="logout" onclick="logout(event)" title="Keluar">
+    <i class="fas fa-sign-out-alt"></i> <span class="logout-text">Keluar</span>
   </a>
 </div>
 
