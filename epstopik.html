@@ -90,37 +90,45 @@ body{
   flex-shrink:0;
 }
 
-.question-body{
-  display:flex;
-  gap:16px;
-  align-items:flex-start;
+.question-body {
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+  flex-wrap: wrap; /* Biar kalau sempit, gambar pindah ke atas teks */
 }
-.question-media{
-  flex-shrink:0;
-  width:200px;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  gap:8px;
+.question-media {
+  flex-shrink: 0;
+  width: auto;
+  max-width: 100%; /* Biar gambar fleksibel */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
 }
-.question-media img{
-  max-width:100%;
-  max-height:180px;
-  border-radius:6px;
-  object-fit:contain;
-  border:1px solid var(--border);
-  padding:4px;
-  background:var(--card-bg);
+.question-media img {
+  max-width: 100%;
+  max-height: 220px; /* Sedikit gedein dari 180px */
+  border-radius: 6px;
+  object-fit: contain;
+  border: 1px solid var(--border);
+  padding: 4px;
+  background: var(--card-bg);
 }
 .question-media audio{width:100%;margin-top:8px;}
 
-.question-text{
-  font-size:15px;
-  line-height:1.8;
-  color:var(--text);
-  margin-bottom:10px;
+.question-text {
+  font-size: 15px;
+  line-height: 1.8;
+  color: var(--text);
+  margin-bottom: 12px;
+  white-space: pre-wrap; /* INI KUNCINYA BIAR ENTER KEBAWA */
+  word-break: break-word;
 }
-.question-content{flex:1;min-width:0;}
+.question-content {
+  flex: 1;
+  min-width: 300px; /* Biar teks gak dipaksa sempit */
+}
 
 .options{
   list-style:none;
@@ -130,20 +138,22 @@ body{
   margin-top:12px;
 }
 .options.vertical{grid-template-columns:1fr;}
-.options li{
-  font-size:15px;
-  line-height:1.6;
-  color:var(--text);
-  padding:8px 12px;
-  border-radius:8px;
-  cursor:pointer;
-  transition:.15s;
-  display:flex;
-  align-items:center;
-  gap:8px;
-  border:1.5px solid var(--border);
-  user-select:none;
-  background:var(--card-bg);
+.options li {
+  font-size: 14px; /* Kecilin dikit dari 15px biar seimbang */
+  line-height: 1.5;
+  color: var(--text);
+  padding: 12px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: .15s;
+  display: flex;
+  align-items: flex-start; /* Ubah dari center ke flex-start */
+  gap: 10px;
+  border: 1.5px solid var(--border);
+  user-select: none;
+  background: var(--card-bg);
+  word-break: break-word; /* Biar teks panjang turun ke bawah */
+
 }
 .options li:hover{border-color:var(--accent);}
 .options li.selected{
@@ -151,10 +161,12 @@ body{
   background:var(--accent-light);
   font-weight:500;
 }
-.options li .circle{
-  font-size:15px;
-  color:var(--muted);
-  flex-shrink:0;
+.options li .circle {
+  font-size: 14px;
+  color: var(--muted);
+  flex-shrink: 0;
+  font-weight: 500;
+  margin-top: 2px; /* Biar sejajar sama baris pertama teks */
 }
 .options li.selected .circle{color:var(--accent);}
 .options li img{
@@ -489,6 +501,94 @@ footer{
   margin-bottom:22px;
 }
 
+/* ===== IMAGE LOADING SKELETON ===== */
+.img-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 120px;
+  min-height: 100px;
+  border-radius: 8px;
+  background: var(--sub-bg);
+  border: 1px dashed var(--border);
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+/* Efek kilau loading */
+.img-wrapper::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+  animation: shimmer 1.5s infinite;
+  z-index: 1;
+}
+
+.img-wrapper.loaded {
+  background: transparent;
+  border: 1px solid var(--border); /* Ganti dari dashed ke solid */
+  min-height: auto;
+}
+
+.img-wrapper.loaded::before {
+  display: none; /* Hilangkan animasi kalau udah load */
+}
+
+.img-wrapper img {
+  max-width: 100%;
+  max-height: 220px; /* Samain dengan css sebelumnya */
+  border-radius: 6px;
+  object-fit: contain;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 2;
+}
+
+.img-wrapper.loaded img {
+  opacity: 1;
+}
+
+/* Placeholder Ikon & Teks */
+.img-placeholder {
+  position: absolute;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.img-placeholder i {
+  font-size: 24px;
+  animation: pulse 1.5s infinite alternate;
+}
+
+@keyframes shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+@keyframes pulse {
+  0% { opacity: 0.5; transform: scale(0.95); }
+  100% { opacity: 1; transform: scale(1.05); }
+}
+
+/* Khusus gambar di dalam Opsi Jawaban */
+.options li .img-wrapper {
+  min-width: 80px;
+  min-height: 60px;
+  border: none;
+  background: transparent;
+}
+.options li .img-wrapper.loaded {
+  border: none;
+}
+
 .modal-back{
   display:none;
   position:fixed;
@@ -654,7 +754,7 @@ function toggleTheme(){
 }
 applyTheme(localStorage.getItem('theme') || 'light');
 
-const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzHdHNjEqV3qfIg_UfHaOrimoHH5SpYG2KFGNFgu4P2J8she0Ho0b1emQTSm6knEMa_/exec';
+const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzzS6CqUb5Vs889lnhT17OXGLuQY4oI1l64QTFWMrutpNjfN7JzRkh65fnWi4HeT1jlvQ/exec';
 
 if (!checkSession()) throw new Error('Session expired');
 
@@ -865,7 +965,19 @@ function renderQuestion() {
     : '';
 
   let mediaHtml = '';
-  if (q.gambar) mediaHtml += `<img src="${q.gambar}" alt="gambar soal" onerror="this.style.display='none'">`;
+  if (q.gambar) {
+    mediaHtml += `
+      <div class="img-wrapper" id="imgWrap-${currentIndex}">
+        <div class="img-placeholder">
+          <i class="fas fa-image"></i>
+          <span>Memuat gambar...</span>
+        </div>
+        <img src="${q.gambar}" alt="gambar soal" 
+            onload="document.getElementById('imgWrap-${currentIndex}').classList.add('loaded');" 
+            onerror="this.style.display='none'; this.parentNode.innerHTML='<div class=\\'img-placeholder\\' style=\\'color:var(--red)\\'><i class=\\'fas fa-exclamation-triangle\\'></i><span>Gambar gagal dimuat</span></div>';">
+      </div>
+    `;
+  }
   if (q.audio) mediaHtml += `<audio controls preload="metadata" style="width:100%;"><source src="${q.audio}"></audio>`;
 
   let optionsHtml = '';
@@ -885,18 +997,26 @@ function renderQuestion() {
     opts.forEach(o => {
       const sel = String(answers[currentIndex]) === o.n ? 'selected' : '';
 
-      const contentHtml = o.img
-        ? `<img src="${o.img}" style="max-width:100%;max-height:80px;border-radius:6px;object-fit:contain;" onerror="this.style.display='none';this.nextSibling.style.display='inline'"><span style="display:none;">${escapeHtml(o.t || '')}</span>`
-        : `<span>${escapeHtml(o.t || '')}</span>`;
+    const contentHtml = o.img
+    ? `
+      <div class="img-wrapper" style="min-height:60px; width:100px;">
+        <div class="img-placeholder"><i class="fas fa-spinner fa-spin" style="font-size:16px;"></i></div>
+        <img src="${o.img}" 
+            onload="this.parentNode.classList.add('loaded');" 
+            onerror="this.style.display='none'; this.parentNode.innerHTML='<span style=\\'font-size:11px;color:var(--red);text-align:center;\\'>Error</span>';">
+      </div>
+      <span>${escapeHtml(o.t || '')}</span>
+    `
+    : `<span>${escapeHtml(o.t || '')}</span>`;
 
-      optionsHtml += `
-        <li class="${sel}" onclick="selectAnswer('${o.n}')">
-          <span class="circle">${CIRCLES[o.n]}</span>
-          ${contentHtml}
-        </li>`;
-    });
-    optionsHtml += '</ul>';
-  }
+        optionsHtml += `
+          <li class="${sel}" onclick="selectAnswer('${o.n}')">
+            <span class="circle">${CIRCLES[o.n]}</span>
+            ${contentHtml}
+          </li>`;
+      });
+      optionsHtml += '</ul>';
+    }
 
   const hasMedia = mediaHtml !== '';
   const numHtml = `<div class="question-num">${currentIndex + 1}</div>`;
