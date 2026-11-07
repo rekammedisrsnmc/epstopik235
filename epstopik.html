@@ -978,7 +978,15 @@ function renderQuestion() {
       </div>
     `;
   }
-  if (q.audio) mediaHtml += `<audio controls preload="metadata" style="width:100%;"><source src="${q.audio}"></audio>`;
+  if (q.audio) {
+  // Ubah link Google Drive jadi link preview
+  let audioUrl = q.audio;
+  if (audioUrl.includes('lh3.googleusercontent.com/d/')) {
+    const fileId = audioUrl.split('/d/')[1].split('?')[0];
+    audioUrl = `https://drive.google.com/file/d/${fileId}/preview`;
+  }
+  mediaHtml += `<iframe src="${audioUrl}" width="100%" height="80" allow="autoplay" style="border:none;border-radius:8px;margin-top:8px;"></iframe>`;
+}
 
   let optionsHtml = '';
   if (q.section === 'isian') {
