@@ -636,7 +636,40 @@ input:checked + .slider:before{transform:translateX(20px);}
   .row-2,.row-4{grid-template-columns:1fr;}
   .card{padding:18px;}
   .tab-btn{font-size:12px;padding:9px 10px;min-width:auto;}
-  .topbar .user .user-meta{display:none;}
+  
+  /* --- FIX TOPBAR DI HP --- */
+  .topbar{padding:10px 14px; gap:6px;}
+  .topbar .user .user-meta{display:none !important;}
+  .topbar .user > .badge{display:none !important;}
+  .topbar .user .name-row{display:none !important;} /* Sembunyiin nama & badge admin */
+  
+  .topbar .user{
+    display:flex;
+    margin-right:2px;
+  }
+  .topbar .avatar-mini,
+  .topbar .avatar-init{
+    width:32px;
+    height:32px;
+    font-size:14px;
+  }
+  /* Kecilin tombol notif & tema */
+  .topbar .btn-icon{
+    width:32px;
+    height:32px;
+    font-size:12px;
+  }
+  /* Rapiin tombol dashboard & logout */
+  .topbar .btn-dashboard{
+    padding:5px 10px;
+    font-size:11px;
+  }
+  .topbar .logout{
+    padding:6px 8px;
+    font-size:12px;
+  }
+  /* ------------------------ */
+
   .notif-dropdown{position:fixed;top:70px;right:12px;left:12px;width:auto;}
   .wrap{padding:0 14px;}
 }
@@ -1410,7 +1443,7 @@ function toggleTheme(){
 }
 applyTheme(localStorage.getItem('theme') || 'light');
 
-const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzHdHNjEqV3qfIg_UfHaOrimoHH5SpYG2KFGNFgu4P2J8she0Ho0b1emQTSm6knEMa_/exec';
+const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzzS6CqUb5Vs889lnhT17OXGLuQY4oI1l64QTFWMrutpNjfN7JzRkh65fnWi4HeT1jlvQ/exec';
 
 async function fetchWithTimeout(url, options = {}, timeoutMs = 90000) {
   const controller = new AbortController();
