@@ -335,8 +335,38 @@ body{
 
 /* ===== RESPONSIVE ===== */
 @media(max-width:600px){
-  .topbar{padding:12px 16px;}
-  .topbar .user .user-meta{display:none;}
+  /* --- FIX TOPBAR DI HP --- */
+  .topbar{padding:10px 14px; gap:6px;}
+  .topbar .user .user-meta{display:none !important;}
+  .topbar .user > .badge{display:none !important;}
+  
+  .topbar .user{
+    display:flex;
+    margin-right:2px;
+  }
+  .topbar .avatar-mini,
+  .topbar .avatar-init{
+    width:32px;
+    height:32px;
+    font-size:14px;
+  }
+  
+  /* Kecilin tombol notif & tema */
+  .topbar .btn-icon{
+    width:32px;
+    height:32px;
+    font-size:12px;
+  }
+  
+  /* Rapiin tombol dashboard */
+  .topbar .btn-dashboard, 
+  .topbar .btn-sm{
+    padding:5px 10px;
+    font-size:11px;
+  }
+  /* ------------------------ */
+
+  /* Penyesuaian List Notifikasi */
   .notif-item{flex-direction:column;gap:10px;}
   .notif-item .actions{flex-direction:row;width:100%;}
   .notif-item .actions .btn{flex:1;justify-content:center;}
@@ -432,7 +462,7 @@ function toggleTheme(){
 }
 applyTheme(localStorage.getItem('theme') || 'light');
 
-const API = 'https://script.google.com/macros/s/AKfycbzHdHNjEqV3qfIg_UfHaOrimoHH5SpYG2KFGNFgu4P2J8she0Ho0b1emQTSm6knEMa_/exec';
+const API = 'https://script.google.com/macros/s/AKfycbzzS6CqUb5Vs889lnhT17OXGLuQY4oI1l64QTFWMrutpNjfN7JzRkh65fnWi4HeT1jlvQ/exec';
 
 if (!checkSession()) throw new Error('Session expired');
 
